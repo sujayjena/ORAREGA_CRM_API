@@ -1,0 +1,1272 @@
+﻿using System;
+using OraRegaAV.Controllers.API;
+using OraRegaAV.DBEntity;
+using OraRegaAV.Models;
+using System.Threading.Tasks;
+using System.Web.Http;
+using OraRegaAV.Helpers;
+using OraRegaAV.Models.Constants;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using System.Data.Entity;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using OraRegaAV.Models.DBEntitiesPartialClasses;
+using System.Data.Entity.Migrations;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+
+namespace OraRegaAV.Controllers
+{
+    public class WorkOrderController : ApiCustomBaseController
+    {
+        private readonly dbOraRegaEntities db = new dbOraRegaEntities();
+        private Response _response = new Response();
+
+        public WorkOrderController()
+        {
+            _response.IsSuccess = true;
+        }
+
+        [HttpPost]
+        public async Task<Response> SaveWorkOrder()
+        {
+            tblWorkOrder parameters = new tblWorkOrder();
+            tblWorkOrder tblWorkOrder;
+            tblCustomer tblCustomer;
+            tblUser tblUser;
+            tblPermanentAddress customerAddress;
+            List<tblProductIssuesPhoto> issueFileparameters = new List<tblProductIssuesPhoto>();
+            List<tblPurchaseProofPhoto> proofFileparameters = new List<tblPurchaseProofPhoto>();
+            NameValueCollection postedForm;
+            HttpFileCollection postedFiles;
+            List<HttpPostedFile> postedFilesProductIssuePhotos;
+            List<HttpPostedFile> postedFilesPurchaseProofPhotos;
+
+            FileManager fileManager = new FileManager();
+
+            bool isAllTheIssuePhotoValid = true;
+            bool isAllTheProofPhotoValid = true;
+            string customerUserPassword;
+
+            string jsonRemarks;
+            string jsonAccessories;
+            string jsonPartDetail;
+
+            tblWORepairRemark tblWORepairRemark;
+            tblWOAccessory tblWOAccessory;
+            tblWOPart tblWOPart;
+            try
+            {
+                postedForm = HttpContext.Current.Request.Form;
+                postedFiles = HttpContext.Current.Request.Files;
+                postedFilesProductIssuePhotos = new List<HttpPostedFile>();
+                postedFilesPurchaseProofPhotos = new List<HttpPostedFile>();
+
+                parameters.Id = Convert.ToInt32(postedForm["Id"].SanitizeValue());
+
+                parameters.SupportTypeId = Convert.ToInt32(postedForm["SupportTypeId"] ?? "0");
+                //parameters.TicketLogDate = Convert.ToDateTime(postedForm["TicketLogDate"] ?? null);
+                parameters.TicketLogDate = DateTime.Now;
+                parameters.BranchId = Convert.ToInt32(postedForm["BranchId"] ?? "0");
+                parameters.QueueName = postedForm["QueueName"];
+                parameters.PanNumber = postedForm["PanNumber"].SanitizeValue();
+                parameters.PriorityId = Convert.ToInt32(postedForm["PriorityId"] ?? "0");
+                parameters.AlternateNumber = postedForm["AlternateNumber"].SanitizeValue();
+                parameters.GSTNumber = postedForm["GSTNumber"].SanitizeValue();
+                parameters.BusinessTypeId = Convert.ToInt32(postedForm["BusinessTypeId"] ?? "0");
+                parameters.PaymentTermsId = Convert.ToInt32(postedForm["PaymentTermsId"] ?? "0");
+                parameters.ProductTypeId = Convert.ToInt32(postedForm["ProductTypeId"] ?? "0");
+                parameters.ProductId = Convert.ToInt32(postedForm["ProductId"] ?? "0");
+                parameters.ProductDescriptionId = Convert.ToInt32(postedForm["ProductDescriptionId"] ?? "0");
+                parameters.ProductNumber = postedForm["ProductNumber"].SanitizeValue();
+                parameters.ProductSerialNumber = postedForm["ProductSerialNumber"].SanitizeValue();
+                parameters.WarrantyTypeId = Convert.ToInt32(postedForm["WarrantyTypeId"] ?? "0");
+                parameters.WarrantyNumber = postedForm["WarrantyNumber"].SanitizeValue();
+                parameters.CountryId = Convert.ToInt32(postedForm["CountryId"] ?? "0");
+                parameters.OperatingSystemId = Convert.ToInt32(postedForm["OperatingSystemId"] ?? "0");
+                parameters.ReportedIssue = postedForm["ReportedIssue"].SanitizeValue();
+                parameters.MiscellaneousRemark = postedForm["MiscellaneousRemark"].SanitizeValue();
+                parameters.IssueDescriptionId = Convert.ToInt32(postedForm["IssueDescriptionId"] ?? "0");
+                parameters.EngineerDiagnosis = postedForm["EngineerDiagnosis"].SanitizeValue();
+                parameters.EngineerId = Convert.ToInt32(postedForm["EngineerId"] ?? "0");
+                parameters.DigitUEFIFailureID = postedForm["DigitUEFIFailureID"].SanitizeValue();
+                parameters.CustomerComment = postedForm["CustomerComment"].SanitizeValue();
+                parameters.CompanyId = Convert.ToInt32(postedForm["CompanyId"] ?? "0");
+                parameters.CustomerId = Convert.ToInt32(postedForm["CustomerId"] ?? "0");
+                parameters.OrderStatusId = Convert.ToInt32(postedForm["OrderStatusId"] ?? "0");
+                parameters.WorkOrderEnquiryId = Convert.ToInt32(postedForm["WorkOrderEnquiryId"] ?? "0");
+                parameters.ServiceAddressId = Convert.ToInt32(postedForm["ServiceAddressId"] ?? "0");
+                parameters.ProductMakeId = Convert.ToInt32(postedForm["ProductMakeId"] ?? "0");
+                parameters.ProductModelId = Convert.ToInt32(postedForm["ProductModelId"] ?? "0");
+                parameters.OrderTypeId = Convert.ToInt32(postedForm["OrderTypeId"] ?? "0");
+                parameters.ResolutionSummary = postedForm["ResolutionSummary"].SanitizeValue();
+                parameters.DelayTypeId = Convert.ToInt32(postedForm["DelayTypeId"] ?? "0");
+                parameters.WOAccessoryId = Convert.ToInt32(postedForm["WOAccessoryId"] ?? "0");
+                parameters.RepairClassTypeId = Convert.ToInt32(postedForm["RepairClassTypeId"] ?? "0");
+                parameters.WOEnqCustFeedbackId = Convert.ToInt32(postedForm["WOEnqCustFeedbackId"] ?? "0");
+                parameters.CaseStatusId = Convert.ToInt32(postedForm["CaseStatusId"] ?? "0");
+
+                parameters.Address = postedForm["Address"].SanitizeValue();
+                parameters.StateId = Convert.ToInt32(postedForm["StateId"] ?? "0");
+                parameters.CityId = Convert.ToInt32(postedForm["CityId"] ?? "0");
+                parameters.AreaId = Convert.ToInt32(postedForm["AreaId"] ?? "0");
+                parameters.PinCodeId = Convert.ToInt32(postedForm["PinCodeId"] ?? "0");
+
+                parameters.ProdModelIfOther = postedForm["ProdModelIfOther"];
+                parameters.ProdDescriptionIfOther = postedForm["ProdDescriptionIfOther"];
+                parameters.CustomerSecondaryName = postedForm["CustomerSecondaryName"];
+
+                jsonRemarks = HttpContext.Current.Request.Form["Remarks"];
+                jsonAccessories = HttpContext.Current.Request.Form["Accesiories"];
+                jsonPartDetail = HttpContext.Current.Request.Form["PartDetail"];
+
+                //foreach (string key in postedFiles)
+                //{
+                //    if (string.Equals(key, "ProductIssuePhotos", StringComparison.OrdinalIgnoreCase))
+                //        postedFilesProductIssuePhotos.Add(postedFiles[key]);
+                //    else if (string.Equals(key, "PurchaseProofPhotos", StringComparison.OrdinalIgnoreCase))
+                //        postedFilesPurchaseProofPhotos.Add(postedFiles[key]);
+                //}
+
+                //foreach (HttpPostedFile file in postedFilesProductIssuePhotos)
+                //{
+                //    tblWOSnap tempPhoto = new tblWOSnap();
+                //    tempPhoto.FilePath = file.FileName;
+                //    tempPhoto.FileName = file.FileName;
+                //    tempPhoto.IssueSnap = file;
+
+                //    #region WO Enquiry Issue photos Validation check
+                //    TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblProductIssuesPhoto), typeof(TblProductIssuesPhotosMetadata)), typeof(tblProductIssuesPhoto));
+                //    _response = ValueSanitizerHelper.GetValidationErrorsList(tempPhoto);
+
+                //    if (!_response.IsSuccess)
+                //    {
+                //        isAllTheIssuePhotoValid = false;
+                //        break;
+                //    }
+                //    #endregion
+
+                //    issueFileparameters.Add(tempPhoto);
+                //}
+
+                //foreach (HttpPostedFile file in postedFilesPurchaseProofPhotos)
+                //{
+                //    tblPurchaseProofPhoto tempPhoto = new tblPurchaseProofPhoto();
+                //    tempPhoto.PhotoPath = file.FileName;
+                //    tempPhoto.FilesOriginalName = file.FileName;
+                //    tempPhoto.ProofPhoto = file;
+                //    tempPhoto.IsDeleted = false;
+
+                //    #region WO Enquiry Issue photos Validation check
+                //    TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblPurchaseProofPhoto), typeof(TblPurchaseProofPhotosMetadata)), typeof(tblPurchaseProofPhoto));
+                //    _response = ValueSanitizerHelper.GetValidationErrorsList(tempPhoto);
+
+                //    if (!_response.IsSuccess)
+                //    {
+                //        isAllTheProofPhotoValid = false;
+                //        break;
+                //    }
+                //    #endregion
+
+                //    proofFileparameters.Add(tempPhoto);
+                //}
+
+                //if (!isAllTheIssuePhotoValid)
+                //{
+                //    issueFileparameters.Clear();
+                //    return _response;
+                //}
+                //else if (!isAllTheProofPhotoValid)
+                //{
+                //    proofFileparameters.Clear();
+                //    return _response;
+                //}
+
+                tblWorkOrder = await db.tblWorkOrders.Where(w => w.Id == parameters.Id).FirstOrDefaultAsync();
+
+                var vAddressId = 0;
+                //var vUserId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                var vUserObj = await db.tblUsers.Where(x => x.CustomerId == parameters.CustomerId).FirstOrDefaultAsync();
+                if (vUserObj != null)
+                {
+                    var vServiceAddressId = Convert.ToInt32(parameters.ServiceAddressId);
+                    var vtblPermanentAddress = await db.tblPermanentAddresses.Where(w => w.UserId == vUserObj.Id && w.Id == vServiceAddressId).FirstOrDefaultAsync();
+                    if (vtblPermanentAddress == null)
+                    {
+                        if (!string.IsNullOrEmpty(parameters.Address))
+                        {
+                            customerAddress = new tblPermanentAddress
+                            {
+                                UserId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0),
+                                Address = parameters.Address,
+                                StateId = parameters.StateId,
+                                CityId = parameters.CityId,
+                                AreaId = parameters.AreaId,
+                                PinCodeId = parameters.PinCodeId,
+                                IsActive = true,
+                                CreatedOn = DateTime.Now,
+                                CreatedBy = vUserObj.Id
+                            };
+                            db.tblPermanentAddresses.Add(customerAddress);
+
+                            await db.SaveChangesAsync();
+                            vAddressId = customerAddress.Id;
+                        }
+                    }
+                    else
+                    {
+                        //vtblPermanentAddress.Address = parameters.Address;
+                        //vtblPermanentAddress.StateId = parameters.StateId;
+                        //vtblPermanentAddress.CityId = parameters.CityId;
+                        //vtblPermanentAddress.AreaId = parameters.AreaId;
+                        //vtblPermanentAddress.PinCodeId = parameters.PinCodeId;
+
+                        vtblPermanentAddress.ModifiedOn = DateTime.Now;
+                        vtblPermanentAddress.ModifiedBy = vUserObj.Id;
+
+                        await db.SaveChangesAsync();
+                        vAddressId = vtblPermanentAddress.Id;
+                    }
+                }
+
+                if (tblWorkOrder == null)
+                {
+                    tblWorkOrder = new tblWorkOrder();
+
+                    //auto generate the Work Order No
+                    var workOrderCount = db.tblWorkOrders.ToList().Count;
+
+                    tblWorkOrder.WorkOrderNumber = Utilities.WorkOrderNumberAutoGenerated();
+                    tblWorkOrder.SupportTypeId = parameters.SupportTypeId;
+                    tblWorkOrder.TicketLogDate = parameters.TicketLogDate;
+                    tblWorkOrder.BranchId = parameters.BranchId;
+
+                    tblWorkOrder.QueueName = parameters.QueueName;
+                    tblWorkOrder.PanNumber = parameters.PanNumber;
+                    tblWorkOrder.PriorityId = parameters.PriorityId;
+                    tblWorkOrder.AlternateNumber = parameters.AlternateNumber;
+                    tblWorkOrder.GSTNumber = parameters.GSTNumber;
+                    tblWorkOrder.BusinessTypeId = parameters.BusinessTypeId;
+                    tblWorkOrder.PaymentTermsId = parameters.PaymentTermsId;
+                    tblWorkOrder.ProductTypeId = parameters.ProductTypeId;
+                    tblWorkOrder.ProductId = parameters.ProductId;
+                    tblWorkOrder.ProductDescriptionId = parameters.ProductDescriptionId;
+                    tblWorkOrder.ProductNumber = parameters.ProductNumber;
+                    tblWorkOrder.ProductSerialNumber = parameters.ProductSerialNumber;
+                    tblWorkOrder.WarrantyTypeId = parameters.WarrantyTypeId;
+                    tblWorkOrder.WarrantyNumber = parameters.WarrantyNumber;
+
+                    tblWorkOrder.CountryId = parameters.CountryId;
+                    tblWorkOrder.OperatingSystemId = parameters.OperatingSystemId;
+                    tblWorkOrder.ReportedIssue = parameters.ReportedIssue;
+
+                    tblWorkOrder.MiscellaneousRemark = parameters.MiscellaneousRemark;
+                    tblWorkOrder.IssueDescriptionId = parameters.IssueDescriptionId;
+                    tblWorkOrder.EngineerDiagnosis = parameters.EngineerDiagnosis;
+                    tblWorkOrder.EngineerId = parameters.EngineerId;
+                    tblWorkOrder.DigitUEFIFailureID = parameters.DigitUEFIFailureID;
+                    tblWorkOrder.CustomerComment = parameters.CustomerComment;
+
+                    tblWorkOrder.CreatedDate = DateTime.Now;
+                    tblWorkOrder.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                    //This is just to prevent validation error
+                    tblWorkOrder.CompanyId = parameters.CompanyId;
+                    tblWorkOrder.CustomerId = parameters.CustomerId;
+                    tblWorkOrder.OrderStatusId = parameters.OrderStatusId;
+                    tblWorkOrder.WorkOrderEnquiryId = parameters.WorkOrderEnquiryId;
+
+                    tblWorkOrder.ServiceAddressId = vAddressId;
+                    tblWorkOrder.OrderTypeId = parameters.OrderTypeId;
+                    tblWorkOrder.ProductMakeId = parameters.ProductMakeId;
+                    tblWorkOrder.ProductModelId = parameters.ProductModelId;
+
+                    tblWorkOrder.ResolutionSummary = parameters.ResolutionSummary;
+                    tblWorkOrder.DelayTypeId = parameters.DelayTypeId;
+                    tblWorkOrder.WOAccessoryId = parameters.WOAccessoryId;
+                    tblWorkOrder.RepairClassTypeId = parameters.RepairClassTypeId;
+
+                    tblWorkOrder.WOEnqCustFeedbackId = parameters.WOEnqCustFeedbackId;
+                    tblWorkOrder.CaseStatusId = parameters.CaseStatusId;
+
+                    tblWorkOrder.ProdModelIfOther = parameters.ProdModelIfOther;
+                    tblWorkOrder.ProdDescriptionIfOther = parameters.ProdDescriptionIfOther;
+                    tblWorkOrder.CustomerSecondaryName = parameters.CustomerSecondaryName;
+
+                    db.tblWorkOrders.Add(tblWorkOrder);
+
+                    _response.Message = $"Work Order details saved successfully";
+                }
+                else
+                {
+                    //tblWorkOrder.WorkOrderNumber = parameters.WorkOrderNumber;
+                    tblWorkOrder.SupportTypeId = parameters.SupportTypeId;
+                    //tblWorkOrder.TicketLogDate = parameters.TicketLogDate;
+                    tblWorkOrder.BranchId = parameters.BranchId;
+
+                    tblWorkOrder.QueueName = parameters.QueueName;
+                    tblWorkOrder.PanNumber = parameters.PanNumber;
+                    tblWorkOrder.PriorityId = parameters.PriorityId;
+                    tblWorkOrder.AlternateNumber = parameters.AlternateNumber;
+                    tblWorkOrder.GSTNumber = parameters.GSTNumber;
+                    tblWorkOrder.BusinessTypeId = parameters.BusinessTypeId;
+                    tblWorkOrder.PaymentTermsId = parameters.PaymentTermsId;
+                    tblWorkOrder.ProductTypeId = parameters.ProductTypeId;
+                    tblWorkOrder.ProductId = parameters.ProductId;
+                    tblWorkOrder.ProductDescriptionId = parameters.ProductDescriptionId;
+                    tblWorkOrder.ProductNumber = parameters.ProductNumber;
+                    tblWorkOrder.ProductSerialNumber = parameters.ProductSerialNumber;
+                    tblWorkOrder.WarrantyTypeId = parameters.WarrantyTypeId;
+                    tblWorkOrder.WarrantyNumber = parameters.WarrantyNumber;
+
+                    tblWorkOrder.CountryId = parameters.CountryId;
+                    tblWorkOrder.OperatingSystemId = parameters.OperatingSystemId;
+                    tblWorkOrder.ReportedIssue = parameters.ReportedIssue;
+
+                    tblWorkOrder.MiscellaneousRemark = parameters.MiscellaneousRemark;
+                    tblWorkOrder.IssueDescriptionId = parameters.IssueDescriptionId;
+                    tblWorkOrder.EngineerDiagnosis = parameters.EngineerDiagnosis;
+                    tblWorkOrder.EngineerId = parameters.EngineerId;
+                    tblWorkOrder.DigitUEFIFailureID = parameters.DigitUEFIFailureID;
+                    tblWorkOrder.CustomerComment = parameters.CustomerComment;
+
+                    tblWorkOrder.ModifiedDate = DateTime.Now;
+                    tblWorkOrder.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                    //This is just to prevent validation error
+                    tblWorkOrder.CompanyId = parameters.CompanyId;
+                    tblWorkOrder.CustomerId = parameters.CustomerId;
+                    tblWorkOrder.OrderStatusId = parameters.OrderStatusId;
+                    tblWorkOrder.WorkOrderEnquiryId = parameters.WorkOrderEnquiryId;
+
+                    tblWorkOrder.ServiceAddressId = vAddressId;
+                    tblWorkOrder.OrderTypeId = parameters.OrderTypeId;
+                    tblWorkOrder.ProductMakeId = parameters.ProductMakeId;
+                    tblWorkOrder.ProductModelId = parameters.ProductModelId;
+
+                    tblWorkOrder.ResolutionSummary = parameters.ResolutionSummary;
+                    tblWorkOrder.DelayTypeId = parameters.DelayTypeId;
+                    tblWorkOrder.WOAccessoryId = parameters.WOAccessoryId;
+                    tblWorkOrder.RepairClassTypeId = parameters.RepairClassTypeId;
+
+                    tblWorkOrder.WOEnqCustFeedbackId = parameters.WOEnqCustFeedbackId;
+                    tblWorkOrder.CaseStatusId = parameters.CaseStatusId;
+
+                    tblWorkOrder.ProdModelIfOther = parameters.ProdModelIfOther;
+                    tblWorkOrder.ProdDescriptionIfOther = parameters.ProdDescriptionIfOther;
+                    tblWorkOrder.CustomerSecondaryName = parameters.CustomerSecondaryName;
+
+                    _response.Message = $"Work Order details updated successfully";
+                }
+
+                //If new files are uploaded then to delete old/existing issue snap files of Work Enquiry
+                //if (issueFileparameters.Count > 0)
+                //{
+                //    fileManager.DeleteWOSnaps(tblWorkOrder.Id, HttpContext.Current);
+
+                //    //To set Delete flags for Old files
+                //    db.tblWOSnaps.Where(p => p.WorkOrderId == tblWorkOrder.Id).ToList().ForEach(p =>
+                //    {
+                //        db.tblWOSnaps.Remove(p);
+                //    });
+                //}
+
+                //If new files are uploaded then to delete old/existing Product Proof files of Work Enquiry
+                //if (proofFileparameters.Count > 0)
+                //{
+                //    fileManager.DeleteWOProofOfPurchase(tblWorkOrder.Id, HttpContext.Current);
+
+                //    //To set Delete flags for Old files
+                //    db.tblWOProofOfPurchases.Where(p => p.WorkOrderId == tblWorkOrder.Id).ToList().ForEach(p =>
+                //    {
+                //        db.tblWOProofOfPurchases.Remove(p);
+                //    });
+                //}
+
+                //foreach (tblProductIssuesPhoto issueFile in issueFileparameters)
+                //{
+                //    issueFile.WOEnquiryId = tblWorkOrder.Id;
+                //    issueFile.PhotoPath = fileManager.UploadWOEnqIssueSnaps(issueFile.WOEnquiryId, issueFile.IssueSnap, HttpContext.Current);
+                //    db.tblProductIssuesPhotos.Add(issueFile);
+                //}
+
+                //foreach (tblPurchaseProofPhoto proofFile in proofFileparameters)
+                //{
+                //    proofFile.WOEnquiryId = tblWorkOrder.Id;
+                //    proofFile.PhotoPath = fileManager.UploadWOProductProofSnaps(proofFile.WOEnquiryId, proofFile.ProofPhoto, HttpContext.Current);
+                //    db.tblPurchaseProofPhotos.Add(proofFile);
+                //}
+
+                await db.SaveChangesAsync();
+
+                #region Remark & Address
+
+                if (!string.IsNullOrWhiteSpace(jsonRemarks))
+                {
+                    var vRemarksList = JsonConvert.DeserializeObject<List<tblWORepairRemark>>(jsonRemarks);
+                    var vRemarksListObj = db.tblWORepairRemarks.Where(x => x.WorkOrderId == tblWorkOrder.Id).ToList();
+                    foreach (var item in vRemarksListObj)
+                    {
+                        db.tblWORepairRemarks.Remove(item);
+
+                        await db.SaveChangesAsync();
+                    }
+
+                    foreach (var item in vRemarksList)
+                    {
+                        tblWORepairRemark = new tblWORepairRemark();
+                        tblWORepairRemark.WorkOrderId = tblWorkOrder.Id;
+                        tblWORepairRemark.RepairRemark = item.RepairRemark;
+                        tblWORepairRemark.CreatedDate = DateTime.Now;
+                        tblWORepairRemark.CreatedBy = tblWorkOrder.CreatedBy;
+
+                        db.tblWORepairRemarks.Add(tblWORepairRemark);
+                    }
+
+                    await db.SaveChangesAsync();
+                }
+
+                if (!string.IsNullOrWhiteSpace(jsonAccessories))
+                {
+                    var vAccessoryList = JsonConvert.DeserializeObject<List<tblWOAccessory>>(jsonAccessories);
+                    var vAccessoryListObj = db.tblWOAccessories.Where(x => x.WorkOrderId == tblWorkOrder.Id).ToList();
+                    foreach (var item in vAccessoryListObj)
+                    {
+                        db.tblWOAccessories.Remove(item);
+
+                        await db.SaveChangesAsync();
+                    }
+
+                    foreach (var item in vAccessoryList)
+                    {
+                        tblWOAccessory = new tblWOAccessory();
+                        tblWOAccessory.WorkOrderId = tblWorkOrder.Id;
+                        tblWOAccessory.AccessoriesId = item.AccessoriesId;
+                        tblWOAccessory.Remarks = item.Remarks;
+
+                        db.tblWOAccessories.Add(tblWOAccessory);
+                    }
+
+                    await db.SaveChangesAsync();
+                }
+
+                if (!string.IsNullOrWhiteSpace(jsonPartDetail))
+                {
+                    var vWOPartList = JsonConvert.DeserializeObject<List<tblWOPart>>(jsonPartDetail);
+
+                    foreach (var item in vWOPartList)
+                    {
+                        if (!db.tblPartsAllocatedToWorkOrders.Where(u => u.WorkOrderId == tblWorkOrder.Id && u.PartId == item.PartId).Any() && item.PartId > 0)
+                        {
+                            var vtblPartsAllocatedToWorkOrders = new tblPartsAllocatedToWorkOrder()
+                            {
+                                WorkOrderId = tblWorkOrder.Id,
+                                PartId = item.PartId,
+                                Quantity = item.Quantity,
+                                IsReturn = false,
+                                PartStatusId = item.PartDescriptionId,
+                                CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0),
+                                CreatedDate = DateTime.Now,
+                            };
+
+                            db.tblPartsAllocatedToWorkOrders.AddOrUpdate(vtblPartsAllocatedToWorkOrders);
+
+                            await db.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            var vtblPartsAllocatedToWorkOrders = db.tblPartsAllocatedToWorkOrders.Where(u => u.WorkOrderId == tblWorkOrder.Id && u.PartId == item.PartId).FirstOrDefault();
+                            if(vtblPartsAllocatedToWorkOrders != null)
+                            {
+                                vtblPartsAllocatedToWorkOrders.PartStatusId = item.PartDescriptionId;
+                            }
+
+                            db.tblPartsAllocatedToWorkOrders.AddOrUpdate(vtblPartsAllocatedToWorkOrders);
+
+                            await db.SaveChangesAsync();
+                        }
+                    }     
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> UpdateWorkOrder(string workOrderNumber, int OrderStatusId, int EngineerId)
+        {
+            tblWorkOrder tblWorkOrder;
+
+            try
+            {
+                tblWorkOrder = await db.tblWorkOrders.Where(w => w.WorkOrderNumber == workOrderNumber).FirstOrDefaultAsync();
+                if (tblWorkOrder != null)
+                {
+                    tblWorkOrder.OrderStatusId = OrderStatusId;
+                    tblWorkOrder.EngineerId = EngineerId;
+
+                    _response.Message = $"Work Order details updated successfully";
+                }
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderAcceptNReject(WorkOrderAcceptNReject parameters)
+        {
+            try
+            {
+                if (ActionContext.Request.Properties.ContainsKey("UserId"))
+                {
+                    var vWorkOrderEngineerObj = await db.tblWorkOrders.Where(w => w.WorkOrderNumber == parameters.WorkOrderNumber).FirstOrDefaultAsync();
+                    if (vWorkOrderEngineerObj != null)
+                    {
+                        if (parameters.EngineerId > 0)
+                        {
+                            vWorkOrderEngineerObj.EngineerId = parameters.EngineerId;
+
+                            await db.SaveChangesAsync();
+
+                            _response.Message = $"updated";
+                        }
+                    }
+
+                    var vWorkOrderStatusObj = await db.tblWorkOrders.Where(w => w.WorkOrderNumber == parameters.WorkOrderNumber).FirstOrDefaultAsync();
+                    if (vWorkOrderStatusObj != null)
+                    {
+                        if (parameters.OrderStatusId > 0)
+                        {
+                            vWorkOrderStatusObj.OrderStatusId = parameters.OrderStatusId;
+
+                            await db.SaveChangesAsync();
+
+                            _response.Message = $"updated";
+                        }
+                    }
+                    if (_response.Message != null && _response.Message.Length > 0)
+                        _response.Message = $"Work Order details updated successfully";
+                    else
+                        _response.Message = $"Work Order details not updated successfully";
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = $"Work Order details not updated successfully";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WOListForEmplyees(WOListParameters parameters)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _response.Data = db.GetWOListForEmployees(parameters.OrderStatusId, parameters.EmployeeId).ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> GetWorkOrderDetails(string WorkOrderNumber)
+        {
+            GetWorkOrderListViewModel workOrderListObj = new GetWorkOrderListViewModel();
+            try
+            {
+                var workOrderObj = await Task.Run(() => db.GetWorkOrderDetails(WorkOrderNumber).FirstOrDefault());
+
+                if (workOrderObj != null)
+                {
+                    workOrderListObj.Id = workOrderObj.Id;
+                    workOrderListObj.WorkOrderNumber = workOrderObj.WorkOrderNumber;
+                    workOrderListObj.SupportTypeId = workOrderObj.SupportTypeId;
+                    workOrderListObj.SupportType = workOrderObj.SupportType;
+                    workOrderListObj.TicketLogDate = workOrderObj.TicketLogDate;
+                    workOrderListObj.FirstName = workOrderObj.FirstName;
+                    workOrderListObj.LastName = workOrderObj.LastName;
+                    workOrderListObj.Mobile = workOrderObj.Mobile;
+                    workOrderListObj.Email = workOrderObj.Email;
+                    workOrderListObj.BranchId = workOrderObj.BranchId;
+                    workOrderListObj.BranchName = workOrderObj.BranchName;
+                    workOrderListObj.QueueName = workOrderObj.QueueName;
+                    workOrderListObj.PanNumber = workOrderObj.PanNumber;
+                    workOrderListObj.PriorityId = workOrderObj.PriorityId;
+                    workOrderListObj.PriorityName = workOrderObj.PriorityName;
+                    workOrderListObj.AlternateNumber = workOrderObj.AlternateNumber;
+                    workOrderListObj.GSTNumber = workOrderObj.GSTNumber;
+                    workOrderListObj.BusinessTypeId = workOrderObj.BusinessTypeId;
+                    workOrderListObj.BusinessTypeName = workOrderObj.BusinessTypeName;
+                    workOrderListObj.PaymentTermsId = workOrderObj.PaymentTermsId;
+                    workOrderListObj.PaymentTerms = workOrderObj.PaymentTerms;
+                    workOrderListObj.ProductTypeId = workOrderObj.ProductTypeId;
+                    workOrderListObj.ProductType = workOrderObj.ProductType;
+                    workOrderListObj.ProductId = workOrderObj.ProductId;
+                    workOrderListObj.ProductName = workOrderObj.ProductName;
+                    workOrderListObj.ProductDescriptionId = workOrderObj.ProductDescriptionId;
+                    workOrderListObj.ProductDescription = workOrderObj.ProductDescription;
+                    workOrderListObj.ProductNumber = workOrderObj.ProductNumber;
+                    workOrderListObj.ProductSerialNumber = workOrderObj.ProductSerialNumber;
+                    workOrderListObj.WarrantyTypeId = workOrderObj.WarrantyTypeId;
+                    workOrderListObj.WarrantyType = workOrderObj.WarrantyType;
+                    workOrderListObj.WarrantyNumber = workOrderObj.WarrantyNumber;
+                    workOrderListObj.CountryId = workOrderObj.CountryId;
+                    workOrderListObj.CountryName = workOrderObj.CountryName;
+                    workOrderListObj.OperatingSystemId = workOrderObj.OperatingSystemId;
+                    workOrderListObj.OperatingSystemName = workOrderObj.OperatingSystemName;
+                    workOrderListObj.ReportedIssue = workOrderObj.ReportedIssue;
+                    workOrderListObj.MiscellaneousRemark = workOrderObj.MiscellaneousRemark;
+                    workOrderListObj.IssueDescriptionId = workOrderObj.IssueDescriptionId;
+                    workOrderListObj.IssueDescriptionName = workOrderObj.IssueDescriptionName;
+                    workOrderListObj.EngineerDiagnosis = workOrderObj.EngineerDiagnosis;
+                    workOrderListObj.EngineerId = workOrderObj.EngineerId;
+                    workOrderListObj.EngineerName = workOrderObj.EngineerName;
+                    workOrderListObj.DigitUEFIFailureID = workOrderObj.DigitUEFIFailureID;
+                    workOrderListObj.CustomerComment = workOrderObj.CustomerComment;
+                    workOrderListObj.CreatedBy = workOrderObj.CreatedBy;
+                    workOrderListObj.CreatedDate = workOrderObj.CreatedDate;
+                    workOrderListObj.ModifiedBy = workOrderObj.ModifiedBy;
+                    workOrderListObj.ModifiedDate = workOrderObj.ModifiedDate;
+                    workOrderListObj.CompanyId = workOrderObj.CompanyId;
+                    workOrderListObj.CompanyName = workOrderObj.CompanyName;
+                    workOrderListObj.CustomerId = workOrderObj.CustomerId;
+                    workOrderListObj.OrderStatusId = workOrderObj.OrderStatusId;
+                    workOrderListObj.StatusName = workOrderObj.StatusName;
+                    workOrderListObj.WorkOrderEnquiryId = workOrderObj.WorkOrderEnquiryId;
+                    workOrderListObj.ServiceAddressId = workOrderObj.ServiceAddressId;
+                    workOrderListObj.Address = workOrderObj.Address;
+                    workOrderListObj.ProductMakeId = workOrderObj.ProductMakeId;
+                    workOrderListObj.ProductMake = workOrderObj.ProductMake;
+                    workOrderListObj.ProductModelId = workOrderObj.ProductModelId;
+                    workOrderListObj.ProductModel = workOrderObj.ProductModel;
+                    workOrderListObj.OrderTypeId = workOrderObj.OrderTypeId;
+                    workOrderListObj.OrderType = workOrderObj.OrderType;
+                    workOrderListObj.OrderTypeCode = workOrderObj.OrderTypeCode;
+                    workOrderListObj.ResolutionSummary = workOrderObj.ResolutionSummary;
+                    workOrderListObj.DelayTypeId = workOrderObj.DelayTypeId;
+                    workOrderListObj.DelayType = workOrderObj.DelayType;
+                    workOrderListObj.WOAccessoryId = workOrderObj.WOAccessoryId;
+                    workOrderListObj.RepairClassTypeId = workOrderObj.RepairClassTypeId;
+                    workOrderListObj.RepairClassType = workOrderObj.RepairClassType;
+                    workOrderListObj.WOEnqCustFeedbackId = workOrderObj.WOEnqCustFeedbackId;
+                    workOrderListObj.Rating = workOrderObj.Rating;
+                    workOrderListObj.Comment = workOrderObj.Comment;
+                    workOrderListObj.CaseStatusId = workOrderObj.CaseStatusId;
+                    workOrderListObj.CaseStatusName = workOrderObj.CaseStatusName;
+                    workOrderListObj.PurchaseProof = workOrderObj.PurchaseProof;
+                    workOrderListObj.RepairRemark = workOrderObj.RepairRemark;
+                    workOrderListObj.DelayCode = workOrderObj.DelayCode;
+                    workOrderListObj.CustomerAvailable = workOrderObj.CustomerAvailable;
+                    workOrderListObj.CustomerSignature = workOrderObj.CustomerSignature;
+                    workOrderListObj.ProdModelIfOther = workOrderObj.ProdModelIfOther;
+                    workOrderListObj.ProdDescriptionIfOther = workOrderObj.ProdDescriptionIfOther;
+                    workOrderListObj.CustomerSecondaryName = workOrderObj.CustomerSecondaryName;
+                    workOrderListObj.EngineerMobile = workOrderObj.EngineerMobile;
+
+                    var vRemarkList = db.tblWORepairRemarks.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
+
+                    List<WORepairRemark> woRepairRemark = new List<WORepairRemark>();
+                    foreach (var remarkObj in vRemarkList)
+                    {
+                        woRepairRemark.Add(new WORepairRemark
+                        {
+                            Id = remarkObj.Id,
+                            RepairRemark = remarkObj.RepairRemark,
+                            CreatedBy = remarkObj.CreatedBy,
+                            CreatedDate = remarkObj.CreatedDate
+                        });
+                    }
+                    workOrderListObj.WORepairRemarkList = woRepairRemark;
+
+                    var vAccessoriesList = db.tblWOAccessories.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
+
+                    List<WOAccessory> woOAccessory = new List<WOAccessory>();
+                    foreach (var accObj in vAccessoriesList)
+                    {
+                        string accessoriesName = "";
+                        var accessoriesObj = db.tblAccessories.Where(x => x.Id == accObj.AccessoriesId).FirstOrDefault();
+                        if (accessoriesObj != null)
+                        {
+                            accessoriesName = accessoriesObj.AccessoriesName;
+                        }
+                        woOAccessory.Add(new WOAccessory
+                        {
+                            Id = accObj.Id,
+                            AccessoriesId = accObj.AccessoriesId,
+                            AccessoriesName = accessoriesName,
+                            Remarks = accObj.Remarks,
+                        });
+                    }
+                    workOrderListObj.WOAccessoryList = woOAccessory;
+
+
+                    var vWOPartsList = db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
+
+                    List<WOPartList> woPart = new List<WOPartList>();
+                    foreach (var item in vWOPartsList)
+                    {
+                        string sPartName = "";
+                        string sPartNumber = "";
+                        string sUniqueNumber = "";
+                        string sPartDescription = "";
+                        string sSerialNumber = "";
+                        string sPartStatus = "";
+
+                        var vPartObj = db.tblPartDetails.Where(x => x.Id == item.PartId).FirstOrDefault();
+                        if (vPartObj != null)
+                        {
+                            var vPartStatusObj = db.tblPartDescriptions.Where(x => x.Id == item.PartStatusId).FirstOrDefault();
+                            if (vPartStatusObj != null)
+                            {
+                                sPartStatus = vPartStatusObj.PartDescriptionName;
+                            }
+
+                            sPartName = vPartObj.PartName;
+                            sPartNumber = vPartObj.PartNumber;
+                            sUniqueNumber = vPartObj.UniqueCode;
+                            sPartDescription = vPartObj.PartDescription;
+                            sSerialNumber = vPartObj.CTSerialNo;
+                        }
+
+                        woPart.Add(new WOPartList
+                        {
+                            Id = item.Id,
+                            PartId = item.PartId,
+                            PartName = sPartName,
+                            PartNumber = sPartNumber,
+                            UniqueNumber = sUniqueNumber,
+                            PartDescription = sPartDescription,
+                            SerialNumber = sSerialNumber,
+                            PartStatusId = item.PartStatusId,
+                            PartStatus = sPartStatus,
+                            Quantity = item.Quantity,
+                            CreatedBy = item.CreatedBy,
+                            CreatedDate = item.CreatedDate
+                        });
+                    }
+                    workOrderListObj.WOPartList = woPart;
+
+                    _response.Data = workOrderListObj;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> GetEngineerList()
+        {
+            List<GetEngineerList_Result> engineerList;
+            try
+            {
+                engineerList = await Task.Run(() => db.GetEngineerList().ToList());
+
+                _response.Data = engineerList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> GetWorkOrderList(string workOrderNumber = "")
+        {
+            List<GetWorkOrderListViewModel> workOrderListObj = new List<GetWorkOrderListViewModel>();
+            try
+            {
+                var workOrderList = await Task.Run(() => db.GetWorkOrderList(workOrderNumber).ToList());
+
+                workOrderListObj = workOrderList.Select(detail => new GetWorkOrderListViewModel
+                {
+                    Id = detail.Id,
+                    WorkOrderNumber = detail.WorkOrderNumber,
+                    SupportTypeId = detail.SupportTypeId,
+                    SupportType = detail.SupportType,
+                    TicketLogDate = detail.TicketLogDate,
+                    BranchId = detail.BranchId,
+                    BranchName = detail.BranchName,
+                    QueueName = detail.QueueName,
+                    PanNumber = detail.PanNumber,
+                    PriorityId = detail.PriorityId,
+                    PriorityName = detail.PriorityName,
+                    AlternateNumber = detail.AlternateNumber,
+                    GSTNumber = detail.GSTNumber,
+                    BusinessTypeId = detail.BusinessTypeId,
+                    BusinessTypeName = detail.BusinessTypeName,
+                    PaymentTermsId = detail.PaymentTermsId,
+                    PaymentTerms = detail.PaymentTerms,
+                    ProductTypeId = detail.ProductTypeId,
+                    ProductType = detail.ProductType,
+                    ProductId = detail.ProductId,
+                    ProductName = detail.ProductName,
+                    ProductDescriptionId = detail.ProductDescriptionId,
+                    ProductDescription = detail.ProductDescription,
+                    ProductNumber = detail.ProductNumber,
+                    ProductSerialNumber = detail.ProductSerialNumber,
+                    WarrantyTypeId = detail.WarrantyTypeId,
+                    WarrantyType = detail.WarrantyType,
+                    WarrantyNumber = detail.WarrantyNumber,
+                    CountryId = detail.CountryId,
+                    CountryName = detail.CountryName,
+                    OperatingSystemId = detail.OperatingSystemId,
+                    OperatingSystemName = detail.OperatingSystemName,
+                    ReportedIssue = detail.ReportedIssue,
+                    MiscellaneousRemark = detail.MiscellaneousRemark,
+                    IssueDescriptionId = detail.IssueDescriptionId,
+                    IssueDescriptionName = detail.IssueDescriptionName,
+                    EngineerDiagnosis = detail.EngineerDiagnosis,
+                    EngineerId = detail.EngineerId,
+                    EmployeeName = detail.EmployeeName,
+                    DigitUEFIFailureID = detail.DigitUEFIFailureID,
+                    CustomerComment = detail.CustomerComment,
+                    CreatedBy = detail.CreatedBy,
+                    CreatorName = detail.CreatorName,
+                    CreatedDate = detail.CreatedDate,
+                    CompanyId = detail.CompanyId,
+                    CompanyName = detail.CompanyName,
+                    CustomerId = detail.CustomerId,
+                    CustomerName = detail.CustomerName,
+                    OrderStatusId = detail.OrderStatusId,
+                    OrderStatus = detail.OrderStatus,
+                    WorkOrderEnquiryId = detail.WorkOrderEnquiryId,
+                    ServiceAddressId = detail.ServiceAddressId,
+                    Address = detail.Address,
+                    ProductMakeId = detail.ProductMakeId,
+                    ProductMake = detail.ProductMake,
+                    ProductModelId = detail.ProductModelId,
+                    ProductModel = detail.ProductModel,
+                    OrderTypeId = detail.OrderTypeId,
+                    OrderType = detail.OrderType,
+                    OrderTypeCode = detail.OrderTypeCode,
+                    ResolutionSummary = detail.ResolutionSummary,
+                    DelayTypeId = detail.DelayTypeId,
+                    DelayType = detail.DelayType,
+                    WOAccessoryId = detail.WOAccessoryId,
+                    RepairClassTypeId = detail.RepairClassTypeId,
+                    RepairClassType = detail.RepairClassType,
+                    WOEnqCustFeedbackId = detail.WOEnqCustFeedbackId,
+                    Rating = detail.Rating,
+                    Comment = detail.Comment,
+                    CaseStatusId = detail.CaseStatusId,
+                    CaseStatusName = detail.CaseStatusName,
+                    ProdModelIfOther = detail.ProdModelIfOther,
+                    ProdDescriptionIfOther = detail.ProdDescriptionIfOther,
+                    CustomerSecondaryName = detail.CustomerSecondaryName,
+                    EngineerMobile = detail.PersonalNumber,
+                }).ToList();
+
+                foreach (var item in workOrderListObj)
+                {
+                    var vRemarkList = db.tblWORepairRemarks.Where(x => x.WorkOrderId == item.Id).ToList();
+
+                    List<WORepairRemark> woRepairRemark = new List<WORepairRemark>();
+                    foreach (var remarkObj in vRemarkList)
+                    {
+                        woRepairRemark.Add(new WORepairRemark
+                        {
+                            Id = remarkObj.Id,
+                            RepairRemark = remarkObj.RepairRemark,
+                            CreatedBy = remarkObj.CreatedBy,
+                            CreatedDate = remarkObj.CreatedDate
+                        });
+                    }
+                    item.WORepairRemarkList = woRepairRemark;
+
+                    var vAccessoriesList = db.tblWOAccessories.Where(x => x.WorkOrderId == item.Id).ToList();
+
+                    List<WOAccessory> woOAccessory = new List<WOAccessory>();
+                    foreach (var accObj in vAccessoriesList)
+                    {
+                        string accessoriesName = "";
+                        var accessoriesObj = db.tblAccessories.Where(x => x.Id == accObj.AccessoriesId).FirstOrDefault();
+                        if (accessoriesObj != null)
+                        {
+                            accessoriesName = accessoriesObj.AccessoriesName;
+                        }
+                        woOAccessory.Add(new WOAccessory
+                        {
+                            Id = accObj.Id,
+                            AccessoriesId = accObj.AccessoriesId,
+                            AccessoriesName = accessoriesName,
+                            Remarks = accObj.Remarks,
+                        });
+                    }
+                    item.WOAccessoryList = woOAccessory;
+
+                    var vWOPartsList = db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == item.Id).ToList();
+
+                    List<WOPartList> woPart = new List<WOPartList>();
+                    foreach (var itemWOPart in vWOPartsList)
+                    {
+                        string sPartName = "";
+                        string sPartNumber = "";
+                        string sUniqueNumber = "";
+                        string sPartDescription = "";
+                        string sSerialNumber = "";
+                        string sPartStatus = "";
+
+                        var vPartObj = db.tblPartDetails.Where(x => x.Id == itemWOPart.PartId).FirstOrDefault();
+                        if (vPartObj != null)
+                        {
+                            var vPartStatusObj = db.tblPartDescriptions.Where(x => x.Id == itemWOPart.PartStatusId).FirstOrDefault();
+                            if (vPartStatusObj != null)
+                            {
+                                sPartStatus = vPartStatusObj.PartDescriptionName;
+                            }
+
+                            sPartName = vPartObj.PartName;
+                            sPartNumber = vPartObj.PartNumber;
+                            sUniqueNumber = vPartObj.UniqueCode;
+                            sPartDescription = vPartObj.PartDescription;
+                            sSerialNumber = vPartObj.CTSerialNo;
+                        }
+
+                        woPart.Add(new WOPartList
+                        {
+                            Id = itemWOPart.Id,
+                            PartId = itemWOPart.PartId,
+                            PartName = sPartName,
+                            PartNumber = sPartNumber,
+                            UniqueNumber = sUniqueNumber,
+                            PartDescription = sPartDescription,
+                            SerialNumber = sSerialNumber,
+                            PartStatusId = itemWOPart.PartStatusId,
+                            PartStatus = sPartStatus,
+                            Quantity = itemWOPart.Quantity,
+                            CreatedBy = itemWOPart.CreatedBy,
+                            CreatedDate = itemWOPart.CreatedDate
+                        });
+                    }
+
+                    //var vWOPartsList = db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == item.Id).ToList();
+
+                    //List<WOPartList> woPart = new List<WOPartList>();
+                    //foreach (var itemWOPart in vWOPartsList)
+                    //{
+                    //    string sPartName = "";
+                    //    string sPartNumber = "";
+                    //    string sUniqueNumber = "";
+                    //    string sPartDescription = "";
+                    //    string sSerialNumber = "";
+                    //    string sPartStatus = "";
+
+                    //    var vPartObj = db.tblPartDetails.Where(x => x.Id == itemWOPart.PartId).FirstOrDefault();
+                    //    if (vPartObj != null)
+                    //    {
+                    //        var vPartStatusObj = db.tblPartDescriptions.Where(x => x.Id == vPartObj.PartStatusId).FirstOrDefault();
+                    //        if (vPartStatusObj != null)
+                    //        {
+                    //            sPartStatus = vPartStatusObj.PartDescriptionName;
+                    //        }
+
+                    //        sPartName = vPartObj.PartName;
+                    //        sPartNumber = vPartObj.PartNumber;
+                    //        sUniqueNumber = vPartObj.UniqueCode;
+                    //        sPartDescription = vPartObj.PartDescription;
+                    //        sSerialNumber = vPartObj.CTSerialNo;
+                    //    }
+
+                    //    woPart.Add(new WOPartList
+                    //    {
+                    //        Id = itemWOPart.Id,
+                    //        PartId = itemWOPart.PartId,
+                    //        PartName = sPartName,
+                    //        PartNumber = sPartNumber,
+                    //        UniqueNumber = sUniqueNumber,
+                    //        PartDescription = sPartDescription,
+                    //        SerialNumber = sSerialNumber,
+                    //        PartStatusId = vPartObj != null ? vPartObj.PartStatusId : 0,
+                    //        PartStatus = sPartStatus,
+                    //        Quantity = itemWOPart.Quantity,
+                    //        CreatedBy = itemWOPart.CreatedBy,
+                    //        CreatedDate = itemWOPart.CreatedDate
+                    //    });
+                    //}
+
+                    item.WOPartList = woPart;
+                }
+                _response.Data = workOrderListObj;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderOTPSend(WorkOrderOTPVerify parameters)
+        {
+            try
+            {
+                if (ActionContext.Request.Properties.ContainsKey("UserId"))
+                {
+                    var vWorkOrderEngineerObj = await db.tblWorkOrders.Where(w => w.Id == parameters.WorkOrderId).FirstOrDefaultAsync();
+                    if (vWorkOrderEngineerObj != null)
+                    {
+                        var vtblWOOTPVerifiesObj = await db.tblWOOTPVerifies.Where(w => w.WorkOrderId == vWorkOrderEngineerObj.Id && w.Mobile == parameters.Mobile && w.IsVerified == false).ToListAsync();
+                        foreach (var item in vtblWOOTPVerifiesObj)
+                        {
+                            item.IsVerified = true;
+                            item.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                            item.ModifiedDate = DateTime.Now;
+                            await db.SaveChangesAsync();
+                        }
+
+                        var vtblWOOTPVerifyObj = new tblWOOTPVerify()
+                        {
+                            WorkOrderId = parameters.WorkOrderId,
+                            Mobile = parameters.Mobile,
+                            //OTP = Utilities.GenerateRandomNumForOTP(),
+                            OTP = 1234,
+                            IsVerified = false,
+                            CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0),
+                            CreatedDate = DateTime.Now
+                        };
+
+                        db.tblWOOTPVerifies.Add(vtblWOOTPVerifyObj);
+
+                        await db.SaveChangesAsync();
+
+                        _response.Message = $"OTP sent successfully";
+                    }
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = $"OTP not sent successfully";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderOTPVerify(WorkOrderOTPVerify parameters)
+        {
+            try
+            {
+                if (ActionContext.Request.Properties.ContainsKey("UserId"))
+                {
+                    var vWorkOrderEngineerObj = await db.tblWorkOrders.Where(w => w.Id == parameters.WorkOrderId).FirstOrDefaultAsync();
+                    if (vWorkOrderEngineerObj != null)
+                    {
+                        var vtblWOOTPVerifiesObj = await db.tblWOOTPVerifies.Where(w => w.WorkOrderId == vWorkOrderEngineerObj.Id && w.Mobile == parameters.Mobile && w.OTP == parameters.OTP && w.IsVerified == false).FirstOrDefaultAsync();
+                        if (vtblWOOTPVerifiesObj != null)
+                        {
+                            vtblWOOTPVerifiesObj.IsVerified = true;
+                            vtblWOOTPVerifiesObj.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                            vtblWOOTPVerifiesObj.ModifiedDate = DateTime.Now;
+                            await db.SaveChangesAsync();
+
+                            _response.Message = $"OTP verified successfully";
+                        }
+                        else
+                        {
+                            _response.IsSuccess = false;
+                            _response.Message = $"Invalid OTP!";
+                        }
+                    }
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = $"Invalid OTP!";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpGet]
+        public async Task<Response> GetVehicleTypeList()
+        {
+            List<GetVehicleTypeList_Result> vehicleTypeList;
+            try
+            {
+                vehicleTypeList = await Task.Run(() => db.GetVehicleTypeList().ToList());
+
+                _response.Data = vehicleTypeList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> SaveEngineerVisitHistory(EngineerVisitHistoryRequest parameters)
+        {
+            try
+            {
+                var vVehicleTypeObj = db.tblVehicleTypes.Where(x => x.Id == parameters.VehicleTypeId).FirstOrDefault();
+
+                var tbl = db.tblEngineerVisitHistories.Where(x => x.Id == parameters.Id).FirstOrDefault();
+                if (tbl == null)
+                {
+                    tbl = new tblEngineerVisitHistory();
+
+                    tbl.EngineerId = parameters.EngineerId;
+                    tbl.VisitDate = DateTime.Now;
+                    tbl.WorkOrderNumber = parameters.WorkOrderNumber;
+                    tbl.VehicleTypeId = parameters.VehicleTypeId;
+                    tbl.Latitude = parameters.Latitude;
+                    tbl.Longitude = parameters.Longitude;
+                    tbl.Distance = parameters.Distance;
+                    tbl.AmountPerKM = vVehicleTypeObj != null ? vVehicleTypeObj.AmountPerKM : 0;
+                    tbl.TotalAmount = parameters.Distance * tbl.AmountPerKM;
+
+                    tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
+                    tbl.CreatedDate = DateTime.Now;
+
+                    db.tblEngineerVisitHistories.Add(tbl);
+
+                    await db.SaveChangesAsync();
+
+                    #region Expense Create
+
+                    if (parameters.Distance > 0)
+                    {
+                        var vtblExpense = new tblExpense();
+
+                        vtblExpense.ExpenseId = Utilities.ExpenseNumberAutoGenerated();
+                        vtblExpense.EmployeeId = parameters.EngineerId;
+                        vtblExpense.ExpenseDate = DateTime.Now;
+                        vtblExpense.WorkOrderNumber = parameters.WorkOrderNumber;
+                        vtblExpense.VehicleTypeId = parameters.VehicleTypeId;
+                        vtblExpense.Distance = parameters.Distance;
+                        vtblExpense.AmountPerKM = vVehicleTypeObj != null ? vVehicleTypeObj.AmountPerKM : 0;
+                        vtblExpense.TotalAmount = parameters.Distance * vtblExpense.AmountPerKM;
+                        vtblExpense.FileName = "";
+                        vtblExpense.Status = 1;
+                        vtblExpense.IsActive = true;
+                        vtblExpense.CreatedBy = Utilities.GetUserID(ActionContext.Request);
+                        vtblExpense.CreatedDate = DateTime.Now;
+
+                        db.tblExpenses.Add(vtblExpense);
+
+                        await db.SaveChangesAsync();
+                    }
+
+                    #endregion
+
+                    _response.Message = "Visit saved successfully";
+                }
+                else
+                {
+                    tbl.EngineerId = parameters.EngineerId;
+                    tbl.VisitDate = DateTime.Now;
+                    tbl.WorkOrderNumber = parameters.WorkOrderNumber;
+                    tbl.VehicleTypeId = parameters.VehicleTypeId;
+                    tbl.Latitude = parameters.Latitude;
+                    tbl.Longitude = parameters.Longitude;
+                    tbl.Distance = parameters.Distance;
+                    tbl.AmountPerKM = vVehicleTypeObj != null ? vVehicleTypeObj.AmountPerKM : 0;
+                    tbl.TotalAmount = parameters.Distance * tbl.AmountPerKM;
+                    tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                    tbl.ModifiedDate = DateTime.Now;
+
+                    await db.SaveChangesAsync();
+
+                    _response.Message = "Visit updated successfully";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> GetEngineerVisitHistory(int engineerId = 0, string workOrderNumber = "")
+        {
+            List<GetEngineerVisitHistoryList_Result> resultList;
+            try
+            {
+                resultList = await Task.Run(() => db.GetEngineerVisitHistoryList(engineerId, workOrderNumber).ToList());
+
+                _response.Data = resultList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+    }
+}
+
+

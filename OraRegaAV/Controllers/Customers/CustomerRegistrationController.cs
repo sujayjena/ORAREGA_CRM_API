@@ -1,0 +1,533 @@
+﻿using Newtonsoft.Json;
+using OraRegaAV.App_Start;
+using OraRegaAV.CustomFilter;
+using OraRegaAV.DBEntity;
+using OraRegaAV.Helpers;
+using OraRegaAV.Models;
+using OraRegaAV.Models.Constants;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
+
+namespace OraRegaAV.Controllers.Customers
+{
+    public class CustomerRegistrationController : ApiController
+    {
+        private readonly dbOraRegaEntities db = new dbOraRegaEntities();
+        private Response _response = new Response();
+
+        public CustomerRegistrationController()
+        {
+            _response.IsSuccess = true;
+        }
+
+        [HttpPost]
+        [ValidateModel]
+        public async Task<Response> CustomerSignUp()
+        {
+            _response = await SaveCustomerProfileDetails(isSignup: true);
+            return _response;
+        }
+
+        [HttpPost]
+        [CustomAuthenticationFilter]
+        [ValidateModel]
+        public async Task<Response> SaveCustomerDetails()
+        {
+            _response = await SaveCustomerProfileDetails(isSignup: false);
+            return _response;
+        }
+
+        [HttpPost]
+        [CustomAuthenticationFilter]
+        [ValidateModel]
+        public async Task<Response> GetCustomerList(int customerId = 0)
+        {
+            byte[] profilePicture = null;
+            List<GetCustomerList_Result> customerList;
+            List<GetUsersAddresses_Result> usersAddresses;
+            //User
+            FileManager fileManager;
+
+            try
+            {
+                customerList = await Task.Run(() => db.GetCustomerList(customerId).ToList());
+
+                List<object> vlist = new List<object>();
+                foreach (var item in customerList)
+                {
+                    usersAddresses = db.GetUsersAddresses(item.UserId).ToList();
+
+                    var vResult = new
+                    {
+                        CustomerId = item.CustomerId,
+                        FirstName = item.CustFirstName,
+                        LastName = item.CustLastName,
+                        Email = item.CustEmail,
+                        Mobile = item.Mobile,
+                        ProfilePicture = profilePicture,
+                        Addresses = usersAddresses.Select(addr => new
+                        {
+                            Id = addr.Id,
+                            NameForAddress = addr.NameForAddress,
+                            MobileNo = addr.MobileNo,
+                            Address = addr.Address,
+                            StateId = addr.StateId,
+                            StateName = addr.StateName,
+                            CityId = addr.CityId,
+                            CityName = addr.CityName,
+                            AreaId = addr.AreaId,
+                            AreaName = addr.AreaName,
+                            PinCodeId = addr.PinCodeId,
+                            Pincode = addr.Pincode,
+                            IsActive = addr.IsActive,
+                            IsDefault = addr.IsDefault,
+                            AddressTypeId = addr.AddressTypeId,
+                            AddressType = addr.AddressType
+                        })
+                    };
+                    vlist.Add(vResult);
+                };
+
+                _response.Data = vlist;
+
+                _response.Message = "Customer profile details retrieved successfully";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error occurred while retrieving Customer profile details";
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [CustomAuthenticationFilter]
+        [ValidateModel]
+        public async Task<Response> GetCustomerProfileDetails()
+        {
+            string token;
+            //byte[] profilePicture = null;
+            string profilePicture = "";
+            GetLoggedInUserDetailsByToken_Result customerDetail;
+            List<GetUsersAddresses_Result> usersAddresses;
+            //User
+            FileManager fileManager;
+
+            var host = Url.Content("~/");
+
+            try
+            {
+                token = ActionContext.Request.Headers.Where(x => x.Key == "token").FirstOrDefault().Value?.FirstOrDefault();
+                customerDetail = await Task.Run(() => db.GetLoggedInUserDetailsByToken(token).FirstOrDefault());
+
+                if (customerDetail != null)
+                {
+                    if (!string.IsNullOrEmpty(customerDetail.CustomerProfilePicturePath))
+                    {
+                        fileManager = new FileManager();
+                        //profilePicture = fileManager.GetCustomerProfilePicture(customerDetail.CustomerProfilePicturePath, HttpContext.Current);
+                        var path = host + "Uploads/CustomerPicture/" + customerDetail.CustomerProfilePicturePath;
+                        profilePicture = path;
+                    }
+
+                    //using (var ms = new MemoryStream(profilePicture))
+                    //{
+                    //    System.Drawing.Image imgProfilePicture = System.Drawing.Image.FromStream(ms);
+                    //}
+
+                    usersAddresses = db.GetUsersAddresses(customerDetail.UserId).ToList();
+
+                    _response.Data = new
+                    {
+                        CustomerId = customerDetail.CustomerId,
+                        FirstName = customerDetail.CustFirstName,
+                        LastName = customerDetail.CustLastName,
+                        Email = customerDetail.CustEmail,
+                        Mobile = customerDetail.Mobile,
+                        //ProfilePicture = profilePicture,
+                        ProfilePicture = profilePicture,
+                        Addresses = usersAddresses.Select(addr => new
+                        {
+                            Id = addr.Id,
+                            NameForAddress = addr.NameForAddress,
+                            MobileNo = addr.MobileNo,
+                            Address = addr.Address,
+                            StateId = addr.StateId,
+                            StateName = addr.StateName,
+                            CityId = addr.CityId,
+                            CityName = addr.CityName,
+                            AreaId = addr.AreaId,
+                            AreaName = addr.AreaName,
+                            PinCodeId = addr.PinCodeId,
+                            Pincode = addr.Pincode,
+                            IsActive = addr.IsActive,
+                            IsDefault = addr.IsDefault,
+                            AddressTypeId = addr.AddressTypeId,
+                            AddressType = addr.AddressType
+                        })
+                        //,CustomerProfilePicturePath = customerDetail.CustomerProfilePicturePath
+                    };
+
+                    _response.Message = "Customer profile details retrieved successfully";
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Either session is expired or no customer profile details is associated with currend session";
+                    _response.Data = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error occurred while retrieving Customer profile details";
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [CustomAuthenticationFilter]
+        [ValidateModel]
+        public async Task<Response> GetCustomerDetailsByMobile([FromBody] string MobileNo)
+        {
+            GetCustomerDetailsByMobile_Result customer;
+
+            if (string.IsNullOrEmpty(MobileNo))
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Please provide a valid Mobile No.";
+                return _response;
+            }
+
+            try
+            {
+                customer = await Task.Run(() => db.GetCustomerDetailsByMobile(MobileNo).FirstOrDefault());
+
+                if (customer == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No customer details found for provided Mobile No.";
+                }
+                else
+                {
+                    _response.Message = "Customer details retrieved successfully";
+                }
+
+                _response.Data = customer;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        private async Task<Response> SaveCustomerProfileDetails(bool isSignup)
+        {
+            string jsonParameter;
+            string postedFileNameToValidate = string.Empty;
+            string customerPassword = string.Empty;
+            int defaultAddressCount;
+            tblCustomer tblCustomer;
+            tblUser tblUser, tempUser;
+            tblCustomer parameters;
+            tblPermanentAddress customerAddress;
+            HttpFileCollection postedFiles;
+            FileManager fileManager;
+            AlertsSender alertsSender;
+
+            try
+            {
+                parameters = new tblCustomer();
+                fileManager = new FileManager();
+                alertsSender = new AlertsSender();
+
+                #region Parameters Initialization
+                jsonParameter = HttpContext.Current.Request.Form["Parameters"];
+
+                if (string.IsNullOrEmpty(jsonParameter))
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please provide parameters for this request";
+                    return _response;
+                }
+
+                parameters = JsonConvert.DeserializeObject<tblCustomer>(jsonParameter);
+                postedFiles = HttpContext.Current.Request.Files;
+
+                if (postedFiles.Count > 0)
+                {
+                    parameters.ProfilePicturePath = postedFiles["ProfilePicture"].FileName;
+                }
+                #endregion
+
+                #region Validation Check
+                if (isSignup && parameters.TermsConditionsAccepted == false)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = ValidationConstant.TermsConditionsNotAcceptedError;
+
+                    return _response;
+                }
+
+                //Code line TypeDescriptor.AddProviderTransparent..... is mandatory to manually validate model with MetadataType attribute class
+                TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblCustomer), typeof(TblCustomerMetadata)), typeof(tblCustomer));
+                _response = ValueSanitizerHelper.GetValidationErrorsList(parameters);
+
+                if (!_response.IsSuccess)
+                {
+                    return _response;
+                }
+
+                TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblPermanentAddress), typeof(TblPermanentAddressMetadata)), typeof(tblPermanentAddress));
+                _response = ValueSanitizerHelper.GetValidationErrorsList(models: parameters.Addresses.ToList<object>()).Where(r => r.IsSuccess == false).FirstOrDefault();
+
+                if (_response != null && !_response.IsSuccess)
+                {
+                    return _response;
+                }
+
+                _response = new Response();
+                #endregion
+
+                #region Customer Record Saving
+                if (isSignup)
+                {
+                    // && addr.IsDefault == true).Count() != 1)
+                    if (parameters.Addresses.Where(addr => addr.IsActive == true).Count() == 0)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "At least one Active address is required";
+                        return _response;
+                    }
+                    else if (parameters.Addresses.Where(addr => addr.IsActive == true && addr.IsDefault == true).Count() != 1)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Either No address or more than one addresses are found marked as default";
+                        return _response;
+                    }
+
+                    tblCustomer = await db.tblCustomers.Where(c => c.Mobile == parameters.Mobile).FirstOrDefaultAsync();
+
+                    if (tblCustomer != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Mobile No. is already registered";
+                        return _response;
+                    }
+
+                    tblCustomer = await db.tblCustomers.Where(c => c.Email == parameters.Email).FirstOrDefaultAsync();
+
+                    if (tblCustomer != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Email Address is already registered";
+                        return _response;
+                    }
+
+                    //checking mobile no validation in user table
+                    var vUserDetailsMobileNo = await db.tblUsers.Where(c => c.MobileNo == parameters.Mobile).FirstOrDefaultAsync();
+                    if (vUserDetailsMobileNo != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Mobile No. is already registered";
+                        return _response;
+                    }
+
+                    var vUserDetailsEmail = await db.tblUsers.Where(c => c.EmailId == parameters.Email).FirstOrDefaultAsync();
+                    if (vUserDetailsEmail != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Email Address is already registered";
+                        return _response;
+                    }
+                }
+
+                tblCustomer = await db.tblCustomers.Where(c => (
+                        //////string.Equals(c.Email, parameters.Email, StringComparison.OrdinalIgnoreCase) || 
+                        c.Mobile == parameters.Mobile
+                    )).FirstOrDefaultAsync();
+
+                if (!isSignup)
+                {
+                    //tempUser = await db.tblUsers.Where(u => u.MobileNo == parameters.Mobile && u.CustomerId != null).FirstOrDefaultAsync();
+                    //defaultAddressCount = parameters.Addresses.Where(addr => addr.Id == 0 && addr.IsActive == true && addr.IsDefault == true).Count() +
+                    //    db.tblPermanentAddresses.Where(addr => addr.UserId == tempUser.Id && addr.IsActive == true && addr.IsDefault == true && addr.IsDeleted == false).Count();
+
+                    //if (parameters.Addresses.Where(addr => addr.IsActive == true).Count() == 0
+                    //    && db.tblPermanentAddresses.Where(addr => addr.UserId == tempUser.Id && addr.IsActive == true && addr.IsDeleted == false).Count() == 0)
+                    //{
+                    //    _response.IsSuccess = false;
+                    //    _response.Message = "At least one Active address is required";
+                    //    return _response;
+                    //}
+                    //else if (defaultAddressCount != 1)
+                    //{
+                    //    _response.IsSuccess = false;
+                    //    _response.Message = "Either No address or more than one addresses are found marked as default";
+                    //    return _response;
+                    //}
+                }
+
+                if (postedFiles.Count > 0)
+                {
+                    parameters.ProfilePicture = postedFiles["ProfilePicture"];
+                    parameters.ProfilePicturePath = fileManager.UploadCustomerProfilePicture(parameters.ProfilePicture, HttpContext.Current);
+                }
+
+                if (tblCustomer == null)
+                {
+                    tblCustomer = new tblCustomer();
+
+                    tblCustomer.FirstName = parameters.FirstName.SanitizeValue();
+                    tblCustomer.LastName = parameters.LastName.SanitizeValue();
+                    tblCustomer.Email = parameters.Email.SanitizeValue();
+                    tblCustomer.Mobile = parameters.Mobile.SanitizeValue();
+                    tblCustomer.IsActive = true;
+                    tblCustomer.IsRegistrationPending = false;
+                    tblCustomer.ProfilePicturePath = parameters.ProfilePicturePath;
+
+                    tblCustomer.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties.ContainsKey("UserId") ? ActionContext.Request.Properties["UserId"] : 0);
+                    tblCustomer.CreatedDate = DateTime.Now;
+
+                    db.tblCustomers.Add(tblCustomer);
+
+                    _response.Message = "Customer details saved successfully";
+                }
+                else
+                {
+                    tblCustomer.FirstName = parameters.FirstName.SanitizeValue();
+                    tblCustomer.LastName = parameters.LastName.SanitizeValue();
+                    tblCustomer.Email = parameters.Email.SanitizeValue();
+                    //tblCustomer.Mobile = parameters.Mobile.SanitizeValue();
+                    tblCustomer.IsActive = parameters.IsActive;
+                    //tblCustomer.ProfilePicturePath = parameters.ProfilePicturePath;
+                    if (parameters.ProfilePicturePath != null)
+                    {
+                        tblCustomer.ProfilePicturePath = parameters.ProfilePicturePath;
+                    }
+                    tblCustomer.IsActive = true;
+                    tblCustomer.IsRegistrationPending = false;
+                    tblCustomer.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                    tblCustomer.ModifiedDate = DateTime.Now;
+
+                    _response.Message = "Customer details updated successfully";
+                }
+                #endregion
+
+                await db.SaveChangesAsync();
+
+                #region Customer User Registration
+                tblUser = db.tblUsers.Where(u => u.CustomerId == tblCustomer.Id).FirstOrDefault();
+
+                if (tblUser == null)
+                {
+                    tblUser = new tblUser();
+
+                    customerPassword = Utilities.CreateRandomPassword();
+
+                    tblUser.CustomerId = tblCustomer.Id;
+                    tblUser.EmailId = tblCustomer.Email;
+                    tblUser.MobileNo = tblCustomer.Mobile;
+                    tblUser.Password = Utilities.EncryptString(customerPassword);
+                    tblUser.IsActive = true;
+                    tblUser.TermsConditionsAccepted = parameters.TermsConditionsAccepted;
+                    tblUser.CreatedBy = 0;
+                    tblUser.CreatedDate = DateTime.Now;
+
+                    db.tblUsers.Add(tblUser);
+                    await db.SaveChangesAsync();
+
+                    try
+                    {
+                        await alertsSender.SendCustomerSignupEmail(tblCustomer);
+                    }
+                    catch (Exception ex)
+                    {
+                        _response.Message = "Customer registration is done successfully but Email has not been sent. Please check Email address";
+                        LogWriter.WriteLog(ex);
+                    }
+                }
+                else
+                {
+                    tblUser.CustomerId = tblCustomer.Id;
+                    tblUser.EmailId = tblCustomer.Email;
+                    //tblUser.MobileNo = tblCustomer.Mobile;
+                    tblUser.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                    tblUser.ModifiedDate = DateTime.Now;
+                }
+                #endregion
+
+                #region Save Customer Address Details
+                foreach (tblPermanentAddress address in parameters.Addresses)
+                {
+                    customerAddress = db.tblPermanentAddresses.Where(addr => addr.UserId == tblUser.Id && addr.Id == address.Id).FirstOrDefault();
+
+                    if (customerAddress == null)
+                    {
+                        customerAddress = new tblPermanentAddress();
+                        customerAddress.UserId = tblUser.Id;
+                        customerAddress.Address = address.Address.SanitizeValue();
+                        customerAddress.StateId = address.StateId;
+                        customerAddress.CityId = address.CityId;
+                        customerAddress.AreaId = address.AreaId;
+                        customerAddress.PinCodeId = address.PinCodeId;
+                        customerAddress.IsActive = true;
+                        customerAddress.IsDefault = address.IsDefault;
+                        customerAddress.NameForAddress = address.NameForAddress;
+                        customerAddress.MobileNo = address.MobileNo;
+                        customerAddress.AddressType = address.AddressType;
+                        customerAddress.CreatedBy = tblUser.Id;
+                        customerAddress.CreatedOn = DateTime.Now;
+
+                        db.tblPermanentAddresses.Add(customerAddress);
+                    }
+                    else
+                    {
+                        customerAddress.UserId = tblUser.Id;
+                        customerAddress.Address = address.Address.SanitizeValue();
+                        customerAddress.StateId = address.StateId;
+                        customerAddress.CityId = address.CityId;
+                        customerAddress.AreaId = address.AreaId;
+                        customerAddress.PinCodeId = address.PinCodeId;
+                        customerAddress.IsActive = address.IsActive;
+                        customerAddress.IsDefault = address.IsDefault;
+                        customerAddress.NameForAddress = address.NameForAddress;
+                        customerAddress.MobileNo = address.MobileNo;
+                        customerAddress.AddressType = address.AddressType;
+                        customerAddress.ModifiedBy = tblUser.Id;
+                        customerAddress.ModifiedOn = DateTime.Now;
+                    }
+                }
+                #endregion
+
+                await db.SaveChangesAsync();
+
+                _response.IsSuccess = true;
+                return _response;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+    }
+}
