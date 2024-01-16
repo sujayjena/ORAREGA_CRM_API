@@ -9,8 +9,11 @@ public class RatePerKM_Request
 {
     public int Id { get; set; }
 
+    [Required(ErrorMessage = ValidationConstant.VehicleTypeIdRequied_Msg)]
+    public int VehicleTypeId { get; set; }
+
     [Required(ErrorMessage = ValidationConstant.KMRequied_Msg)]
-    public string KM { get; set; }
+    public int KM { get; set; }
 
     [Required(ErrorMessage = ValidationConstant.RateRequied_Msg)]
     public decimal Rate { get; set; }

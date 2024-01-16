@@ -435,6 +435,8 @@ namespace OraRegaAV.Controllers
                 if (tbl == null)
                 {
                     tbl = new tblOurService();
+                    tbl.Name = parameters.Name;
+                    tbl.Link = parameters.Link;
                     tbl.ContentName = parameters.ContentName;
                     tbl.Position = parameters.Position;
                     tbl.AppType = parameters.AppType;
@@ -461,6 +463,8 @@ namespace OraRegaAV.Controllers
                 }
                 else
                 {
+                    tbl.Name = parameters.Name;
+                    tbl.Link = parameters.Link;
                     tbl.ContentName = parameters.ContentName;
                     tbl.Position = parameters.Position;
                     tbl.AppType = parameters.AppType;
@@ -614,6 +618,8 @@ namespace OraRegaAV.Controllers
                 if (tbl == null)
                 {
                     tbl = new tblOurProduct();
+                    tbl.Name = parameters.Name;
+                    tbl.Link = parameters.Link;
                     tbl.ContentName = parameters.ContentName;
                     tbl.Position = parameters.Position;
                     tbl.AppType = parameters.AppType;
@@ -640,6 +646,8 @@ namespace OraRegaAV.Controllers
                 }
                 else
                 {
+                    tbl.Name = parameters.Name;
+                    tbl.Link = parameters.Link;
                     tbl.ContentName = parameters.ContentName;
                     tbl.Position = parameters.Position;
                     tbl.AppType = parameters.AppType;
@@ -783,7 +791,7 @@ namespace OraRegaAV.Controllers
                 if (tbl == null)
                 {
                     tbl = new tblTestimonial();
-
+                    tbl.Name = parameters.Name;
                     tbl.Content = parameters.Content;
                     tbl.Position = parameters.Position;
                     tbl.IsActive = parameters.IsActive;
@@ -802,10 +810,14 @@ namespace OraRegaAV.Controllers
 
                     db.tblTestimonials.Add(tbl);
 
-                    Msg = "Testimonial saved successfully";
+                    _response.IsSuccess = true;
+                    _response.Message = "Testimonial saved successfully";
+
+                   // Msg = "Testimonial saved successfully";
                 }
                 else
                 {
+                    tbl.Name = parameters.Name;
                     tbl.Content = parameters.Content;
                     tbl.Position = parameters.Position;
                     tbl.IsActive = parameters.IsActive;
@@ -822,7 +834,10 @@ namespace OraRegaAV.Controllers
                         }
                     }
 
-                    Msg = "Testimonial updated successfully";
+                    _response.IsSuccess = true;
+                    _response.Message = "Testimonial updated successfully";
+
+                   // Msg = "Testimonial updated successfully";
                 }
 
                 await db.SaveChangesAsync();

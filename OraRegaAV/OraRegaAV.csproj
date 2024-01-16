@@ -482,9 +482,6 @@
     <Compile Include="DBEntity\GetEngineerVisitHistoryList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBEntity\GetExpenseList_Result.cs">
-      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DBEntity\GetGSTMappingList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -668,6 +665,9 @@
     <Compile Include="DBEntity\GetTestimonialList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetTravelClaimList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetTravelRangeList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -816,9 +816,6 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblEnquiryStatusMaster.cs">
-      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBEntity\tblExpense.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblExtendedWarranty.cs">
@@ -1038,6 +1035,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblTestimonial.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTravelClaim.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblTravelRange.cs">

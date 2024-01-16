@@ -16,7 +16,6 @@ namespace OraRegaAV.DBEntity
     {
         public int Id { get; set; }
         public string VehicleType { get; set; }
-        public Nullable<decimal> AmountPerKM { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

@@ -31,6 +31,7 @@ namespace OraRegaAV.Controllers.API
                 if (tbl == null)
                 {
                     tbl = new tblRatePerKM();
+                    tbl.VehicleTypeId = ratePerKM_Request.VehicleTypeId;
                     tbl.KM = ratePerKM_Request.KM;
                     tbl.Rate = ratePerKM_Request.Rate;
                     tbl.IsActive = ratePerKM_Request.IsActive;
@@ -42,6 +43,7 @@ namespace OraRegaAV.Controllers.API
                 }
                 else
                 {
+                    tbl.VehicleTypeId = ratePerKM_Request.VehicleTypeId;
                     tbl.KM = ratePerKM_Request.KM;
                     tbl.Rate = ratePerKM_Request.Rate;
                     tbl.IsActive = ratePerKM_Request.IsActive;

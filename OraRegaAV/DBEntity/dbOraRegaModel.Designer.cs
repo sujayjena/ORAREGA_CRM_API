@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'G:\Project\Orarega\ORAREGA_CRM_API_GIT\ORAREGA_CRM_API_GIT\OraRegaAV\DBEntity\dbOraRegaModel.edmx'. 
+﻿// T4 code generation is enabled for model 'G:\Project\Orarega\ORAREGA_CRM_API.git\OraRegaAV\DBEntity\dbOraRegaModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

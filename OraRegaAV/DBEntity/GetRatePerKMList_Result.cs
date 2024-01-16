@@ -14,7 +14,9 @@ namespace OraRegaAV.DBEntity
     public partial class GetRatePerKMList_Result
     {
         public int Id { get; set; }
-        public string KM { get; set; }
+        public Nullable<int> VehicleTypeId { get; set; }
+        public string VehicleType { get; set; }
+        public int KM { get; set; }
         public decimal Rate { get; set; }
         public bool IsActive { get; set; }
         public string CreatorName { get; set; }

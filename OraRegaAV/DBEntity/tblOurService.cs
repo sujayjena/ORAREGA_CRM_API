@@ -25,5 +25,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string ImageFilePath { get; set; }
+        public string Name { get; set; }
+        public string Link { get; set; }
     }
 }

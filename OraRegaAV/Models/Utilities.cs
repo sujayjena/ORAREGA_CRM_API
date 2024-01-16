@@ -364,7 +364,7 @@ namespace OraRegaAV.Models
             var vClaimId = "EXP0000001";
             using (var db = new dbOraRegaEntities())
             {
-                var obj = db.tblExpenses.OrderByDescending(x => x.Id).FirstOrDefault();
+                var obj = db.tblTravelClaims.OrderByDescending(x => x.Id).FirstOrDefault();
                 if (obj != null)
                 {
                     var vClaimIds = obj.ExpenseId;

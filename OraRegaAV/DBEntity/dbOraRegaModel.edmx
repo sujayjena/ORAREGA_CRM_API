@@ -526,27 +526,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatusName" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <EntityType Name="tblExpense">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ExpenseId" Type="nvarchar" MaxLength="10" />
-          <Property Name="EmployeeId" Type="int" />
-          <Property Name="ExpenseDate" Type="datetime" />
-          <Property Name="WorkOrderNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="VehicleTypeId" Type="int" />
-          <Property Name="Distance" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="AmountPerKM" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Status" Type="int" />
-          <Property Name="IsActive" Type="bit" />
-          <Property Name="CreatedBy" Type="int" />
-          <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="int" />
-          <Property Name="ModifiedDate" Type="datetime" />
-        </EntityType>
         <EntityType Name="tblExtendedWarranty">
           <Key>
             <PropertyRef Name="Id" />
@@ -788,6 +767,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Link" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tblOurService">
           <Key>
@@ -804,6 +785,8 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Link" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tblPartDescription">
           <Key>
@@ -1112,13 +1095,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="KM" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="KM" Type="int" Nullable="false" />
           <Property Name="Rate" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="VehicleTypeId" Type="int" />
         </EntityType>
         <EntityType Name="tblRefundAndCancellationPolicy">
           <Key>
@@ -1598,6 +1582,28 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblTravelClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseId" Type="nvarchar" MaxLength="10" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="ExpenseDate" Type="datetime" />
+          <Property Name="WorkOrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="VehicleTypeId" Type="int" />
+          <Property Name="Distance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPerKM" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblTravelRange">
           <Key>
@@ -1642,7 +1648,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VehicleType" Type="nvarchar" MaxLength="50" />
-          <Property Name="AmountPerKM" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -1950,10 +1955,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="EngineerId" Type="int" Mode="In" />
           <Parameter Name="WorkOrderNumber" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="GetExpenseList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="EmployeeId" Type="int" Mode="In" />
-          <Parameter Name="WorkOrderNumber" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="GetGST_N_StateCode_ByCompanyNState" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="StateId" Type="int" Mode="In" />
@@ -2149,6 +2150,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetSupportTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetTermsAndConditionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetTestimonialList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetTravelClaimList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+          <Parameter Name="WorkOrderNumber" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetTravelRangeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetUsersAddresses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -2246,7 +2251,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEngineerVisitHistory" EntityType="Self.tblEngineerVisitHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEnquiryStatusMaster" EntityType="Self.tblEnquiryStatusMaster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblExpense" EntityType="Self.tblExpense" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblExtendedWarranty" EntityType="Self.tblExtendedWarranty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblExtendedWarrantyProducts" EntityType="Self.tblExtendedWarrantyProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblExtendWarrantyPurchaseProof" EntityType="Self.tblExtendWarrantyPurchaseProof" Schema="dbo" store:Type="Tables" />
@@ -2319,6 +2323,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblTemporaryAddress" EntityType="Self.tblTemporaryAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTermsAndCondition" EntityType="Self.tblTermsAndCondition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTestimonial" EntityType="Self.tblTestimonial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTravelClaim" EntityType="Self.tblTravelClaim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTravelRange" EntityType="Self.tblTravelRange" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserTypes" EntityType="Self.tblUserTypes" Schema="dbo" store:Type="Tables" />
@@ -3337,7 +3342,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblGSTMappings" EntityType="dbOraRegaModel.tblGSTMapping" />
           <FunctionImport Name="GetGSTMappingList" ReturnType="Collection(dbOraRegaModel.GetGSTMappingList_Result)" />
           <EntitySet Name="tblRatePerKMs" EntityType="dbOraRegaModel.tblRatePerKM" />
-          <FunctionImport Name="GetRatePerKMList" ReturnType="Collection(dbOraRegaModel.GetRatePerKMList_Result)" />
           <FunctionImport Name="GetRoleHierarchy" ReturnType="Collection(dbOraRegaModel.GetRoleHierarchy_Result)">
             <Parameter Name="ReportingTo" Mode="In" Type="Int32" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
@@ -3530,12 +3534,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <FunctionImport Name="GetOfferAdsList" ReturnType="Collection(dbOraRegaModel.GetOfferAdsList_Result)">
           <Parameter Name="AppType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetOurProductList" ReturnType="Collection(dbOraRegaModel.GetOurProductList_Result)">
-          <Parameter Name="AppType" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="GetOurServiceList" ReturnType="Collection(dbOraRegaModel.GetOurServiceList_Result)">
-          <Parameter Name="AppType" Mode="In" Type="String" />
-          </FunctionImport>
+
           <EntitySet Name="tblPaymentPolicies" EntityType="dbOraRegaModel.tblPaymentPolicy" />
           <EntitySet Name="tblPrivacyAndPolicies" EntityType="dbOraRegaModel.tblPrivacyAndPolicy" />
           <EntitySet Name="tblRefundAndCancellationPolicies" EntityType="dbOraRegaModel.tblRefundAndCancellationPolicy" />
@@ -3545,20 +3544,28 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <FunctionImport Name="GetPrivacyAndPolicyList" ReturnType="Collection(dbOraRegaModel.GetPrivacyAndPolicyList_Result)" />
           <FunctionImport Name="GetRefundAndCancellationPolicyList" ReturnType="Collection(dbOraRegaModel.GetRefundAndCancellationPolicyList_Result)" />
           <FunctionImport Name="GetTermsAndConditionList" ReturnType="Collection(dbOraRegaModel.GetTermsAndConditionList_Result)" />
-          <FunctionImport Name="GetTestimonialList" ReturnType="Collection(dbOraRegaModel.GetTestimonialList_Result)" />
+        
           <EntitySet Name="tblEngineerVisitHistories" EntityType="dbOraRegaModel.tblEngineerVisitHistory" />
-          <EntitySet Name="tblExpenses" EntityType="dbOraRegaModel.tblExpense" />
           <EntitySet Name="tblStockTransferPartDetails" EntityType="dbOraRegaModel.tblStockTransferPartDetail" />
-          <EntitySet Name="tblVehicleTypes" EntityType="dbOraRegaModel.tblVehicleType" />
           <FunctionImport Name="GetEngineerVisitHistoryList" ReturnType="Collection(dbOraRegaModel.GetEngineerVisitHistoryList_Result)">
             <Parameter Name="EngineerId" Mode="In" Type="Int32" />
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+          </FunctionImport> 
+          <FunctionImport Name="GetOurProductList" ReturnType="Collection(dbOraRegaModel.GetOurProductList_Result)">
+          <Parameter Name="AppType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetExpenseList" ReturnType="Collection(dbOraRegaModel.GetExpenseList_Result)">
+          <FunctionImport Name="GetOurServiceList" ReturnType="Collection(dbOraRegaModel.GetOurServiceList_Result)">
+          <Parameter Name="AppType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetTestimonialList" ReturnType="Collection(dbOraRegaModel.GetTestimonialList_Result)" />
+          <EntitySet Name="tblVehicleTypes" EntityType="dbOraRegaModel.tblVehicleType" />
+          <FunctionImport Name="GetRatePerKMList" ReturnType="Collection(dbOraRegaModel.GetRatePerKMList_Result)" />
+          <FunctionImport Name="GetVehicleTypeList" ReturnType="Collection(dbOraRegaModel.GetVehicleTypeList_Result)" />
+          <EntitySet Name="tblTravelClaims" EntityType="dbOraRegaModel.tblTravelClaim" />
+          <FunctionImport Name="GetTravelClaimList" ReturnType="Collection(dbOraRegaModel.GetTravelClaimList_Result)">
             <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetVehicleTypeList" ReturnType="Collection(dbOraRegaModel.GetVehicleTypeList_Result)" />
 
           
 				</EntityContainer>
@@ -4661,23 +4668,15 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KM" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="KM" Type="Int32" Nullable="false" />
           <Property Name="Rate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="VehicleTypeId" Type="Int32" />
         </EntityType>
-        <ComplexType Name="GetRatePerKMList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="KM" Nullable="false" MaxLength="100" />
-          <Property Type="Decimal" Name="Rate" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-        </ComplexType>
         <ComplexType Name="GetRoleHierarchy_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="RoleId" Nullable="false" />
@@ -6136,6 +6135,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ImageFilePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblOurService">
           <Key>
@@ -6152,6 +6153,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ImageFilePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="GetBannerList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -6179,32 +6182,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-        <ComplexType Name="GetOurProductList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="ContentName" Nullable="false" MaxLength="300" />
-          <Property Type="Int32" Name="Position" Nullable="false" />
-          <Property Type="String" Name="AppType" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="ImageFile" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ImageFilePath" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ImageFileUrl" Nullable="false" MaxLength="1" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="GetOurServiceList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="ContentName" Nullable="false" MaxLength="300" />
-          <Property Type="Int32" Name="Position" Nullable="false" />
-          <Property Type="String" Name="AppType" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="ImageFile" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ImageFilePath" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ImageFileUrl" Nullable="false" MaxLength="1" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-        </ComplexType>
+        
+       
         <EntityType Name="tblPaymentPolicy">
           <Key>
             <PropertyRef Name="Id" />
@@ -6266,6 +6245,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="GetPaymentPolicyList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -6299,17 +6279,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-        <ComplexType Name="GetTestimonialList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Content" Nullable="true" />
-          <Property Type="Int32" Name="Position" Nullable="true" />
-          <Property Type="String" Name="FileName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="FileUrl" Nullable="false" MaxLength="1" />
-          <Property Type="Boolean" Name="IsActive" Nullable="true" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-        </ComplexType>
+       
         <EntityType Name="tblEngineerVisitHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -6324,27 +6294,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="Distance" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="AmountPerKM" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tblExpense">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ExpenseId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeId" Type="Int32" />
-          <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
-          <Property Name="WorkOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VehicleTypeId" Type="Int32" />
-          <Property Name="Distance" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountPerKM" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
@@ -6365,19 +6314,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblVehicleType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="VehicleType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AmountPerKM" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <ComplexType Name="GetEngineerVisitHistoryList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="EngineerId" Nullable="true" />
@@ -6395,7 +6331,101 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-        <ComplexType Name="GetExpenseList_Result">
+        <ComplexType Name="GetOurProductList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Link" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ContentName" Nullable="false" MaxLength="300" />
+          <Property Type="Int32" Name="Position" Nullable="false" />
+          <Property Type="String" Name="AppType" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ImageFile" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ImageFilePath" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ImageFileUrl" Nullable="false" MaxLength="1" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetOurServiceList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Link" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ContentName" Nullable="false" MaxLength="300" />
+          <Property Type="Int32" Name="Position" Nullable="false" />
+          <Property Type="String" Name="AppType" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ImageFile" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ImageFilePath" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ImageFileUrl" Nullable="false" MaxLength="1" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetTestimonialList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Content" Nullable="true" />
+          <Property Type="Int32" Name="Position" Nullable="true" />
+          <Property Type="String" Name="FileName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FileUrl" Nullable="false" MaxLength="1" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <EntityType Name="tblVehicleType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="GetRatePerKMList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="VehicleTypeId" Nullable="true" />
+          <Property Type="String" Name="VehicleType" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="KM" Nullable="false" />
+          <Property Type="Decimal" Name="Rate" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetVehicleTypeList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="VehicleType" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <EntityType Name="tblTravelClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
+          <Property Name="WorkOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleTypeId" Type="Int32" />
+          <Property Name="Distance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPerKM" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="GetTravelClaimList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="ExpenseId" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
@@ -6409,15 +6439,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Decimal" Name="TotalAmount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="FileName" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="Status" Nullable="true" />
-          <Property Type="Boolean" Name="IsActive" Nullable="true" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="GetVehicleTypeList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="VehicleType" Nullable="true" MaxLength="50" />
-          <Property Type="Decimal" Name="AmountPerKM" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
@@ -8398,6 +8419,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblRatePerKMs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblRatePerKM">
               <MappingFragment StoreEntitySet="tblRatePerKM">
+                <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -8409,19 +8431,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetRatePerKMList" FunctionName="dbOraRegaModel.Store.GetRatePerKMList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetRatePerKMList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="KM" ColumnName="KM" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetRoleHierarchy" FunctionName="dbOraRegaModel.Store.GetRoleHierarchy">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetRoleHierarchy_Result">
@@ -10064,6 +10073,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblOurProducts">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblOurProduct">
               <MappingFragment StoreEntitySet="tblOurProduct">
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ImageFilePath" ColumnName="ImageFilePath" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -10081,6 +10092,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblOurServices">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblOurService">
               <MappingFragment StoreEntitySet="tblOurService">
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ImageFilePath" ColumnName="ImageFilePath" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -10129,40 +10142,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetOurProductList" FunctionName="dbOraRegaModel.Store.GetOurProductList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetOurProductList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ContentName" ColumnName="ContentName" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="AppType" ColumnName="AppType" />
-                <ScalarProperty Name="ImageFile" ColumnName="ImageFile" />
-                <ScalarProperty Name="ImageFilePath" ColumnName="ImageFilePath" />
-                <ScalarProperty Name="ImageFileUrl" ColumnName="ImageFileUrl" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetOurServiceList" FunctionName="dbOraRegaModel.Store.GetOurServiceList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetOurServiceList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ContentName" ColumnName="ContentName" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="AppType" ColumnName="AppType" />
-                <ScalarProperty Name="ImageFile" ColumnName="ImageFile" />
-                <ScalarProperty Name="ImageFilePath" ColumnName="ImageFilePath" />
-                <ScalarProperty Name="ImageFileUrl" ColumnName="ImageFileUrl" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+         
+         
           <EntitySetMapping Name="tblPaymentPolicies">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblPaymentPolicy">
               <MappingFragment StoreEntitySet="tblPaymentPolicy">
@@ -10218,6 +10199,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblTestimonials">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblTestimonial">
               <MappingFragment StoreEntitySet="tblTestimonial">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -10278,21 +10260,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetTestimonialList" FunctionName="dbOraRegaModel.Store.GetTestimonialList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetTestimonialList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+        
           <EntitySetMapping Name="tblEngineerVisitHistories">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblEngineerVisitHistory">
               <MappingFragment StoreEntitySet="tblEngineerVisitHistory">
@@ -10313,28 +10281,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblExpenses">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblExpense">
-              <MappingFragment StoreEntitySet="tblExpense">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="AmountPerKM" ColumnName="AmountPerKM" />
-                <ScalarProperty Name="Distance" ColumnName="Distance" />
-                <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
-                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblStockTransferPartDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblStockTransferPartDetail">
               <MappingFragment StoreEntitySet="tblStockTransferPartDetails">
@@ -10347,20 +10293,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="PartId" ColumnName="PartId" />
                 <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
                 <ScalarProperty Name="StockTransferOutId" ColumnName="StockTransferOutId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblVehicleTypes">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblVehicleType">
-              <MappingFragment StoreEntitySet="tblVehicleType">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AmountPerKM" ColumnName="AmountPerKM" />
-                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -10386,9 +10318,125 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetExpenseList" FunctionName="dbOraRegaModel.Store.GetExpenseList">
+          <FunctionImportMapping FunctionImportName="GetOurProductList" FunctionName="dbOraRegaModel.Store.GetOurProductList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetExpenseList_Result">
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetOurProductList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="ContentName" ColumnName="ContentName" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="AppType" ColumnName="AppType" />
+                <ScalarProperty Name="ImageFile" ColumnName="ImageFile" />
+                <ScalarProperty Name="ImageFilePath" ColumnName="ImageFilePath" />
+                <ScalarProperty Name="ImageFileUrl" ColumnName="ImageFileUrl" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetOurServiceList" FunctionName="dbOraRegaModel.Store.GetOurServiceList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetOurServiceList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="ContentName" ColumnName="ContentName" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="AppType" ColumnName="AppType" />
+                <ScalarProperty Name="ImageFile" ColumnName="ImageFile" />
+                <ScalarProperty Name="ImageFilePath" ColumnName="ImageFilePath" />
+                <ScalarProperty Name="ImageFileUrl" ColumnName="ImageFileUrl" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTestimonialList" FunctionName="dbOraRegaModel.Store.GetTestimonialList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetTestimonialList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblVehicleTypes">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblVehicleType">
+              <MappingFragment StoreEntitySet="tblVehicleType">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetRatePerKMList" FunctionName="dbOraRegaModel.Store.GetRatePerKMList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetRatePerKMList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
+                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+                <ScalarProperty Name="KM" ColumnName="KM" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVehicleTypeList" FunctionName="dbOraRegaModel.Store.GetVehicleTypeList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetVehicleTypeList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblTravelClaims">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblTravelClaim">
+              <MappingFragment StoreEntitySet="tblTravelClaim">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="AmountPerKM" ColumnName="AmountPerKM" />
+                <ScalarProperty Name="Distance" ColumnName="Distance" />
+                <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetTravelClaimList" FunctionName="dbOraRegaModel.Store.GetTravelClaimList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetTravelClaimList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
@@ -10402,19 +10450,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetVehicleTypeList" FunctionName="dbOraRegaModel.Store.GetVehicleTypeList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetVehicleTypeList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
-                <ScalarProperty Name="AmountPerKM" ColumnName="AmountPerKM" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />

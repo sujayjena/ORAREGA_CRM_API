@@ -1842,7 +1842,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
+                    description = $"{{ \"Id\": 0, \"Name\": \"\",\"Link\": \"\",\"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -1864,7 +1864,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
+                    description = $"{{ \"Id\": 0, \"Name\": \"\",\"Link\": \"\",\"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -1886,7 +1886,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"Content\": \"string\", \"Position\": 0, \"IsActive\": true }}"
+                    description = $"{{ \"Id\": 0, \"Name\": \"\", \"Content\": \"string\", \"Position\": 0, \"IsActive\": true }}"
                 });
 
                 operation.parameters.Add(new Parameter()

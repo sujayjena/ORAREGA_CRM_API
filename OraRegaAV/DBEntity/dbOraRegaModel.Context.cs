@@ -149,9 +149,9 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblTermsAndCondition> tblTermsAndConditions { get; set; }
         public virtual DbSet<tblTestimonial> tblTestimonials { get; set; }
         public virtual DbSet<tblEngineerVisitHistory> tblEngineerVisitHistories { get; set; }
-        public virtual DbSet<tblExpense> tblExpenses { get; set; }
         public virtual DbSet<tblStockTransferPartDetail> tblStockTransferPartDetails { get; set; }
         public virtual DbSet<tblVehicleType> tblVehicleTypes { get; set; }
+        public virtual DbSet<tblTravelClaim> tblTravelClaims { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -730,11 +730,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetGSTMappingList_Result>("GetGSTMappingList");
         }
     
-        public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRatePerKMList_Result>("GetRatePerKMList");
-        }
-    
         public virtual ObjectResult<GetRoleHierarchy_Result> GetRoleHierarchy(Nullable<int> reportingTo, Nullable<bool> isActive)
         {
             var reportingToParameter = reportingTo.HasValue ?
@@ -1289,24 +1284,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOfferAdsList_Result>("GetOfferAdsList", appTypeParameter);
         }
     
-        public virtual ObjectResult<GetOurProductList_Result> GetOurProductList(string appType)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurProductList_Result>("GetOurProductList", appTypeParameter);
-        }
-    
-        public virtual ObjectResult<GetOurServiceList_Result> GetOurServiceList(string appType)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurServiceList_Result>("GetOurServiceList", appTypeParameter);
-        }
-    
         public virtual ObjectResult<GetPaymentPolicyList_Result> GetPaymentPolicyList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentPolicyList_Result>("GetPaymentPolicyList");
@@ -1327,11 +1304,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTermsAndConditionList_Result>("GetTermsAndConditionList");
         }
     
-        public virtual ObjectResult<GetTestimonialList_Result> GetTestimonialList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTestimonialList_Result>("GetTestimonialList");
-        }
-    
         public virtual ObjectResult<GetEngineerVisitHistoryList_Result> GetEngineerVisitHistoryList(Nullable<int> engineerId, string workOrderNumber)
         {
             var engineerIdParameter = engineerId.HasValue ?
@@ -1345,7 +1317,40 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerVisitHistoryList_Result>("GetEngineerVisitHistoryList", engineerIdParameter, workOrderNumberParameter);
         }
     
-        public virtual ObjectResult<GetExpenseList_Result> GetExpenseList(Nullable<int> employeeId, string workOrderNumber)
+        public virtual ObjectResult<GetOurProductList_Result> GetOurProductList(string appType)
+        {
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurProductList_Result>("GetOurProductList", appTypeParameter);
+        }
+    
+        public virtual ObjectResult<GetOurServiceList_Result> GetOurServiceList(string appType)
+        {
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurServiceList_Result>("GetOurServiceList", appTypeParameter);
+        }
+    
+        public virtual ObjectResult<GetTestimonialList_Result> GetTestimonialList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTestimonialList_Result>("GetTestimonialList");
+        }
+    
+        public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRatePerKMList_Result>("GetRatePerKMList");
+        }
+    
+        public virtual ObjectResult<GetVehicleTypeList_Result> GetVehicleTypeList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleTypeList_Result>("GetVehicleTypeList");
+        }
+    
+        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> employeeId, string workOrderNumber)
         {
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("EmployeeId", employeeId) :
@@ -1355,12 +1360,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("WorkOrderNumber", workOrderNumber) :
                 new ObjectParameter("WorkOrderNumber", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetExpenseList_Result>("GetExpenseList", employeeIdParameter, workOrderNumberParameter);
-        }
-    
-        public virtual ObjectResult<GetVehicleTypeList_Result> GetVehicleTypeList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleTypeList_Result>("GetVehicleTypeList");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelClaimList_Result>("GetTravelClaimList", employeeIdParameter, workOrderNumberParameter);
         }
     }
 }

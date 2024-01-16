@@ -15,12 +15,13 @@ namespace OraRegaAV.DBEntity
     public partial class tblRatePerKM
     {
         public int Id { get; set; }
-        public string KM { get; set; }
+        public int KM { get; set; }
         public decimal Rate { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> VehicleTypeId { get; set; }
     }
 }

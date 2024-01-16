@@ -300,6 +300,7 @@ namespace OraRegaAV.Models.Constants
         public const string DelayTypeRequied_Msg = @"Delay Type is required";
         public const string TravelRangeRequied_Msg = @"Travel Range is required";
         public const string RescheduleReasonRequied_Msg = @"Reschedule Reason is required";
+        public const string VehicleTypeIdRequied_Msg = @"Vehicle Type Id is required";
         public const string KMRequied_Msg = @"KM is required";
         public const string RateRequied_Msg = @"Rate is required";
 

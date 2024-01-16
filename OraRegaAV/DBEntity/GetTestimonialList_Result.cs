@@ -14,6 +14,7 @@ namespace OraRegaAV.DBEntity
     public partial class GetTestimonialList_Result
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Content { get; set; }
         public Nullable<int> Position { get; set; }
         public string FileName { get; set; }

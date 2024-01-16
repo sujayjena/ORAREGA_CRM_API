@@ -10,17 +10,16 @@
 namespace OraRegaAV.DBEntity
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GetExpenseList_Result
+    public partial class tblTravelClaim
     {
         public int Id { get; set; }
         public string ExpenseId { get; set; }
         public Nullable<int> EmployeeId { get; set; }
-        public string EmployeeName { get; set; }
         public Nullable<System.DateTime> ExpenseDate { get; set; }
         public string WorkOrderNumber { get; set; }
         public Nullable<int> VehicleTypeId { get; set; }
-        public string VehicleType { get; set; }
         public Nullable<decimal> Distance { get; set; }
         public Nullable<decimal> AmountPerKM { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
@@ -28,7 +27,8 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> Status { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
-        public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
     }
 }
