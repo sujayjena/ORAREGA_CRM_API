@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Models;
 
-namespace OraRegaAV.Controllers.API
+namespace OraRegaAV.Controllers.API 
 {
     public class RequestForAdvanceController : ApiCustomBaseController
     {
@@ -56,17 +56,58 @@ namespace OraRegaAV.Controllers.API
                 }
                 else
                 {
-                    tblRequestForAdvance.Date = parameters.Date;
-                    tblRequestForAdvance.Amount = parameters.Amount;
-                    tblRequestForAdvance.ClaimReason = parameters.ClaimReason;
+                    if (parameters.AdvanceStatusId == 0)  // Pending
+                    {
+                        tblRequestForAdvance.Date = parameters.Date;
+                        tblRequestForAdvance.Amount = parameters.Amount;
+                        tblRequestForAdvance.ClaimReason = parameters.ClaimReason;
 
-                    if (parameters.AdvanceStatusId > 0)
+                        tblRequestForAdvance.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                        tblRequestForAdvance.ModifiedDate = DateTime.Now;
+
+                        _response.Message = "Advance updated successfully";
+                    }
+
+                    if (parameters.AdvanceStatusId == 2) // Approve
+                    {
+                        var vrequestForAdvance = db.tblRequestForAdvances.Where(record => record.EmployeeId == parameters.EmployeeId && record.AdvanceStatusId == 2).FirstOrDefault();
+                        if (vrequestForAdvance != null)
+                        {
+                            var vtblClaimSettlement = db.tblClaimSettlements.Where(record => record.EmployeeId == parameters.EmployeeId && record.ClaimId == vrequestForAdvance.ClaimId && record.IsActive == true).FirstOrDefault();
+                            if (vtblClaimSettlement == null)
+                            {
+                                _response.Message = "Sorry! you can't approve this because you have a advance of this Claim id " + vrequestForAdvance.ClaimId + " is still pending for sattlement";
+                            }
+                            else // if sattlement is done
+                            {
+                                tblRequestForAdvance.AdvanceStatusId = parameters.AdvanceStatusId;
+
+                                tblRequestForAdvance.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                                tblRequestForAdvance.ModifiedDate = DateTime.Now;
+
+                                _response.Message = "Advance updated successfully";
+                            }
+                        }
+                        else // if sattlement is done
+                        {
+                            tblRequestForAdvance.AdvanceStatusId = parameters.AdvanceStatusId;
+
+                            tblRequestForAdvance.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                            tblRequestForAdvance.ModifiedDate = DateTime.Now;
+
+                            _response.Message = "Advance updated successfully";
+                        }
+                    }
+
+                    if (parameters.AdvanceStatusId == 3) // Reject
+                    {
                         tblRequestForAdvance.AdvanceStatusId = parameters.AdvanceStatusId;
 
-                    tblRequestForAdvance.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
-                    tblRequestForAdvance.ModifiedDate = DateTime.Now;
+                        tblRequestForAdvance.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                        tblRequestForAdvance.ModifiedDate = DateTime.Now;
 
-                    _response.Message = "Advance updated successfully";
+                        _response.Message = "Advance updated successfully";
+                    }
                 }
 
                 db.tblRequestForAdvances.AddOrUpdate(tblRequestForAdvance);
