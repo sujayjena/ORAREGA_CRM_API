@@ -41,16 +41,29 @@ namespace OraRegaAV.Helpers
             return fileName;
         }
 
-        public string UploadOurService(HttpPostedFile file, HttpContext context)
+        public void UploadOurService(string base64String, string fileName, HttpContext context)
         {
-            string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\OurService\\";
-            string fileName = SaveFileToPath(folderPath, file);
-            return fileName;
+            try
+            {
+                string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\OurService\\" + fileName;
+                var byteData = Convert.FromBase64String(base64String);
+                File.WriteAllBytes(folderPath, byteData);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public string UploadOurProduct(HttpPostedFile file, HttpContext context)
         {
             string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\OurProduct\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public string UploadTraveClaim(HttpPostedFile file, HttpContext context)
+        {
+            string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\TraveClaim\\";
             string fileName = SaveFileToPath(folderPath, file);
             return fileName;
         }
@@ -202,7 +215,7 @@ namespace OraRegaAV.Helpers
             string fileName = SaveFileToPath(folderPath, file);
             return fileName;
         }
-        
+
         public string ExtendedWarrantyProofSnaps(int extendedWarrantryId, HttpPostedFile file, HttpContext context)
         {
             string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\ExtendedWarranty\\ProductProofs\\{extendedWarrantryId}\\";
@@ -236,6 +249,19 @@ namespace OraRegaAV.Helpers
             try
             {
                 string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\ClaimSattlement\\" + fileName;
+                var byteData = Convert.FromBase64String(base64String);
+                File.WriteAllBytes(folderPath, byteData);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public void UploadWebsiteOurProduct(string base64String, string fileName, HttpContext context)
+        {
+            try
+            {
+                string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\OurProduct\\" + fileName;
                 var byteData = Convert.FromBase64String(base64String);
                 File.WriteAllBytes(folderPath, byteData);
             }

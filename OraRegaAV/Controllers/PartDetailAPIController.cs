@@ -41,7 +41,7 @@ namespace OraRegaAV.Controllers.API
                         tblPartDetail.PartNumber = objtblPartDetail.PartNumber;
                         tblPartDetail.PartName = objtblPartDetail.PartName;
                         tblPartDetail.PartDescription = objtblPartDetail.PartDescription;
-                        tblPartDetail.HSNCode = objtblPartDetail.HSNCode;
+                        tblPartDetail.HSNCodeId = objtblPartDetail.HSNCodeId;
                         tblPartDetail.CTSerialNo = objtblPartDetail.CTSerialNo;
                         tblPartDetail.PartStatusId = objtblPartDetail.PartStatusId;
                         tblPartDetail.SalePrice = objtblPartDetail.SalePrice;
@@ -72,7 +72,7 @@ namespace OraRegaAV.Controllers.API
                             tblPartDetail.PartNumber = objtblPartDetail.PartNumber;
                             tblPartDetail.PartName = objtblPartDetail.PartName;
                             tblPartDetail.PartDescription = objtblPartDetail.PartDescription;
-                            tblPartDetail.HSNCode = objtblPartDetail.HSNCode;
+                            tblPartDetail.HSNCodeId = objtblPartDetail.HSNCodeId;
                             tblPartDetail.CTSerialNo = objtblPartDetail.CTSerialNo;
                             tblPartDetail.PartStatusId = objtblPartDetail.PartStatusId;
                             tblPartDetail.SalePrice = objtblPartDetail.SalePrice;
@@ -103,7 +103,7 @@ namespace OraRegaAV.Controllers.API
                     tblPartDetail.PartNumber = objtblPartDetail.PartNumber;
                     tblPartDetail.PartName = objtblPartDetail.PartName;
                     tblPartDetail.PartDescription = objtblPartDetail.PartDescription;
-                    tblPartDetail.HSNCode = objtblPartDetail.HSNCode;
+                    tblPartDetail.HSNCodeId = objtblPartDetail.HSNCodeId;
                     tblPartDetail.CTSerialNo = objtblPartDetail.CTSerialNo;
                     tblPartDetail.PartStatusId = objtblPartDetail.PartStatusId;
                     tblPartDetail.SalePrice = objtblPartDetail.SalePrice;

@@ -27,6 +27,7 @@ namespace OraRegaAV.DBEntity
         public string SerialNo { get; set; }
         public string DocketNo { get; set; }
         public string UniqueCode { get; set; }
+        public Nullable<int> HSNCodeId { get; set; }
         public string HSNCode { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<int> ProductStatusId { get; set; }

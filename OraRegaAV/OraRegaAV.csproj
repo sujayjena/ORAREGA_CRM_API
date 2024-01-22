@@ -250,8 +250,26 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Http.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.9\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -380,6 +398,7 @@
     <Compile Include="Controllers\StockTransferAPIController.cs" />
     <Compile Include="Controllers\SupportTypeAPIController.cs" />
     <Compile Include="Controllers\MasterDataAPIController.cs" />
+    <Compile Include="Controllers\TravelClaimAPIController.cs" />
     <Compile Include="Controllers\TravelRangeAPIController.cs" />
     <Compile Include="Controllers\VendorAPIController.cs" />
     <Compile Include="Controllers\WarrantyTypeAPIController.cs" />
@@ -525,6 +544,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetPartDetailList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPartDetailTransferHistoryLogList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetPartsListForAllocation_Result.cs">
@@ -747,6 +769,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblCareer.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCareerPost.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblCaseStatu.cs">
@@ -1098,6 +1123,7 @@
     <Compile Include="Helpers\ValueSanitizerHelper.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\AdminCommonViewModel.cs" />
+    <Compile Include="Models\CareerPostViewModel.cs" />
     <Compile Include="Models\ManageWebsiteViewModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\BranchQueueSaveModel.cs" />
@@ -1139,8 +1165,6 @@
     <Compile Include="Models\DBEntitiesPartialClasses\TblLeaveTypeMetadata.cs" />
     <Compile Include="Models\DBEntitiesPartialClasses\TblOfferAdsMetadata.cs" />
     <Compile Include="Models\DBEntitiesPartialClasses\TblOperatingSystemMetadata.cs" />
-    <Compile Include="Models\DBEntitiesPartialClasses\TblOurProductMetadata.cs" />
-    <Compile Include="Models\DBEntitiesPartialClasses\TblOurServiceMetadata.cs" />
     <Compile Include="Models\DBEntitiesPartialClasses\TblPartDescriptionMetadata.cs" />
     <Compile Include="Models\DBEntitiesPartialClasses\TblPartDetailMetadata.cs" />
     <Compile Include="Models\DBEntitiesPartialClasses\TblPaymentTermMetadata.cs" />
@@ -1198,9 +1222,11 @@
     <Compile Include="Models\StockAllocationModels.cs" />
     <Compile Include="Models\StockPartStatusModel.cs" />
     <Compile Include="Models\StockTransferModel.cs" />
+    <Compile Include="Models\TravelClaimViewModel.cs" />
     <Compile Include="Models\TravelRangeModel.cs" />
     <Compile Include="Models\Utilities.cs" />
     <Compile Include="Models\SOEnquiryListParameters.cs" />
+    <Compile Include="Models\WebAPIViewModel.cs" />
     <Compile Include="Models\WOListParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1232,6 +1258,7 @@
     <Folder Include="Uploads\ClaimSattlement\" />
     <Folder Include="Uploads\CustomerPicture\" />
     <Folder Include="Uploads\Documents\" />
+    <Folder Include="Uploads\OurProduct\" />
     <Folder Include="Uploads\ProfilePicture\" />
     <Folder Include="Uploads\WOEnquiries\ProductProofs\" />
     <Folder Include="Views\BusinessTypeAPI\" />

@@ -27,5 +27,11 @@ namespace OraRegaAV.DBEntity
         public string ReportedIssue { get; set; }
         public int OrderStatusId { get; set; }
         public string StatusName { get; set; }
+        public Nullable<int> EngineerId { get; set; }
+        public Nullable<System.DateTime> LastEngineerHistoryDate { get; set; }
+        public Nullable<int> VehicleTypeId { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string VisitStatus { get; set; }
     }
 }

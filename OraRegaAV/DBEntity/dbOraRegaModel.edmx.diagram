@@ -136,6 +136,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblEngineerVisitHistory" Width="1.5" PointX="11.375" PointY="32.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblVehicleType" Width="1.5" PointX="34.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblTravelClaim" Width="1.5" PointX="13.375" PointY="34.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCareerPost" Width="1.5" PointX="33.375" PointY="32.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

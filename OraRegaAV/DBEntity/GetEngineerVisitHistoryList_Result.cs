@@ -25,6 +25,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> Distance { get; set; }
         public Nullable<decimal> AmountPerKM { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
+        public string VisitStatus { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

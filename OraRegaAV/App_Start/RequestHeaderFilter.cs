@@ -28,6 +28,18 @@ namespace OraRegaAV.App_Start
                 || string.Equals(operation.operationId, "ContactUs_SubmitContactUsForm", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "CareerAPI_SaveCareerDetails", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "CareerAPI_GetCareerDetails", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_SaveCareerPost", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetCareerPostById", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetCareerPostList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetBannerList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetOfferAdsList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetOurServiceList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetOurProductList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetTestimonialList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetRefundAndCancellationPolicyList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetPaymentPolicyList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetPrivacyAndPolicyList", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "WebsiteAPI_GetTermsAndConditionList", StringComparison.OrdinalIgnoreCase)
             )
             {
                 isTokenRequired = false;
@@ -1833,50 +1845,50 @@ namespace OraRegaAV.App_Start
                     description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
                 });
             }
-            if (string.Equals(operation.operationId, "WebsiteAPI_SaveOurService", StringComparison.OrdinalIgnoreCase))
-            {
-                operation.parameters.Add(new Parameter()
-                {
-                    name = "Parameters",
-                    @in = "formData",
-                    type = "string",
-                    required = true,
-                    pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"Name\": \"\",\"Link\": \"\",\"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
-                });
+            //if (string.Equals(operation.operationId, "WebsiteAPI_SaveOurService", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    operation.parameters.Add(new Parameter()
+            //    {
+            //        name = "Parameters",
+            //        @in = "formData",
+            //        type = "string",
+            //        required = true,
+            //        pattern = "JSON Object",
+            //        description = $"{{ \"Id\": 0, \"Name\": \"\",\"Link\": \"\",\"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
+            //    });
 
-                operation.parameters.Add(new Parameter()
-                {
-                    name = "ImageFile",
-                    @in = "formData",
-                    type = "file",
-                    required = false,
-                    pattern = ValidationConstant.ImageFileRegExp,
-                    description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
-                });
-            }
-            if (string.Equals(operation.operationId, "WebsiteAPI_SaveOurProduct", StringComparison.OrdinalIgnoreCase))
-            {
-                operation.parameters.Add(new Parameter()
-                {
-                    name = "Parameters",
-                    @in = "formData",
-                    type = "string",
-                    required = true,
-                    pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"Name\": \"\",\"Link\": \"\",\"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
-                });
+            //    operation.parameters.Add(new Parameter()
+            //    {
+            //        name = "ImageFile",
+            //        @in = "formData",
+            //        type = "file",
+            //        required = false,
+            //        pattern = ValidationConstant.ImageFileRegExp,
+            //        description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
+            //    });
+            //}
+            //if (string.Equals(operation.operationId, "WebsiteAPI_SaveOurProduct", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    //operation.parameters.Add(new Parameter()
+            //    //{
+            //    //    name = "Parameters",
+            //    //    @in = "formData",
+            //    //    type = "string",
+            //    //    required = true,
+            //    //    pattern = "JSON Object",
+            //    //    description = $"{{ \"Id\": 0, \"Name\": \"\",\"Link\": \"\",\"ContentName\": \"\", \"Position\": 0, \"AppType\": \"W\",\"IsActive\": true }}"
+            //    //});
 
-                operation.parameters.Add(new Parameter()
-                {
-                    name = "ImageFile",
-                    @in = "formData",
-                    type = "file",
-                    required = false,
-                    pattern = ValidationConstant.ImageFileRegExp,
-                    description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
-                });
-            }
+            //    operation.parameters.Add(new Parameter()
+            //    {
+            //        name = "ImageFile",
+            //        @in = "formData",
+            //        type = "file",
+            //        required = false,
+            //        pattern = ValidationConstant.ImageFileRegExp,
+            //        description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
+            //    });
+            //}
             if (string.Equals(operation.operationId, "WebsiteAPI_SaveTestimonial", StringComparison.OrdinalIgnoreCase))
             {
                 operation.parameters.Add(new Parameter()
@@ -1892,6 +1904,31 @@ namespace OraRegaAV.App_Start
                 operation.parameters.Add(new Parameter()
                 {
                     name = "TestimonialLogo",
+                    @in = "formData",
+                    type = "file",
+                    required = false,
+                    pattern = ValidationConstant.ImageFileRegExp,
+                    description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
+                });
+            }
+            #endregion
+
+            #region Manage Travel Claim
+            if (string.Equals(operation.operationId, "TravelClaimAPI_SaveTravelClaim", StringComparison.OrdinalIgnoreCase))
+            {
+                operation.parameters.Add(new Parameter()
+                {
+                    name = "Parameters",
+                    @in = "formData",
+                    type = "string",
+                    required = true,
+                    pattern = "JSON Object",
+                    description = $"{{ \"Id\": 0, \"EmployeeId\": 0, \"ExpenseDate\": \"\", \"VehicleTypeId\": 0, \"WorkOrderNumber\": \"\", \"Distance\": 0, \"TotalAmount\": 0, \"ExpenseStatusId\": 0,\"IsActive\": true }}"
+                });
+
+                operation.parameters.Add(new Parameter()
+                {
+                    name = "ImageFile",
                     @in = "formData",
                     type = "file",
                     required = false,

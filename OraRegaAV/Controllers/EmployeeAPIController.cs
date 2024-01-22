@@ -1055,12 +1055,15 @@ namespace OraRegaAV.Controllers.API
                     employeeReponse.PersonalNumber = employee.PersonalNumber;
                     employeeReponse.EmailId = employee.EmailId;
 
-                    var vReportToDetail = db.tblEmployees.Where(x => x.ReportingTo == employee.ReportingTo).FirstOrDefault();
-                    if (vReportToDetail != null)
+                    if (employee.ReportingTo > 0)
                     {
-                        employeeReponse.ReportingTo = Convert.ToInt32(employee.ReportingTo);
-                        employeeReponse.ReportingToName = vReportToDetail.EmployeeName;
-                        employeeReponse.ReportingToMobileNo = vReportToDetail.PersonalNumber;
+                        var vReportToDetail = db.tblEmployees.Where(x => x.ReportingTo == employee.ReportingTo).FirstOrDefault();
+                        if (vReportToDetail != null)
+                        {
+                            employeeReponse.ReportingTo = Convert.ToInt32(employee.ReportingTo);
+                            employeeReponse.ReportingToName = vReportToDetail.EmployeeName;
+                            employeeReponse.ReportingToMobileNo = vReportToDetail.PersonalNumber;
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(employee.ProfileImagePath))

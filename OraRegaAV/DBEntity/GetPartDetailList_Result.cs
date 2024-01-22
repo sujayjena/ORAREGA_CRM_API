@@ -18,6 +18,7 @@ namespace OraRegaAV.DBEntity
         public string PartNumber { get; set; }
         public string PartName { get; set; }
         public string PartDescription { get; set; }
+        public Nullable<int> HSNCodeId { get; set; }
         public string HSNCode { get; set; }
         public string CTSerialNo { get; set; }
         public int PartStatusId { get; set; }
@@ -31,10 +32,10 @@ namespace OraRegaAV.DBEntity
         public string ReceiveFrom { get; set; }
         public Nullable<System.DateTime> ReceiveDate { get; set; }
         public string DocketNo { get; set; }
+        public int Quantity { get; set; }
         public Nullable<int> StockPartStatusId { get; set; }
         public string StockPartStatus { get; set; }
         public Nullable<decimal> PurchasePrice { get; set; }
-        public Nullable<int> Quantity { get; set; }
         public Nullable<int> VendorId { get; set; }
         public string VendorName { get; set; }
         public string CreatorName { get; set; }

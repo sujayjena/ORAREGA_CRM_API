@@ -18,6 +18,7 @@ namespace OraRegaAV.DBEntity
         public string PartNumber { get; set; }
         public string PartName { get; set; }
         public string PartDescription { get; set; }
+        public Nullable<int> HSNCodeId { get; set; }
         public string HSNCode { get; set; }
         public string CTSerialNo { get; set; }
         public int PartStatusId { get; set; }

@@ -21,9 +21,9 @@ namespace OraRegaAV.DBEntity
         public string PartDescription { get; set; }
 
         [Required(ErrorMessage = ValidationConstant.HSNCodeRequired_Msg)]
-        [MaxLength(ValidationConstant.HSNCode_MaxLength, ErrorMessage = ValidationConstant.HSNCode_MaxLength_Msg)]
-        [RegularExpression(ValidationConstant.HSNCodeRegExp, ErrorMessage = ValidationConstant.HSNCodeRegExp_Msg)]
-        public string HSNCode { get; set; }
+        //[MaxLength(ValidationConstant.HSNCode_MaxLength, ErrorMessage = ValidationConstant.HSNCode_MaxLength_Msg)]
+        //[RegularExpression(ValidationConstant.HSNCodeRegExp, ErrorMessage = ValidationConstant.HSNCodeRegExp_Msg)]
+        public int HSNCodeId { get; set; }
 
         //[Range(1, int.MaxValue,ErrorMessage = ValidationConstant.PartStatusRequied_Msg)]
         public int PartStatusId { get; set; }

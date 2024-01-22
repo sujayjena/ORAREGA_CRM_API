@@ -100,4 +100,23 @@ namespace OraRegaAV.Models
     {
         public int PartId { get; set; }
     }
+
+    public class GetPartDetailTransferHistoryLogList_Response
+    {
+        public int PartId { get; set; }
+        public string PartNumber { get; set; }
+        public string PartName { get; set; }
+        public string PartDesctiption { get; set; }
+        public string DocketNo { get; set; }
+        public string ChallanNo { get; set; }
+        public string NewDocketNo { get; set; }
+        public string BranchFrom { get; set; }
+        public string BranchTo { get; set; }
+        public Nullable<System.DateTime> TransferRequestDate { get; set; }
+        public string TransferBy { get; set; }
+        public Nullable<System.DateTime> TransferRequestApproveDate { get; set; }
+        public string ApproveBy { get; set; }
+        public string Reason { get; set; }
+        public string PartTransferStatus { get; set; }
+    }
 }

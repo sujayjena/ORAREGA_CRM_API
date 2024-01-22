@@ -151,6 +151,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblEngineerVisitHistory> tblEngineerVisitHistories { get; set; }
         public virtual DbSet<tblStockTransferPartDetail> tblStockTransferPartDetails { get; set; }
         public virtual DbSet<tblVehicleType> tblVehicleTypes { get; set; }
+        public virtual DbSet<tblCareerPost> tblCareerPosts { get; set; }
         public virtual DbSet<tblTravelClaim> tblTravelClaims { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
@@ -398,19 +399,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("MobileNo", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCustomerDetailsByMobile_Result>("GetCustomerDetailsByMobile", mobileNoParameter);
-        }
-    
-        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> orderStatusId, Nullable<int> engineerId)
-        {
-            var orderStatusIdParameter = orderStatusId.HasValue ?
-                new ObjectParameter("OrderStatusId", orderStatusId) :
-                new ObjectParameter("OrderStatusId", typeof(int));
-    
-            var engineerIdParameter = engineerId.HasValue ?
-                new ObjectParameter("EngineerId", engineerId) :
-                new ObjectParameter("EngineerId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", orderStatusIdParameter, engineerIdParameter);
         }
     
         public virtual ObjectResult<GetProductModelDetails_Result> GetProductModelDetails(Nullable<int> prodModelId)
@@ -913,15 +901,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesList_Result>("GetEmployeesList", empCodeParameter, empNameParameter, emailParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetPartDetailList_Result> GetPartDetailList(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailList_Result>("GetPartDetailList", idParameter);
-        }
-    
         public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(string uniqueCode, string partNumber, string partDesc, Nullable<int> userId)
         {
             var uniqueCodeParameter = uniqueCode != null ?
@@ -1266,42 +1245,120 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter);
         }
     
-        public virtual ObjectResult<GetBannerList_Result> GetBannerList(string appType)
+        public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRatePerKMList_Result>("GetRatePerKMList");
+        }
+    
+        public virtual ObjectResult<GetVehicleTypeList_Result> GetVehicleTypeList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleTypeList_Result>("GetVehicleTypeList");
+        }
+    
+        public virtual ObjectResult<GetPartDetailList_Result> GetPartDetailList(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailList_Result>("GetPartDetailList", idParameter);
+        }
+    
+        public virtual ObjectResult<GetBannerList_Result> GetBannerList(string appType, Nullable<bool> isActive)
         {
             var appTypeParameter = appType != null ?
                 new ObjectParameter("AppType", appType) :
                 new ObjectParameter("AppType", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBannerList_Result>("GetBannerList", appTypeParameter);
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBannerList_Result>("GetBannerList", appTypeParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetOfferAdsList_Result> GetOfferAdsList(string appType)
+        public virtual ObjectResult<GetOfferAdsList_Result> GetOfferAdsList(string appType, Nullable<bool> isActive)
         {
             var appTypeParameter = appType != null ?
                 new ObjectParameter("AppType", appType) :
                 new ObjectParameter("AppType", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOfferAdsList_Result>("GetOfferAdsList", appTypeParameter);
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOfferAdsList_Result>("GetOfferAdsList", appTypeParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetPaymentPolicyList_Result> GetPaymentPolicyList()
+        public virtual ObjectResult<GetOurProductList_Result> GetOurProductList(string appType, Nullable<bool> isActive)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentPolicyList_Result>("GetPaymentPolicyList");
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurProductList_Result>("GetOurProductList", appTypeParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetPrivacyAndPolicyList_Result> GetPrivacyAndPolicyList()
+        public virtual ObjectResult<GetOurServiceList_Result> GetOurServiceList(string appType, Nullable<bool> isActive)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPrivacyAndPolicyList_Result>("GetPrivacyAndPolicyList");
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurServiceList_Result>("GetOurServiceList", appTypeParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetRefundAndCancellationPolicyList_Result> GetRefundAndCancellationPolicyList()
+        public virtual ObjectResult<GetPaymentPolicyList_Result> GetPaymentPolicyList(Nullable<bool> isActive)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRefundAndCancellationPolicyList_Result>("GetRefundAndCancellationPolicyList");
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentPolicyList_Result>("GetPaymentPolicyList", isActiveParameter);
         }
     
-        public virtual ObjectResult<GetTermsAndConditionList_Result> GetTermsAndConditionList()
+        public virtual ObjectResult<GetPrivacyAndPolicyList_Result> GetPrivacyAndPolicyList(Nullable<bool> isActive)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTermsAndConditionList_Result>("GetTermsAndConditionList");
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPrivacyAndPolicyList_Result>("GetPrivacyAndPolicyList", isActiveParameter);
+        }
+    
+        public virtual ObjectResult<GetRefundAndCancellationPolicyList_Result> GetRefundAndCancellationPolicyList(Nullable<bool> isActive)
+        {
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRefundAndCancellationPolicyList_Result>("GetRefundAndCancellationPolicyList", isActiveParameter);
+        }
+    
+        public virtual ObjectResult<GetTermsAndConditionList_Result> GetTermsAndConditionList(Nullable<bool> isActive)
+        {
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTermsAndConditionList_Result>("GetTermsAndConditionList", isActiveParameter);
+        }
+    
+        public virtual ObjectResult<GetTestimonialList_Result> GetTestimonialList(Nullable<bool> isActive)
+        {
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTestimonialList_Result>("GetTestimonialList", isActiveParameter);
         }
     
         public virtual ObjectResult<GetEngineerVisitHistoryList_Result> GetEngineerVisitHistoryList(Nullable<int> engineerId, string workOrderNumber)
@@ -1317,40 +1374,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerVisitHistoryList_Result>("GetEngineerVisitHistoryList", engineerIdParameter, workOrderNumberParameter);
         }
     
-        public virtual ObjectResult<GetOurProductList_Result> GetOurProductList(string appType)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurProductList_Result>("GetOurProductList", appTypeParameter);
-        }
-    
-        public virtual ObjectResult<GetOurServiceList_Result> GetOurServiceList(string appType)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurServiceList_Result>("GetOurServiceList", appTypeParameter);
-        }
-    
-        public virtual ObjectResult<GetTestimonialList_Result> GetTestimonialList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTestimonialList_Result>("GetTestimonialList");
-        }
-    
-        public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRatePerKMList_Result>("GetRatePerKMList");
-        }
-    
-        public virtual ObjectResult<GetVehicleTypeList_Result> GetVehicleTypeList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleTypeList_Result>("GetVehicleTypeList");
-        }
-    
-        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> employeeId, string workOrderNumber)
+        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> employeeId, string workOrderNumber, Nullable<int> statusId)
         {
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("EmployeeId", employeeId) :
@@ -1360,7 +1384,41 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("WorkOrderNumber", workOrderNumber) :
                 new ObjectParameter("WorkOrderNumber", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelClaimList_Result>("GetTravelClaimList", employeeIdParameter, workOrderNumberParameter);
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("StatusId", statusId) :
+                new ObjectParameter("StatusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelClaimList_Result>("GetTravelClaimList", employeeIdParameter, workOrderNumberParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> orderStatusId, Nullable<int> engineerId)
+        {
+            var orderStatusIdParameter = orderStatusId.HasValue ?
+                new ObjectParameter("OrderStatusId", orderStatusId) :
+                new ObjectParameter("OrderStatusId", typeof(int));
+    
+            var engineerIdParameter = engineerId.HasValue ?
+                new ObjectParameter("EngineerId", engineerId) :
+                new ObjectParameter("EngineerId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", orderStatusIdParameter, engineerIdParameter);
+        }
+    
+        public virtual ObjectResult<GetPartDetailTransferHistoryLogList_Result> GetPartDetailTransferHistoryLogList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> partId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var partIdParameter = partId.HasValue ?
+                new ObjectParameter("PartId", partId) :
+                new ObjectParameter("PartId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailTransferHistoryLogList_Result>("GetPartDetailTransferHistoryLogList", companyIdParameter, branchIdParameter, partIdParameter);
         }
     }
 }

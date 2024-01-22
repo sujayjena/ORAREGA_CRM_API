@@ -482,6 +482,7 @@ namespace OraRegaAV.Controllers.API
                             var vtblPartsAllocatedToEngineer = new tblPartsAllocatedToEngineer()
                             {
                                 EngineerId = parameters.EngineerId,
+                                WorkOrderId = parameters.WorkOrderId,
                                 PartId = item.PartId,
                                 Quantity = item.Quantity,
                                 IsReturn = false,

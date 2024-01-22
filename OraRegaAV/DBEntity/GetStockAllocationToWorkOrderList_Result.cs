@@ -30,6 +30,10 @@ namespace OraRegaAV.DBEntity
         public Nullable<bool> IsReturn { get; set; }
         public Nullable<int> PartStatusId { get; set; }
         public string PartStatusName { get; set; }
+        public Nullable<int> BranchId { get; set; }
+        public string BranchName { get; set; }
+        public Nullable<int> EngineerId { get; set; }
+        public string EngineerName { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

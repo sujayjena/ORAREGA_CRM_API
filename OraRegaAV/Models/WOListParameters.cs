@@ -21,7 +21,7 @@ namespace OraRegaAV.Models
 
     public class WOListParameters
     {
-        [Range(1, int.MaxValue, ErrorMessage = "Employee ID is required")]
+        //[Range(1, int.MaxValue, ErrorMessage = "Employee ID is required")]
         public int OrderStatusId { get; set; }
 
         [DefaultValue(0)]

@@ -480,7 +480,7 @@ namespace OraRegaAV.Controllers
                         else
                         {
                             var vtblPartsAllocatedToWorkOrders = db.tblPartsAllocatedToWorkOrders.Where(u => u.WorkOrderId == tblWorkOrder.Id && u.PartId == item.PartId).FirstOrDefault();
-                            if(vtblPartsAllocatedToWorkOrders != null)
+                            if (vtblPartsAllocatedToWorkOrders != null)
                             {
                                 vtblPartsAllocatedToWorkOrders.PartStatusId = item.PartDescriptionId;
                             }
@@ -489,7 +489,7 @@ namespace OraRegaAV.Controllers
 
                             await db.SaveChangesAsync();
                         }
-                    }     
+                    }
                 }
 
                 #endregion
@@ -590,10 +590,27 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                await Task.Run(() =>
+                List<GetWOListForEmployees_Result> woListForEmployees;
+
+                woListForEmployees = await Task.Run(() => db.GetWOListForEmployees(parameters.OrderStatusId, parameters.EmployeeId).ToList());
+
+                foreach (var obj in woListForEmployees)
                 {
-                    _response.Data = db.GetWOListForEmployees(parameters.OrderStatusId, parameters.EmployeeId).ToList();
-                });
+                    var vtblEngineerVisitHistoryObj = db.tblEngineerVisitHistories.Where(x => x.WorkOrderNumber == obj.WorkOrderNumber && x.EngineerId == obj.EngineerId).OrderByDescending(x => x.VisitDate).FirstOrDefault();
+                    if (vtblEngineerVisitHistoryObj != null)
+                    {
+                        if (vtblEngineerVisitHistoryObj.VisitStatus == "Start")
+                        {
+                            obj.LastEngineerHistoryDate = vtblEngineerVisitHistoryObj.VisitDate;
+                            obj.VehicleTypeId = vtblEngineerVisitHistoryObj.VehicleTypeId;
+                            obj.Latitude = vtblEngineerVisitHistoryObj.Latitude;
+                            obj.Longitude = vtblEngineerVisitHistoryObj.Longitude;
+                            obj.VisitStatus = vtblEngineerVisitHistoryObj.VisitStatus;
+                        }
+                    }
+                }
+
+                _response.Data = woListForEmployees;
             }
             catch (Exception ex)
             {
@@ -1165,7 +1182,17 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                var vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.Id == parameters.VehicleTypeId && x.KM <= parameters.Distance).FirstOrDefault();
+                //var vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM <= parameters.Distance).FirstOrDefault();
+                var vRatePerKMsObj = new tblRatePerKM();
+                var vRatePerKMs = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM >= parameters.Distance).OrderBy(x=>x.KM).FirstOrDefault();
+                if (vRatePerKMs != null)
+                {
+                    vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM <= vRatePerKMs.KM).OrderByDescending(x => x.KM).FirstOrDefault();
+                }
+                else
+                {
+                    vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId).OrderByDescending(x => x.KM).FirstOrDefault();
+                }
 
                 var tbl = db.tblEngineerVisitHistories.Where(x => x.Id == parameters.Id).FirstOrDefault();
                 if (tbl == null)
@@ -1181,6 +1208,7 @@ namespace OraRegaAV.Controllers
                     tbl.Distance = parameters.Distance;
                     tbl.AmountPerKM = vRatePerKMsObj != null ? vRatePerKMsObj.Rate : 0;
                     tbl.TotalAmount = parameters.Distance * tbl.AmountPerKM;
+                    tbl.VisitStatus = "Start";
 
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.CreatedDate = DateTime.Now;
@@ -1204,12 +1232,20 @@ namespace OraRegaAV.Controllers
                         vtblTravelClaim.AmountPerKM = vRatePerKMsObj != null ? vRatePerKMsObj.Rate : 0;
                         vtblTravelClaim.TotalAmount = parameters.Distance * vtblTravelClaim.AmountPerKM;
                         vtblTravelClaim.FileName = "";
-                        vtblTravelClaim.Status = 1;
+                        vtblTravelClaim.ExpenseStatusId = 1;
+                        vtblTravelClaim.EngineerVisitHistoryId = tbl.Id;
                         vtblTravelClaim.IsActive = true;
                         vtblTravelClaim.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                         vtblTravelClaim.CreatedDate = DateTime.Now;
 
                         db.tblTravelClaims.Add(vtblTravelClaim);
+
+                        //update Visit Status stop
+                        var vtblEngineerVisitHistory = db.tblEngineerVisitHistories.Where(x => x.Id == tbl.Id).FirstOrDefault();
+                        if (vtblEngineerVisitHistory != null)
+                        {
+                            vtblEngineerVisitHistory.VisitStatus = "Stop";
+                        }
 
                         await db.SaveChangesAsync();
                     }
@@ -1229,6 +1265,7 @@ namespace OraRegaAV.Controllers
                     tbl.Distance = parameters.Distance;
                     tbl.AmountPerKM = vRatePerKMsObj != null ? vRatePerKMsObj.Rate : 0;
                     tbl.TotalAmount = parameters.Distance * tbl.AmountPerKM;
+                    tbl.VisitStatus = "Stop";
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.ModifiedDate = DateTime.Now;
 

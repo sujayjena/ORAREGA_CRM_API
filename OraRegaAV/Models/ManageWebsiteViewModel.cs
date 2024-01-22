@@ -10,6 +10,11 @@ namespace OraRegaAV.Models
     {
         [DefaultValue("")]
         public string AppType { get; set; }
+        public bool? IsActive { get; set; }
+    }
+    public class WebsiteSerachParameter
+    {
+        public bool? IsActive { get; set; }
     }
     public class RefundAndCancellationPolicyRequest
     {

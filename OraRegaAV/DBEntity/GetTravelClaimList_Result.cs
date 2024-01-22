@@ -25,7 +25,10 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> AmountPerKM { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
         public string FileName { get; set; }
-        public Nullable<int> Status { get; set; }
+        public string FileNamePath { get; set; }
+        public string FileNameUrl { get; set; }
+        public Nullable<int> ExpenseStatusId { get; set; }
+        public string StatusName { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }

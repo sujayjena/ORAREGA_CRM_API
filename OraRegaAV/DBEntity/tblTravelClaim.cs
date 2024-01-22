@@ -24,11 +24,13 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> AmountPerKM { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }
         public string FileName { get; set; }
-        public Nullable<int> Status { get; set; }
+        public Nullable<int> ExpenseStatusId { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string FileNamePath { get; set; }
+        public Nullable<int> EngineerVisitHistoryId { get; set; }
     }
 }

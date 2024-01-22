@@ -59,7 +59,7 @@ namespace OraRegaAV.Controllers
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                 if (userId > 0)
                 {
-                    dataList = db.GetStockTransferInChallanList(parameters.ChallanNo,parameters.DockerNo, userId, parameters.BranchId).ToList();
+                    dataList = db.GetStockTransferInChallanList(parameters.ChallanNo, parameters.DockerNo, userId, parameters.BranchId).ToList();
                 }
 
                 _response.Data = dataList;
@@ -355,6 +355,52 @@ namespace OraRegaAV.Controllers
                 _response.Message = ValidationConstant.InternalServerError;
                 LogWriter.WriteLog(ex);
             }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/StockTransferAPI/GetPartDetailTransferHistoryLogList")]
+        public Response GetPartDetailTransferHistoryLogList(int CompanyId = 0, int BranchId = 0, int PartId = 0)
+        {
+            List<GetPartDetailTransferHistoryLogList_Response> tblPartDetailTransferList = new List<GetPartDetailTransferHistoryLogList_Response>();
+
+            try
+            {
+                var vPartObjList = db.GetPartDetailTransferHistoryLogList(CompanyId, BranchId, PartId).OrderByDescending(x => x.TransferRequestDate).ToList();
+
+                foreach (var item in vPartObjList)
+                {
+                    var vItemObj = new GetPartDetailTransferHistoryLogList_Response()
+                    {
+                        PartId = item.PartId,
+                        PartName = item.PartName,
+                        PartNumber = item.PartNumber,
+                        PartDesctiption = item.PartDescription,
+                        DocketNo = item.DocketNo,
+                        ChallanNo = item.ChallanNo,
+                        NewDocketNo = item.NewDocketNo,
+                        BranchFrom = item.BranchFrom,
+                        BranchTo = item.BranchTo,
+                        TransferRequestDate = item.TransferRequestDate,
+                        TransferBy = item.TransferBy,
+                        TransferRequestApproveDate = item.TransferRequestApproveDate,
+                        ApproveBy = item.ApproveBy,
+                        Reason = item.Reason,
+                        PartTransferStatus = item.PartTransferStatus,
+                    };
+
+                    tblPartDetailTransferList.Add(vItemObj);
+                }
+
+                _response.Data = tblPartDetailTransferList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
             return _response;
         }
     }
