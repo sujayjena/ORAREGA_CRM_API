@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -27,21 +28,23 @@ namespace OraRegaAV.Models
 
     public class StockTransferOutSearchParameters
     {
+        [DefaultValue(0)]
+        public int ComapnyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchFromId { get; set; }
         public string ChallanNo { get; set; }
-
         public string DockerNo { get; set; }
-
-        public int Userid { get; set; }
     }
 
     public class StockTransferInSearchParameters
     {
+
+        [DefaultValue(0)]
+        public int ComapnyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchFromId { get; set; }
         public string ChallanNo { get; set; }
-
         public string DockerNo { get; set; }
-
-        public int Userid { get; set; }
-        public int BranchId { get; set; }
     }
 
     public class StockTransferResponse

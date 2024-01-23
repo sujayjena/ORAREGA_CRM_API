@@ -34,7 +34,7 @@ namespace OraRegaAV.Controllers
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                 if (userId > 0)
                 {
-                    advanceList = db.GetStockTransferOutChallanList(parameters.DockerNo, userId).ToList();
+                    advanceList = db.GetStockTransferOutChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, userId).ToList();
                 }
 
                 _response.Data = advanceList;
@@ -59,7 +59,7 @@ namespace OraRegaAV.Controllers
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                 if (userId > 0)
                 {
-                    dataList = db.GetStockTransferInChallanList(parameters.ChallanNo, parameters.DockerNo, userId, parameters.BranchId).ToList();
+                    dataList = db.GetStockTransferInChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.ChallanNo, parameters.DockerNo, userId).ToList();
                 }
 
                 _response.Data = dataList;
@@ -214,7 +214,15 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                var vClaimIdList = db.tblStockTransferOuts.Where(x => x.BranchToId == branchId).Select(x => x.ChallanNo).ToList();
+                var vClaimIdList = new List<string>();
+                if (branchId == 0)
+                {
+                    vClaimIdList = db.tblStockTransferOuts.Select(x => x.ChallanNo).ToList();
+                }
+                else
+                {
+                    vClaimIdList = db.tblStockTransferOuts.Where(x => x.BranchToId == branchId).Select(x => x.ChallanNo).ToList();
+                }
 
                 foreach (var item in vClaimIdList)
                 {
@@ -282,6 +290,8 @@ namespace OraRegaAV.Controllers
                                 stockTransferOutPartObj.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                                 stockTransferOutPartObj.ModifiedDate = DateTime.Now;
 
+                                db.tblStockTransferPartDetails.AddOrUpdate(stockTransferOutPartObj);
+
                                 await db.SaveChangesAsync();
 
                                 // Transfer Part Detail to Respective Branch
@@ -292,6 +302,8 @@ namespace OraRegaAV.Controllers
 
                                     vPartDetailObj.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                                     vPartDetailObj.ModifiedDate = DateTime.Now;
+
+                                    db.tblPartDetails.AddOrUpdate(vPartDetailObj);
 
                                     await db.SaveChangesAsync();
                                 }
@@ -336,6 +348,8 @@ namespace OraRegaAV.Controllers
                                 stockTransferOutPartObj.Reason = parameters.Reason;
                                 stockTransferOutPartObj.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                                 stockTransferOutPartObj.ModifiedDate = DateTime.Now;
+
+                                db.tblStockTransferPartDetails.AddOrUpdate(stockTransferOutPartObj);
 
                                 await db.SaveChangesAsync();
                             }

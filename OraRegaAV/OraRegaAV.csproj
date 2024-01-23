@@ -396,6 +396,7 @@
     <Compile Include="Controllers\StockEntryAPIController.cs" />
     <Compile Include="Controllers\StockInOutAPIController.cs" />
     <Compile Include="Controllers\StockTransferAPIController.cs" />
+    <Compile Include="Controllers\StockOutAPIController.cs" />
     <Compile Include="Controllers\SupportTypeAPIController.cs" />
     <Compile Include="Controllers\MasterDataAPIController.cs" />
     <Compile Include="Controllers\TravelClaimAPIController.cs" />
@@ -660,6 +661,18 @@
     <Compile Include="DBEntity\GetStockEntryList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetStockOutDefectiveByChallanNumber_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOutDOAByChallanNumber_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOut_DAO_ChallanList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOut_Defective_ChallanList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetStockPartStatusList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -703,6 +716,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetWarrantyTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOCustomerFeedbackList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetWOEnquiriesListForCustomer_Result.cs">
@@ -1038,6 +1054,18 @@
     <Compile Include="DBEntity\tblStockEntryHistory.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblStockOut_DAO.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_DAO_PartDetails.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_Defective.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_Defective_PartDetails.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblStockPartStatu.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1222,6 +1250,7 @@
     <Compile Include="Models\StockAllocationModels.cs" />
     <Compile Include="Models\StockPartStatusModel.cs" />
     <Compile Include="Models\StockTransferModel.cs" />
+    <Compile Include="Models\StockTransferOutViewModel.cs" />
     <Compile Include="Models\TravelClaimViewModel.cs" />
     <Compile Include="Models\TravelRangeModel.cs" />
     <Compile Include="Models\Utilities.cs" />

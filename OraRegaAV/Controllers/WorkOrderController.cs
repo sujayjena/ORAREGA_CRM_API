@@ -592,7 +592,9 @@ namespace OraRegaAV.Controllers
             {
                 List<GetWOListForEmployees_Result> woListForEmployees;
 
-                woListForEmployees = await Task.Run(() => db.GetWOListForEmployees(parameters.OrderStatusId, parameters.EmployeeId).ToList());
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                woListForEmployees = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId).ToList());
 
                 foreach (var obj in woListForEmployees)
                 {
@@ -833,12 +835,14 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetWorkOrderList(string workOrderNumber = "")
+        public async Task<Response> GetWorkOrderList(int companyId = 0, int branchId = 0, string workOrderNumber = "")
         {
             List<GetWorkOrderListViewModel> workOrderListObj = new List<GetWorkOrderListViewModel>();
             try
             {
-                var workOrderList = await Task.Run(() => db.GetWorkOrderList(workOrderNumber).ToList());
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var workOrderList = await Task.Run(() => db.GetWorkOrderList(companyId, branchId, workOrderNumber, userId).ToList());
 
                 workOrderListObj = workOrderList.Select(detail => new GetWorkOrderListViewModel
                 {
@@ -1184,7 +1188,7 @@ namespace OraRegaAV.Controllers
             {
                 //var vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM <= parameters.Distance).FirstOrDefault();
                 var vRatePerKMsObj = new tblRatePerKM();
-                var vRatePerKMs = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM >= parameters.Distance).OrderBy(x=>x.KM).FirstOrDefault();
+                var vRatePerKMs = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM >= parameters.Distance).OrderBy(x => x.KM).FirstOrDefault();
                 if (vRatePerKMs != null)
                 {
                     vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM <= vRatePerKMs.KM).OrderByDescending(x => x.KM).FirstOrDefault();

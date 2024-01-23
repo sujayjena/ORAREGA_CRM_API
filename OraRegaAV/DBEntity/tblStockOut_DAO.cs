@@ -10,36 +10,19 @@
 namespace OraRegaAV.DBEntity
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GetStockTransferInList_Result
+    public partial class tblStockOut_DAO
     {
         public int Id { get; set; }
         public string ChallanNo { get; set; }
         public Nullable<int> ComapnyId { get; set; }
-        public string CompanyName { get; set; }
         public Nullable<int> BranchFromId { get; set; }
-        public string BranchFromName { get; set; }
         public Nullable<int> BranchToId { get; set; }
-        public string BranchToName { get; set; }
         public Nullable<System.DateTime> TransferDate { get; set; }
         public string NewDocketNo { get; set; }
         public Nullable<System.DateTime> StockTransferOutDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
-        public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<int> PartId { get; set; }
-        public string UniqueCode { get; set; }
-        public string PartNumber { get; set; }
-        public string PartName { get; set; }
-        public string PartDescription { get; set; }
-        public Nullable<int> HSNCodeId { get; set; }
-        public string HSNCode { get; set; }
-        public string CTSerialNo { get; set; }
-        public int PartStatusId { get; set; }
-        public string PartStatus { get; set; }
-        public string DocketNo { get; set; }
-        public int Quantity { get; set; }
-        public Nullable<int> StockTransferStatusId { get; set; }
-        public string StatusName { get; set; }
     }
 }

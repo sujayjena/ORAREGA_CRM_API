@@ -196,7 +196,7 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                lstSOEnquiries = await Task.Run(() => db.GetSOEnquiryList(parameters.EnquiryStatusId, 0).ToList());
+                lstSOEnquiries = await Task.Run(() => db.GetSOEnquiryList(parameters.CompanyId, parameters.BranchId, parameters.EnquiryStatusId, 0).ToList());
                 _response.Data = lstSOEnquiries;
             }
             catch (Exception ex)

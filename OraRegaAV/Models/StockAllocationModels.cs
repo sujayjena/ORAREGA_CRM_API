@@ -35,6 +35,10 @@ namespace OraRegaAV.Models
 
     public class StockAllocationSearchParameters
     {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
         public string UniqueCode { get; set; }
         public string PartNumber { get; set; }
         public string PartDesc { get; set; }
@@ -44,6 +48,10 @@ namespace OraRegaAV.Models
     // Added by Sujay
     public class StockAllocation_PartsAllocatedToWorkOrder_Search
     {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
         public string WorkOrderNumber { get; set; }
         public string PartName { get; set; }
         public string PartDescription { get; set; }
@@ -76,6 +84,10 @@ namespace OraRegaAV.Models
 
     public class StockAllocation_PartsAllocatedToEngineer_Search
     {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
         public int EngineerId { get; set; }
         public string EngineerName { get; set; }
         public string PartName { get; set; }
@@ -136,6 +148,10 @@ namespace OraRegaAV.Models
 
     public class StockAllocation_PartsAllocatedToReturn_Search
     {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
         public int EngineerId { get; set; }
         public string EngineerName { get; set; }
         public string PartName { get; set; }

@@ -11,7 +11,7 @@ namespace OraRegaAV.DBEntity
 {
     using System;
     
-    public partial class GetStockTransferInList_Result
+    public partial class GetStockOutDOAByChallanNumber_Result
     {
         public int Id { get; set; }
         public string ChallanNo { get; set; }
@@ -27,19 +27,5 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<int> PartId { get; set; }
-        public string UniqueCode { get; set; }
-        public string PartNumber { get; set; }
-        public string PartName { get; set; }
-        public string PartDescription { get; set; }
-        public Nullable<int> HSNCodeId { get; set; }
-        public string HSNCode { get; set; }
-        public string CTSerialNo { get; set; }
-        public int PartStatusId { get; set; }
-        public string PartStatus { get; set; }
-        public string DocketNo { get; set; }
-        public int Quantity { get; set; }
-        public Nullable<int> StockTransferStatusId { get; set; }
-        public string StatusName { get; set; }
     }
 }

@@ -344,7 +344,7 @@ namespace OraRegaAV.Controllers.API
 
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                partsListForAllocation = db.GetPartsListForAllocation(parameters.UniqueCode.SanitizeValue(), parameters.PartNumber.SanitizeValue(), parameters.PartDesc.SanitizeValue(), userId).ToList();
+                partsListForAllocation = db.GetPartsListForAllocation(parameters.CompanyId, parameters.BranchId, parameters.UniqueCode.SanitizeValue(), parameters.PartNumber.SanitizeValue(), parameters.PartDesc.SanitizeValue(), userId).ToList();
 
                 _response.Data = partsListForAllocation;
             }
@@ -452,7 +452,9 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                var vObjList = await Task.Run(() => db.GetStockAllocationToWorkOrderList(parameters.WorkOrderNumber.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.AllocatedBy).ToList());
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vObjList = await Task.Run(() => db.GetStockAllocationToWorkOrderList(parameters.CompanyId, parameters.BranchId, parameters.WorkOrderNumber.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.AllocatedBy, userId).ToList());
 
                 _response.Data = vObjList;
             }
@@ -520,9 +522,11 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
                 parameters.Type = string.IsNullOrWhiteSpace(parameters.Type) ? "W" : parameters.Type;
 
-                var vObjList = await Task.Run(() => db.GetStockAllocationToEngineerList(parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.Type.SanitizeValue()).ToList());
+                var vObjList = await Task.Run(() => db.GetStockAllocationToEngineerList(parameters.CompanyId, parameters.BranchId, parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.Type.SanitizeValue(), userId).ToList());
 
                 _response.Data = vObjList;
             }
@@ -645,9 +649,11 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
                 parameters.Type = string.IsNullOrWhiteSpace(parameters.Type) ? "W" : parameters.Type;
 
-                var vObjList = await Task.Run(() => db.GetStockAllocationToReturnList(parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.StatusId, parameters.Type.SanitizeValue()).ToList());
+                var vObjList = await Task.Run(() => db.GetStockAllocationToReturnList(parameters.CompanyId, parameters.BranchId, parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.StatusId, parameters.Type.SanitizeValue(),userId).ToList());
 
                 _response.Data = vObjList;
             }

@@ -163,9 +163,9 @@ namespace OraRegaAV.Controllers.API
         }
 
         [HttpPost]
-        public Response PartsList()
+        public Response PartsList(int CompanyId = 0, int BranchId = 0, int UserId = 0)
         {
-            _response = RetrievePartsList();
+            _response = RetrievePartsList(0,CompanyId, BranchId, UserId);
             return _response;
         }
 
@@ -176,13 +176,13 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
-        private Response RetrievePartsList(int Id = 0)
+        private Response RetrievePartsList(int Id = 0, int CompanyId = 0, int BranchId = 0, int UserId = 0)
         {
             List<GetPartDetailList_Result> tblPartDetailList;
 
             try
             {
-                tblPartDetailList = db.GetPartDetailList(Id).ToList();
+                tblPartDetailList = db.GetPartDetailList(Id, CompanyId, BranchId, UserId).ToList();
                 _response.Data = tblPartDetailList;
             }
             catch (Exception ex)

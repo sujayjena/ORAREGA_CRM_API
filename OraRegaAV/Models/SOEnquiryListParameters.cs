@@ -1,13 +1,16 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace OraRegaAV.Models
 {
     public class SOEnquiryListParameters
     {
-        //public int? CompanyId { get; set; }
-        //public int? BranchId { get; set; }
-        
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
+
         ///<summary>
         ///0 = All, 1 = New, 2 = Accepted, 3 = Rejected, 4 = History
         ///</summary>

@@ -21,6 +21,11 @@ namespace OraRegaAV.Models
 
     public class WOListParameters
     {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
+
         //[Range(1, int.MaxValue, ErrorMessage = "Employee ID is required")]
         public int OrderStatusId { get; set; }
 

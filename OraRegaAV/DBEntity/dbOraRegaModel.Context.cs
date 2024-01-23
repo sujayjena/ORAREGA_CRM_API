@@ -153,6 +153,10 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblVehicleType> tblVehicleTypes { get; set; }
         public virtual DbSet<tblCareerPost> tblCareerPosts { get; set; }
         public virtual DbSet<tblTravelClaim> tblTravelClaims { get; set; }
+        public virtual DbSet<tblStockOut_DAO> tblStockOut_DAO { get; set; }
+        public virtual DbSet<tblStockOut_DAO_PartDetails> tblStockOut_DAO_PartDetails { get; set; }
+        public virtual DbSet<tblStockOut_Defective> tblStockOut_Defective { get; set; }
+        public virtual DbSet<tblStockOut_Defective_PartDetails> tblStockOut_Defective_PartDetails { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -901,27 +905,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesList_Result>("GetEmployeesList", empCodeParameter, empNameParameter, emailParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(string uniqueCode, string partNumber, string partDesc, Nullable<int> userId)
-        {
-            var uniqueCodeParameter = uniqueCode != null ?
-                new ObjectParameter("UniqueCode", uniqueCode) :
-                new ObjectParameter("UniqueCode", typeof(string));
-    
-            var partNumberParameter = partNumber != null ?
-                new ObjectParameter("PartNumber", partNumber) :
-                new ObjectParameter("PartNumber", typeof(string));
-    
-            var partDescParameter = partDesc != null ?
-                new ObjectParameter("PartDesc", partDesc) :
-                new ObjectParameter("PartDesc", typeof(string));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartsListForAllocation_Result>("GetPartsListForAllocation", uniqueCodeParameter, partNumberParameter, partDescParameter, userIdParameter);
-        }
-    
         public virtual ObjectResult<GetWorkOrderDetails_Result> GetWorkOrderDetails(string workOrderNumber)
         {
             var workOrderNumberParameter = workOrderNumber != null ?
@@ -929,15 +912,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("WorkOrderNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderDetails_Result>("GetWorkOrderDetails", workOrderNumberParameter);
-        }
-    
-        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(string workOrderNumber)
-        {
-            var workOrderNumberParameter = workOrderNumber != null ?
-                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
-                new ObjectParameter("WorkOrderNumber", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", workOrderNumberParameter);
         }
     
         public virtual ObjectResult<GetRequestForAdvanceList_Result> GetRequestForAdvanceList(Nullable<int> employeeId, string claimId, Nullable<int> advanceStatusId)
@@ -1092,52 +1066,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClaimSettlementList_Result>("GetClaimSettlementList", claimSattlementIdParameter, employeeIdParameter, claimIdParameter, settlementStatusIdParameter);
         }
     
-        public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy)
-        {
-            var workOrderNoParameter = workOrderNo != null ?
-                new ObjectParameter("WorkOrderNo", workOrderNo) :
-                new ObjectParameter("WorkOrderNo", typeof(string));
-    
-            var partNumberParameter = partNumber != null ?
-                new ObjectParameter("PartNumber", partNumber) :
-                new ObjectParameter("PartNumber", typeof(string));
-    
-            var partDescParameter = partDesc != null ?
-                new ObjectParameter("PartDesc", partDesc) :
-                new ObjectParameter("PartDesc", typeof(string));
-    
-            var allocatedByParameter = allocatedBy.HasValue ?
-                new ObjectParameter("AllocatedBy", allocatedBy) :
-                new ObjectParameter("AllocatedBy", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToWorkOrderList_Result>("GetStockAllocationToWorkOrderList", workOrderNoParameter, partNumberParameter, partDescParameter, allocatedByParameter);
-        }
-    
-        public virtual ObjectResult<GetStockAllocationToEngineerList_Result> GetStockAllocationToEngineerList(Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, string type)
-        {
-            var engineerIdParameter = engineerId.HasValue ?
-                new ObjectParameter("EngineerId", engineerId) :
-                new ObjectParameter("EngineerId", typeof(int));
-    
-            var engineerNameParameter = engineerName != null ?
-                new ObjectParameter("EngineerName", engineerName) :
-                new ObjectParameter("EngineerName", typeof(string));
-    
-            var partNumberParameter = partNumber != null ?
-                new ObjectParameter("PartNumber", partNumber) :
-                new ObjectParameter("PartNumber", typeof(string));
-    
-            var partDescParameter = partDesc != null ?
-                new ObjectParameter("PartDesc", partDesc) :
-                new ObjectParameter("PartDesc", typeof(string));
-    
-            var typeParameter = type != null ?
-                new ObjectParameter("Type", type) :
-                new ObjectParameter("Type", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToEngineerList_Result>("GetStockAllocationToEngineerList", engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, typeParameter);
-        }
-    
         public virtual ObjectResult<GetStockTransferList_Result> GetStockTransferList(string dockerNo, Nullable<int> userid)
         {
             var dockerNoParameter = dockerNo != null ?
@@ -1160,63 +1088,16 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInOutByChallanNumber_Result>("GetStockTransferInOutByChallanNumber", challanNumberParameter);
         }
     
-        public virtual ObjectResult<GetStockTransferOutChallanList_Result> GetStockTransferOutChallanList(string challanNumber, Nullable<int> userId)
+        public virtual ObjectResult<GetStockTransferInChallanList_Result> GetStockTransferInChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, string dockerNo, Nullable<int> userId)
         {
-            var challanNumberParameter = challanNumber != null ?
-                new ObjectParameter("ChallanNumber", challanNumber) :
-                new ObjectParameter("ChallanNumber", typeof(string));
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
     
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferOutChallanList_Result>("GetStockTransferOutChallanList", challanNumberParameter, userIdParameter);
-        }
-    
-        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, string type)
-        {
-            var engineerIdParameter = engineerId.HasValue ?
-                new ObjectParameter("EngineerId", engineerId) :
-                new ObjectParameter("EngineerId", typeof(int));
-    
-            var engineerNameParameter = engineerName != null ?
-                new ObjectParameter("EngineerName", engineerName) :
-                new ObjectParameter("EngineerName", typeof(string));
-    
-            var partNumberParameter = partNumber != null ?
-                new ObjectParameter("PartNumber", partNumber) :
-                new ObjectParameter("PartNumber", typeof(string));
-    
-            var partDescParameter = partDesc != null ?
-                new ObjectParameter("PartDesc", partDesc) :
-                new ObjectParameter("PartDesc", typeof(string));
-    
-            var statusIdParameter = statusId.HasValue ?
-                new ObjectParameter("StatusId", statusId) :
-                new ObjectParameter("StatusId", typeof(int));
-    
-            var typeParameter = type != null ?
-                new ObjectParameter("Type", type) :
-                new ObjectParameter("Type", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, typeParameter);
-        }
-    
-        public virtual ObjectResult<GetSOEnquiryList_Result> GetSOEnquiryList(Nullable<int> enquiryStatusId, Nullable<int> loggedInUserId)
-        {
-            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
-                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
-                new ObjectParameter("EnquiryStatusId", typeof(int));
-    
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSOEnquiryList_Result>("GetSOEnquiryList", enquiryStatusIdParameter, loggedInUserIdParameter);
-        }
-    
-        public virtual ObjectResult<GetStockTransferInChallanList_Result> GetStockTransferInChallanList(string challanNumber, string dockerNo, Nullable<int> userId, Nullable<int> branchId)
-        {
             var challanNumberParameter = challanNumber != null ?
                 new ObjectParameter("ChallanNumber", challanNumber) :
                 new ObjectParameter("ChallanNumber", typeof(string));
@@ -1229,20 +1110,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInChallanList_Result>("GetStockTransferInChallanList", challanNumberParameter, dockerNoParameter, userIdParameter, branchIdParameter);
-        }
-    
-        public virtual ObjectResult<GetStockTransferInList_Result> GetStockTransferInList(string challanNo)
-        {
-            var challanNoParameter = challanNo != null ?
-                new ObjectParameter("ChallanNo", challanNo) :
-                new ObjectParameter("ChallanNo", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInChallanList_Result>("GetStockTransferInChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, dockerNoParameter, userIdParameter);
         }
     
         public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList()
@@ -1253,15 +1121,6 @@ namespace OraRegaAV.DBEntity
         public virtual ObjectResult<GetVehicleTypeList_Result> GetVehicleTypeList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleTypeList_Result>("GetVehicleTypeList");
-        }
-    
-        public virtual ObjectResult<GetPartDetailList_Result> GetPartDetailList(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailList_Result>("GetPartDetailList", idParameter);
         }
     
         public virtual ObjectResult<GetBannerList_Result> GetBannerList(string appType, Nullable<bool> isActive)
@@ -1391,19 +1250,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelClaimList_Result>("GetTravelClaimList", employeeIdParameter, workOrderNumberParameter, statusIdParameter);
         }
     
-        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> orderStatusId, Nullable<int> engineerId)
-        {
-            var orderStatusIdParameter = orderStatusId.HasValue ?
-                new ObjectParameter("OrderStatusId", orderStatusId) :
-                new ObjectParameter("OrderStatusId", typeof(int));
-    
-            var engineerIdParameter = engineerId.HasValue ?
-                new ObjectParameter("EngineerId", engineerId) :
-                new ObjectParameter("EngineerId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", orderStatusIdParameter, engineerIdParameter);
-        }
-    
         public virtual ObjectResult<GetPartDetailTransferHistoryLogList_Result> GetPartDetailTransferHistoryLogList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> partId)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -1419,6 +1265,333 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PartId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailTransferHistoryLogList_Result>("GetPartDetailTransferHistoryLogList", companyIdParameter, branchIdParameter, partIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockTransferInList_Result> GetStockTransferInList(string challanNo)
+        {
+            var challanNoParameter = challanNo != null ?
+                new ObjectParameter("ChallanNo", challanNo) :
+                new ObjectParameter("ChallanNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter);
+        }
+    
+        public virtual ObjectResult<GetWOCustomerFeedbackList_Result> GetWOCustomerFeedbackList(string workOrderNo)
+        {
+            var workOrderNoParameter = workOrderNo != null ?
+                new ObjectParameter("WorkOrderNo", workOrderNo) :
+                new ObjectParameter("WorkOrderNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOCustomerFeedbackList_Result>("GetWOCustomerFeedbackList", workOrderNoParameter);
+        }
+    
+        public virtual ObjectResult<GetPartDetailList_Result> GetPartDetailList(Nullable<int> id, Nullable<int> companyId, Nullable<int> branchId, Nullable<int> userId)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailList_Result>("GetPartDetailList", idParameter, companyIdParameter, branchIdParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(Nullable<int> companyId, Nullable<int> branchId, string uniqueCode, string partNumber, string partDesc, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var uniqueCodeParameter = uniqueCode != null ?
+                new ObjectParameter("UniqueCode", uniqueCode) :
+                new ObjectParameter("UniqueCode", typeof(string));
+    
+            var partNumberParameter = partNumber != null ?
+                new ObjectParameter("PartNumber", partNumber) :
+                new ObjectParameter("PartNumber", typeof(string));
+    
+            var partDescParameter = partDesc != null ?
+                new ObjectParameter("PartDesc", partDesc) :
+                new ObjectParameter("PartDesc", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartsListForAllocation_Result>("GetPartsListForAllocation", companyIdParameter, branchIdParameter, uniqueCodeParameter, partNumberParameter, partDescParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var workOrderNoParameter = workOrderNo != null ?
+                new ObjectParameter("WorkOrderNo", workOrderNo) :
+                new ObjectParameter("WorkOrderNo", typeof(string));
+    
+            var partNumberParameter = partNumber != null ?
+                new ObjectParameter("PartNumber", partNumber) :
+                new ObjectParameter("PartNumber", typeof(string));
+    
+            var partDescParameter = partDesc != null ?
+                new ObjectParameter("PartDesc", partDesc) :
+                new ObjectParameter("PartDesc", typeof(string));
+    
+            var allocatedByParameter = allocatedBy.HasValue ?
+                new ObjectParameter("AllocatedBy", allocatedBy) :
+                new ObjectParameter("AllocatedBy", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToWorkOrderList_Result>("GetStockAllocationToWorkOrderList", companyIdParameter, branchIdParameter, workOrderNoParameter, partNumberParameter, partDescParameter, allocatedByParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockAllocationToEngineerList_Result> GetStockAllocationToEngineerList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, string type, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var engineerIdParameter = engineerId.HasValue ?
+                new ObjectParameter("EngineerId", engineerId) :
+                new ObjectParameter("EngineerId", typeof(int));
+    
+            var engineerNameParameter = engineerName != null ?
+                new ObjectParameter("EngineerName", engineerName) :
+                new ObjectParameter("EngineerName", typeof(string));
+    
+            var partNumberParameter = partNumber != null ?
+                new ObjectParameter("PartNumber", partNumber) :
+                new ObjectParameter("PartNumber", typeof(string));
+    
+            var partDescParameter = partDesc != null ?
+                new ObjectParameter("PartDesc", partDesc) :
+                new ObjectParameter("PartDesc", typeof(string));
+    
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToEngineerList_Result>("GetStockAllocationToEngineerList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, typeParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, string type, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var engineerIdParameter = engineerId.HasValue ?
+                new ObjectParameter("EngineerId", engineerId) :
+                new ObjectParameter("EngineerId", typeof(int));
+    
+            var engineerNameParameter = engineerName != null ?
+                new ObjectParameter("EngineerName", engineerName) :
+                new ObjectParameter("EngineerName", typeof(string));
+    
+            var partNumberParameter = partNumber != null ?
+                new ObjectParameter("PartNumber", partNumber) :
+                new ObjectParameter("PartNumber", typeof(string));
+    
+            var partDescParameter = partDesc != null ?
+                new ObjectParameter("PartDesc", partDesc) :
+                new ObjectParameter("PartDesc", typeof(string));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("StatusId", statusId) :
+                new ObjectParameter("StatusId", typeof(int));
+    
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, typeParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockTransferOutChallanList_Result> GetStockTransferOutChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var challanNumberParameter = challanNumber != null ?
+                new ObjectParameter("ChallanNumber", challanNumber) :
+                new ObjectParameter("ChallanNumber", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferOutChallanList_Result>("GetStockTransferOutChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetSOEnquiryList_Result> GetSOEnquiryList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> enquiryStatusId, Nullable<int> loggedInUserId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
+                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
+                new ObjectParameter("EnquiryStatusId", typeof(int));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSOEnquiryList_Result>("GetSOEnquiryList", companyIdParameter, branchIdParameter, enquiryStatusIdParameter, loggedInUserIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNumber, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> orderStatusId, Nullable<int> engineerId, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var orderStatusIdParameter = orderStatusId.HasValue ?
+                new ObjectParameter("OrderStatusId", orderStatusId) :
+                new ObjectParameter("OrderStatusId", typeof(int));
+    
+            var engineerIdParameter = engineerId.HasValue ?
+                new ObjectParameter("EngineerId", engineerId) :
+                new ObjectParameter("EngineerId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", companyIdParameter, branchIdParameter, orderStatusIdParameter, engineerIdParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockOut_Defective_ChallanList_Result> GetStockOut_Defective_ChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var challanNumberParameter = challanNumber != null ?
+                new ObjectParameter("ChallanNumber", challanNumber) :
+                new ObjectParameter("ChallanNumber", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOut_Defective_ChallanList_Result>("GetStockOut_Defective_ChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockOut_DAO_ChallanList_Result> GetStockOut_DAO_ChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var challanNumberParameter = challanNumber != null ?
+                new ObjectParameter("ChallanNumber", challanNumber) :
+                new ObjectParameter("ChallanNumber", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOut_DAO_ChallanList_Result>("GetStockOut_DAO_ChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetStockOutDefectiveByChallanNumber_Result> GetStockOutDefectiveByChallanNumber(string challanNumber)
+        {
+            var challanNumberParameter = challanNumber != null ?
+                new ObjectParameter("ChallanNumber", challanNumber) :
+                new ObjectParameter("ChallanNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOutDefectiveByChallanNumber_Result>("GetStockOutDefectiveByChallanNumber", challanNumberParameter);
+        }
+    
+        public virtual ObjectResult<GetStockOutDOAByChallanNumber_Result> GetStockOutDOAByChallanNumber(string challanNumber)
+        {
+            var challanNumberParameter = challanNumber != null ?
+                new ObjectParameter("ChallanNumber", challanNumber) :
+                new ObjectParameter("ChallanNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOutDOAByChallanNumber_Result>("GetStockOutDOAByChallanNumber", challanNumberParameter);
         }
     }
 }

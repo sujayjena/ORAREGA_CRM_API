@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace OraRegaAV.Controllers.Customers
 {
@@ -343,6 +344,27 @@ namespace OraRegaAV.Controllers.Customers
                     _response.IsSuccess = false;
                     _response.Message = "Feedback has already been submitted for this enquiry";
                 }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WOEnquiryFeedbackList(string WorkOrderNo="")
+        {
+            List<GetWOCustomerFeedbackList_Result> advanceList = new List<GetWOCustomerFeedbackList_Result>();
+
+            try
+            {
+                advanceList = db.GetWOCustomerFeedbackList(WorkOrderNo).ToList();
+
+                _response.Data = advanceList;
             }
             catch (Exception ex)
             {

@@ -137,6 +137,10 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblVehicleType" Width="1.5" PointX="34.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblTravelClaim" Width="1.5" PointX="13.375" PointY="34.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblCareerPost" Width="1.5" PointX="33.375" PointY="32.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_DAO" Width="1.5" PointX="34.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_DAO_PartDetails" Width="1.5" PointX="15.375" PointY="34.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_Defective" Width="1.5" PointX="3.375" PointY="35.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_Defective_PartDetails" Width="1.5" PointX="5.375" PointY="35.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
