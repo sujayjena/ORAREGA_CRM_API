@@ -23,6 +23,7 @@ using OraRegaAV.Models.Enums;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.SqlServer.Server;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Data;
 
 namespace OraRegaAV.Controllers
 {
@@ -1357,11 +1358,84 @@ namespace OraRegaAV.Controllers
         [HttpPost]
         public async Task<Response> WorkOrderTrackLog(int workOrderId = 0)
         {
-            List<GetTackingOrderLog_Result> resultList;
+            List<WOTackingOrderLogResponse> resultList = new List<WOTackingOrderLogResponse>();
 
             try
             {
-                resultList = await Task.Run(() => db.GetTackingOrderLog("WO", Convert.ToInt32(workOrderId)).ToList());
+                var vObjList = await Task.Run(() => db.GetTackingOrderLog("WO", Convert.ToInt32(workOrderId)).OrderBy(x => x.SystemCode).ToList());
+
+                var vObjWoObj = await Task.Run(() => db.tblWorkOrders.Where(o => o.Id == workOrderId).FirstOrDefaultAsync());
+
+                foreach (var item in vObjList)
+                {
+                    var vNewObj = new WOTackingOrderLogResponse();
+
+                    //Created = 1,
+                    //QuatationInitiated = 2,
+                    //QuatationApproval = 3,
+                    //WorkOrderPaymentStatus = 4,
+                    //EngineerAllocated = 5,
+                    //WorkOrderCaseStatus = 6
+
+                    vNewObj.Id = item.Id;
+                    vNewObj.WorkOrderNumber = vObjWoObj.WorkOrderNumber;
+
+                    if (item.SystemCode == 1)
+                    {
+                        vNewObj.IsWorkOrderCreated = true;
+
+                        if (vObjWoObj.WorkOrderEnquiryId > 0)
+                            vNewObj.IsWorkOrderEnquiryCreated = true;
+                    }
+                    else if (item.SystemCode == 2)
+                    {
+                        vNewObj.IsQuatationInitiated = true;
+                    }
+                    else if (item.SystemCode == 3)
+                    {
+                        vNewObj.IsQuatationApproval = true;
+                    }
+                    else if (item.SystemCode == 4)
+                    {
+                        vNewObj.IsWorkOrderPaymentStatus = true;
+                    }
+                    else if (item.SystemCode == 5)
+                    {
+                        vNewObj.IsEngineerAllocated = true;
+
+                        if (vObjWoObj.EngineerId > 0)
+                        {
+                            var vObjEngObj = await Task.Run(() => db.tblEmployees.Where(o => o.Id == vObjWoObj.EngineerId).FirstOrDefaultAsync());
+                            if (vObjEngObj != null)
+                            {
+                                var vEngObj = new WOTackingOrderLogAllocatedEngineerDetail()
+                                {
+                                    EngineerId = vObjEngObj.Id,
+                                    EngineerName = vObjEngObj.EmployeeName,
+                                    EngineerMobile = vObjEngObj.PersonalNumber
+                                };
+
+                                vNewObj.EngineerDetail = vEngObj;
+                            }
+                        }
+                    }
+                    else if (item.SystemCode == 6)
+                    {
+                        vNewObj.IsWorkOrderCaseStatus = true;
+                    }
+                    else if (item.SystemCode == 0)
+                    {
+                        vNewObj.IsWorkOrderEnquiryCreated = false;
+                        vNewObj.IsWorkOrderCreated = false;
+                        vNewObj.IsQuatationInitiated = false;
+                        vNewObj.IsQuatationApproval = false;
+                        vNewObj.IsWorkOrderPaymentStatus = false;
+                        vNewObj.IsEngineerAllocated = false;
+                        vNewObj.IsWorkOrderCaseStatus = false;
+                    }
+
+                    resultList.Add(vNewObj);
+                }
 
                 _response.Data = resultList;
             }

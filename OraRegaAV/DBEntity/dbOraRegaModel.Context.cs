@@ -157,6 +157,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblStockOut_DAO_PartDetails> tblStockOut_DAO_PartDetails { get; set; }
         public virtual DbSet<tblStockOut_Defective> tblStockOut_Defective { get; set; }
         public virtual DbSet<tblStockOut_Defective_PartDetails> tblStockOut_Defective_PartDetails { get; set; }
+        public virtual DbSet<tblTackingOrder> tblTackingOrders { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -1604,7 +1605,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserType", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList", companyIdParameter, branchIdParameter, userTypeParameter);
-
         }
     
         public virtual ObjectResult<GetTackingOrderLog_Result> GetTackingOrderLog(string module, Nullable<int> moduleUniqId)

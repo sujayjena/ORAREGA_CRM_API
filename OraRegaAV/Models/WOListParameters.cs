@@ -9,7 +9,7 @@ namespace OraRegaAV.Models
     {
         public int? CompanyId { get; set; }
         public int? BranchId { get; set; }
-        
+
         ///<summary>
         ///0 = All, 1 = New, 2 = Accepted, 3 = Rejected, 4 = History
         ///</summary>
@@ -42,7 +42,7 @@ namespace OraRegaAV.Models
         public int SupportTypeId { get; set; }
     }
 
-    public class WorkOrderAcceptNReject 
+    public class WorkOrderAcceptNReject
     {
         public string WorkOrderNumber { get; set; }
         public int EngineerId { get; set; }
@@ -86,4 +86,30 @@ namespace OraRegaAV.Models
         [DefaultValue("")]
         public string UserType { get; set; }
     }
+
+    public partial class WOTackingOrderLogResponse
+    {
+        public int Id { get; set; }
+
+        public string WorkOrderNumber { get; set; }
+        public bool IsWorkOrderEnquiryCreated { get; set; }
+        public bool IsWorkOrderCreated { get; set; }
+        public bool IsQuatationInitiated { get; set; }
+        public bool IsQuatationApproval { get; set; }
+        public bool IsWorkOrderPaymentStatus { get; set; }
+        public bool IsEngineerAllocated { get; set; }
+        public bool IsWorkOrderCaseStatus { get; set; }
+
+        public WOTackingOrderLogAllocatedEngineerDetail EngineerDetail { get; set; }
+        public string Message { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+    }
+
+    public class WOTackingOrderLogAllocatedEngineerDetail
+    {
+        public int EngineerId { get; set; }
+        public string EngineerName { get; set; }
+        public string EngineerMobile { get; set; }
+    }
+
 }
