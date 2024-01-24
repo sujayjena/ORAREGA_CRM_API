@@ -17,7 +17,7 @@ namespace OraRegaAV.Helpers
     {
         private readonly dbOraRegaEntities db = new dbOraRegaEntities();
 
-        private async Task<bool> SendEmail(string emailSubject, string emailContent, string receiverEmail, HttpFileCollection files = null)
+        public async Task<bool> SendEmail(string emailSubject, string emailContent, string receiverEmail, HttpFileCollection files = null)
         {
             bool result = false;
 

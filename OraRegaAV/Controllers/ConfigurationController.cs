@@ -11,6 +11,11 @@ using System.Linq;
 using System.Security.RightsManagement;
 using System.Data.Entity;
 using System.Data.Entity.Utilities;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Net.Mail;
+using System.Net;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.Web;
 
 namespace OraRegaAV.Controllers
 {
@@ -114,6 +119,7 @@ namespace OraRegaAV.Controllers
         #endregion
 
         #region Contact Us
+
         [HttpPost]
         [Route("api/Configuration/SaveContactUs")]
         public async Task<Response> SaveContactUs(tblConfigContactU objtblConfigContactUs)
@@ -177,6 +183,71 @@ namespace OraRegaAV.Controllers
 
             return _response;
         }
+
         #endregion
+
+        [HttpPost]
+        public Response SendMailTest(string EmailTo)
+        {
+            //bodyContent = "Hello";
+
+            var isEmailSent = new AlertsSender().SendEmail("emailSubject", "emailContent", EmailTo, null);
+
+            //string isEmailSent = "";
+            //try
+            //{
+
+            //    string fromEmail = "no_reply@quikservindia.com";
+            //    string frompassword = "Quikserv@123";
+
+            //    MailMessage mailMessage = new MailMessage(fromEmail, "sujay930@gmail.com", "Test Subject", bodyContent);
+            //    mailMessage.IsBodyHtml = true;
+            //    SmtpClient smtpClient = new SmtpClient("smtpout.secureserver.net", 993);
+            //    smtpClient.EnableSsl = true;
+            //    smtpClient.UseDefaultCredentials = false;
+            //    smtpClient.Credentials = new NetworkCredential(fromEmail, frompassword);
+            //    smtpClient.Send(mailMessage);
+            //}
+            //catch (Exception ex)
+            //{
+            //    sendMail = ex.Message.ToString();
+            //    Console.WriteLine(ex.ToString());
+            //}
+
+
+            //MailMessage message = new MailMessage();
+            //try
+            //{
+            //    MailAddress fromAddress = new MailAddress("no_reply@quikservindia.com");
+            //    message.From = fromAddress;
+            //    message.To.Add("sujay930@gmail.com");
+            //    //message.CC.Add("ccresive@server.com");
+
+            //    message.Subject = "Hello client";
+            //    message.IsBodyHtml = true;
+            //    string body = "Hello!<br> How are you?";
+
+            //    message.Body = body;
+
+            //    SmtpClient smtpClient = new SmtpClient();
+            //    smtpClient.Host = "smtpout.secureserver.net";
+            //    smtpClient.Port = 465;
+            //    smtpClient.EnableSsl = false;
+            //    smtpClient.UseDefaultCredentials = false;
+            //    smtpClient.Credentials = new NetworkCredential("smtpout.secureserver.net", "Quikserv@123");
+            //    // AdvancedIntellect.Ssl.SslSocket ssl = new AdvancedIntellect.Ssl.SslSocket();
+            //    smtpClient.Send(message);
+            //    smtpClient.Timeout = 10000;
+            //}
+            //catch (Exception ex)
+            //{
+            //    sendMail = ex.Message.ToString();
+            //    Console.WriteLine(ex.ToString());
+            //}
+
+            _response.Data = "Email Sent : " + isEmailSent;
+
+            return _response;
+        }
     }
 }
