@@ -803,11 +803,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRolesList_Result>("GetRolesList", roleNameParameter, isActiveParameter);
         }
     
-        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList");
-        }
-    
         public virtual ObjectResult<GetReportingToEmployeeForSelectList_Result> GetReportingToEmployeeForSelectList(Nullable<long> roleId, Nullable<long> regionId)
         {
             var roleIdParameter = roleId.HasValue ?
@@ -1592,6 +1587,15 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("ChallanNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOutDOAByChallanNumber_Result>("GetStockOutDOAByChallanNumber", challanNumberParameter);
+        }
+    
+        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(string userType)
+        {
+            var userTypeParameter = userType != null ?
+                new ObjectParameter("UserType", userType) :
+                new ObjectParameter("UserType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList", userTypeParameter);
         }
     }
 }

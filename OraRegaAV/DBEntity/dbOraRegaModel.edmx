@@ -2016,7 +2016,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetEmployeesListByRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmpCode" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="GetEngineerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetEngineerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserType" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetEngineerVisitHistoryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EngineerId" Type="int" Mode="In" />
           <Parameter Name="WorkOrderNumber" Type="nvarchar" Mode="In" />
@@ -3493,7 +3495,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="RoleName" Mode="In" Type="String" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetEngineerList" ReturnType="Collection(dbOraRegaModel.GetEngineerList_Result)" />
           <FunctionImport Name="GetReportingToEmployeeForSelectList" ReturnType="Collection(dbOraRegaModel.GetReportingToEmployeeForSelectList_Result)">
             <Parameter Name="RoleId" Mode="In" Type="Int64" />
             <Parameter Name="RegionId" Mode="In" Type="Int64" />
@@ -3768,10 +3769,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetStockOutDefectiveByChallanNumber" ReturnType="Collection(dbOraRegaModel.GetStockOutDefectiveByChallanNumber_Result)">
-            <Parameter Name="ChallanNumber" Mode="In" Type="String" />
+          <Parameter Name="ChallanNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetStockOutDOAByChallanNumber" ReturnType="Collection(dbOraRegaModel.GetStockOutDOAByChallanNumber_Result)">
-            <Parameter Name="ChallanNumber" Mode="In" Type="String" />
+          <Parameter Name="ChallanNumber" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetEngineerList" ReturnType="Collection(dbOraRegaModel.GetEngineerList_Result)">
+            <Parameter Name="UserType" Mode="In" Type="String" />
           </FunctionImport>
 
         </EntityContainer>
@@ -4979,10 +4983,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="DateTime" Name="CreatedOn" Nullable="true" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="GetEngineerList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="GetReportingToEmployeeForSelectList_Result">
           <Property Type="Int32" Name="Value" Nullable="false" />
@@ -6830,6 +6830,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetEngineerList_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
         </ComplexType>
 
       </Schema>
@@ -8942,14 +8946,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetEngineerList" FunctionName="dbOraRegaModel.Store.GetEngineerList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetEngineerList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetReportingToEmployeeForSelectList" FunctionName="dbOraRegaModel.Store.GetReportingToEmployeeForSelectList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetReportingToEmployeeForSelectList_Result">
@@ -11030,6 +11026,14 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetEngineerList" FunctionName="dbOraRegaModel.Store.GetEngineerList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetEngineerList_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

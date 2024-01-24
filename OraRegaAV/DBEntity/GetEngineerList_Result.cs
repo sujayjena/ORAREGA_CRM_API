@@ -13,7 +13,7 @@ namespace OraRegaAV.DBEntity
     
     public partial class GetEngineerList_Result
     {
-        public int Id { get; set; }
+        public int id { get; set; }
         public string EmployeeName { get; set; }
     }
 }

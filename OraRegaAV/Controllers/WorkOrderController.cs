@@ -815,12 +815,12 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetEngineerList()
+        public async Task<Response> GetEngineerList(string UserType = "")
         {
             List<GetEngineerList_Result> engineerList;
             try
             {
-                engineerList = await Task.Run(() => db.GetEngineerList().ToList());
+                engineerList = await Task.Run(() => db.GetEngineerList(UserType).ToList());
 
                 _response.Data = engineerList;
             }
