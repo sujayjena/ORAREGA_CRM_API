@@ -3794,7 +3794,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="ChallanNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetEngineerList" ReturnType="Collection(dbOraRegaModel.GetEngineerList_Result)">
+ 
           <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+ 
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+ 
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="UserType" Mode="In" Type="String" />
           </FunctionImport>

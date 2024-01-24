@@ -75,4 +75,15 @@ namespace OraRegaAV.Models
         public string Longitude { get; set; }
         public Nullable<decimal> Distance { get; set; }
     }
+    public class EngineerListSearchParameters
+    {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string UserType { get; set; }
+    }
 }
