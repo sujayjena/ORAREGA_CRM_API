@@ -964,65 +964,68 @@ namespace OraRegaAV.Controllers.API
                 var userDetail = await db.tblUsers.Where(x => x.EmployeeId == Id).FirstOrDefaultAsync();
 
                 employee = await db.tblEmployees.Where(x => x.Id == Id).FirstOrDefaultAsync();
-
-                employeeReponse.Id = employee.Id;
-                employeeReponse.EmployeeCode = employee.EmployeeCode;
-                employeeReponse.EmployeeName = employee.EmployeeName;
-                employeeReponse.EmailId = employee.EmailId;
-                employeeReponse.ReportingTo = employee.ReportingTo;
-                employeeReponse.RoleId = employee.RoleId;
-                employeeReponse.DateOfBirth = employee.DateOfBirth;
-                employeeReponse.DateOfJoining = employee.DateOfJoining;
-                employeeReponse.EmergencyContactNumber = employee.EmergencyContactNumber;
-                employeeReponse.BloodGroup = employee.BloodGroup;
-                employeeReponse.IsActive = employee.IsActive;
-                employeeReponse.IsMobileUser = employee.IsMobileUser;
-                employeeReponse.CreatedBy = employee.CreatedBy;
-                employeeReponse.CreatedDate = employee.CreatedDate;
-                employeeReponse.ModifiedBy = employee.ModifiedBy;
-                employeeReponse.ModifiedDate = employee.ModifiedDate;
-                employeeReponse.ProfileImagePath = employee.ProfileImagePath;
-                employeeReponse.PersonalNumber = employee.PersonalNumber;
-                employeeReponse.OfficeNumber = employee.OfficeNumber;
-                employeeReponse.IsWebUser = employee.IsWebUser;
-                employeeReponse.ResignDate = employee.ResignDate;
-                employeeReponse.LastWorkingDay = employee.LastWorkingDay;
-                employeeReponse.AadharNumber = employee.AadharNumber;
-                employeeReponse.AadharCardPath = employee.AadharCardPath;
-                employeeReponse.PanNumber = employee.PanNumber;
-                employeeReponse.PanCardPath = employee.PanCardPath;
-                employeeReponse.BranchId = employee.BranchId;
-                employeeReponse.DepartmentId = employee.DepartmentId;
-                employeeReponse.UserTypeId = employee.UserTypeId;
-                employeeReponse.IsRegistrationPending = employee.IsRegistrationPending;
-                employeeReponse.CompanyId = employee.CompanyId;
-                employeeReponse.IsTemporaryAddressIsSame = employee.IsTemporaryAddressIsSame;
-
-                if (!string.IsNullOrEmpty(employee.ProfileImagePath))
+                if (employee != null)
                 {
+                    employeeReponse.Id = employee.Id;
+                    employeeReponse.EmployeeCode = employee.EmployeeCode;
+                    employeeReponse.EmployeeName = employee.EmployeeName;
+                    employeeReponse.EmailId = employee.EmailId;
+                    employeeReponse.ReportingTo = employee.ReportingTo;
+                    employeeReponse.RoleId = employee.RoleId;
+                    employeeReponse.DateOfBirth = employee.DateOfBirth;
+                    employeeReponse.DateOfJoining = employee.DateOfJoining;
+                    employeeReponse.EmergencyContactNumber = employee.EmergencyContactNumber;
+                    employeeReponse.BloodGroup = employee.BloodGroup;
+                    employeeReponse.IsActive = employee.IsActive;
+                    employeeReponse.IsMobileUser = employee.IsMobileUser;
+                    employeeReponse.CreatedBy = employee.CreatedBy;
+                    employeeReponse.CreatedDate = employee.CreatedDate;
+                    employeeReponse.ModifiedBy = employee.ModifiedBy;
+                    employeeReponse.ModifiedDate = employee.ModifiedDate;
                     employeeReponse.ProfileImagePath = employee.ProfileImagePath;
-                    employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
-                }
-
-                if (!string.IsNullOrEmpty(employee.AadharCardPath))
-                {
+                    employeeReponse.PersonalNumber = employee.PersonalNumber;
+                    employeeReponse.OfficeNumber = employee.OfficeNumber;
+                    employeeReponse.IsWebUser = employee.IsWebUser;
+                    employeeReponse.ResignDate = employee.ResignDate;
+                    employeeReponse.LastWorkingDay = employee.LastWorkingDay;
+                    employeeReponse.AadharNumber = employee.AadharNumber;
                     employeeReponse.AadharCardPath = employee.AadharCardPath;
-                    employeeReponse.AadharCard = fileManager.GetEmpDocuments(employee.AadharCardPath, HttpContext.Current);
-                }
-
-                if (!string.IsNullOrEmpty(employee.PanCardPath))
-                {
+                    employeeReponse.PanNumber = employee.PanNumber;
                     employeeReponse.PanCardPath = employee.PanCardPath;
-                    employeeReponse.PanCard = fileManager.GetEmpDocuments(employee.PanCardPath, HttpContext.Current);
-                }
+                    employeeReponse.BranchId = employee.BranchId;
+                    employeeReponse.DepartmentId = employee.DepartmentId;
+                    employeeReponse.UserTypeId = employee.UserTypeId;
+                    employeeReponse.IsRegistrationPending = employee.IsRegistrationPending;
+                    employeeReponse.CompanyId = employee.CompanyId;
+                    employeeReponse.IsTemporaryAddressIsSame = employee.IsTemporaryAddressIsSame;
 
-                if (userDetail != null)
-                {
-                    employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == userDetail.Id && x.IsDefault == true).ToList();
-                    employeeReponse.TemporaryAddress = db.tblTemporaryAddresses.Where(x => x.UserId == userDetail.Id).ToList();
-                }
+                    if (!string.IsNullOrEmpty(employee.ProfileImagePath))
+                    {
+                        employeeReponse.ProfileImagePath = employee.ProfileImagePath;
+                        employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
+                    }
 
-                _response.Data = employeeReponse;
+                    if (!string.IsNullOrEmpty(employee.AadharCardPath))
+                    {
+                        employeeReponse.AadharCardPath = employee.AadharCardPath;
+                        employeeReponse.AadharCard = fileManager.GetEmpDocuments(employee.AadharCardPath, HttpContext.Current);
+                    }
+
+                    if (!string.IsNullOrEmpty(employee.PanCardPath))
+                    {
+                        employeeReponse.PanCardPath = employee.PanCardPath;
+                        employeeReponse.PanCard = fileManager.GetEmpDocuments(employee.PanCardPath, HttpContext.Current);
+                    }
+
+                    if (userDetail != null)
+                    {
+                        employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == userDetail.Id && x.IsDefault == true).ToList();
+                        employeeReponse.TemporaryAddress = db.tblTemporaryAddresses.Where(x => x.UserId == userDetail.Id).ToList();
+                    }
+
+                    _response.Data = employeeReponse;
+
+                }
             }
             catch (Exception ex)
             {
@@ -1044,7 +1047,7 @@ namespace OraRegaAV.Controllers.API
             var employeeReponse = new EditProfile_Response();
             try
             {
-                var loguserId = Utilities.GetUserID(ActionContext.Request);
+                var userDetail = await db.tblUsers.Where(x => x.EmployeeId == Id).FirstOrDefaultAsync();
                 employee = await db.tblEmployees.Where(x => x.Id == Id).FirstOrDefaultAsync();
 
                 if (employee != null)
@@ -1071,7 +1074,12 @@ namespace OraRegaAV.Controllers.API
                         employeeReponse.ProfileImagePath = employee.ProfileImagePath;
                         employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
                     }
-                    employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == loguserId && x.IsDefault == true).ToList();
+
+                    if (userDetail != null)
+                    {
+                        employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == userDetail.Id && x.IsDefault == true).ToList();
+                        employeeReponse.TemporaryAddress = db.tblTemporaryAddresses.Where(x => x.UserId == userDetail.Id).ToList();
+                    }
 
                     _response.Data = employeeReponse;
                 }

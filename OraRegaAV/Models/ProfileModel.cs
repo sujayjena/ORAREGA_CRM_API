@@ -85,4 +85,5 @@ public class EditProfile_Response
     public string ProfileImagePath { get; set; }
     public byte[] ProfileImage { get; set; }
     public List<tblPermanentAddress> PermanentAddress { get; set; }
+    public List<tblTemporaryAddress> TemporaryAddress { get; set; }
 }
