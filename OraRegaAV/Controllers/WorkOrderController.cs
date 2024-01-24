@@ -18,6 +18,12 @@ using Newtonsoft.Json;
 using OraRegaAV.Models.DBEntitiesPartialClasses;
 using System.Data.Entity.Migrations;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using System.Web.Services.Description;
+using OraRegaAV.Models.Enums;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.SqlServer.Server;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Data;
 
 namespace OraRegaAV.Controllers
 {
@@ -25,6 +31,7 @@ namespace OraRegaAV.Controllers
     {
         private readonly dbOraRegaEntities db = new dbOraRegaEntities();
         private Response _response = new Response();
+        TrackingModuleLog trackingModuleLog = new TrackingModuleLog();
 
         public WorkOrderController()
         {
@@ -45,7 +52,6 @@ namespace OraRegaAV.Controllers
             HttpFileCollection postedFiles;
             List<HttpPostedFile> postedFilesProductIssuePhotos;
             List<HttpPostedFile> postedFilesPurchaseProofPhotos;
-
             FileManager fileManager = new FileManager();
 
             bool isAllTheIssuePhotoValid = true;
@@ -300,6 +306,12 @@ namespace OraRegaAV.Controllers
                     db.tblWorkOrders.Add(tblWorkOrder);
 
                     _response.Message = $"Work Order details saved successfully";
+
+                    #region Track Order Log
+
+                    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.Created), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                    #endregion
                 }
                 else
                 {
@@ -402,6 +414,17 @@ namespace OraRegaAV.Controllers
                 //}
 
                 await db.SaveChangesAsync();
+
+
+                if (parameters.CaseStatusId > 0)
+                {
+                    #region Track Order Log
+
+                    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.WorkOrderCaseStatus), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                    #endregion
+                }
+
 
                 #region Remark & Address
 
@@ -521,6 +544,21 @@ namespace OraRegaAV.Controllers
                 }
 
                 await db.SaveChangesAsync();
+
+                #region Track Order Log
+
+                //if (OrderStatusId > 0)
+                //{
+                //    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.WorkOrderStatusUpdate), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+                //}
+
+                if (EngineerId > 0)
+                {
+                    trackingModuleLog = new TrackingModuleLog();
+                    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.EngineerAllocated), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+                }
+
+                #endregion
             }
             catch (Exception ex)
             {
@@ -549,6 +587,15 @@ namespace OraRegaAV.Controllers
                             await db.SaveChangesAsync();
 
                             _response.Message = $"updated";
+
+                            if (parameters.EngineerId > 0)
+                            {
+                                #region Track Order Log
+
+                                trackingModuleLog.TrackOrderLog("WO", vWorkOrderEngineerObj.Id, Convert.ToInt32(WorkOrderTrackingStatus.EngineerAllocated), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                                #endregion
+                            }
                         }
                     }
 
@@ -1305,6 +1352,99 @@ namespace OraRegaAV.Controllers
                 LogWriter.WriteLog(ex);
             }
 
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderTrackLog(int workOrderId = 0)
+        {
+            List<WOTackingOrderLogResponse> resultList = new List<WOTackingOrderLogResponse>();
+
+            try
+            {
+                var vObjList = await Task.Run(() => db.GetTackingOrderLog("WO", Convert.ToInt32(workOrderId)).OrderBy(x => x.SystemCode).ToList());
+
+                var vObjWoObj = await Task.Run(() => db.tblWorkOrders.Where(o => o.Id == workOrderId).FirstOrDefaultAsync());
+
+                foreach (var item in vObjList)
+                {
+                    var vNewObj = new WOTackingOrderLogResponse();
+
+                    //Created = 1,
+                    //QuatationInitiated = 2,
+                    //QuatationApproval = 3,
+                    //WorkOrderPaymentStatus = 4,
+                    //EngineerAllocated = 5,
+                    //WorkOrderCaseStatus = 6
+
+                    vNewObj.Id = item.Id;
+                    vNewObj.WorkOrderNumber = vObjWoObj.WorkOrderNumber;
+
+                    if (item.SystemCode == 1)
+                    {
+                        vNewObj.IsWorkOrderCreated = true;
+
+                        if (vObjWoObj.WorkOrderEnquiryId > 0)
+                            vNewObj.IsWorkOrderEnquiryCreated = true;
+                    }
+                    else if (item.SystemCode == 2)
+                    {
+                        vNewObj.IsQuatationInitiated = true;
+                    }
+                    else if (item.SystemCode == 3)
+                    {
+                        vNewObj.IsQuatationApproval = true;
+                    }
+                    else if (item.SystemCode == 4)
+                    {
+                        vNewObj.IsWorkOrderPaymentStatus = true;
+                    }
+                    else if (item.SystemCode == 5)
+                    {
+                        vNewObj.IsEngineerAllocated = true;
+
+                        if (vObjWoObj.EngineerId > 0)
+                        {
+                            var vObjEngObj = await Task.Run(() => db.tblEmployees.Where(o => o.Id == vObjWoObj.EngineerId).FirstOrDefaultAsync());
+                            if (vObjEngObj != null)
+                            {
+                                var vEngObj = new WOTackingOrderLogAllocatedEngineerDetail()
+                                {
+                                    EngineerId = vObjEngObj.Id,
+                                    EngineerName = vObjEngObj.EmployeeName,
+                                    EngineerMobile = vObjEngObj.PersonalNumber
+                                };
+
+                                vNewObj.EngineerDetail = vEngObj;
+                            }
+                        }
+                    }
+                    else if (item.SystemCode == 6)
+                    {
+                        vNewObj.IsWorkOrderCaseStatus = true;
+                    }
+                    else if (item.SystemCode == 0)
+                    {
+                        vNewObj.IsWorkOrderEnquiryCreated = false;
+                        vNewObj.IsWorkOrderCreated = false;
+                        vNewObj.IsQuatationInitiated = false;
+                        vNewObj.IsQuatationApproval = false;
+                        vNewObj.IsWorkOrderPaymentStatus = false;
+                        vNewObj.IsEngineerAllocated = false;
+                        vNewObj.IsWorkOrderCaseStatus = false;
+                    }
+
+                    resultList.Add(vNewObj);
+                }
+
+                _response.Data = resultList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
             return _response;
         }
     }

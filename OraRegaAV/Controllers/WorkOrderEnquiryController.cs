@@ -15,6 +15,7 @@ using System.Data.Entity;
 using OraRegaAV.Controllers.API;
 using System.Data.Entity.Migrations;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using OraRegaAV.Models.Enums;
 
 namespace OraRegaAV.Controllers
 {
@@ -22,6 +23,7 @@ namespace OraRegaAV.Controllers
     {
         private readonly dbOraRegaEntities db = new dbOraRegaEntities();
         private Response _response = new Response();
+        TrackingModuleLog trackingModuleLog = new TrackingModuleLog();
 
         public WorkOrderEnquiryController()
         {
@@ -132,7 +134,7 @@ namespace OraRegaAV.Controllers
                 parameters.SourceChannelId = Convert.ToInt32(postedForm["SourceChannelId"] ?? "0");
                 parameters.ProdModelIfOther = postedForm["ProdModelIfOther"].SanitizeValue();
 
-                
+
 
                 #region WO Enquiry Main form Validation check
                 //TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblWorkOrderEnquiry), typeof(TblWorkOrderEnquiryMetaData)), typeof(tblWorkOrderEnquiry));
@@ -339,6 +341,12 @@ namespace OraRegaAV.Controllers
                     db.tblWorkOrderEnquiries.Add(tblWorkOrderEnquiry);
                     await db.SaveChangesAsync();
 
+                    #region Track Order Log
+
+                    trackingModuleLog.TrackOrderLog("WOE", tblWorkOrderEnquiry.Id, Convert.ToInt32(WorkOrderTrackingStatus.Created), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                    #endregion
+
                     _response.Message = $"Work Order Enquiry details saved successfully";
                 }
                 else
@@ -474,7 +482,7 @@ namespace OraRegaAV.Controllers
 
                     db.Configuration.ValidateOnSaveEnabled = false; // To ignore validations as here we are only updating EnquiryStatusId
                     await db.SaveChangesAsync();
-                    
+
                     if (EnquiryStatusId == (int)Models.Enums.EnquiryStatus.Accepted)
                         _response.Message = "Work Order Enquiry accepted successfully";
                     else if (EnquiryStatusId == (int)Models.Enums.EnquiryStatus.Rejected)
@@ -560,11 +568,17 @@ namespace OraRegaAV.Controllers
 
                     workOrderId = workOrder.Id;
 
+                    #region Track Order Log
+
+                    trackingModuleLog.TrackOrderLog("WO", workOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.Created), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                    #endregion
+
                     //Update WO Enquiry
                     workOrderEnquiry.EnquiryStatusId = (int)OraRegaAV.Models.Constants.EnquiryStatus.History;
                     workOrderEnquiry.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                     workOrderEnquiry.ModifiedDate = DateTime.Now;
-                    
+
                     db.Configuration.ValidateOnSaveEnabled = false; // To ignore validations as here we are only updating WorkOrderId
 
                     //Set Work Order ID to tblProductIssuesPhotos
@@ -597,6 +611,6 @@ namespace OraRegaAV.Controllers
             }
 
             return _response;
-        }
+        }      
     }
 }

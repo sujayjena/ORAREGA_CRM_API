@@ -141,7 +141,8 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_DAO_PartDetails" Width="1.5" PointX="15.375" PointY="34.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_Defective" Width="1.5" PointX="3.375" PointY="35.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_Defective_PartDetails" Width="1.5" PointX="5.375" PointY="35.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTackingOrder" Width="1.5" PointX="35.375" PointY="8.75" />
+       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -15,4 +15,14 @@
         OnHold = 3,
         Completed = 4
     }
+
+    public enum WorkOrderTrackingStatus
+    {
+        Created = 1,
+        QuatationInitiated = 2,
+        QuatationApproval = 3,
+        WorkOrderPaymentStatus = 4,
+        EngineerAllocated = 5,
+        WorkOrderCaseStatus = 6
+    }
 }
