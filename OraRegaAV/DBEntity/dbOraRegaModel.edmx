@@ -1602,6 +1602,18 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tblTackingOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Module" Type="varchar" MaxLength="50" />
+          <Property Name="ModuleUniqId" Type="int" />
+          <Property Name="SystemCode" Type="int" />
+          <Property Name="Message" Type="varchar(max)" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tblTemporaryAddress">
           <Key>
             <PropertyRef Name="Id" />
@@ -2017,6 +2029,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="EmpCode" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GetEngineerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="UserType" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="GetEngineerVisitHistoryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2267,6 +2281,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetSupportTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetTackingOrderLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Module" Type="nvarchar" Mode="In" />
+          <Parameter Name="ModuleUniqId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetTermsAndConditionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IsActive" Type="bit" Mode="In" />
         </Function>
@@ -2458,6 +2476,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblStockTransferPartDetails" EntityType="Self.tblStockTransferPartDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStockTransferStatus" EntityType="Self.tblStockTransferStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSupportType" EntityType="Self.tblSupportType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTackingOrder" EntityType="Self.tblTackingOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTemporaryAddress" EntityType="Self.tblTemporaryAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTermsAndCondition" EntityType="Self.tblTermsAndCondition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTestimonial" EntityType="Self.tblTestimonial" Schema="dbo" store:Type="Tables" />
@@ -3775,9 +3794,16 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="ChallanNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetEngineerList" ReturnType="Collection(dbOraRegaModel.GetEngineerList_Result)">
+          <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="UserType" Mode="In" Type="String" />
           </FunctionImport>
-
+          <EntitySet Name="tblTackingOrders" EntityType="dbOraRegaModel.tblTackingOrder" />
+          <FunctionImport Name="GetTackingOrderLog" ReturnType="Collection(dbOraRegaModel.GetTackingOrderLog_Result)">
+            <Parameter Name="Module" Mode="In" Type="String" />
+            <Parameter Name="ModuleUniqId" Mode="In" Type="Int32" />
+          </FunctionImport>
+ 
         </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
@@ -6835,7 +6861,28 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="id" Nullable="false" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
         </ComplexType>
-
+        <EntityType Name="tblTackingOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Module" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModuleUniqId" Type="Int32" />
+          <Property Name="SystemCode" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="GetTackingOrderLog_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Module" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ModuleUniqId" Nullable="true" />
+          <Property Type="Int32" Name="SystemCode" Nullable="true" />
+          <Property Type="String" Name="Message" Nullable="true" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+ 
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11037,7 +11084,33 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="tblTackingOrders">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblTackingOrder">
+              <MappingFragment StoreEntitySet="tblTackingOrder">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="SystemCode" ColumnName="SystemCode" />
+                <ScalarProperty Name="ModuleUniqId" ColumnName="ModuleUniqId" />
+                <ScalarProperty Name="Module" ColumnName="Module" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetTackingOrderLog" FunctionName="dbOraRegaModel.Store.GetTackingOrderLog">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetTackingOrderLog_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Module" ColumnName="Module" />
+                <ScalarProperty Name="ModuleUniqId" ColumnName="ModuleUniqId" />
+                <ScalarProperty Name="SystemCode" ColumnName="SystemCode" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

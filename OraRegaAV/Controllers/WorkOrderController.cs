@@ -18,6 +18,11 @@ using Newtonsoft.Json;
 using OraRegaAV.Models.DBEntitiesPartialClasses;
 using System.Data.Entity.Migrations;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using System.Web.Services.Description;
+using OraRegaAV.Models.Enums;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.SqlServer.Server;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace OraRegaAV.Controllers
 {
@@ -25,6 +30,7 @@ namespace OraRegaAV.Controllers
     {
         private readonly dbOraRegaEntities db = new dbOraRegaEntities();
         private Response _response = new Response();
+        TrackingModuleLog trackingModuleLog = new TrackingModuleLog();
 
         public WorkOrderController()
         {
@@ -45,7 +51,6 @@ namespace OraRegaAV.Controllers
             HttpFileCollection postedFiles;
             List<HttpPostedFile> postedFilesProductIssuePhotos;
             List<HttpPostedFile> postedFilesPurchaseProofPhotos;
-
             FileManager fileManager = new FileManager();
 
             bool isAllTheIssuePhotoValid = true;
@@ -300,6 +305,12 @@ namespace OraRegaAV.Controllers
                     db.tblWorkOrders.Add(tblWorkOrder);
 
                     _response.Message = $"Work Order details saved successfully";
+
+                    #region Track Order Log
+
+                    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.Created), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                    #endregion
                 }
                 else
                 {
@@ -402,6 +413,17 @@ namespace OraRegaAV.Controllers
                 //}
 
                 await db.SaveChangesAsync();
+
+
+                if (parameters.CaseStatusId > 0)
+                {
+                    #region Track Order Log
+
+                    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.WorkOrderCaseStatus), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                    #endregion
+                }
+
 
                 #region Remark & Address
 
@@ -521,6 +543,21 @@ namespace OraRegaAV.Controllers
                 }
 
                 await db.SaveChangesAsync();
+
+                #region Track Order Log
+
+                //if (OrderStatusId > 0)
+                //{
+                //    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.WorkOrderStatusUpdate), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+                //}
+
+                if (EngineerId > 0)
+                {
+                    trackingModuleLog = new TrackingModuleLog();
+                    trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.EngineerAllocated), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+                }
+
+                #endregion
             }
             catch (Exception ex)
             {
@@ -549,6 +586,15 @@ namespace OraRegaAV.Controllers
                             await db.SaveChangesAsync();
 
                             _response.Message = $"updated";
+
+                            if (parameters.EngineerId > 0)
+                            {
+                                #region Track Order Log
+
+                                trackingModuleLog.TrackOrderLog("WO", vWorkOrderEngineerObj.Id, Convert.ToInt32(WorkOrderTrackingStatus.EngineerAllocated), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
+
+                                #endregion
+                            }
                         }
                     }
 
@@ -1305,6 +1351,26 @@ namespace OraRegaAV.Controllers
                 LogWriter.WriteLog(ex);
             }
 
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderTrackLog(int workOrderId = 0)
+        {
+            List<GetTackingOrderLog_Result> resultList;
+
+            try
+            {
+                resultList = await Task.Run(() => db.GetTackingOrderLog("WO", Convert.ToInt32(workOrderId)).ToList());
+
+                _response.Data = resultList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
             return _response;
         }
     }

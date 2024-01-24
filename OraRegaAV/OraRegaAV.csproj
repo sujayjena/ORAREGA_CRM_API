@@ -694,6 +694,9 @@
     <Compile Include="DBEntity\GetSupportTypeList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetTackingOrderLog_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetTermsAndConditionList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1081,6 +1084,9 @@
     <Compile Include="DBEntity\tblSupportType.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblTackingOrder.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblTemporaryAddress.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1148,6 +1154,7 @@
     <Compile Include="Helpers\EncryptDecryptHelper.cs" />
     <Compile Include="Helpers\FileManager.cs" />
     <Compile Include="Helpers\LogWriter.cs" />
+    <Compile Include="Helpers\TrackingModuleLog.cs" />
     <Compile Include="Helpers\ValueSanitizerHelper.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\AdminCommonViewModel.cs" />
