@@ -1589,13 +1589,21 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOutDOAByChallanNumber_Result>("GetStockOutDOAByChallanNumber", challanNumberParameter);
         }
     
-        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(string userType)
+        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(Nullable<int> companyId, Nullable<int> branchId, string userType)
         {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
             var userTypeParameter = userType != null ?
                 new ObjectParameter("UserType", userType) :
                 new ObjectParameter("UserType", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList", userTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList", companyIdParameter, branchIdParameter, userTypeParameter);
         }
     }
 }

@@ -2017,6 +2017,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="EmpCode" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GetEngineerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="UserType" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="GetEngineerVisitHistoryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -3775,6 +3777,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="ChallanNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetEngineerList" ReturnType="Collection(dbOraRegaModel.GetEngineerList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="UserType" Mode="In" Type="String" />
           </FunctionImport>
 
