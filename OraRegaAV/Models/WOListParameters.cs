@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -87,10 +88,14 @@ namespace OraRegaAV.Models
         public string UserType { get; set; }
     }
 
-    public partial class WOTackingOrderLogResponse
+    public class WOTackingOrderLogResponse
     {
-        public int Id { get; set; }
+        public WOTackingOrderLogResponse()
+        {
+            LogsInDetail = new List<WOTackingOrderLogInDetailListResponse>();
+        }
 
+        public int Id { get; set; }
         public string WorkOrderNumber { get; set; }
         public bool IsWorkOrderEnquiryCreated { get; set; }
         public bool IsWorkOrderCreated { get; set; }
@@ -101,6 +106,14 @@ namespace OraRegaAV.Models
         public bool IsWorkOrderCaseStatus { get; set; }
 
         public WOTackingOrderLogAllocatedEngineerDetail EngineerDetail { get; set; }
+        public List<WOTackingOrderLogInDetailListResponse> LogsInDetail { get; set; }
+    }
+
+    public class WOTackingOrderLogInDetailListResponse
+    {
+        public int LogId { get; set; }
+        public Nullable<int> SystemCode { get; set; }
+        public string SystemCodeName { get; set; }
         public string Message { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
     }

@@ -1358,17 +1358,24 @@ namespace OraRegaAV.Controllers
         [HttpPost]
         public async Task<Response> WorkOrderTrackLog(int workOrderId = 0)
         {
-            List<WOTackingOrderLogResponse> resultList = new List<WOTackingOrderLogResponse>();
+            var vNewObj = new WOTackingOrderLogResponse();
 
             try
             {
                 var vObjList = await Task.Run(() => db.GetTackingOrderLog("WO", Convert.ToInt32(workOrderId)).OrderBy(x => x.SystemCode).ToList());
 
                 var vObjWoObj = await Task.Run(() => db.tblWorkOrders.Where(o => o.Id == workOrderId).FirstOrDefaultAsync());
+                if (vObjWoObj != null)
+                {
+                    vNewObj.Id = vObjWoObj.Id;
+                    vNewObj.WorkOrderNumber = vObjWoObj.WorkOrderNumber;
+                }
 
                 foreach (var item in vObjList)
                 {
-                    var vNewObj = new WOTackingOrderLogResponse();
+                    var vLogedinDetail = new WOTackingOrderLogInDetailListResponse();
+                    vLogedinDetail.LogId = item.Id;
+                    vLogedinDetail.SystemCode = item.SystemCode;
 
                     //Created = 1,
                     //QuatationInitiated = 2,
@@ -1377,31 +1384,38 @@ namespace OraRegaAV.Controllers
                     //EngineerAllocated = 5,
                     //WorkOrderCaseStatus = 6
 
-                    vNewObj.Id = item.Id;
-                    vNewObj.WorkOrderNumber = vObjWoObj.WorkOrderNumber;
-
                     if (item.SystemCode == 1)
                     {
                         vNewObj.IsWorkOrderCreated = true;
 
                         if (vObjWoObj.WorkOrderEnquiryId > 0)
                             vNewObj.IsWorkOrderEnquiryCreated = true;
+
+                        vLogedinDetail.SystemCodeName = "IsWorkOrderEnquiryCreated";
                     }
                     else if (item.SystemCode == 2)
                     {
                         vNewObj.IsQuatationInitiated = true;
+
+                        vLogedinDetail.SystemCodeName = "IsQuatationInitiated";
                     }
                     else if (item.SystemCode == 3)
                     {
                         vNewObj.IsQuatationApproval = true;
+
+                        vLogedinDetail.SystemCodeName = "IsQuatationApproval";
                     }
                     else if (item.SystemCode == 4)
                     {
                         vNewObj.IsWorkOrderPaymentStatus = true;
+
+                        vLogedinDetail.SystemCodeName = "IsWorkOrderPaymentStatus";
                     }
                     else if (item.SystemCode == 5)
                     {
                         vNewObj.IsEngineerAllocated = true;
+
+                        vLogedinDetail.SystemCodeName = "IsEngineerAllocated";
 
                         if (vObjWoObj.EngineerId > 0)
                         {
@@ -1422,6 +1436,8 @@ namespace OraRegaAV.Controllers
                     else if (item.SystemCode == 6)
                     {
                         vNewObj.IsWorkOrderCaseStatus = true;
+
+                        vLogedinDetail.SystemCodeName = "IsWorkOrderCaseStatus";
                     }
                     else if (item.SystemCode == 0)
                     {
@@ -1434,10 +1450,15 @@ namespace OraRegaAV.Controllers
                         vNewObj.IsWorkOrderCaseStatus = false;
                     }
 
-                    resultList.Add(vNewObj);
+                    vLogedinDetail.Message = item.Message;
+                    vLogedinDetail.CreatedDate = item.CreatedDate;
+
+                    vNewObj.LogsInDetail.Add(vLogedinDetail);
                 }
 
-                _response.Data = resultList;
+                vNewObj.LogsInDetail = vNewObj.LogsInDetail.OrderByDescending(x => x.SystemCode).ToList();
+
+                _response.Data = vNewObj;
             }
             catch (Exception ex)
             {
