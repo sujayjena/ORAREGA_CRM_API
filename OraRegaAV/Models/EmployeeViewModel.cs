@@ -11,11 +11,18 @@ public class EmployeeViewModel
 
 public class Employee_Response
 {
+    public Employee_Response()
+    {
+        TemporaryAddress = new List<TemporaryAddresses_Response>();
+    }
+
     public int Id { get; set; }
     public string EmployeeCode { get; set; }
     public string EmployeeName { get; set; }
     public string EmailId { get; set; }
     public Nullable<int> ReportingTo { get; set; }
+    public string ReportingToName { get; set; }
+    public string ReportingToMobileNo { get; set; }
     public Nullable<int> RoleId { get; set; }
     public Nullable<System.DateTime> DateOfBirth { get; set; }
     public Nullable<System.DateTime> DateOfJoining { get; set; }
@@ -49,5 +56,25 @@ public class Employee_Response
     public byte[] PanCard { get; set; }
 
     public List<tblPermanentAddress> PermanentAddress { get; set; }
-    public List<tblTemporaryAddress> TemporaryAddress { get; set; }
+    public List<TemporaryAddresses_Response> TemporaryAddress { get; set; }
+}
+
+public class TemporaryAddresses_Response
+{
+    public int UserId { get; set; }
+    public Nullable<int> Id { get; set; }
+    public string NameForAddress { get; set; }
+    public string MobileNo { get; set; }
+    public string Address { get; set; }
+    public Nullable<int> StateId { get; set; }
+    public string StateName { get; set; }
+    public Nullable<int> CityId { get; set; }
+    public string CityName { get; set; }
+    public Nullable<int> AreaId { get; set; }
+    public string AreaName { get; set; }
+    public Nullable<int> PinCodeId { get; set; }
+    public string Pincode { get; set; }
+    public Nullable<bool> IsActive { get; set; }
+    public Nullable<int> AddressTypeId { get; set; }
+    public string AddressType { get; set; }
 }

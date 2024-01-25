@@ -1020,7 +1020,31 @@ namespace OraRegaAV.Controllers.API
                     if (userDetail != null)
                     {
                         employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == userDetail.Id && x.IsDefault == true).ToList();
-                        employeeReponse.TemporaryAddress = db.tblTemporaryAddresses.Where(x => x.UserId == userDetail.Id).ToList();
+
+                        var vAddresses_ResultsList = db.GetUsersTemporaryAddresses(userDetail.Id).ToList();
+                        foreach (var item in vAddresses_ResultsList)
+                        {
+                            var vitemObj = new TemporaryAddresses_Response()
+                            {
+                                UserId = item.UserId,
+                                Id = item.Id,
+                                NameForAddress = item.NameForAddress,
+                                MobileNo = item.MobileNo,
+                                Address = item.Address,
+                                StateId = item.StateId,
+                                StateName = item.StateName,
+                                CityId = item.CityId,
+                                CityName = item.CityName,
+                                AreaId = item.AreaId,
+                                AreaName = item.AreaName,
+                                PinCodeId = item.PinCodeId,
+                                Pincode = item.Pincode,
+                                IsActive = item.IsActive,
+                                AddressTypeId = item.AddressTypeId,
+                                AddressType = item.AddressType
+                            };
+                            employeeReponse.TemporaryAddress.Add(vitemObj);
+                        }
                     }
 
                     _response.Data = employeeReponse;
@@ -1044,7 +1068,7 @@ namespace OraRegaAV.Controllers.API
             FileManager fileManager = new FileManager();
             tblEmployee employee;
 
-            var employeeReponse = new EditProfile_Response();
+            var employeeReponse = new Employee_Response();
             try
             {
                 var userDetail = await db.tblUsers.Where(x => x.EmployeeId == Id).FirstOrDefaultAsync();
@@ -1078,7 +1102,31 @@ namespace OraRegaAV.Controllers.API
                     if (userDetail != null)
                     {
                         employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == userDetail.Id && x.IsDefault == true).ToList();
-                        employeeReponse.TemporaryAddress = db.tblTemporaryAddresses.Where(x => x.UserId == userDetail.Id).ToList();
+
+                        var vAddresses_ResultsList = db.GetUsersTemporaryAddresses(userDetail.Id).ToList();
+                        foreach (var item in vAddresses_ResultsList)
+                        {
+                            var vitemObj = new TemporaryAddresses_Response()
+                            {
+                                UserId = item.UserId,
+                                Id = item.Id,
+                                NameForAddress = item.NameForAddress,
+                                MobileNo = item.MobileNo,
+                                Address = item.Address,
+                                StateId = item.StateId,
+                                StateName = item.StateName,
+                                CityId = item.CityId,
+                                CityName = item.CityName,
+                                AreaId = item.AreaId,
+                                AreaName = item.AreaName,
+                                PinCodeId = item.PinCodeId,
+                                Pincode = item.Pincode,
+                                IsActive = item.IsActive,
+                                AddressTypeId = item.AddressTypeId,
+                                AddressType = item.AddressType
+                            };
+                            employeeReponse.TemporaryAddress.Add(vitemObj);
+                        }
                     }
 
                     _response.Data = employeeReponse;

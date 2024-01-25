@@ -33,6 +33,7 @@ namespace OraRegaAV.DBEntity
         public string ProductType { get; set; }
         public Nullable<int> ProductMakeId { get; set; }
         public string ProductMake { get; set; }
+        public Nullable<int> WorkOrderId { get; set; }
         public string WorkOrderNumber { get; set; }
     }
 }

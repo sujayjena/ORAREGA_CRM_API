@@ -11,7 +11,7 @@ namespace OraRegaAV.DBEntity
 {
     using System;
     
-    public partial class GetTackingOrderLog_Result
+    public partial class GetTrackingOrderLog_Result
     {
         public int Id { get; set; }
         public string Module { get; set; }

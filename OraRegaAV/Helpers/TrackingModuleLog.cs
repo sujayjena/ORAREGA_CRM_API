@@ -16,7 +16,7 @@ namespace OraRegaAV.Helpers
 
         public void TrackOrderLog(string module, int moduleUniqId, int systemCode, int createBy)
         {
-            tblTackingOrder tblWorkOrder;
+            tblTrackingOrder tblWorkOrder;
 
             try
             {
@@ -59,10 +59,10 @@ namespace OraRegaAV.Helpers
                     }
                 }
 
-                tblWorkOrder = db.tblTackingOrders.Where(w => w.Module == module && w.ModuleUniqId == moduleUniqId && w.SystemCode == systemCode).FirstOrDefault();
+                tblWorkOrder = db.tblTrackingOrders.Where(w => w.Module == module && w.ModuleUniqId == moduleUniqId && w.SystemCode == systemCode).FirstOrDefault();
                 if (tblWorkOrder == null)
                 {
-                    tblWorkOrder = new tblTackingOrder();
+                    tblWorkOrder = new tblTrackingOrder();
 
                     tblWorkOrder.Module = module;
                     tblWorkOrder.ModuleUniqId = moduleUniqId;
@@ -72,7 +72,7 @@ namespace OraRegaAV.Helpers
                     tblWorkOrder.CreatedBy = createBy;
                     tblWorkOrder.CreatedDate = DateTime.Now;
 
-                    db.tblTackingOrders.Add(tblWorkOrder);
+                    db.tblTrackingOrders.Add(tblWorkOrder);
                 }
                 db.SaveChangesAsync();
             }

@@ -157,7 +157,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblStockOut_DAO_PartDetails> tblStockOut_DAO_PartDetails { get; set; }
         public virtual DbSet<tblStockOut_Defective> tblStockOut_Defective { get; set; }
         public virtual DbSet<tblStockOut_Defective_PartDetails> tblStockOut_Defective_PartDetails { get; set; }
-        public virtual DbSet<tblTackingOrder> tblTackingOrders { get; set; }
+        public virtual DbSet<tblTrackingOrder> tblTrackingOrders { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -309,48 +309,6 @@ namespace OraRegaAV.DBEntity
         public virtual ObjectResult<GetWOListForDropDown_Result> GetWOListForDropDown()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForDropDown_Result>("GetWOListForDropDown");
-        }
-    
-        public virtual ObjectResult<GetWorkOrderCreationReport_Result> GetWorkOrderCreationReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> stateId, string branchIds)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("FromDate", fromDate) :
-                new ObjectParameter("FromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("ToDate", toDate) :
-                new ObjectParameter("ToDate", typeof(System.DateTime));
-    
-            var stateIdParameter = stateId.HasValue ?
-                new ObjectParameter("StateId", stateId) :
-                new ObjectParameter("StateId", typeof(int));
-    
-            var branchIdsParameter = branchIds != null ?
-                new ObjectParameter("BranchIds", branchIds) :
-                new ObjectParameter("BranchIds", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderCreationReport_Result>("GetWorkOrderCreationReport", fromDateParameter, toDateParameter, stateIdParameter, branchIdsParameter);
-        }
-    
-        public virtual ObjectResult<GetWorkOrderEnquiryReport_Result> GetWorkOrderEnquiryReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> stateId, string branchIds)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("FromDate", fromDate) :
-                new ObjectParameter("FromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("ToDate", toDate) :
-                new ObjectParameter("ToDate", typeof(System.DateTime));
-    
-            var stateIdParameter = stateId.HasValue ?
-                new ObjectParameter("StateId", stateId) :
-                new ObjectParameter("StateId", typeof(int));
-    
-            var branchIdsParameter = branchIds != null ?
-                new ObjectParameter("BranchIds", branchIds) :
-                new ObjectParameter("BranchIds", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderEnquiryReport_Result>("GetWorkOrderEnquiryReport", fromDateParameter, toDateParameter, stateIdParameter, branchIdsParameter);
         }
     
         public virtual ObjectResult<ImportStockEntry_Result> ImportStockEntry(string stockEntryData, Nullable<long> loggedInUserId)
@@ -925,23 +883,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("AdvanceStatusId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRequestForAdvanceList_Result>("GetRequestForAdvanceList", employeeIdParameter, claimIdParameter, advanceStatusIdParameter);
-        }
-    
-        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
-        {
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
-                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
-                new ObjectParameter("EnquiryStatusId", typeof(int));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
         }
     
         public virtual ObjectResult<GetSalesOrderDetails_Result> GetSalesOrderDetails(string salesOrderNo)
@@ -1590,24 +1531,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOutDOAByChallanNumber_Result>("GetStockOutDOAByChallanNumber", challanNumberParameter);
         }
     
-        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(Nullable<int> companyId, Nullable<int> branchId, string userType)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId.HasValue ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
-    
-            var userTypeParameter = userType != null ?
-                new ObjectParameter("UserType", userType) :
-                new ObjectParameter("UserType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList", companyIdParameter, branchIdParameter, userTypeParameter);
-        }
-    
-        public virtual ObjectResult<GetTackingOrderLog_Result> GetTackingOrderLog(string module, Nullable<int> moduleUniqId)
+        public virtual ObjectResult<GetTrackingOrderLog_Result> GetTrackingOrderLog(string module, Nullable<int> moduleUniqId)
         {
             var moduleParameter = module != null ?
                 new ObjectParameter("Module", module) :
@@ -1617,7 +1541,108 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("ModuleUniqId", moduleUniqId) :
                 new ObjectParameter("ModuleUniqId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTackingOrderLog_Result>("GetTackingOrderLog", moduleParameter, moduleUniqIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackingOrderLog_Result>("GetTrackingOrderLog", moduleParameter, moduleUniqIdParameter);
+        }
+    
+        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> userType)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var userTypeParameter = userType.HasValue ?
+                new ObjectParameter("UserType", userType) :
+                new ObjectParameter("UserType", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerList_Result>("GetEngineerList", companyIdParameter, branchIdParameter, userTypeParameter);
+        }
+    
+        public virtual ObjectResult<GetUsersTemporaryAddresses_Result> GetUsersTemporaryAddresses(Nullable<int> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUsersTemporaryAddresses_Result>("GetUsersTemporaryAddresses", userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderEnquiryReport_Result> GetWorkOrderEnquiryReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("StateId", stateId) :
+                new ObjectParameter("StateId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderEnquiryReport_Result>("GetWorkOrderEnquiryReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderCreationReport_Result> GetWorkOrderCreationReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("StateId", stateId) :
+                new ObjectParameter("StateId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderCreationReport_Result>("GetWorkOrderCreationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
+        {
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
+                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
+                new ObjectParameter("EnquiryStatusId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
         }
     }
 }

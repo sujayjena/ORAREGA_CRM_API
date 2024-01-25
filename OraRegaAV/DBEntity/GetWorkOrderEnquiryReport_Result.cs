@@ -13,27 +13,28 @@ namespace OraRegaAV.DBEntity
     
     public partial class GetWorkOrderEnquiryReport_Result
     {
+        public int Id { get; set; }
         public Nullable<System.DateTime> EnquiryDate { get; set; }
         public string SupportType { get; set; }
         public string BranchName { get; set; }
         public string CustomerName { get; set; }
-        public string MobileNumber { get; set; }
-        public string AlternateNumber { get; set; }
-        public string EmailAdderss { get; set; }
+        public string MobileNo { get; set; }
+        public string EmailAddress { get; set; }
+        public string AlternateMobileNo { get; set; }
         public string CompanyName { get; set; }
-        public string CustomerGStNumber { get; set; }
+        public string CustomerGSTNo { get; set; }
         public string ProductType { get; set; }
         public string ProductMake { get; set; }
-        public string ModelType { get; set; }
+        public string ProductModel { get; set; }
         public string ProductNumber { get; set; }
         public string ProductDescription { get; set; }
-        public string ProductSerialNumber { get; set; }
+        public string ProductSerialNo { get; set; }
         public string WarrantyType { get; set; }
         public string CountryOfPurchase { get; set; }
-        public string OperatingSystem { get; set; }
+        public string OperatingSystemName { get; set; }
         public string PermanentAddress { get; set; }
-        public string VisitingAddress { get; set; }
-        public string IssueDescription { get; set; }
+        public string TemporaryAddress { get; set; }
+        public string IssueDescriptionName { get; set; }
         public string CustomerReportedIssue { get; set; }
         public string SourceChannel { get; set; }
     }

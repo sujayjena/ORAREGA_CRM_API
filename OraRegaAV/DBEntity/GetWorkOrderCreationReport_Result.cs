@@ -17,11 +17,10 @@ namespace OraRegaAV.DBEntity
         public string WorkOrderNumber { get; set; }
         public Nullable<System.DateTime> WorkOrderLogDate { get; set; }
         public string BranchName { get; set; }
-        public string OrganizationName { get; set; }
         public string CustomerName { get; set; }
         public string MobileNumber { get; set; }
         public string AlternateNumber { get; set; }
-        public string EmailAdderss { get; set; }
+        public string EmailAddress { get; set; }
         public string CustomerGStNumber { get; set; }
         public string PriorityName { get; set; }
         public string CompanyName { get; set; }

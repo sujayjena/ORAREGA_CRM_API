@@ -1291,11 +1291,16 @@ namespace OraRegaAV.Controllers
 
                         db.tblTravelClaims.Add(vtblTravelClaim);
 
+                        await db.SaveChangesAsync();
+                    }
+
+                    if (parameters.IsStartStop > 0)
+                    {
                         //update Visit Status stop
-                        var vtblEngineerVisitHistory = db.tblEngineerVisitHistories.Where(x => x.Id == tbl.Id).FirstOrDefault();
-                        if (vtblEngineerVisitHistory != null)
+                        var vtblEngineerVisitHistoryLog = db.tblEngineerVisitHistories.Where(x => x.Id == tbl.Id).FirstOrDefault();
+                        if (vtblEngineerVisitHistoryLog != null)
                         {
-                            vtblEngineerVisitHistory.VisitStatus = "Stop";
+                            vtblEngineerVisitHistoryLog.VisitStatus = "Stop";
                         }
 
                         await db.SaveChangesAsync();
@@ -1362,7 +1367,7 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                var vObjList = await Task.Run(() => db.GetTackingOrderLog("WO", Convert.ToInt32(workOrderId)).OrderBy(x => x.SystemCode).ToList());
+                var vObjList = await Task.Run(() => db.GetTrackingOrderLog("WO", Convert.ToInt32(workOrderId)).OrderBy(x => x.SystemCode).ToList());
 
                 var vObjWoObj = await Task.Run(() => db.tblWorkOrders.Where(o => o.Id == workOrderId).FirstOrDefaultAsync());
                 if (vObjWoObj != null)
@@ -1396,25 +1401,21 @@ namespace OraRegaAV.Controllers
                     else if (item.SystemCode == 2)
                     {
                         vNewObj.IsQuatationInitiated = true;
-
                         vLogedinDetail.SystemCodeName = "IsQuatationInitiated";
                     }
                     else if (item.SystemCode == 3)
                     {
                         vNewObj.IsQuatationApproval = true;
-
                         vLogedinDetail.SystemCodeName = "IsQuatationApproval";
                     }
                     else if (item.SystemCode == 4)
                     {
                         vNewObj.IsWorkOrderPaymentStatus = true;
-
                         vLogedinDetail.SystemCodeName = "IsWorkOrderPaymentStatus";
                     }
                     else if (item.SystemCode == 5)
                     {
                         vNewObj.IsEngineerAllocated = true;
-
                         vLogedinDetail.SystemCodeName = "IsEngineerAllocated";
 
                         if (vObjWoObj.EngineerId > 0)
@@ -1436,8 +1437,13 @@ namespace OraRegaAV.Controllers
                     else if (item.SystemCode == 6)
                     {
                         vNewObj.IsWorkOrderCaseStatus = true;
-
                         vLogedinDetail.SystemCodeName = "IsWorkOrderCaseStatus";
+
+                        var vObjCaseStatusObj = await Task.Run(() => db.tblCaseStatus.Where(o => o.Id == vObjWoObj.CaseStatusId).FirstOrDefaultAsync());
+                        if (vObjCaseStatusObj != null)
+                        {
+                            vNewObj.WorkOrderCaseStatusValue = vObjCaseStatusObj.CaseStatusName;
+                        }
                     }
                     else if (item.SystemCode == 0)
                     {

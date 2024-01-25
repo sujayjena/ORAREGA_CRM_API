@@ -694,13 +694,13 @@
     <Compile Include="DBEntity\GetSupportTypeList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBEntity\GetTackingOrderLog_Result.cs">
-      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DBEntity\GetTermsAndConditionList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetTestimonialList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetTrackingOrderLog_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetTravelClaimList_Result.cs">
@@ -710,6 +710,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetUsersAddresses_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetUsersTemporaryAddresses_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetVehicleTypeList_Result.cs">
@@ -1084,9 +1087,6 @@
     <Compile Include="DBEntity\tblSupportType.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBEntity\tblTackingOrder.cs">
-      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DBEntity\tblTemporaryAddress.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1094,6 +1094,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblTestimonial.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTrackingOrder.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblTravelClaim.cs">

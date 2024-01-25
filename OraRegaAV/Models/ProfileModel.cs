@@ -71,19 +71,3 @@ public class ModuleList_GetPermissionList
     public bool Add { get; set; }
     public bool Edit { get; set; }
 }
-
-public class EditProfile_Response
-{
-    public long Id { get; set; }
-    public string EmployeeCode { get; set; }
-    public string EmployeeName { get; set; }
-    public string PersonalNumber { get; set; }
-    public string EmailId { get; set; }
-    public int ReportingTo { get; set; }
-    public string ReportingToName { get; set; }
-    public string ReportingToMobileNo { get; set; }
-    public string ProfileImagePath { get; set; }
-    public byte[] ProfileImage { get; set; }
-    public List<tblPermanentAddress> PermanentAddress { get; set; }
-    public List<tblTemporaryAddress> TemporaryAddress { get; set; }
-}

@@ -12,7 +12,7 @@ namespace OraRegaAV.DBEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class tblTackingOrder
+    public partial class tblTrackingOrder
     {
         public int Id { get; set; }
         public string Module { get; set; }

@@ -75,6 +75,8 @@ namespace OraRegaAV.Models
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public Nullable<decimal> Distance { get; set; }
+        [DefaultValue(0)]
+        public int IsStartStop { get; set; }
     }
     public class EngineerListSearchParameters
     {
@@ -84,8 +86,8 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int BranchId { get; set; }
 
-        [DefaultValue("")]
-        public string UserType { get; set; }
+        [DefaultValue(0)]
+        public int UserType { get; set; }
     }
 
     public class WOTackingOrderLogResponse
@@ -96,7 +98,6 @@ namespace OraRegaAV.Models
         }
 
         public int Id { get; set; }
-        public string WorkOrderNumber { get; set; }
         public bool IsWorkOrderEnquiryCreated { get; set; }
         public bool IsWorkOrderCreated { get; set; }
         public bool IsQuatationInitiated { get; set; }
@@ -104,6 +105,10 @@ namespace OraRegaAV.Models
         public bool IsWorkOrderPaymentStatus { get; set; }
         public bool IsEngineerAllocated { get; set; }
         public bool IsWorkOrderCaseStatus { get; set; }
+
+        public string WorkOrderNumber { get; set; }
+        public int WorkOrderEnquiryNumber { get; set; }
+        public string WorkOrderCaseStatusValue { get; set; }
 
         public WOTackingOrderLogAllocatedEngineerDetail EngineerDetail { get; set; }
         public List<WOTackingOrderLogInDetailListResponse> LogsInDetail { get; set; }

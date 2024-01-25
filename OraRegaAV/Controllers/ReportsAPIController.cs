@@ -27,6 +27,8 @@ using System.ComponentModel;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using OraRegaAV.Helpers;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.Globalization;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -47,17 +49,16 @@ namespace OraRegaAV.Controllers.API
         }
 
         #region Work Order Enquiry Report
+
         [HttpPost]
         [Route("api/ReportsAPI/GetRWorkOrderEnquiry")]
-        public Response GetRWorkOrderEnquiry(ReportSearchModel objReportSearchModel)
+        public Response GetRWorkOrderEnquiry(WorkOrderEnquiryReport_Search objReportSearchModel)
         {
             try
             {
-                objReportSearchModel.StateId = objReportSearchModel.StateId ?? 0;
-                objReportSearchModel.BranchIds = objReportSearchModel.BranchIds ?? string.Empty;
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                List<GetWorkOrderEnquiryReport_Result> WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(
-                   objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.StateId, objReportSearchModel.BranchIds).ToList();
+                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
 
                 _response.Data = WorkOrderEnquiryList;
 
@@ -74,18 +75,15 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/ReportsAPI/DownloadWorkOrderEnquiryReport")]
-        public Response DownloadWorkOrderEnquiryReport(ReportSearchModel objReportSearchModel)
+        public Response DownloadWorkOrderEnquiryReport(WorkOrderEnquiryReport_Search objReportSearchModel)
         {
             string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
             InvalidFileResponseModel objInvalidFileResponseModel = null;
             try
             {
-                objReportSearchModel.StateId = objReportSearchModel.StateId ?? 0;
-                objReportSearchModel.BranchIds = objReportSearchModel.BranchIds ?? string.Empty;
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                List<GetWorkOrderEnquiryReport_Result> WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(
-                   objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.StateId, objReportSearchModel.BranchIds).ToList();
-
+                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
 
                 if (WorkOrderEnquiryList.Count == 0)
                 {
@@ -119,8 +117,8 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Cells[1, 4].Value = "Branch Name";
                         WorkSheet1.Cells[1, 5].Value = "Customer Name";
                         WorkSheet1.Cells[1, 6].Value = "Mobile Number";
-                        WorkSheet1.Cells[1, 7].Value = "Email Address";
                         WorkSheet1.Cells[1, 8].Value = "Alternate Number";
+                        WorkSheet1.Cells[1, 7].Value = "Email Address";
                         WorkSheet1.Cells[1, 9].Value = "Company Name";
                         WorkSheet1.Cells[1, 10].Value = "Customer GST Number";
                         WorkSheet1.Cells[1, 11].Value = "Product Type";
@@ -143,27 +141,30 @@ namespace OraRegaAV.Controllers.API
                         {
                             srNo++;
                             WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+
+                            WorkSheet1.Cells[recordIndex, 2].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
                             WorkSheet1.Cells[recordIndex, 2].Value = dataRow["EnquiryDate"];
+
                             WorkSheet1.Cells[recordIndex, 3].Value = dataRow["SupportType"];
                             WorkSheet1.Cells[recordIndex, 4].Value = dataRow["BranchName"];
                             WorkSheet1.Cells[recordIndex, 5].Value = dataRow["CustomerName"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["MobileNumber"];
-                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["AlternateNumber"];
-                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["EmailAdderss"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["MobileNo"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["AlternateMobileNo"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["EmailAddress"];
                             WorkSheet1.Cells[recordIndex, 9].Value = dataRow["CompanyName"];
-                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["CustomerGStNumber"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["CustomerGSTNo"];
                             WorkSheet1.Cells[recordIndex, 11].Value = dataRow["ProductType"];
                             WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ProductMake"];
-                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["ModelType"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["ProductModel"];
                             WorkSheet1.Cells[recordIndex, 14].Value = dataRow["ProductNumber"];
                             WorkSheet1.Cells[recordIndex, 15].Value = dataRow["ProductDescription"];
-                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["ProductSerialNumber"];
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["ProductSerialNo"];
                             WorkSheet1.Cells[recordIndex, 17].Value = dataRow["WarrantyType"];
                             WorkSheet1.Cells[recordIndex, 18].Value = dataRow["CountryOfPurchase"];
-                            WorkSheet1.Cells[recordIndex, 19].Value = dataRow["OperatingSystem"];
+                            WorkSheet1.Cells[recordIndex, 19].Value = dataRow["OperatingSystemName"];
                             WorkSheet1.Cells[recordIndex, 20].Value = dataRow["PermanentAddress"];
-                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["VisitingAddress"];
-                            WorkSheet1.Cells[recordIndex, 22].Value = dataRow["IssueDescription"];
+                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["TemporaryAddress"];
+                            WorkSheet1.Cells[recordIndex, 22].Value = dataRow["IssueDescriptionName"];
                             WorkSheet1.Cells[recordIndex, 23].Value = dataRow["CustomerReportedIssue"];
                             WorkSheet1.Cells[recordIndex, 24].Value = dataRow["SourceChannel"];
 
@@ -234,17 +235,16 @@ namespace OraRegaAV.Controllers.API
 
 
         #region Work Order Creation Report
+
         [HttpPost]
         [Route("api/ReportsAPI/GetRWorkOrderCreation")]
-        public Response GetRWorkOrderCreation(ReportSearchModel objReportSearchModel)
+        public Response GetRWorkOrderCreation(WorkOrderReport_Search objReportSearchModel)
         {
             try
             {
-                objReportSearchModel.StateId = objReportSearchModel.StateId ?? 0;
-                objReportSearchModel.BranchIds = objReportSearchModel.BranchIds ?? string.Empty;
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                List<GetWorkOrderCreationReport_Result> WorkOrderCreationList = db.GetWorkOrderCreationReport(
-                   objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.StateId, objReportSearchModel.BranchIds).ToList();
+                var WorkOrderCreationList = db.GetWorkOrderCreationReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
 
                 _response.Data = WorkOrderCreationList;
 
@@ -261,18 +261,15 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/ReportsAPI/DownloadWorkOrderCreationReport")]
-        public Response DownloadWorkOrderCreationReport(ReportSearchModel objReportSearchModel)
+        public Response DownloadWorkOrderCreationReport(WorkOrderReport_Search objReportSearchModel)
         {
             string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
             InvalidFileResponseModel objInvalidFileResponseModel = null;
             try
             {
-                objReportSearchModel.StateId = objReportSearchModel.StateId ?? 0;
-                objReportSearchModel.BranchIds = objReportSearchModel.BranchIds ?? string.Empty;
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                List<GetWorkOrderCreationReport_Result> WorkOrderCreationList = db.GetWorkOrderCreationReport(
-                   objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.StateId, objReportSearchModel.BranchIds).ToList();
-
+                var WorkOrderCreationList = db.GetWorkOrderCreationReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
 
                 if (WorkOrderCreationList.Count == 0)
                 {
@@ -283,6 +280,7 @@ namespace OraRegaAV.Controllers.API
                 else
                 {
                     #region Generate Excel file for Work Order Creation Report
+
                     DataTable dtWOEReport = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(WorkOrderCreationList), (typeof(DataTable)));
 
                     if (dtWOEReport.Rows.Count > 0)
@@ -334,12 +332,15 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 1].Value = srNo;
                             WorkSheet1.Cells[recordIndex, 2].Value = dataRow["SupportType"];
                             WorkSheet1.Cells[recordIndex, 3].Value = dataRow["WorkOrderNumber"];
+
+                            WorkSheet1.Cells[recordIndex, 4].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
                             WorkSheet1.Cells[recordIndex, 4].Value = dataRow["WorkOrderLogDate"];
+
                             WorkSheet1.Cells[recordIndex, 5].Value = dataRow["BranchName"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["OrganizationName"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["CompanyName"];
                             WorkSheet1.Cells[recordIndex, 7].Value = dataRow["CustomerName"];
                             WorkSheet1.Cells[recordIndex, 8].Value = dataRow["MobileNumber"];
-                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["EmailAdderss"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["EmailAddress"];
                             WorkSheet1.Cells[recordIndex, 10].Value = dataRow["PriorityName"];
                             WorkSheet1.Cells[recordIndex, 11].Value = dataRow["AlternateNumber"];
                             WorkSheet1.Cells[recordIndex, 12].Value = dataRow["CustomerGStNumber"];
@@ -408,6 +409,7 @@ namespace OraRegaAV.Controllers.API
                             Data = objInvalidFileResponseModel
                         };
                     }
+
                     #endregion
                 }
 
@@ -424,8 +426,5 @@ namespace OraRegaAV.Controllers.API
         }
 
         #endregion
-
-
-
     }
 }
