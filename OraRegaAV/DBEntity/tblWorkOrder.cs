@@ -65,5 +65,7 @@ namespace OraRegaAV.DBEntity
         public string CustomerSecondaryName { get; set; }
         public Nullable<int> WOProofOfPurchaseId { get; set; }
         public Nullable<int> WOSnapsId { get; set; }
+        public Nullable<int> RescheduleReasonId { get; set; }
+        public Nullable<System.DateTime> RescheduleDate { get; set; }
     }
 }

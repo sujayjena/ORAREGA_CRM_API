@@ -1474,6 +1474,66 @@ namespace OraRegaAV.Controllers
             }
             return _response;
         }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderReschedule(WORescheduleRequest parameter)
+        {
+            try
+            {
+                var tbl = db.tblWorkOrders.Where(x => x.Id == parameter.WorkOrderId).FirstOrDefault();
+                if (tbl != null)
+                {
+                    tbl.RescheduleReasonId = parameter.RescheduleReasonId;
+                    tbl.RescheduleDate = parameter.RescheduleDate;
+
+                    var vRescheduleObj = new tblWorkOrderRescheduleHistory()
+                    {
+                        WorkOrderId = parameter.WorkOrderId,
+                        RescheduleReasonId = parameter.RescheduleReasonId,
+                        RescheduleDate = parameter.RescheduleDate,
+                        CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                        CreatedDate = DateTime.Now
+                    };
+
+                    db.tblWorkOrderRescheduleHistories.Add(vRescheduleObj);
+
+                    await db.SaveChangesAsync();
+                    _response.IsSuccess = true;
+
+                    _response.Message = "Work Order Reschedule saved successfully";
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+            return _response;
+        }
+
+        public async Task<Response> WorkOrderRescheduleHistoryList(WORescheduleHistorySearch parameter)
+        {
+            List<GetWorkOrderRescheduleHistoryList_Result> lstObj;
+            try
+            {
+                lstObj = await Task.Run(() => db.GetWorkOrderRescheduleHistoryList(parameter.FromDate, parameter.ToDate, parameter.WorkOrderId, parameter.RescheduleReasonId).ToList());
+
+                _response.Data = lstObj;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
     }
 }
 

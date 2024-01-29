@@ -158,6 +158,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblStockOut_Defective> tblStockOut_Defective { get; set; }
         public virtual DbSet<tblStockOut_Defective_PartDetails> tblStockOut_Defective_PartDetails { get; set; }
         public virtual DbSet<tblTrackingOrder> tblTrackingOrders { get; set; }
+        public virtual DbSet<tblWorkOrderRescheduleHistory> tblWorkOrderRescheduleHistories { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -1643,6 +1644,27 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("SearchValue", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderRescheduleHistoryList_Result> GetWorkOrderRescheduleHistoryList(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> workOrderId, Nullable<int> rescheduleReasonId)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var workOrderIdParameter = workOrderId.HasValue ?
+                new ObjectParameter("WorkOrderId", workOrderId) :
+                new ObjectParameter("WorkOrderId", typeof(int));
+    
+            var rescheduleReasonIdParameter = rescheduleReasonId.HasValue ?
+                new ObjectParameter("RescheduleReasonId", rescheduleReasonId) :
+                new ObjectParameter("RescheduleReasonId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderRescheduleHistoryList_Result>("GetWorkOrderRescheduleHistoryList", fromDateParameter, toDateParameter, workOrderIdParameter, rescheduleReasonIdParameter);
         }
     }
 }

@@ -129,5 +129,28 @@ namespace OraRegaAV.Models
         public string EngineerName { get; set; }
         public string EngineerMobile { get; set; }
     }
+    public class WORescheduleRequest
+    {
+        [Required]
+        [DefaultValue(0)]
+        public int WorkOrderId { get; set; }
 
+        [DefaultValue(0)]
+        public int RescheduleReasonId { get; set; }
+
+        public DateTime RescheduleDate { get; set; }
+    }
+    public class WORescheduleHistorySearch
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+
+        [DefaultValue(0)]
+        public int WorkOrderId { get; set; }
+
+        [DefaultValue(0)]
+        public int RescheduleReasonId { get; set; }
+
+        
+    }
 }

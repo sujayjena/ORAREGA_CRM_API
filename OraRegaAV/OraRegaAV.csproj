@@ -754,6 +754,9 @@
     <Compile Include="DBEntity\GetWorkOrderList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetWorkOrderRescheduleHistoryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\ImportStockEntry_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1145,6 +1148,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblWorkOrderEnquiry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWorkOrderRescheduleHistory.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblWOSnap.cs">
