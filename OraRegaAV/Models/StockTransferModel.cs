@@ -51,17 +51,15 @@ namespace OraRegaAV.Models
     {
         public StockTransferResponse()
         {
-            PartsDetail=new List<StockTransferPartDetailResponse>();
+            PartsDetail=new List<PartDetail_Response>();
+            BranchFrom=new BranchList_Response();
+            BranchTo = new BranchList_Response();
         }
 
         public int Id { get; set; }
         public string ChallanNo { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public Nullable<int> BranchFromId { get; set; }
-        public string BranchFromName { get; set; }
-        public Nullable<int> BranchToId { get; set; }
-        public string BranchToName { get; set; }
         public Nullable<System.DateTime> TransferDate { get; set; }
         public string NewDocketNo { get; set; }
         public Nullable<System.DateTime> StockTransferOutDate { get; set; }
@@ -69,21 +67,50 @@ namespace OraRegaAV.Models
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
 
-        public List<StockTransferPartDetailResponse> PartsDetail { get; set; }
+        public BranchList_Response BranchFrom { get; set; }
+        public BranchList_Response BranchTo { get; set; }
+
+        public List<PartDetail_Response> PartsDetail { get; set; }
     }
 
-    public class StockTransferPartDetailResponse
+    public class BranchList_Response
     {
         public int Id { get; set; }
-        public Nullable<int> StockTransferOutId { get; set; }
-        public string DocketNo { get; set; }
-        public Nullable<int> PartId { get; set; }
+        public string BranchName { get; set; }
+        public string RegistrationNumber { get; set; }
+        public string CompanyType { get; set; }
+        public string GSTNumber { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string StateName { get; set; }
+        public Nullable<int> StateCode { get; set; }
+        public string CityName { get; set; }
+        public string AreaName { get; set; }
+        public string Pincode { get; set; }
+        public string DepartmentHead { get; set; }
+        public string MobileNo { get; set; }
+        public string EmailId { get; set; }
+    }
+
+    public class PartDetail_Response
+    {
+        public int Id { get; set; }
+        public string UniqueCode { get; set; }
+        public string PartNumber { get; set; }
         public string PartName { get; set; }
-        public Nullable<int> StockTransferStatusId { get; set; }
-        public string StockTransferStatusName { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public string CreatorName { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string PartDescription { get; set; }
+        public string HSNCode { get; set; }
+        public string CTSerialNo { get; set; }
+        public string PartStatus { get; set; }
+        public Nullable<decimal> SalePrice { get; set; }
+        public string ReceiveFrom { get; set; }
+        public Nullable<System.DateTime> ReceiveDate { get; set; }
+        public string DocketNo { get; set; }
+        public int Quantity { get; set; }
+        public string StockPartStatus { get; set; }
+        public Nullable<decimal> PurchasePrice { get; set; }
+        public string VendorName { get; set; }
+        public Nullable<decimal> TotalPrice { get; set; }
     }
 
     public class StockTransferIn_ApproveNRejest

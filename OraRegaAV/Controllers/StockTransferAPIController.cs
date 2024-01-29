@@ -1,4 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using OraRegaAV.Controllers.API;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
@@ -6,6 +8,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
@@ -75,6 +78,122 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
+        [Route("api/StockTransferAPI/GetStockTransferInByChallanNumber")]
+        public Response GetStockTransferInByChallanNumber(StockTransferOutSearchParameters parameters)
+        {
+            try
+            {
+                var stockTransferResponse = new StockTransferResponse();
+
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                if (userId > 0)
+                {
+                    var vStockTransferOutObj = db.GetStockTransferInOutByChallanNumber(parameters.ChallanNo).FirstOrDefault();
+
+                    if (vStockTransferOutObj != null)
+                    {
+                        var vCompaniesObj = db.tblCompanies.Where(x => x.Id == vStockTransferOutObj.ComapnyId).FirstOrDefault();
+
+                        stockTransferResponse.Id = vStockTransferOutObj.Id;
+                        stockTransferResponse.ChallanNo = vStockTransferOutObj.ChallanNo;
+                        stockTransferResponse.CompanyId = vStockTransferOutObj.ComapnyId;
+                        stockTransferResponse.CompanyName = vCompaniesObj != null ? vCompaniesObj.CompanyName : string.Empty;
+                        stockTransferResponse.TransferDate = vStockTransferOutObj.TransferDate;
+                        stockTransferResponse.NewDocketNo = vStockTransferOutObj.NewDocketNo;
+                        stockTransferResponse.StockTransferOutDate = vStockTransferOutObj.StockTransferOutDate;
+
+                        stockTransferResponse.CreatedBy = vStockTransferOutObj.CreatedBy;
+                        stockTransferResponse.CreatorName = vStockTransferOutObj.CreatorName;
+                        stockTransferResponse.CreatedDate = vStockTransferOutObj.CreatedDate;
+
+                        // Branch From
+                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId).ToList().FirstOrDefault();
+                        if (vBranchFromDetail != null)
+                        {
+                            stockTransferResponse.BranchFrom.Id = vBranchFromDetail.Id;
+                            stockTransferResponse.BranchFrom.BranchName = vBranchFromDetail.BranchName;
+                            stockTransferResponse.BranchFrom.RegistrationNumber = vBranchFromDetail.RegistrationNumber;
+                            stockTransferResponse.BranchFrom.CompanyType = vBranchFromDetail.CompanyType;
+                            stockTransferResponse.BranchFrom.GSTNumber = vBranchFromDetail.GSTNumber;
+                            stockTransferResponse.BranchFrom.AddressLine1 = vBranchFromDetail.AddressLine1;
+                            stockTransferResponse.BranchFrom.AddressLine2 = vBranchFromDetail.AddressLine2;
+                            stockTransferResponse.BranchFrom.StateName = vBranchFromDetail.StateName;
+                            stockTransferResponse.BranchFrom.StateCode = vBranchFromDetail.StateCode;
+                            stockTransferResponse.BranchFrom.CityName = vBranchFromDetail.CityName;
+                            stockTransferResponse.BranchFrom.AreaName = vBranchFromDetail.AreaName;
+                            stockTransferResponse.BranchFrom.Pincode = vBranchFromDetail.Pincode;
+                            stockTransferResponse.BranchFrom.DepartmentHead = vBranchFromDetail.DepartmentHead;
+                            stockTransferResponse.BranchFrom.MobileNo = vBranchFromDetail.MobileNo;
+                            stockTransferResponse.BranchFrom.EmailId = vBranchFromDetail.EmailId;
+                        }
+
+                        // Branch To
+                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId).ToList().FirstOrDefault();
+                        if (vBranchToDetail != null)
+                        {
+                            stockTransferResponse.BranchTo.Id = vBranchToDetail.Id;
+                            stockTransferResponse.BranchTo.BranchName = vBranchToDetail.BranchName;
+                            stockTransferResponse.BranchTo.RegistrationNumber = vBranchToDetail.RegistrationNumber;
+                            stockTransferResponse.BranchTo.CompanyType = vBranchToDetail.CompanyType;
+                            stockTransferResponse.BranchTo.GSTNumber = vBranchToDetail.GSTNumber;
+                            stockTransferResponse.BranchTo.AddressLine1 = vBranchToDetail.AddressLine1;
+                            stockTransferResponse.BranchTo.AddressLine2 = vBranchToDetail.AddressLine2;
+                            stockTransferResponse.BranchTo.StateName = vBranchToDetail.StateName;
+                            stockTransferResponse.BranchTo.StateCode = vBranchToDetail.StateCode;
+                            stockTransferResponse.BranchTo.CityName = vBranchToDetail.CityName;
+                            stockTransferResponse.BranchTo.AreaName = vBranchToDetail.AreaName;
+                            stockTransferResponse.BranchTo.Pincode = vBranchToDetail.Pincode;
+                            stockTransferResponse.BranchTo.DepartmentHead = vBranchToDetail.DepartmentHead;
+                            stockTransferResponse.BranchTo.MobileNo = vBranchToDetail.MobileNo;
+                            stockTransferResponse.BranchTo.EmailId = vBranchToDetail.EmailId;
+                        }
+
+                        // Part List
+                        var vStockTransferOutPartDetailList = db.tblStockTransferPartDetails.Where(x => x.StockTransferOutId == vStockTransferOutObj.Id).ToList();
+
+                        foreach (var item in vStockTransferOutPartDetailList)
+                        {
+                            var vPartObj = db.GetPartDetailList(item.PartId, 0, 0, 0).ToList().FirstOrDefault();
+
+                            var vItemObj = new PartDetail_Response()
+                            {
+                                Id = vPartObj.Id,
+                                UniqueCode = vPartObj.UniqueCode,
+                                PartNumber = vPartObj.PartNumber,
+                                PartName = vPartObj.PartName,
+                                PartDescription = vPartObj.PartDescription,
+                                HSNCode = vPartObj.HSNCode,
+                                CTSerialNo = vPartObj.CTSerialNo,
+                                PartStatus = vPartObj.PartStatus,
+                                SalePrice = vPartObj.SalePrice,
+                                ReceiveFrom = vPartObj.ReceiveFrom,
+                                ReceiveDate = vPartObj.ReceiveDate,
+                                DocketNo = vPartObj.DocketNo,
+                                Quantity = vPartObj.Quantity,
+                                StockPartStatus = vPartObj.StockPartStatus,
+                                PurchasePrice = vPartObj.PurchasePrice,
+                                VendorName = vPartObj.VendorName,
+                                TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
+                            };
+
+                            stockTransferResponse.PartsDetail.Add(vItemObj);
+                        }
+                    }
+                }
+
+                _response.Data = stockTransferResponse;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
         [Route("api/StockTransferAPI/GetStockTransferOutByChallanNumber")]
         public Response GetStockTransferOutByChallanNumber(StockTransferOutSearchParameters parameters)
         {
@@ -95,10 +214,6 @@ namespace OraRegaAV.Controllers
                         stockTransferResponse.ChallanNo = vStockTransferOutObj.ChallanNo;
                         stockTransferResponse.CompanyId = vStockTransferOutObj.ComapnyId;
                         stockTransferResponse.CompanyName = vCompaniesObj != null ? vCompaniesObj.CompanyName : string.Empty;
-                        stockTransferResponse.BranchFromId = vStockTransferOutObj.BranchFromId;
-                        stockTransferResponse.BranchFromName = vStockTransferOutObj.BranchFromName;
-                        stockTransferResponse.BranchToId = vStockTransferOutObj.BranchToId;
-                        stockTransferResponse.BranchToName = vStockTransferOutObj.BranchToName;
                         stockTransferResponse.TransferDate = vStockTransferOutObj.TransferDate;
                         stockTransferResponse.NewDocketNo = vStockTransferOutObj.NewDocketNo;
                         stockTransferResponse.StockTransferOutDate = vStockTransferOutObj.StockTransferOutDate;
@@ -107,26 +222,74 @@ namespace OraRegaAV.Controllers
                         stockTransferResponse.CreatorName = vStockTransferOutObj.CreatorName;
                         stockTransferResponse.CreatedDate = vStockTransferOutObj.CreatedDate;
 
+                        // Branch From
+                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId).ToList().FirstOrDefault();
+                        if (vBranchFromDetail != null)
+                        {
+                            stockTransferResponse.BranchFrom.Id = vBranchFromDetail.Id;
+                            stockTransferResponse.BranchFrom.BranchName = vBranchFromDetail.BranchName;
+                            stockTransferResponse.BranchFrom.RegistrationNumber = vBranchFromDetail.RegistrationNumber;
+                            stockTransferResponse.BranchFrom.CompanyType = vBranchFromDetail.CompanyType;
+                            stockTransferResponse.BranchFrom.GSTNumber = vBranchFromDetail.GSTNumber;
+                            stockTransferResponse.BranchFrom.AddressLine1 = vBranchFromDetail.AddressLine1;
+                            stockTransferResponse.BranchFrom.AddressLine2 = vBranchFromDetail.AddressLine2;
+                            stockTransferResponse.BranchFrom.StateName = vBranchFromDetail.StateName;
+                            stockTransferResponse.BranchFrom.StateCode = vBranchFromDetail.StateCode;
+                            stockTransferResponse.BranchFrom.CityName = vBranchFromDetail.CityName;
+                            stockTransferResponse.BranchFrom.AreaName = vBranchFromDetail.AreaName;
+                            stockTransferResponse.BranchFrom.Pincode = vBranchFromDetail.Pincode;
+                            stockTransferResponse.BranchFrom.DepartmentHead = vBranchFromDetail.DepartmentHead;
+                            stockTransferResponse.BranchFrom.MobileNo = vBranchFromDetail.MobileNo;
+                            stockTransferResponse.BranchFrom.EmailId = vBranchFromDetail.EmailId;
+                        }
 
+                        // Branch To
+                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId).ToList().FirstOrDefault();
+                        if (vBranchToDetail != null)
+                        {
+                            stockTransferResponse.BranchTo.Id = vBranchToDetail.Id;
+                            stockTransferResponse.BranchTo.BranchName = vBranchToDetail.BranchName;
+                            stockTransferResponse.BranchTo.RegistrationNumber = vBranchToDetail.RegistrationNumber;
+                            stockTransferResponse.BranchTo.CompanyType = vBranchToDetail.CompanyType;
+                            stockTransferResponse.BranchTo.GSTNumber = vBranchToDetail.GSTNumber;
+                            stockTransferResponse.BranchTo.AddressLine1 = vBranchToDetail.AddressLine1;
+                            stockTransferResponse.BranchTo.AddressLine2 = vBranchToDetail.AddressLine2;
+                            stockTransferResponse.BranchTo.StateName = vBranchToDetail.StateName;
+                            stockTransferResponse.BranchTo.StateCode = vBranchToDetail.StateCode;
+                            stockTransferResponse.BranchTo.CityName = vBranchToDetail.CityName;
+                            stockTransferResponse.BranchTo.AreaName = vBranchToDetail.AreaName;
+                            stockTransferResponse.BranchTo.Pincode = vBranchToDetail.Pincode;
+                            stockTransferResponse.BranchTo.DepartmentHead = vBranchToDetail.DepartmentHead;
+                            stockTransferResponse.BranchTo.MobileNo = vBranchToDetail.MobileNo;
+                            stockTransferResponse.BranchTo.EmailId = vBranchToDetail.EmailId;
+                        }
+
+                        // Part List
                         var vStockTransferOutPartDetailList = db.tblStockTransferPartDetails.Where(x => x.StockTransferOutId == vStockTransferOutObj.Id).ToList();
 
                         foreach (var item in vStockTransferOutPartDetailList)
                         {
-                            var vStockTransferStatusObj = db.tblStockTransferStatus.Where(x => x.Id == item.StockTransferStatusId).FirstOrDefault();
-                            var vPartDetailsObj = db.tblPartDetails.Where(x => x.Id == item.PartId).FirstOrDefault();
+                            var vPartObj = db.GetPartDetailList(item.PartId, 0, 0, 0).ToList().FirstOrDefault();
 
-                            var vItemObj = new StockTransferPartDetailResponse()
+                            var vItemObj = new PartDetail_Response()
                             {
-                                Id = item.Id,
-                                StockTransferOutId = item.StockTransferOutId,
-                                DocketNo = item.DocketNo,
-                                PartId = item.PartId,
-                                PartName = vPartDetailsObj != null ? vPartDetailsObj.PartName : string.Empty,
-                                StockTransferStatusId = item.StockTransferStatusId,
-                                StockTransferStatusName = vStockTransferStatusObj != null ? vStockTransferStatusObj.StatusName : string.Empty,
-                                CreatedBy = item.CreatedBy,
-                                CreatorName = vStockTransferOutObj.CreatorName,
-                                CreatedDate = item.CreatedDate
+                                Id = vPartObj.Id,
+                                UniqueCode = vPartObj.UniqueCode,
+                                PartNumber = vPartObj.PartNumber,
+                                PartName = vPartObj.PartName,
+                                PartDescription = vPartObj.PartDescription,
+                                HSNCode = vPartObj.HSNCode,
+                                CTSerialNo = vPartObj.CTSerialNo,
+                                PartStatus = vPartObj.PartStatus,
+                                SalePrice = vPartObj.SalePrice,
+                                ReceiveFrom = vPartObj.ReceiveFrom,
+                                ReceiveDate = vPartObj.ReceiveDate,
+                                DocketNo = vPartObj.DocketNo,
+                                Quantity = vPartObj.Quantity,
+                                StockPartStatus = vPartObj.StockPartStatus,
+                                PurchasePrice = vPartObj.PurchasePrice,
+                                VendorName = vPartObj.VendorName,
+                                TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
                             };
 
                             stockTransferResponse.PartsDetail.Add(vItemObj);
