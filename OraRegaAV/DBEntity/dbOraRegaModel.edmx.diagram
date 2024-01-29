@@ -144,6 +144,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblTackingOrder" Width="1.5" PointX="35.375" PointY="8.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblTrackingOrder" Width="1.5" PointX="35.375" PointY="8.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrderRescheduleHistory" Width="1.5" PointX="35.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrderEngineerAllocatedHistory" Width="1.5" PointX="35.375" PointY="15.75" />
        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

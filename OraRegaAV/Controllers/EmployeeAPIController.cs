@@ -1084,7 +1084,7 @@ namespace OraRegaAV.Controllers.API
 
                     if (employee.ReportingTo > 0)
                     {
-                        var vReportToDetail = db.tblEmployees.Where(x => x.ReportingTo == employee.ReportingTo).FirstOrDefault();
+                        var vReportToDetail = db.tblEmployees.Where(x => x.Id == employee.ReportingTo).FirstOrDefault();
                         if (vReportToDetail != null)
                         {
                             employeeReponse.ReportingTo = Convert.ToInt32(employee.ReportingTo);

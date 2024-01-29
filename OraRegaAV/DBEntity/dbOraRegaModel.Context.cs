@@ -159,6 +159,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblStockOut_Defective_PartDetails> tblStockOut_Defective_PartDetails { get; set; }
         public virtual DbSet<tblTrackingOrder> tblTrackingOrders { get; set; }
         public virtual DbSet<tblWorkOrderRescheduleHistory> tblWorkOrderRescheduleHistories { get; set; }
+        public virtual DbSet<tblWorkOrderEngineerAllocatedHistory> tblWorkOrderEngineerAllocatedHistories { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -1426,52 +1427,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSOEnquiryList_Result>("GetSOEnquiryList", companyIdParameter, branchIdParameter, enquiryStatusIdParameter, loggedInUserIdParameter);
         }
     
-        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNumber, Nullable<int> userId)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId.HasValue ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
-    
-            var workOrderNumberParameter = workOrderNumber != null ?
-                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
-                new ObjectParameter("WorkOrderNumber", typeof(string));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter);
-        }
-    
-        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> orderStatusId, Nullable<int> engineerId, Nullable<int> userId)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId.HasValue ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
-    
-            var orderStatusIdParameter = orderStatusId.HasValue ?
-                new ObjectParameter("OrderStatusId", orderStatusId) :
-                new ObjectParameter("OrderStatusId", typeof(int));
-    
-            var engineerIdParameter = engineerId.HasValue ?
-                new ObjectParameter("EngineerId", engineerId) :
-                new ObjectParameter("EngineerId", typeof(int));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", companyIdParameter, branchIdParameter, orderStatusIdParameter, engineerIdParameter, userIdParameter);
-        }
-    
         public virtual ObjectResult<GetStockOut_Defective_ChallanList_Result> GetStockOut_Defective_ChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -1665,6 +1620,52 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("RescheduleReasonId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderRescheduleHistoryList_Result>("GetWorkOrderRescheduleHistoryList", fromDateParameter, toDateParameter, workOrderIdParameter, rescheduleReasonIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> orderStatusId, Nullable<int> engineerId, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var orderStatusIdParameter = orderStatusId.HasValue ?
+                new ObjectParameter("OrderStatusId", orderStatusId) :
+                new ObjectParameter("OrderStatusId", typeof(int));
+    
+            var engineerIdParameter = engineerId.HasValue ?
+                new ObjectParameter("EngineerId", engineerId) :
+                new ObjectParameter("EngineerId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", companyIdParameter, branchIdParameter, orderStatusIdParameter, engineerIdParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNumber, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter);
         }
     }
 }

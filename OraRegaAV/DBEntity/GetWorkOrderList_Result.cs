@@ -53,6 +53,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> EngineerId { get; set; }
         public string EmployeeName { get; set; }
         public string PersonalNumber { get; set; }
+        public Nullable<System.DateTime> EngineerAllocatedDate { get; set; }
         public string DigitUEFIFailureID { get; set; }
         public string CustomerComment { get; set; }
         public Nullable<int> CreatedBy { get; set; }

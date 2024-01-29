@@ -1147,6 +1147,9 @@
     <Compile Include="DBEntity\tblWorkOrder.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblWorkOrderEngineerAllocatedHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblWorkOrderEnquiry.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>

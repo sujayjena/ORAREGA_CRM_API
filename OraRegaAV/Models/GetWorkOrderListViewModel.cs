@@ -51,6 +51,7 @@ namespace OraRegaAV.Models
         public string EngineerDiagnosis { get; set; }
         public Nullable<int> EngineerId { get; set; }
         public string EngineerName { get; set; }
+        public Nullable<System.DateTime> EngineerAllocatedDate { get; set; }
         public string EmployeeName { get; set; }
         public string DigitUEFIFailureID { get; set; }
         public string CustomerComment { get; set; }

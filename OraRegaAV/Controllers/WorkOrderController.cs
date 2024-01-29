@@ -372,6 +372,8 @@ namespace OraRegaAV.Controllers
                     tblWorkOrder.ProdDescriptionIfOther = parameters.ProdDescriptionIfOther;
                     tblWorkOrder.CustomerSecondaryName = parameters.CustomerSecondaryName;
 
+
+
                     _response.Message = $"Work Order details updated successfully";
                 }
 
@@ -516,6 +518,41 @@ namespace OraRegaAV.Controllers
                 }
 
                 #endregion
+
+                #region Save Engineer Allocated History
+
+                if (parameters.EngineerId > 0)
+                {
+                    tblWorkOrderEngineerAllocatedHistory tblWorkOrderEngineerAllocatedHistory = new tblWorkOrderEngineerAllocatedHistory();
+
+                    var vtblWorkOrderEngineerAllocatedHistories = await db.tblWorkOrderEngineerAllocatedHistories.Where(w => w.WorkOrderId == parameters.Id).OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync();
+                    if (vtblWorkOrderEngineerAllocatedHistories != null)
+                    {
+                        if (vtblWorkOrderEngineerAllocatedHistories.EngineerId != parameters.EngineerId)
+                        {
+                            tblWorkOrderEngineerAllocatedHistory.WorkOrderId = tblWorkOrder.Id;
+                            tblWorkOrderEngineerAllocatedHistory.EngineerId = parameters.EngineerId;
+                            tblWorkOrderEngineerAllocatedHistory.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                            tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
+
+                            db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+                        }
+
+                    }
+                    else if (vtblWorkOrderEngineerAllocatedHistories == null)
+                    {
+                        tblWorkOrderEngineerAllocatedHistory.WorkOrderId = tblWorkOrder.Id;
+                        tblWorkOrderEngineerAllocatedHistory.EngineerId = parameters.EngineerId;
+                        tblWorkOrderEngineerAllocatedHistory.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                        tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
+
+                        db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+                    }
+
+                    await db.SaveChangesAsync();
+                }
+
+                #endregion
             }
             catch (Exception ex)
             {
@@ -540,10 +577,45 @@ namespace OraRegaAV.Controllers
                     tblWorkOrder.OrderStatusId = OrderStatusId;
                     tblWorkOrder.EngineerId = EngineerId;
 
+                    await db.SaveChangesAsync();
+
+                    #region Save Engineer Allocated History
+
+                    if (EngineerId > 0)
+                    {
+                        tblWorkOrderEngineerAllocatedHistory tblWorkOrderEngineerAllocatedHistory = new tblWorkOrderEngineerAllocatedHistory();
+
+                        var vtblWorkOrderEngineerAllocatedHistories = await db.tblWorkOrderEngineerAllocatedHistories.Where(w => w.WorkOrderId == tblWorkOrder.Id).OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync();
+                        if (vtblWorkOrderEngineerAllocatedHistories != null)
+                        {
+                            if (vtblWorkOrderEngineerAllocatedHistories.EngineerId != EngineerId)
+                            {
+                                tblWorkOrderEngineerAllocatedHistory.WorkOrderId = tblWorkOrder.Id;
+                                tblWorkOrderEngineerAllocatedHistory.EngineerId = EngineerId;
+                                tblWorkOrderEngineerAllocatedHistory.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                                tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
+
+                                db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+                            }
+
+                        }
+                        else if (vtblWorkOrderEngineerAllocatedHistories == null)
+                        {
+                            tblWorkOrderEngineerAllocatedHistory.WorkOrderId = tblWorkOrder.Id;
+                            tblWorkOrderEngineerAllocatedHistory.EngineerId = EngineerId;
+                            tblWorkOrderEngineerAllocatedHistory.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                            tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
+
+                            db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+                        }
+
+                        await db.SaveChangesAsync();
+                    }
+
+                    #endregion
+
                     _response.Message = $"Work Order details updated successfully";
                 }
-
-                await db.SaveChangesAsync();
 
                 #region Track Order Log
 
@@ -968,6 +1040,7 @@ namespace OraRegaAV.Controllers
                     ProdDescriptionIfOther = detail.ProdDescriptionIfOther,
                     CustomerSecondaryName = detail.CustomerSecondaryName,
                     EngineerMobile = detail.PersonalNumber,
+                    EngineerAllocatedDate=detail.EngineerAllocatedDate,
                 }).ToList();
 
                 foreach (var item in workOrderListObj)
