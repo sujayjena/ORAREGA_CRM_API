@@ -375,27 +375,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductModelDetails_Result>("GetProductModelDetails", prodModelIdParameter);
         }
     
-        public virtual ObjectResult<GetSalesOrdersList_Result> GetSalesOrdersList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> salesOrderStatusId, Nullable<int> loggedInUserId)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId.HasValue ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
-    
-            var salesOrderStatusIdParameter = salesOrderStatusId.HasValue ?
-                new ObjectParameter("SalesOrderStatusId", salesOrderStatusId) :
-                new ObjectParameter("SalesOrderStatusId", typeof(int));
-    
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrdersList_Result>("GetSalesOrdersList", companyIdParameter, branchIdParameter, salesOrderStatusIdParameter, loggedInUserIdParameter);
-        }
-    
         public virtual ObjectResult<GetSOCustomerCommentsList_Result> GetSOCustomerCommentsList(Nullable<int> salesOrderId)
         {
             var salesOrderIdParameter = salesOrderId.HasValue ?
@@ -1666,6 +1645,27 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetSalesOrdersList_Result> GetSalesOrdersList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> salesOrderStatusId, Nullable<int> loggedInUserId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var salesOrderStatusIdParameter = salesOrderStatusId.HasValue ?
+                new ObjectParameter("SalesOrderStatusId", salesOrderStatusId) :
+                new ObjectParameter("SalesOrderStatusId", typeof(int));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrdersList_Result>("GetSalesOrdersList", companyIdParameter, branchIdParameter, salesOrderStatusIdParameter, loggedInUserIdParameter);
         }
     }
 }

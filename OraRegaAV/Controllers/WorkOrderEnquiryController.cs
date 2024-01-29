@@ -109,7 +109,7 @@ namespace OraRegaAV.Controllers
                 parameters.WarrantyTypeId = Convert.ToInt32(postedForm["WarrantyTypeId"] ?? "0");
                 parameters.WarrantyOrAMCNo = postedForm["WarrantyOrAMCNo"].SanitizeValue();
                 parameters.PurchaseCountryId = Convert.ToInt32(postedForm["PurchaseCountryId"] ?? "0");
-                parameters.OSId = Convert.ToInt32(postedForm["WarrantyTypeId"] ?? "0");
+                parameters.OSId = Convert.ToInt32(postedForm["OSId"] ?? "0");
 
                 parameters.Address = postedForm["Address"].SanitizeValue();
                 parameters.StateId = Convert.ToInt32(postedForm["StateId"] ?? "0");

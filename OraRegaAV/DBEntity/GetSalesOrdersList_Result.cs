@@ -21,6 +21,8 @@ namespace OraRegaAV.DBEntity
         public string Mobile { get; set; }
         public string Email { get; set; }
         public string CompanyName { get; set; }
+        public Nullable<int> BranchId { get; set; }
+        public string BranchName { get; set; }
         public string StatusName { get; set; }
     }
 }
