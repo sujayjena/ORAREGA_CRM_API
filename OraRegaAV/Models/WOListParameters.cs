@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OraRegaAV.DBEntity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -150,7 +151,40 @@ namespace OraRegaAV.Models
 
         [DefaultValue(0)]
         public int RescheduleReasonId { get; set; }
-
         
+    }
+
+    public class WOListForEmployees_Result_Response
+    {
+        public WOListForEmployees_Result_Response()
+        {
+            CustomerAddresses = new List<GetUsersAddresses_Result>();
+        }
+        public int Id { get; set; }
+        public string WorkOrderNumber { get; set; }
+        public Nullable<System.DateTime> TicketLogDate { get; set; }
+        public Nullable<int> CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Mobile { get; set; }
+        public string Address { get; set; }
+        public string StateName { get; set; }
+        public string CityName { get; set; }
+        public string AreaName { get; set; }
+        public string Pincode { get; set; }
+        public string ReportedIssue { get; set; }
+        public int OrderStatusId { get; set; }
+        public string StatusName { get; set; }
+        public Nullable<System.DateTime> LastEngineerHistoryDate { get; set; }
+        public Nullable<int> VehicleTypeId { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string VisitStatus { get; set; }
+        public Nullable<int> EngineerId { get; set; }
+        public string EngineerName { get; set; }
+        public Nullable<System.DateTime> EngineerAllocatedDate { get; set; }
+        public string RescheduleReason { get; set; }
+        public Nullable<System.DateTime> RescheduleDate { get; set; }
+        public List<GetUsersAddresses_Result> CustomerAddresses;
     }
 }

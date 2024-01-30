@@ -709,26 +709,68 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                List<GetWOListForEmployees_Result> woListForEmployees;
+                List<WOListForEmployees_Result_Response> woListForEmployees = null;
 
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                woListForEmployees = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId).ToList());
+                var vwoList = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId).ToList());
 
-                foreach (var obj in woListForEmployees)
+                foreach (var obj in vwoList)
                 {
+                    var vItemObj = new WOListForEmployees_Result_Response();
+
+                    vItemObj.Id = obj.Id;
+                    vItemObj.WorkOrderNumber = obj.WorkOrderNumber;
+                    vItemObj.TicketLogDate = obj.TicketLogDate;
+                    vItemObj.FirstName = obj.FirstName;
+                    vItemObj.LastName = obj.LastName;
+                    vItemObj.Mobile = obj.Mobile;
+                    vItemObj.Address = obj.Address;
+                    vItemObj.StateName = obj.StateName;
+                    vItemObj.CityName = obj.CityName;
+                    vItemObj.AreaName = obj.AreaName;
+                    vItemObj.Pincode = obj.Pincode;
+                    vItemObj.ReportedIssue = obj.ReportedIssue;
+                    vItemObj.OrderStatusId = obj.OrderStatusId;
+                    vItemObj.StatusName = obj.StatusName;
+                    vItemObj.LastEngineerHistoryDate = obj.LastEngineerHistoryDate;
+                    vItemObj.VehicleTypeId = obj.VehicleTypeId;
+                    vItemObj.Latitude = obj.Latitude;
+                    vItemObj.Longitude = obj.Longitude;
+                    vItemObj.VisitStatus = obj.VisitStatus;
+                    vItemObj.EngineerId = obj.EngineerId;
+                    vItemObj.EngineerName = obj.EngineerName;
+                    vItemObj.EngineerAllocatedDate = obj.EngineerAllocatedDate;
+                    vItemObj.RescheduleReason = obj.RescheduleReason;
+                    vItemObj.RescheduleDate = obj.RescheduleDate;
+
                     var vtblEngineerVisitHistoryObj = db.tblEngineerVisitHistories.Where(x => x.WorkOrderNumber == obj.WorkOrderNumber && x.EngineerId == obj.EngineerId).OrderByDescending(x => x.VisitDate).FirstOrDefault();
                     if (vtblEngineerVisitHistoryObj != null)
                     {
                         if (vtblEngineerVisitHistoryObj.VisitStatus == "Start")
                         {
-                            obj.LastEngineerHistoryDate = vtblEngineerVisitHistoryObj.VisitDate;
-                            obj.VehicleTypeId = vtblEngineerVisitHistoryObj.VehicleTypeId;
-                            obj.Latitude = vtblEngineerVisitHistoryObj.Latitude;
-                            obj.Longitude = vtblEngineerVisitHistoryObj.Longitude;
-                            obj.VisitStatus = vtblEngineerVisitHistoryObj.VisitStatus;
+                            vItemObj.LastEngineerHistoryDate = vtblEngineerVisitHistoryObj.VisitDate;
+                            vItemObj.VehicleTypeId = vtblEngineerVisitHistoryObj.VehicleTypeId;
+                            vItemObj.Latitude = vtblEngineerVisitHistoryObj.Latitude;
+                            vItemObj.Longitude = vtblEngineerVisitHistoryObj.Longitude;
+                            vItemObj.VisitStatus = vtblEngineerVisitHistoryObj.VisitStatus;
                         }
                     }
+
+                    var user = await db.tblUsers.Where(u => u.CustomerId == obj.CustomerId).FirstOrDefaultAsync();
+                    if (user != null)
+                    {
+                        var vCustomerAddress = db.GetUsersAddresses(user.Id).ToList();
+
+                        foreach (var item in vCustomerAddress)
+                        {
+                            item.IsDefault = (obj.ServiceAddressId == item.Id) ? true : false;
+                        }
+
+                        vItemObj.CustomerAddresses = vCustomerAddress;
+                    }
+
+                    woListForEmployees.Add(vItemObj);
                 }
 
                 _response.Data = woListForEmployees;
@@ -1040,7 +1082,7 @@ namespace OraRegaAV.Controllers
                     ProdDescriptionIfOther = detail.ProdDescriptionIfOther,
                     CustomerSecondaryName = detail.CustomerSecondaryName,
                     EngineerMobile = detail.PersonalNumber,
-                    EngineerAllocatedDate=detail.EngineerAllocatedDate,
+                    EngineerAllocatedDate = detail.EngineerAllocatedDate,
                 }).ToList();
 
                 foreach (var item in workOrderListObj)
