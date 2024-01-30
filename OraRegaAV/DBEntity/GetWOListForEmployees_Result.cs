@@ -16,7 +16,7 @@ namespace OraRegaAV.DBEntity
         public int Id { get; set; }
         public string WorkOrderNumber { get; set; }
         public Nullable<System.DateTime> TicketLogDate { get; set; }
-        public Nullable<int> CustomerId { get; set; }
+        public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Mobile { get; set; }
@@ -38,6 +38,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> EngineerAllocatedDate { get; set; }
         public string RescheduleReason { get; set; }
         public Nullable<System.DateTime> RescheduleDate { get; set; }
-        public Nullable<int> ServiceAddressId { get; set; }
+        public int ServiceAddressId { get; set; }
     }
 }

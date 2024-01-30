@@ -158,8 +158,9 @@ namespace OraRegaAV.Models
     {
         public WOListForEmployees_Result_Response()
         {
-            CustomerAddresses = new List<GetUsersAddresses_Result>();
+            Addresses = new List<UsersAddresses_Result>();
         }
+
         public int Id { get; set; }
         public string WorkOrderNumber { get; set; }
         public Nullable<System.DateTime> TicketLogDate { get; set; }
@@ -185,6 +186,29 @@ namespace OraRegaAV.Models
         public Nullable<System.DateTime> EngineerAllocatedDate { get; set; }
         public string RescheduleReason { get; set; }
         public Nullable<System.DateTime> RescheduleDate { get; set; }
-        public List<GetUsersAddresses_Result> CustomerAddresses;
+        public int ServiceAddressId { get; set; }
+
+        public List<UsersAddresses_Result> Addresses;
+    }
+
+    public class UsersAddresses_Result
+    {
+        public int UserId { get; set; }
+        public Nullable<int> Id { get; set; }
+        public string NameForAddress { get; set; }
+        public string MobileNo { get; set; }
+        public string Address { get; set; }
+        public Nullable<int> StateId { get; set; }
+        public string StateName { get; set; }
+        public Nullable<int> CityId { get; set; }
+        public string CityName { get; set; }
+        public Nullable<int> AreaId { get; set; }
+        public string AreaName { get; set; }
+        public Nullable<int> PinCodeId { get; set; }
+        public string Pincode { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> IsDefault { get; set; }
+        public Nullable<int> AddressTypeId { get; set; }
+        public string AddressType { get; set; }
     }
 }

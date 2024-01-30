@@ -709,7 +709,7 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                List<WOListForEmployees_Result_Response> woListForEmployees = null;
+                var woListForEmployees = new List<WOListForEmployees_Result_Response>();
 
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
@@ -743,6 +743,7 @@ namespace OraRegaAV.Controllers
                     vItemObj.EngineerAllocatedDate = obj.EngineerAllocatedDate;
                     vItemObj.RescheduleReason = obj.RescheduleReason;
                     vItemObj.RescheduleDate = obj.RescheduleDate;
+                    vItemObj.ServiceAddressId = obj.ServiceAddressId;
 
                     var vtblEngineerVisitHistoryObj = db.tblEngineerVisitHistories.Where(x => x.WorkOrderNumber == obj.WorkOrderNumber && x.EngineerId == obj.EngineerId).OrderByDescending(x => x.VisitDate).FirstOrDefault();
                     if (vtblEngineerVisitHistoryObj != null)
@@ -761,13 +762,30 @@ namespace OraRegaAV.Controllers
                     if (user != null)
                     {
                         var vCustomerAddress = db.GetUsersAddresses(user.Id).ToList();
-
                         foreach (var item in vCustomerAddress)
                         {
-                            item.IsDefault = (obj.ServiceAddressId == item.Id) ? true : false;
-                        }
+                            var vItemAddressesObj = new UsersAddresses_Result();
 
-                        vItemObj.CustomerAddresses = vCustomerAddress;
+                            vItemAddressesObj.UserId = item.UserId;
+                            vItemAddressesObj.Id = item.Id;
+                            vItemAddressesObj.NameForAddress = item.NameForAddress;
+                            vItemAddressesObj.MobileNo = item.MobileNo;
+                            vItemAddressesObj.Address = item.Address;
+                            vItemAddressesObj.StateId = item.StateId;
+                            vItemAddressesObj.StateName = item.StateName;
+                            vItemAddressesObj.CityId = item.CityId;
+                            vItemAddressesObj.CityName = item.CityName;
+                            vItemAddressesObj.AreaId = item.AreaId;
+                            vItemAddressesObj.AreaName = item.AreaName;
+                            vItemAddressesObj.PinCodeId = item.PinCodeId;
+                            vItemAddressesObj.Pincode = item.Pincode;
+                            vItemAddressesObj.IsActive = item.IsActive;
+                            vItemAddressesObj.IsDefault = item.IsDefault = (obj.ServiceAddressId == item.Id) ? true : false;
+                            vItemAddressesObj.AddressTypeId = item.AddressTypeId;
+                            vItemAddressesObj.AddressType = item.AddressType;
+
+                            vItemObj.Addresses.Add(vItemAddressesObj);
+                        }
                     }
 
                     woListForEmployees.Add(vItemObj);
@@ -1509,8 +1527,10 @@ namespace OraRegaAV.Controllers
                         vNewObj.IsWorkOrderCreated = true;
 
                         if (vObjWoObj.WorkOrderEnquiryId > 0)
+                        {
+                            vNewObj.WorkOrderEnquiryNumber = Convert.ToInt32(vObjWoObj.WorkOrderEnquiryId);
                             vNewObj.IsWorkOrderEnquiryCreated = true;
-
+                        }
                         vLogedinDetail.SystemCodeName = "IsWorkOrderEnquiryCreated";
                     }
                     else if (item.SystemCode == 2)

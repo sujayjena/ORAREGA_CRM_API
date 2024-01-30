@@ -33,4 +33,15 @@ namespace OraRegaAV.Models
         public int StateId { get; set; }
     }
 
+    public class InventoryReport_Search
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+        [DefaultValue("")]
+        public string BranchId { get; set; }
+    }
+
 }
