@@ -26,14 +26,14 @@ namespace OraRegaAV.Controllers
 
         [HttpPost]
         [Route("api/DashboardAPI/GetDashboard_WorkOrderAllocated")]
-        public async Task<Response> GetDashboard_WorkOrderAllocated()
+        public async Task<Response> GetDashboard_WorkOrderAllocated(Dashboard_Search parameter)
         {
-            List<GetAccessoriesList_Result> accessoriesList;
+            List<GetDashboard_WorkOrderAllocated_Result> listObj;
             try
             {
-                //accessoriesList = await Task.Run(() => db.GetDashboard_WorkOrderAllocated().ToList());
+                listObj = await Task.Run(() => db.GetDashboard_WorkOrderAllocated(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
 
-                //_response.Data = accessoriesList;
+                _response.Data = listObj;
             }
             catch (Exception ex)
             {
