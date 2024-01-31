@@ -11,10 +11,10 @@ namespace OraRegaAV.DBEntity
 {
     using System;
     
-    public partial class GetDashboard_WorkOrderSummary_Result
+    public partial class GetDashboard_CloseSummary_Result
     {
-        public Nullable<int> TotalWorkOrder { get; set; }
-        public Nullable<int> InCompleteWorkOrder { get; set; }
-        public Nullable<int> PendingForPart { get; set; }
+        public Nullable<int> EngineerId { get; set; }
+        public string EngineerName { get; set; }
+        public Nullable<int> ClosedWorkOrder { get; set; }
     }
 }
