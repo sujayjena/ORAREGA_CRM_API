@@ -360,6 +360,7 @@
     <Compile Include="Controllers\Customers\CustomerSellModuleController.cs" />
     <Compile Include="Controllers\Customers\CustomerSOEnquiryController.cs" />
     <Compile Include="Controllers\Customers\CustomerWOEnquiryController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DelayTypeAPIController.cs" />
     <Compile Include="Controllers\DepartmentAPIController.cs" />
     <Compile Include="Controllers\DesignationAPIController.cs" />
