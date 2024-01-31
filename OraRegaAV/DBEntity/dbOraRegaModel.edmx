@@ -2039,7 +2039,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetCustomerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CustomerId" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetDashboard_WorkOrderAllocated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="GetDashboard_WorkOrderSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
@@ -3921,7 +3921,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="StateId" Mode="In" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
+          <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)"
+          <FunctionImport Name="GetDashboard_WorkOrderSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -7181,6 +7182,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="UnAllocated" Nullable="true" />
           <Property Type="Int32" Name="Accepted" Nullable="true" />
           <Property Type="Int32" Name="Rejected" Nullable="true" />
+        <ComplexType Name="GetDashboard_WorkOrderSummary_Result">
+          <Property Type="String" Name="TotalWorkOrder" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="InCompleteWorkOrder" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="PendingForPart" Nullable="false" MaxLength="1" />
         </ComplexType>
   
 			</Schema>
@@ -11669,6 +11674,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="UnAllocated" ColumnName="UnAllocated" />
                 <ScalarProperty Name="Accepted" ColumnName="Accepted" />
                 <ScalarProperty Name="Rejected" ColumnName="Rejected" />
+          <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderSummary" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_WorkOrderSummary_Result">
+                <ScalarProperty Name="TotalWorkOrder" ColumnName="TotalWorkOrder" />
+                <ScalarProperty Name="InCompleteWorkOrder" ColumnName="InCompleteWorkOrder" />
+                <ScalarProperty Name="PendingForPart" ColumnName="PendingForPart" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

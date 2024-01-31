@@ -47,15 +47,15 @@ namespace OraRegaAV.Controllers
 
 
         [HttpPost]
-        [Route("api/DashboardAPI/GetWorkOrderSummary")]
-        public async Task<Response> GetWorkOrderSummary()
+        [Route("api/DashboardAPI/GetDashboard_WorkOrderSummary")]
+        public async Task<Response> GetDashboard_WorkOrderSummary(Dashboard_Search parameter)
         {
-            List<GetAccessoriesList_Result> accessoriesList;
+            List<GetDashboard_WorkOrderSummary_Result> listObj;
             try
             {
-                accessoriesList = await Task.Run(() => db.GetAccessoriesList().ToList());
+                listObj = await Task.Run(() => db.GetDashboard_WorkOrderSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
 
-                _response.Data = accessoriesList;
+                _response.Data = listObj;
             }
             catch (Exception ex)
             {
