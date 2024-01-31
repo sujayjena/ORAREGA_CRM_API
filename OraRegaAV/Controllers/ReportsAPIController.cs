@@ -876,5 +876,168 @@ namespace OraRegaAV.Controllers.API
         }
 
         #endregion
+
+        #region Sales Report
+
+        [HttpPost]
+        [Route("api/ReportsAPI/GetSalesReport")]
+        public Response GetSalesReport(WorkOrderReport_Search objReportSearchModel)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var WorkOrderCreationList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+
+                _response.Data = WorkOrderCreationList;
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/ReportsAPI/DownloadSalesReport")]
+        public Response DownloadSalesReport(WorkOrderReport_Search objReportSearchModel)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var salesList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+
+                if (salesList.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Sales Report
+
+                    DataTable dtWOEReport = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(salesList), (typeof(DataTable)));
+
+                    if (dtWOEReport.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Sales_Report");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Sales Order Number";
+                        WorkSheet1.Cells[1, 3].Value = "Sales Order Number";
+                        WorkSheet1.Cells[1, 4].Value = "Branch Name";
+                        WorkSheet1.Cells[1, 5].Value = "Organization Name";
+                        WorkSheet1.Cells[1, 6].Value = "Customer GST Number";
+                        WorkSheet1.Cells[1, 7].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 8].Value = "Mobile Number";
+                        WorkSheet1.Cells[1, 9].Value = "Email Address";
+                        WorkSheet1.Cells[1, 10].Value = "Alternate Number";
+                        WorkSheet1.Cells[1, 11].Value = "Address";
+                        WorkSheet1.Cells[1, 12].Value = "Product Type";
+                        WorkSheet1.Cells[1, 13].Value = "Status";
+                        WorkSheet1.Cells[1, 14].Value = "Product Make";
+                        WorkSheet1.Cells[1, 15].Value = "Product Model";
+                        WorkSheet1.Cells[1, 16].Value = "Product Description";
+                        WorkSheet1.Cells[1, 17].Value = "Price";
+                        WorkSheet1.Cells[1, 18].Value = "Customer Comments";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in dtWOEReport.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["SalesOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 3].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["TicketLogDate"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["CompanyName"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["GstNumber"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["CustomerName"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["Mobile"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["Email"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["AlternateNumber"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["Address"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ProductType"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["StatusName"];
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["ProductMake"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["ProductModel"];
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["ProductDescription"];
+                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["Price"];
+                            WorkSheet1.Cells[recordIndex, 18].Value = dataRow["CustomerComment"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+                        WorkSheet1.Column(13).AutoFit();
+                        WorkSheet1.Column(14).AutoFit();
+                        WorkSheet1.Column(15).AutoFit();
+                        WorkSheet1.Column(16).AutoFit();
+                        WorkSheet1.Column(17).AutoFit();
+                        WorkSheet1.Column(18).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Sales_Report" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Report Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        #endregion
     }
 }
