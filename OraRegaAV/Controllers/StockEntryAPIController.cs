@@ -554,7 +554,9 @@ namespace OraRegaAV.Controllers.API
                 {
                     foreach (var item in parameters.PartsDetail.ToList())
                     {
-                        if (!db.tblPartsAllocatedToReturns.Where(u => u.EngineerId == parameters.EngineerId && u.PartId == item.PartId).Any() && item.PartId > 0)
+                        //if (!db.tblPartsAllocatedToReturns.Where(u => u.EngineerId == parameters.EngineerId && u.PartId == item.PartId).Any() && item.PartId > 0)
+                        //{
+                        if (item.PartId > 0)
                         {
                             var vtblPartsAllocatedToReturn = new tblPartsAllocatedToReturn()
                             {
@@ -570,7 +572,7 @@ namespace OraRegaAV.Controllers.API
                                 CreatedDate = DateTime.Now,
                             };
 
-                            db.tblPartsAllocatedToReturns.AddOrUpdate(vtblPartsAllocatedToReturn);
+                            db.tblPartsAllocatedToReturns.Add(vtblPartsAllocatedToReturn);
                         }
                     }
 
@@ -607,7 +609,7 @@ namespace OraRegaAV.Controllers.API
 
                     foreach (var item in vObjList)
                     {
-                        var vReturnPartObj = await Task.Run(() => db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId).FirstOrDefaultAsync());
+                        var vReturnPartObj = await Task.Run(() => db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId && x.ReturnStatusId == 1).FirstOrDefaultAsync());
                         if (vReturnPartObj != null)
                         {
 
@@ -653,7 +655,7 @@ namespace OraRegaAV.Controllers.API
 
                 parameters.Type = string.IsNullOrWhiteSpace(parameters.Type) ? "W" : parameters.Type;
 
-                var vObjList = await Task.Run(() => db.GetStockAllocationToReturnList(parameters.CompanyId, parameters.BranchId, parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.StatusId, parameters.Type.SanitizeValue(),userId).ToList());
+                var vObjList = await Task.Run(() => db.GetStockAllocationToReturnList(parameters.CompanyId, parameters.BranchId, parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.StatusId, parameters.Type.SanitizeValue(), userId).ToList());
 
                 _response.Data = vObjList;
             }

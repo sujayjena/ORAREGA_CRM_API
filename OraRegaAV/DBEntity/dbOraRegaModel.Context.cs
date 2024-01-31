@@ -1892,5 +1892,30 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_StockSummary_Result>("GetDashboard_StockSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter);
         }
+    
+        public virtual ObjectResult<GetDashboard_StockSummary_Inventory_Result> GetDashboard_StockSummary_Inventory(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_StockSummary_Inventory_Result>("GetDashboard_StockSummary_Inventory", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter);
+        }
     }
 }

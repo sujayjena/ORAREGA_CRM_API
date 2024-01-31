@@ -111,10 +111,26 @@ namespace OraRegaAV.Controllers
         [Route("api/DashboardAPI/GetDashboard_StockSummary")]
         public async Task<Response> GetDashboard_StockSummary(Dashboard_Search parameter)
         {
-            List<GetDashboard_StockSummary_Result> listObj;
+            List<Dashboard_StockSummary_Result> listObj = new List<Dashboard_StockSummary_Result>();
             try
             {
-                listObj = await Task.Run(() => db.GetDashboard_StockSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                var vStockSummary = await Task.Run(() => db.GetDashboard_StockSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                foreach (var item in vStockSummary)
+                {
+                    var vlistObj = new Dashboard_StockSummary_Result();
+                    vlistObj.TotalStock = item.TotalStock;
+                    vlistObj.Good = item.Good;
+                    vlistObj.DOA = item.DOA;
+                    vlistObj.Defective = item.Defective;
+
+                    var vStockSummary_Inventory = await Task.Run(() => db.GetDashboard_StockSummary_Inventory(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                    if (vStockSummary_Inventory != null)
+                    {
+                        vlistObj.PartNumberWiseList = vStockSummary_Inventory;
+                    }
+
+                    listObj.Add(vlistObj);
+                }
 
                 _response.Data = listObj;
             }

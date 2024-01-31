@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OraRegaAV.DBEntity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -19,5 +20,13 @@ namespace OraRegaAV.Models
 
         [DefaultValue(0)]
         public int UserId { get; set; }
+    }
+    public class Dashboard_StockSummary_Result
+    {
+        public Nullable<int> TotalStock { get; set; }
+        public Nullable<int> Good { get; set; }
+        public Nullable<int> DOA { get; set; }
+        public Nullable<int> Defective { get; set; }
+        public List<GetDashboard_StockSummary_Inventory_Result> PartNumberWiseList { get; set; }
     }
 }

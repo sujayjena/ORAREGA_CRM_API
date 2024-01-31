@@ -2065,6 +2065,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetDashboard_StockSummary_Inventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetDashboard_WorkOrderAllocated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
@@ -3988,6 +3995,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetDashboard_StockSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_StockSummary_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetDashboard_StockSummary_Inventory" ReturnType="Collection(dbOraRegaModel.GetDashboard_StockSummary_Inventory_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -7276,6 +7290,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Good" Nullable="true" />
           <Property Type="Int32" Name="DOA" Nullable="true" />
           <Property Type="Int32" Name="Defective" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetDashboard_StockSummary_Inventory_Result">
+          <Property Type="String" Name="PartNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Defective" Nullable="true" />
+          <Property Type="Int32" Name="DOA" Nullable="true" />
+          <Property Type="Int32" Name="Good" Nullable="true" />
         </ComplexType>
   
 			</Schema>
@@ -11812,6 +11832,16 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Good" ColumnName="Good" />
                 <ScalarProperty Name="DOA" ColumnName="DOA" />
                 <ScalarProperty Name="Defective" ColumnName="Defective" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDashboard_StockSummary_Inventory" FunctionName="dbOraRegaModel.Store.GetDashboard_StockSummary_Inventory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_StockSummary_Inventory_Result">
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="Defective" ColumnName="Defective" />
+                <ScalarProperty Name="DOA" ColumnName="DOA" />
+                <ScalarProperty Name="Good" ColumnName="Good" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
