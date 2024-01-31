@@ -23,6 +23,29 @@ namespace OraRegaAV.Controllers
             _response.IsSuccess = true;
         }
 
+
+        [HttpPost]
+        [Route("api/DashboardAPI/GetDashboard_WorkOrderAllocated")]
+        public async Task<Response> GetDashboard_WorkOrderAllocated()
+        {
+            List<GetAccessoriesList_Result> accessoriesList;
+            try
+            {
+                //accessoriesList = await Task.Run(() => db.GetDashboard_WorkOrderAllocated().ToList());
+
+                //_response.Data = accessoriesList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+
         [HttpPost]
         [Route("api/DashboardAPI/GetWorkOrderSummary")]
         public async Task<Response> GetWorkOrderSummary()
