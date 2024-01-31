@@ -86,6 +86,7 @@ namespace OraRegaAV.Controllers
             return _response;
         }
 
+        [HttpPost]
         [Route("api/DashboardAPI/GetDashboard_SalesOrderSummary")]
         public async Task<Response> GetDashboard_SalesOrderSummary(Dashboard_Search parameter)
         {
@@ -115,7 +116,6 @@ namespace OraRegaAV.Controllers
             {
                 listObj = await Task.Run(() => db.GetDashboard_StockSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
 
-
                 _response.Data = listObj;
             }
             catch (Exception ex)
@@ -136,7 +136,6 @@ namespace OraRegaAV.Controllers
             try
             {
                 listObj = await Task.Run(() => db.GetDashboard_Customer(parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
-
 
                 _response.Data = listObj;
             }
