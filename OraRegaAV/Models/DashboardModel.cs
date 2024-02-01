@@ -20,6 +20,9 @@ namespace OraRegaAV.Models
 
         [DefaultValue(0)]
         public int UserId { get; set; }
+
+        [DefaultValue("All")]
+        public string FilterType { get; set; }
     }
     public class Dashboard_StockSummary_Result
     {

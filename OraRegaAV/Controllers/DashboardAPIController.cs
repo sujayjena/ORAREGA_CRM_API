@@ -31,7 +31,7 @@ namespace OraRegaAV.Controllers
             List<GetDashboard_WorkOrderAllocated_Result> listObj;
             try
             {
-                listObj = await Task.Run(() => db.GetDashboard_WorkOrderAllocated(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                listObj = await Task.Run(() => db.GetDashboard_WorkOrderAllocated(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
 
                 _response.Data = listObj;
             }
@@ -52,7 +52,7 @@ namespace OraRegaAV.Controllers
             List<GetDashboard_WorkOrderSummary_Result> listObj;
             try
             {
-                listObj = await Task.Run(() => db.GetDashboard_WorkOrderSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                listObj = await Task.Run(() => db.GetDashboard_WorkOrderSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
 
                 _response.Data = listObj;
             }
@@ -73,7 +73,7 @@ namespace OraRegaAV.Controllers
             List<GetDashboard_CloseSummary_Result> listObj;
             try
             {
-                listObj = await Task.Run(() => db.GetDashboard_CloseSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                listObj = await Task.Run(() => db.GetDashboard_CloseSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
                 _response.Data = listObj;
             }
             catch (Exception ex)
@@ -93,7 +93,7 @@ namespace OraRegaAV.Controllers
             List<GetDashboard_SalesOrderSummary_Result> listObj;
             try
             {
-                listObj = await Task.Run(() => db.GetDashboard_SalesOrderSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                listObj = await Task.Run(() => db.GetDashboard_SalesOrderSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
 
                 _response.Data = listObj;
             }
@@ -114,7 +114,7 @@ namespace OraRegaAV.Controllers
             List<Dashboard_StockSummary_Result> listObj = new List<Dashboard_StockSummary_Result>();
             try
             {
-                var vStockSummary = await Task.Run(() => db.GetDashboard_StockSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                var vStockSummary = await Task.Run(() => db.GetDashboard_StockSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
                 foreach (var item in vStockSummary)
                 {
                     var vlistObj = new Dashboard_StockSummary_Result();
@@ -123,7 +123,7 @@ namespace OraRegaAV.Controllers
                     vlistObj.DOA = item.DOA;
                     vlistObj.Defective = item.Defective;
 
-                    var vStockSummary_Inventory = await Task.Run(() => db.GetDashboard_StockSummary_Inventory(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId).ToList());
+                    var vStockSummary_Inventory = await Task.Run(() => db.GetDashboard_StockSummary_Inventory(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
                     if (vStockSummary_Inventory != null)
                     {
                         vlistObj.PartNumberWiseList = vStockSummary_Inventory;
