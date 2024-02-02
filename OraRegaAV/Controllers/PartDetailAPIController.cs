@@ -5,6 +5,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -163,26 +164,29 @@ namespace OraRegaAV.Controllers.API
         }
 
         [HttpPost]
-        public Response PartsList(int CompanyId = 0, int BranchId = 0, int UserId = 0)
+        public Response PartsList(PartDetailsSearchParameters parameters)
         {
-            _response = RetrievePartsList(0,CompanyId, BranchId, UserId);
+            _response = RetrievePartsList(parameters.Id, parameters.CompanyId, parameters.BranchId, parameters.SearchValue.SanitizeValue(), parameters.UserId, parameters.PageSize, parameters.PageNo);
             return _response;
         }
 
         [HttpPost]
         public Response PartDetailsById([FromBody] int Id)
         {
-            _response = RetrievePartsList(Id);
+            _response = RetrievePartsList(Id, 0, 0, "", 0, 0, 0);
             return _response;
         }
 
-        private Response RetrievePartsList(int Id = 0, int CompanyId = 0, int BranchId = 0, int UserId = 0)
+        private Response RetrievePartsList(int Id = 0, int CompanyId = 0, int BranchId = 0, string SearchValue = "", int UserId = 0, int PageSize = 0, int PageNo = 0)
         {
             List<GetPartDetailList_Result> tblPartDetailList;
 
             try
             {
-                tblPartDetailList = db.GetPartDetailList(Id, CompanyId, BranchId, UserId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                tblPartDetailList = db.GetPartDetailList(Id, CompanyId, BranchId, SearchValue, UserId, PageSize, PageNo, vTotal).ToList();
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = tblPartDetailList;
             }
             catch (Exception ex)

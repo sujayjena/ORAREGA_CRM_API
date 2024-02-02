@@ -29,11 +29,14 @@ namespace OraRegaAV.DBEntity
         public string GSTNo { get; set; }
         public string AccountNo { get; set; }
         public string IFSCCode { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CountryName { get; set; }
         public string StateName { get; set; }
         public string CityName { get; set; }
         public string AreaName { get; set; }
+        public string Pincode { get; set; }
+        public string CreatorName { get; set; }
         public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }

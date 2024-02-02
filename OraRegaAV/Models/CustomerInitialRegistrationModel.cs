@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Web;
 
 namespace OraRegaAV.Models
@@ -15,5 +16,17 @@ namespace OraRegaAV.Models
         public Nullable<bool> IsActive { get; set; }
         public string ProfilePicturePath { get; set; }
         public HttpPostedFile ProfilePicture { get; set; }
+    }
+    public class CustomerSearchParams
+    {
+        [DefaultValue(0)]
+        public int? customerId { get; set; }
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

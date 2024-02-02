@@ -19,6 +19,14 @@ namespace OraRegaAV.Models
 
         [JsonIgnore]
         public int? LoggedInUserId { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class WOListParameters
@@ -33,6 +41,14 @@ namespace OraRegaAV.Models
 
         [DefaultValue(0)]
         public int EmployeeId { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class WOEnquiryToWorkOrderParams
@@ -210,5 +226,26 @@ namespace OraRegaAV.Models
         public Nullable<bool> IsDefault { get; set; }
         public Nullable<int> AddressTypeId { get; set; }
         public string AddressType { get; set; }
+    }
+    public class WorkOrderSearchParameters
+    {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
+
+        public string @WorkOrderNumber { get; set; }
+
+        [DefaultValue(0)]
+        public int UserId { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

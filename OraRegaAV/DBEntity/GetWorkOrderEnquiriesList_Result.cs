@@ -49,5 +49,6 @@ namespace OraRegaAV.DBEntity
         public string IssueDesc { get; set; }
         public string Comment { get; set; }
         public string AttributeImagePath { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 }

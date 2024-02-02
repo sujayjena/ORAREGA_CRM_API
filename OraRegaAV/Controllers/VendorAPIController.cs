@@ -5,6 +5,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,17 +65,14 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/VendorAPI/GetAllVendors")]
-        public Response GetAllVendors(VendorSearchParams ObjVendorSearchParams)
+        public Response GetAllVendors(VendorSearchParams parameter)
         {
             try
             {
-                ObjVendorSearchParams.CountryId = ObjVendorSearchParams.CountryId.SanitizeValue();
-                ObjVendorSearchParams.StateId = ObjVendorSearchParams.StateId.SanitizeValue();
-                ObjVendorSearchParams.CityId = ObjVendorSearchParams.CityId.SanitizeValue();
-                ObjVendorSearchParams.AreaId = ObjVendorSearchParams.AreaId.SanitizeValue();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                List<GetVendorsList_Result> vendorsList = db.GetVendorsList(parameter.CountryId, parameter.StateId, parameter.CityId, parameter.AreaId, parameter.IsActive, parameter.SearchValue, parameter.PageSize, parameter.PageNo, vTotal).ToList();
 
-                List<GetVendorsList_Result> vendorsList = db.GetVendorsList(ObjVendorSearchParams.CountryId, ObjVendorSearchParams.StateId, ObjVendorSearchParams.CityId, ObjVendorSearchParams.AreaId, ObjVendorSearchParams.IsActive).ToList();
-
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = vendorsList;
             }
             catch (Exception ex)

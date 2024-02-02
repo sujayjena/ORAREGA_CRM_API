@@ -24,6 +24,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.SqlServer.Server;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers
 {
@@ -713,7 +714,8 @@ namespace OraRegaAV.Controllers
 
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var vwoList = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var vwoList = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 foreach (var obj in vwoList)
                 {
@@ -791,6 +793,7 @@ namespace OraRegaAV.Controllers
                     woListForEmployees.Add(vItemObj);
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = woListForEmployees;
             }
             catch (Exception ex)
@@ -1014,14 +1017,15 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetWorkOrderList(int companyId = 0, int branchId = 0, string workOrderNumber = "")
+        public async Task<Response> GetWorkOrderList(WorkOrderSearchParameters parameters)
         {
             List<GetWorkOrderListViewModel> workOrderListObj = new List<GetWorkOrderListViewModel>();
             try
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var workOrderList = await Task.Run(() => db.GetWorkOrderList(companyId, branchId, workOrderNumber, userId).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var workOrderList = await Task.Run(() => db.GetWorkOrderList(parameters.CompanyId, parameters.BranchId, parameters.WorkOrderNumber, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 workOrderListObj = workOrderList.Select(detail => new GetWorkOrderListViewModel
                 {
@@ -1233,6 +1237,8 @@ namespace OraRegaAV.Controllers
 
                     item.WOPartList = woPart;
                 }
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = workOrderListObj;
             }
             catch (Exception ex)

@@ -2038,6 +2038,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         </Function>
         <Function Name="GetCustomerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CustomerId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetDashboard_CloseSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
@@ -2166,7 +2170,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
-          <Parameter Name="userId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetPartDetailTransferHistoryLogList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
@@ -2259,6 +2267,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="SalesOrderStatusId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetSalesOrderStatusList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -2287,6 +2299,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="EnquiryStatusId" Type="int" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetSOEnquiryProductsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SOEnquiryId" Type="int" Mode="In" />
@@ -2338,12 +2354,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="ChallanNumber" Type="varchar" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetStockOut_Defective_ChallanList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="ChallanNumber" Type="varchar" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetStockOutDefectiveByChallanNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2358,10 +2382,19 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="ChallanNumber" Type="varchar" Mode="In" />
           <Parameter Name="DockerNo" Type="varchar" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetStockTransferInList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ChallanNo" Type="varchar" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetStockTransferInOutByChallanNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ChallanNumber" Type="varchar" Mode="In" />
@@ -2370,7 +2403,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="ChallanNumber" Type="varchar" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetSupportTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetTermsAndConditionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2402,6 +2439,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="CityId" Type="int" Mode="In" />
           <Parameter Name="AreaId" Type="int" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetWarrantyTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetWOCustomerFeedbackList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2423,6 +2464,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="OrderStatusId" Type="int" Mode="In" />
           <Parameter Name="EngineerId" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetWorkOrderCloserReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
@@ -2448,6 +2493,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="EnquiryStatusId" Type="int" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetWorkOrderEnquiryReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
@@ -2462,6 +2511,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="BranchId" Type="int" Mode="In" />
           <Parameter Name="WorkOrderNumber" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetWorkOrderRescheduleHistoryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
@@ -3457,13 +3510,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PartNumber" Mode="In" Type="String" />
             <Parameter Name="ReceivedDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-					<FunctionImport Name="GetVendorsList" ReturnType="Collection(dbOraRegaModel.GetVendorsList_Result)">
-            <Parameter Name="CountryId" Mode="In" Type="Int32" />
-            <Parameter Name="StateId" Mode="In" Type="Int32" />
-            <Parameter Name="CityId" Mode="In" Type="Int32" />
-            <Parameter Name="AreaId" Mode="In" Type="Int32" />
-            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
-          </FunctionImport>
 					<FunctionImport Name="GetWOListForDropDown" ReturnType="Collection(dbOraRegaModel.GetWOListForDropDown_Result)" />
 					<FunctionImport Name="ImportStockEntry" ReturnType="Collection(dbOraRegaModel.ImportStockEntry_Result)">
             <Parameter Name="StockEntryData" Mode="In" Type="String" />
@@ -3627,9 +3673,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="RoleId" Mode="In" Type="Int64" />
             <Parameter Name="RegionId" Mode="In" Type="Int64" />
           </FunctionImport>
-					<FunctionImport Name="GetCustomerList" ReturnType="Collection(dbOraRegaModel.GetCustomerList_Result)">
-          <Parameter Name="CustomerId" Mode="In" Type="Int32" />
-          </FunctionImport>
 					<FunctionImport Name="GetGST_N_StateCode_ByCompanyNState" ReturnType="Collection(dbOraRegaModel.GetGST_N_StateCode_ByCompanyNState_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="StateId" Mode="In" Type="Int32" />
@@ -3700,12 +3743,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="SOEnquiryId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblWorkOrderEnquiries" EntityType="dbOraRegaModel.tblWorkOrderEnquiry" />
-					<FunctionImport Name="GetWorkOrderEnquiriesList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderEnquiriesList_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
-            <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
-            <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
-          </FunctionImport>
+					
 					<FunctionImport Name="GetSalesOrderProductsList" ReturnType="Collection(dbOraRegaModel.GetSalesOrderProductsList_Result)">
           <Parameter Name="SalesOrderId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -3735,6 +3773,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="ChallanNumber" Mode="In" Type="String" />
             <Parameter Name="DockerNo" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblBanners" EntityType="dbOraRegaModel.tblBanner" />
@@ -3801,16 +3843,15 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PartId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockTransferInList" ReturnType="Collection(dbOraRegaModel.GetStockTransferInList_Result)">
-          <Parameter Name="ChallanNo" Mode="In" Type="String" />
+            <Parameter Name="ChallanNo" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetWOCustomerFeedbackList" ReturnType="Collection(dbOraRegaModel.GetWOCustomerFeedbackList_Result)">
           <Parameter Name="WorkOrderNo" Mode="In" Type="String" />
-          </FunctionImport>
-					<FunctionImport Name="GetPartDetailList" ReturnType="Collection(dbOraRegaModel.GetPartDetailList_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
-            <Parameter Name="userId" Mode="In" Type="Int32" />
           </FunctionImport>
 					
 					<FunctionImport Name="GetStockAllocationToWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetStockAllocationToWorkOrderList_Result)">
@@ -3847,13 +3888,21 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="ChallanNumber" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetSOEnquiryList" ReturnType="Collection(dbOraRegaModel.GetSOEnquiryList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblStockOut_DAO" EntityType="dbOraRegaModel.tblStockOut_DAO" />
 					<EntitySet Name="tblStockOut_DAO_PartDetails" EntityType="dbOraRegaModel.tblStockOut_DAO_PartDetails" />
@@ -3863,12 +3912,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="ChallanNumber" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockOut_DAO_ChallanList" ReturnType="Collection(dbOraRegaModel.GetStockOut_DAO_ChallanList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="ChallanNumber" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockOutDefectiveByChallanNumber" ReturnType="Collection(dbOraRegaModel.GetStockOutDefectiveByChallanNumber_Result)">
@@ -3919,25 +3976,18 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="RescheduleReasonId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblWorkOrderEngineerAllocatedHistories" EntityType="dbOraRegaModel.tblWorkOrderEngineerAllocatedHistory" />
- 					<FunctionImport Name="GetWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderList_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
-            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-          </FunctionImport>
+ 					
 					<FunctionImport Name="GetSalesOrdersList" ReturnType="Collection(dbOraRegaModel.GetSalesOrdersList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="SalesOrderStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetWOListForEmployees" ReturnType="Collection(dbOraRegaModel.GetWOListForEmployees_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
-            <Parameter Name="OrderStatusId" Mode="In" Type="Int32" />
-            <Parameter Name="EngineerId" Mode="In" Type="Int32" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-          </FunctionImport>
+        
           <FunctionImport Name="GetWorkOrderCloserReport" ReturnType="Collection(dbOraRegaModel.GetWorkOrderCloserReport_Result)">
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
@@ -4023,6 +4073,66 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GetPartDetailList" ReturnType="Collection(dbOraRegaModel.GetPartDetailList_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetVendorsList" ReturnType="Collection(dbOraRegaModel.GetVendorsList_Result)">
+            <Parameter Name="CountryId" Mode="In" Type="Int32" />
+            <Parameter Name="StateId" Mode="In" Type="Int32" />
+            <Parameter Name="CityId" Mode="In" Type="Int32" />
+            <Parameter Name="AreaId" Mode="In" Type="Int32" />
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCustomerList" ReturnType="Collection(dbOraRegaModel.GetCustomerList_Result)">
+            <Parameter Name="CustomerId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetWorkOrderEnquiriesList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderEnquiriesList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetWOListForEmployees" ReturnType="Collection(dbOraRegaModel.GetWOListForEmployees_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="OrderStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="EngineerId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+         
   
 				</EntityContainer>
 				<ComplexType Name="GetEmployeeListForDropDown_Result">
@@ -4092,30 +4202,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="Int32" Name="ModifiedBy" Nullable="true" />
 					<Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
 				</ComplexType>
-				<ComplexType Name="GetVendorsList_Result">
-					<Property Type="Int32" Name="Id" Nullable="false" />
-					<Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="ContactPerson" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="Address" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="MobileNo" Nullable="false" MaxLength="15" />
-					<Property Type="String" Name="EmailId" Nullable="false" MaxLength="100" />
-					<Property Type="Int32" Name="CountryId" Nullable="false" />
-					<Property Type="Int32" Name="StateId" Nullable="false" />
-					<Property Type="Int32" Name="CityId" Nullable="false" />
-					<Property Type="Int32" Name="AreaId" Nullable="true" />
-					<Property Type="Int32" Name="PinCodeId" Nullable="false" />
-					<Property Type="String" Name="BillingName" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="BillingAddress" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="GSTNo" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="AccountNo" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="IFSCCode" Nullable="false" MaxLength="50" />
-					<Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-					<Property Type="String" Name="CountryName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
-					<Property Type="Boolean" Name="IsActive" Nullable="false" />
-				</ComplexType>
+				
 				<ComplexType Name="GetWOListForDropDown_Result">
 					<Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
 					<Property Type="String" Name="Text" Nullable="true" MaxLength="154" />
@@ -5171,24 +5258,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="Int32" Name="Value" Nullable="false" />
 					<Property Type="String" Name="Text" Nullable="false" MaxLength="1" />
 				</ComplexType>
-				<ComplexType Name="GetCustomerList_Result">
-					<Property Type="Int32" Name="UserId" Nullable="false" />
-					<Property Type="Int32" Name="CustomerId" Nullable="true" />
-					<Property Type="String" Name="CustFirstName" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="CustLastName" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="CustEmail" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
-					<Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
-					<Property Type="Int32" Name="StateId" Nullable="false" />
-					<Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="CityId" Nullable="false" />
-					<Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="AreaId" Nullable="false" />
-					<Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
-					<Property Type="Int32" Name="PinCodeId" Nullable="false" />
-					<Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
-					<Property Type="String" Name="CustomerProfilePicturePath" Nullable="true" MaxLength="2000" />
-				</ComplexType>
 				<ComplexType Name="GetGST_N_StateCode_ByCompanyNState_Result">
 					<Property Type="String" Name="GstNumber" Nullable="true" MaxLength="50" />
 					<Property Type="String" Name="StateCode" Nullable="true" MaxLength="50" />
@@ -5950,44 +6019,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Name="ProductMakeId" Type="Int32" />
 					<Property Name="ProdDescriptionIfOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
 				</EntityType>
-				<ComplexType Name="GetWorkOrderEnquiriesList_Result">
-					<Property Type="Int32" Name="Id" Nullable="false" />
-					<Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
-					<Property Type="String" Name="Email" Nullable="false" MaxLength="200" />
-					<Property Type="String" Name="AlternateMobileNo" Nullable="true" MaxLength="15" />
-					<Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CustomerGSTNo" Nullable="true" MaxLength="30" />
-					<Property Type="String" Name="CustomerPANNo" Nullable="true" MaxLength="15" />
-					<Property Type="String" Name="CountryOfPurchase" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="OrderTypeId" Nullable="true" />
-					<Property Type="String" Name="OrderType" Nullable="true" MaxLength="25" />
-					<Property Type="Int32" Name="ProductTypeId" Nullable="true" />
-					<Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="ProductMakeId" Nullable="true" />
-					<Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
-					<Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
-					<Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="500" />
-					<Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="100" />
-					<Property Type="String" Name="ProductDescription" Nullable="true" />
-					<Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="100" />
-					<Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="ProductSerialNo" Nullable="true" MaxLength="100" />
-					<Property Type="String" Name="WarrantyType" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="WarrantyOrAMCNo" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="FullName" Nullable="false" MaxLength="101" />
-					<Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
-					<Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="AreaName" Nullable="false" MaxLength="100" />
-					<Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
-					<Property Type="Int32" Name="EnquiryStatusId" Nullable="true" />
-					<Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
-					<Property Type="String" Name="IssueDesc" Nullable="true" MaxLength="4000" />
-					<Property Type="String" Name="Comment" Nullable="false" MaxLength="4000" />
-					<Property Type="String" Name="AttributeImagePath" Nullable="true" MaxLength="2000" />
-				</ComplexType>
+				
 				<ComplexType Name="GetSalesOrderProductsList_Result">
 					<Property Type="Int32" Name="Id" Nullable="false" />
 					<Property Type="Int32" Name="SalesOrderId" Nullable="true" />
@@ -6616,38 +6648,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
 					<Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
 				</ComplexType>
-				<ComplexType Name="GetPartDetailList_Result">
-					<Property Type="Int32" Name="Id" Nullable="false" />
-					<Property Type="String" Name="UniqueCode" Nullable="false" MaxLength="10" />
-					<Property Type="String" Name="PartNumber" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="PartName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="PartDescription" Nullable="false" MaxLength="50" />
-					<Property Type="Int32" Name="HSNCodeId" Nullable="true" />
-					<Property Type="String" Name="HSNCode" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CTSerialNo" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="PartStatusId" Nullable="false" />
-					<Property Type="String" Name="PartStatus" Nullable="true" MaxLength="50" />
-					<Property Type="Decimal" Name="SalePrice" Nullable="true" Precision="19" />
-					<Property Type="Boolean" Name="IsActive" Nullable="false" />
-					<Property Type="Int32" Name="CompanyId" Nullable="true" />
-					<Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="BranchId" Nullable="true" />
-					<Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="ReceiveFrom" Nullable="true" MaxLength="100" />
-					<Property Type="DateTime" Name="ReceiveDate" Nullable="true" Precision="23" />
-					<Property Type="String" Name="DocketNo" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="Quantity" Nullable="false" />
-					<Property Type="Int32" Name="StockPartStatusId" Nullable="true" />
-					<Property Type="String" Name="StockPartStatus" Nullable="true" MaxLength="100" />
-					<Property Type="Decimal" Name="PurchasePrice" Nullable="true" Precision="18" Scale="2" />
-					<Property Type="Int32" Name="VendorId" Nullable="true" />
-					<Property Type="String" Name="VendorName" Nullable="true" MaxLength="200" />
-					<Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="CreatedBy" Nullable="false" />
-					<Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-					<Property Type="Int32" Name="ModifiedBy" Nullable="true" />
-					<Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
-				</ComplexType>
+				
 				
 				<ComplexType Name="GetStockAllocationToWorkOrderList_Result">
 					<Property Type="Int32" Name="Id" Nullable="false" />
@@ -7015,84 +7016,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Name="CreatedBy" Type="Int32" />
 					<Property Name="CreatedDate" Type="DateTime" Precision="3" />
 				</EntityType>
- 				<ComplexType Name="GetWorkOrderList_Result">
-					<Property Type="Int32" Name="Id" Nullable="false" />
-					<Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="SupportTypeId" Nullable="true" />
-					<Property Type="String" Name="SupportType" Nullable="true" MaxLength="50" />
-					<Property Type="DateTime" Name="TicketLogDate" Nullable="true" Precision="23" />
-					<Property Type="Int32" Name="BranchId" Nullable="true" />
-					<Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="QueueName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="PanNumber" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="PriorityId" Nullable="true" />
-					<Property Type="String" Name="PriorityName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="AlternateNumber" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="GSTNumber" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="BusinessTypeId" Nullable="true" />
-					<Property Type="String" Name="BusinessTypeName" Nullable="true" MaxLength="100" />
-					<Property Type="Int32" Name="PaymentTermsId" Nullable="true" />
-					<Property Type="String" Name="PaymentTerms" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="ProductTypeId" Nullable="true" />
-					<Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="ProductId" Nullable="true" />
-					<Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="ProductDescriptionId" Nullable="true" />
-					<Property Type="String" Name="ProductDescription" Nullable="true" />
-					<Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="WarrantyTypeId" Nullable="true" />
-					<Property Type="String" Name="WarrantyType" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="WarrantyNumber" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="CountryId" Nullable="true" />
-					<Property Type="String" Name="CountryName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="OperatingSystemId" Nullable="true" />
-					<Property Type="String" Name="OperatingSystemName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="ReportedIssue" Nullable="true" />
-					<Property Type="String" Name="MiscellaneousRemark" Nullable="true" />
-					<Property Type="Int32" Name="IssueDescriptionId" Nullable="true" />
-					<Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="EngineerDiagnosis" Nullable="true" />
-					<Property Type="Int32" Name="EngineerId" Nullable="true" />
-					<Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="PersonalNumber" Nullable="true" MaxLength="14" />
-					<Property Type="DateTime" Name="EngineerAllocatedDate" Nullable="true" Precision="23" />
-					<Property Type="String" Name="DigitUEFIFailureID" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CustomerComment" Nullable="true" />
-					<Property Type="Int32" Name="CreatedBy" Nullable="true" />
-					<Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-					<Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-					<Property Type="Int32" Name="CompanyId" Nullable="true" />
-					<Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="CustomerId" Nullable="false" />
-					<Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
-					<Property Type="Int32" Name="OrderStatusId" Nullable="false" />
-					<Property Type="String" Name="OrderStatus" Nullable="true" MaxLength="20" />
-					<Property Type="Int32" Name="WorkOrderEnquiryId" Nullable="true" />
-					<Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
-					<Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
-					<Property Type="Int32" Name="ProductMakeId" Nullable="true" />
-					<Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
-					<Property Type="Int32" Name="ProductModelId" Nullable="true" />
-					<Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
-					<Property Type="Int32" Name="OrderTypeId" Nullable="true" />
-					<Property Type="String" Name="OrderType" Nullable="true" MaxLength="25" />
-					<Property Type="String" Name="OrderTypeCode" Nullable="true" MaxLength="2" />
-					<Property Type="String" Name="ResolutionSummary" Nullable="true" MaxLength="100" />
-					<Property Type="Int32" Name="DelayTypeId" Nullable="true" />
-					<Property Type="String" Name="DelayType" Nullable="true" MaxLength="100" />
-					<Property Type="Int32" Name="WOAccessoryId" Nullable="true" />
-					<Property Type="Int32" Name="RepairClassTypeId" Nullable="true" />
-					<Property Type="String" Name="RepairClassType" Nullable="true" MaxLength="100" />
-					<Property Type="Int32" Name="WOEnqCustFeedbackId" Nullable="true" />
-					<Property Type="Decimal" Name="Rating" Nullable="true" Precision="3" Scale="2" />
-					<Property Type="String" Name="Comment" Nullable="true" MaxLength="1000" />
-					<Property Type="Int32" Name="CaseStatusId" Nullable="true" />
-					<Property Type="String" Name="CaseStatusName" Nullable="true" MaxLength="200" />
-					<Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CustomerSecondaryName" Nullable="true" MaxLength="50" />
-				</ComplexType>
+ 				
 				<ComplexType Name="GetSalesOrdersList_Result">
 					<Property Type="Int32" Name="Id" Nullable="false" />
 					<Property Type="String" Name="SalesOrderNumber" Nullable="false" MaxLength="50" />
@@ -7106,34 +7030,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
 					<Property Type="String" Name="StatusName" Nullable="true" MaxLength="200" />
 				</ComplexType>
-        <ComplexType Name="GetWOListForEmployees_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="TicketLogDate" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="CustomerId" Nullable="false" />
-          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="ReportedIssue" Nullable="true" />
-          <Property Type="Int32" Name="OrderStatusId" Nullable="false" />
-          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="LastEngineerHistoryDate" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="VehicleTypeId" Nullable="true" />
-          <Property Type="String" Name="Latitude" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="Longitude" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="VisitStatus" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="EngineerId" Nullable="true" />
-          <Property Type="String" Name="EngineerName" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="EngineerAllocatedDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="RescheduleReason" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
-        </ComplexType>
+     
         <ComplexType Name="GetWorkOrderCloserReport_Result">
           <Property Type="DateTime" Name="CloserDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
@@ -7313,7 +7210,228 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
         </ComplexType>
-  
+        <ComplexType Name="GetPartDetailList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="UniqueCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="PartNumber" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PartName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PartDescription" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="HSNCodeId" Nullable="true" />
+          <Property Type="String" Name="HSNCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CTSerialNo" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="PartStatusId" Nullable="false" />
+          <Property Type="String" Name="PartStatus" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="SalePrice" Nullable="true" Precision="19" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="Int32" Name="CompanyId" Nullable="true" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="BranchId" Nullable="true" />
+          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ReceiveFrom" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="ReceiveDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="DocketNo" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="Int32" Name="StockPartStatusId" Nullable="true" />
+          <Property Type="String" Name="StockPartStatus" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="PurchasePrice" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="VendorId" Nullable="true" />
+          <Property Type="String" Name="VendorName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetVendorsList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="ContactPerson" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="MobileNo" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="EmailId" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="CountryId" Nullable="false" />
+          <Property Type="Int32" Name="StateId" Nullable="false" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+          <Property Type="Int32" Name="AreaId" Nullable="true" />
+          <Property Type="Int32" Name="PinCodeId" Nullable="false" />
+          <Property Type="String" Name="BillingName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="BillingAddress" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="GSTNo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="AccountNo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="IFSCCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CountryName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetCustomerList_Result">
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="CustomerId" Nullable="false" />
+          <Property Type="String" Name="CustFirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CustLastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CustEmail" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="StateId" Nullable="false" />
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="AreaId" Nullable="false" />
+          <Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="PinCodeId" Nullable="false" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CustomerProfilePicturePath" Nullable="true" MaxLength="2000" />
+        </ComplexType>
+        <ComplexType Name="GetWorkOrderEnquiriesList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="AlternateMobileNo" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CustomerGSTNo" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="CustomerPANNo" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="CountryOfPurchase" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="OrderTypeId" Nullable="true" />
+          <Property Type="String" Name="OrderType" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="ProductTypeId" Nullable="true" />
+          <Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ProductMakeId" Nullable="true" />
+          <Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ProductDescription" Nullable="true" />
+          <Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductSerialNo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="WarrantyType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WarrantyOrAMCNo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AreaName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="EnquiryStatusId" Nullable="true" />
+          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="IssueDesc" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="Comment" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="AttributeImagePath" Nullable="true" MaxLength="2000" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetWorkOrderList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="SupportTypeId" Nullable="true" />
+          <Property Type="String" Name="SupportType" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="TicketLogDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="BranchId" Nullable="true" />
+          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="QueueName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PanNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="PriorityId" Nullable="true" />
+          <Property Type="String" Name="PriorityName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AlternateNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="GSTNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="BusinessTypeId" Nullable="true" />
+          <Property Type="String" Name="BusinessTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="PaymentTermsId" Nullable="true" />
+          <Property Type="String" Name="PaymentTerms" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ProductTypeId" Nullable="true" />
+          <Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ProductId" Nullable="true" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ProductDescriptionId" Nullable="true" />
+          <Property Type="String" Name="ProductDescription" Nullable="true" />
+          <Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="WarrantyTypeId" Nullable="true" />
+          <Property Type="String" Name="WarrantyType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WarrantyNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CountryId" Nullable="true" />
+          <Property Type="String" Name="CountryName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="OperatingSystemId" Nullable="true" />
+          <Property Type="String" Name="OperatingSystemName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ReportedIssue" Nullable="true" />
+          <Property Type="String" Name="MiscellaneousRemark" Nullable="true" />
+          <Property Type="Int32" Name="IssueDescriptionId" Nullable="true" />
+          <Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EngineerDiagnosis" Nullable="true" />
+          <Property Type="Int32" Name="EngineerId" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PersonalNumber" Nullable="true" MaxLength="14" />
+          <Property Type="DateTime" Name="EngineerAllocatedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="DigitUEFIFailureID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CustomerComment" Nullable="true" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CompanyId" Nullable="true" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CustomerId" Nullable="false" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
+          <Property Type="Int32" Name="OrderStatusId" Nullable="false" />
+          <Property Type="String" Name="OrderStatus" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="WorkOrderEnquiryId" Nullable="true" />
+          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="ProductMakeId" Nullable="true" />
+          <Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="ProductModelId" Nullable="true" />
+          <Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="OrderTypeId" Nullable="true" />
+          <Property Type="String" Name="OrderType" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="OrderTypeCode" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="ResolutionSummary" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="DelayTypeId" Nullable="true" />
+          <Property Type="String" Name="DelayType" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="WOAccessoryId" Nullable="true" />
+          <Property Type="Int32" Name="RepairClassTypeId" Nullable="true" />
+          <Property Type="String" Name="RepairClassType" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="WOEnqCustFeedbackId" Nullable="true" />
+          <Property Type="Decimal" Name="Rating" Nullable="true" Precision="3" Scale="2" />
+          <Property Type="String" Name="Comment" Nullable="true" MaxLength="1000" />
+          <Property Type="Int32" Name="CaseStatusId" Nullable="true" />
+          <Property Type="String" Name="CaseStatusName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CustomerSecondaryName" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetWOListForEmployees_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="TicketLogDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CustomerId" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ReportedIssue" Nullable="true" />
+          <Property Type="Int32" Name="OrderStatusId" Nullable="false" />
+          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="LastEngineerHistoryDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="VehicleTypeId" Nullable="true" />
+          <Property Type="String" Name="Latitude" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Longitude" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="VisitStatus" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="EngineerId" Nullable="true" />
+          <Property Type="String" Name="EngineerName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EngineerAllocatedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="RescheduleReason" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
+        </ComplexType>
 			</Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -8131,34 +8249,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
-					<FunctionImportMapping FunctionImportName="GetVendorsList" FunctionName="dbOraRegaModel.Store.GetVendorsList">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="dbOraRegaModel.GetVendorsList_Result">
-								<ScalarProperty Name="Id" ColumnName="Id" />
-								<ScalarProperty Name="Name" ColumnName="Name" />
-								<ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
-								<ScalarProperty Name="Address" ColumnName="Address" />
-								<ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-								<ScalarProperty Name="EmailId" ColumnName="EmailId" />
-								<ScalarProperty Name="CountryId" ColumnName="CountryId" />
-								<ScalarProperty Name="StateId" ColumnName="StateId" />
-								<ScalarProperty Name="CityId" ColumnName="CityId" />
-								<ScalarProperty Name="AreaId" ColumnName="AreaId" />
-								<ScalarProperty Name="PinCodeId" ColumnName="PinCodeId" />
-								<ScalarProperty Name="BillingName" ColumnName="BillingName" />
-								<ScalarProperty Name="BillingAddress" ColumnName="BillingAddress" />
-								<ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
-								<ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
-								<ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
-								<ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-								<ScalarProperty Name="CountryName" ColumnName="CountryName" />
-								<ScalarProperty Name="StateName" ColumnName="StateName" />
-								<ScalarProperty Name="CityName" ColumnName="CityName" />
-								<ScalarProperty Name="AreaName" ColumnName="AreaName" />
-								<ScalarProperty Name="IsActive" ColumnName="IsActive" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
+					
 					<FunctionImportMapping FunctionImportName="GetWOListForDropDown" FunctionName="dbOraRegaModel.Store.GetWOListForDropDown">
 						<ResultMapping>
 							<ComplexTypeMapping TypeName="dbOraRegaModel.GetWOListForDropDown_Result">
@@ -9418,28 +9509,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
-					<FunctionImportMapping FunctionImportName="GetCustomerList" FunctionName="dbOraRegaModel.Store.GetCustomerList">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="dbOraRegaModel.GetCustomerList_Result">
-								<ScalarProperty Name="UserId" ColumnName="UserId" />
-								<ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-								<ScalarProperty Name="CustFirstName" ColumnName="CustFirstName" />
-								<ScalarProperty Name="CustLastName" ColumnName="CustLastName" />
-								<ScalarProperty Name="CustEmail" ColumnName="CustEmail" />
-								<ScalarProperty Name="Mobile" ColumnName="Mobile" />
-								<ScalarProperty Name="Address" ColumnName="Address" />
-								<ScalarProperty Name="StateId" ColumnName="StateId" />
-								<ScalarProperty Name="StateName" ColumnName="StateName" />
-								<ScalarProperty Name="CityId" ColumnName="CityId" />
-								<ScalarProperty Name="CityName" ColumnName="CityName" />
-								<ScalarProperty Name="AreaId" ColumnName="AreaId" />
-								<ScalarProperty Name="AreaName" ColumnName="AreaName" />
-								<ScalarProperty Name="PinCodeId" ColumnName="PinCodeId" />
-								<ScalarProperty Name="Pincode" ColumnName="Pincode" />
-								<ScalarProperty Name="CustomerProfilePicturePath" ColumnName="CustomerProfilePicturePath" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
 					<FunctionImportMapping FunctionImportName="GetGST_N_StateCode_ByCompanyNState" FunctionName="dbOraRegaModel.Store.GetGST_N_StateCode_ByCompanyNState">
 						<ResultMapping>
 							<ComplexTypeMapping TypeName="dbOraRegaModel.GetGST_N_StateCode_ByCompanyNState_Result">
@@ -10280,48 +10349,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</MappingFragment>
 						</EntityTypeMapping>
 					</EntitySetMapping>
-					<FunctionImportMapping FunctionImportName="GetWorkOrderEnquiriesList" FunctionName="dbOraRegaModel.Store.GetWorkOrderEnquiriesList">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderEnquiriesList_Result">
-								<ScalarProperty Name="Id" ColumnName="Id" />
-								<ScalarProperty Name="FirstName" ColumnName="FirstName" />
-								<ScalarProperty Name="LastName" ColumnName="LastName" />
-								<ScalarProperty Name="Mobile" ColumnName="Mobile" />
-								<ScalarProperty Name="Email" ColumnName="Email" />
-								<ScalarProperty Name="AlternateMobileNo" ColumnName="AlternateMobileNo" />
-								<ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-								<ScalarProperty Name="CustomerGSTNo" ColumnName="CustomerGSTNo" />
-								<ScalarProperty Name="CustomerPANNo" ColumnName="CustomerPANNo" />
-								<ScalarProperty Name="CountryOfPurchase" ColumnName="CountryOfPurchase" />
-								<ScalarProperty Name="OrderTypeId" ColumnName="OrderTypeId" />
-								<ScalarProperty Name="OrderType" ColumnName="OrderType" />
-								<ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
-								<ScalarProperty Name="ProductType" ColumnName="ProductType" />
-								<ScalarProperty Name="ProductMakeId" ColumnName="ProductMakeId" />
-								<ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
-								<ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
-								<ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
-								<ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
-								<ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
-								<ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
-								<ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
-								<ScalarProperty Name="ProductSerialNo" ColumnName="ProductSerialNo" />
-								<ScalarProperty Name="WarrantyType" ColumnName="WarrantyType" />
-								<ScalarProperty Name="WarrantyOrAMCNo" ColumnName="WarrantyOrAMCNo" />
-								<ScalarProperty Name="FullName" ColumnName="FullName" />
-								<ScalarProperty Name="Address" ColumnName="Address" />
-								<ScalarProperty Name="StateName" ColumnName="StateName" />
-								<ScalarProperty Name="CityName" ColumnName="CityName" />
-								<ScalarProperty Name="AreaName" ColumnName="AreaName" />
-								<ScalarProperty Name="Pincode" ColumnName="Pincode" />
-								<ScalarProperty Name="EnquiryStatusId" ColumnName="EnquiryStatusId" />
-								<ScalarProperty Name="StatusName" ColumnName="StatusName" />
-								<ScalarProperty Name="IssueDesc" ColumnName="IssueDesc" />
-								<ScalarProperty Name="Comment" ColumnName="Comment" />
-								<ScalarProperty Name="AttributeImagePath" ColumnName="AttributeImagePath" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
+					
 					<FunctionImportMapping FunctionImportName="GetSalesOrderProductsList" FunctionName="dbOraRegaModel.Store.GetSalesOrderProductsList">
 						<ResultMapping>
 							<ComplexTypeMapping TypeName="dbOraRegaModel.GetSalesOrderProductsList_Result">
@@ -11035,42 +11063,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
-					<FunctionImportMapping FunctionImportName="GetPartDetailList" FunctionName="dbOraRegaModel.Store.GetPartDetailList">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="dbOraRegaModel.GetPartDetailList_Result">
-								<ScalarProperty Name="Id" ColumnName="Id" />
-								<ScalarProperty Name="UniqueCode" ColumnName="UniqueCode" />
-								<ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
-								<ScalarProperty Name="PartName" ColumnName="PartName" />
-								<ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
-								<ScalarProperty Name="HSNCodeId" ColumnName="HSNCodeId" />
-								<ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
-								<ScalarProperty Name="CTSerialNo" ColumnName="CTSerialNo" />
-								<ScalarProperty Name="PartStatusId" ColumnName="PartStatusId" />
-								<ScalarProperty Name="PartStatus" ColumnName="PartStatus" />
-								<ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
-								<ScalarProperty Name="IsActive" ColumnName="IsActive" />
-								<ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-								<ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-								<ScalarProperty Name="BranchId" ColumnName="BranchId" />
-								<ScalarProperty Name="BranchName" ColumnName="BranchName" />
-								<ScalarProperty Name="ReceiveFrom" ColumnName="ReceiveFrom" />
-								<ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
-								<ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
-								<ScalarProperty Name="Quantity" ColumnName="Quantity" />
-								<ScalarProperty Name="StockPartStatusId" ColumnName="StockPartStatusId" />
-								<ScalarProperty Name="StockPartStatus" ColumnName="StockPartStatus" />
-								<ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
-								<ScalarProperty Name="VendorId" ColumnName="VendorId" />
-								<ScalarProperty Name="VendorName" ColumnName="VendorName" />
-								<ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-								<ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-								<ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-								<ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-								<ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
 					<FunctionImportMapping FunctionImportName="GetStockAllocationToWorkOrderList" FunctionName="dbOraRegaModel.Store.GetStockAllocationToWorkOrderList">
 						<ResultMapping>
 							<ComplexTypeMapping TypeName="dbOraRegaModel.GetStockAllocationToWorkOrderList_Result">
@@ -11508,88 +11500,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</MappingFragment>
 						</EntityTypeMapping>
 					</EntitySetMapping>
- 					<FunctionImportMapping FunctionImportName="GetWorkOrderList" FunctionName="dbOraRegaModel.Store.GetWorkOrderList">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderList_Result">
-								<ScalarProperty Name="Id" ColumnName="Id" />
-								<ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-								<ScalarProperty Name="SupportTypeId" ColumnName="SupportTypeId" />
-								<ScalarProperty Name="SupportType" ColumnName="SupportType" />
-								<ScalarProperty Name="TicketLogDate" ColumnName="TicketLogDate" />
-								<ScalarProperty Name="BranchId" ColumnName="BranchId" />
-								<ScalarProperty Name="BranchName" ColumnName="BranchName" />
-								<ScalarProperty Name="QueueName" ColumnName="QueueName" />
-								<ScalarProperty Name="PanNumber" ColumnName="PanNumber" />
-								<ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
-								<ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
-								<ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
-								<ScalarProperty Name="GSTNumber" ColumnName="GSTNumber" />
-								<ScalarProperty Name="BusinessTypeId" ColumnName="BusinessTypeId" />
-								<ScalarProperty Name="BusinessTypeName" ColumnName="BusinessTypeName" />
-								<ScalarProperty Name="PaymentTermsId" ColumnName="PaymentTermsId" />
-								<ScalarProperty Name="PaymentTerms" ColumnName="PaymentTerms" />
-								<ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
-								<ScalarProperty Name="ProductType" ColumnName="ProductType" />
-								<ScalarProperty Name="ProductId" ColumnName="ProductId" />
-								<ScalarProperty Name="ProductName" ColumnName="ProductName" />
-								<ScalarProperty Name="ProductDescriptionId" ColumnName="ProductDescriptionId" />
-								<ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
-								<ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
-								<ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
-								<ScalarProperty Name="WarrantyTypeId" ColumnName="WarrantyTypeId" />
-								<ScalarProperty Name="WarrantyType" ColumnName="WarrantyType" />
-								<ScalarProperty Name="WarrantyNumber" ColumnName="WarrantyNumber" />
-								<ScalarProperty Name="CountryId" ColumnName="CountryId" />
-								<ScalarProperty Name="CountryName" ColumnName="CountryName" />
-								<ScalarProperty Name="OperatingSystemId" ColumnName="OperatingSystemId" />
-								<ScalarProperty Name="OperatingSystemName" ColumnName="OperatingSystemName" />
-								<ScalarProperty Name="ReportedIssue" ColumnName="ReportedIssue" />
-								<ScalarProperty Name="MiscellaneousRemark" ColumnName="MiscellaneousRemark" />
-								<ScalarProperty Name="IssueDescriptionId" ColumnName="IssueDescriptionId" />
-								<ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
-								<ScalarProperty Name="EngineerDiagnosis" ColumnName="EngineerDiagnosis" />
-								<ScalarProperty Name="EngineerId" ColumnName="EngineerId" />
-								<ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-								<ScalarProperty Name="PersonalNumber" ColumnName="PersonalNumber" />
-								<ScalarProperty Name="EngineerAllocatedDate" ColumnName="EngineerAllocatedDate" />
-								<ScalarProperty Name="DigitUEFIFailureID" ColumnName="DigitUEFIFailureID" />
-								<ScalarProperty Name="CustomerComment" ColumnName="CustomerComment" />
-								<ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-								<ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-								<ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-								<ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-								<ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-								<ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-								<ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-								<ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
-								<ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
-								<ScalarProperty Name="WorkOrderEnquiryId" ColumnName="WorkOrderEnquiryId" />
-								<ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
-								<ScalarProperty Name="Address" ColumnName="Address" />
-								<ScalarProperty Name="ProductMakeId" ColumnName="ProductMakeId" />
-								<ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
-								<ScalarProperty Name="ProductModelId" ColumnName="ProductModelId" />
-								<ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
-								<ScalarProperty Name="OrderTypeId" ColumnName="OrderTypeId" />
-								<ScalarProperty Name="OrderType" ColumnName="OrderType" />
-								<ScalarProperty Name="OrderTypeCode" ColumnName="OrderTypeCode" />
-								<ScalarProperty Name="ResolutionSummary" ColumnName="ResolutionSummary" />
-								<ScalarProperty Name="DelayTypeId" ColumnName="DelayTypeId" />
-								<ScalarProperty Name="DelayType" ColumnName="DelayType" />
-								<ScalarProperty Name="WOAccessoryId" ColumnName="WOAccessoryId" />
-								<ScalarProperty Name="RepairClassTypeId" ColumnName="RepairClassTypeId" />
-								<ScalarProperty Name="RepairClassType" ColumnName="RepairClassType" />
-								<ScalarProperty Name="WOEnqCustFeedbackId" ColumnName="WOEnqCustFeedbackId" />
-								<ScalarProperty Name="Rating" ColumnName="Rating" />
-								<ScalarProperty Name="Comment" ColumnName="Comment" />
-								<ScalarProperty Name="CaseStatusId" ColumnName="CaseStatusId" />
-								<ScalarProperty Name="CaseStatusName" ColumnName="CaseStatusName" />
-								<ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
-								<ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
-								<ScalarProperty Name="CustomerSecondaryName" ColumnName="CustomerSecondaryName" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
+ 				
 					<FunctionImportMapping FunctionImportName="GetSalesOrdersList" FunctionName="dbOraRegaModel.Store.GetSalesOrdersList">
 						<ResultMapping>
 							<ComplexTypeMapping TypeName="dbOraRegaModel.GetSalesOrdersList_Result">
@@ -11607,38 +11518,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetWOListForEmployees" FunctionName="dbOraRegaModel.Store.GetWOListForEmployees">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetWOListForEmployees_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="TicketLogDate" ColumnName="TicketLogDate" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="StateName" ColumnName="StateName" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-                <ScalarProperty Name="ReportedIssue" ColumnName="ReportedIssue" />
-                <ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
-                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
-                <ScalarProperty Name="LastEngineerHistoryDate" ColumnName="LastEngineerHistoryDate" />
-                <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="VisitStatus" ColumnName="VisitStatus" />
-                <ScalarProperty Name="EngineerId" ColumnName="EngineerId" />
-                <ScalarProperty Name="EngineerName" ColumnName="EngineerName" />
-                <ScalarProperty Name="EngineerAllocatedDate" ColumnName="EngineerAllocatedDate" />
-                <ScalarProperty Name="RescheduleReason" ColumnName="RescheduleReason" />
-                <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
-                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+         
           <FunctionImportMapping FunctionImportName="GetWorkOrderCloserReport" FunctionName="dbOraRegaModel.Store.GetWorkOrderCloserReport">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderCloserReport_Result">
@@ -11858,6 +11738,252 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPartDetailList" FunctionName="dbOraRegaModel.Store.GetPartDetailList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetPartDetailList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UniqueCode" ColumnName="UniqueCode" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="PartName" ColumnName="PartName" />
+                <ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
+                <ScalarProperty Name="HSNCodeId" ColumnName="HSNCodeId" />
+                <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+                <ScalarProperty Name="CTSerialNo" ColumnName="CTSerialNo" />
+                <ScalarProperty Name="PartStatusId" ColumnName="PartStatusId" />
+                <ScalarProperty Name="PartStatus" ColumnName="PartStatus" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="ReceiveFrom" ColumnName="ReceiveFrom" />
+                <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+                <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="StockPartStatusId" ColumnName="StockPartStatusId" />
+                <ScalarProperty Name="StockPartStatus" ColumnName="StockPartStatus" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVendorsList" FunctionName="dbOraRegaModel.Store.GetVendorsList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetVendorsList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="PinCodeId" ColumnName="PinCodeId" />
+                <ScalarProperty Name="BillingName" ColumnName="BillingName" />
+                <ScalarProperty Name="BillingAddress" ColumnName="BillingAddress" />
+                <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+                <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+                <ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCustomerList" FunctionName="dbOraRegaModel.Store.GetCustomerList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetCustomerList_Result">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CustFirstName" ColumnName="CustFirstName" />
+                <ScalarProperty Name="CustLastName" ColumnName="CustLastName" />
+                <ScalarProperty Name="CustEmail" ColumnName="CustEmail" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="PinCodeId" ColumnName="PinCodeId" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="CustomerProfilePicturePath" ColumnName="CustomerProfilePicturePath" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetWorkOrderEnquiriesList" FunctionName="dbOraRegaModel.Store.GetWorkOrderEnquiriesList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderEnquiriesList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AlternateMobileNo" ColumnName="AlternateMobileNo" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CustomerGSTNo" ColumnName="CustomerGSTNo" />
+                <ScalarProperty Name="CustomerPANNo" ColumnName="CustomerPANNo" />
+                <ScalarProperty Name="CountryOfPurchase" ColumnName="CountryOfPurchase" />
+                <ScalarProperty Name="OrderTypeId" ColumnName="OrderTypeId" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductMakeId" ColumnName="ProductMakeId" />
+                <ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
+                <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
+                <ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
+                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
+                <ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
+                <ScalarProperty Name="ProductSerialNo" ColumnName="ProductSerialNo" />
+                <ScalarProperty Name="WarrantyType" ColumnName="WarrantyType" />
+                <ScalarProperty Name="WarrantyOrAMCNo" ColumnName="WarrantyOrAMCNo" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="EnquiryStatusId" ColumnName="EnquiryStatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="IssueDesc" ColumnName="IssueDesc" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="AttributeImagePath" ColumnName="AttributeImagePath" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetWorkOrderList" FunctionName="dbOraRegaModel.Store.GetWorkOrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="SupportTypeId" ColumnName="SupportTypeId" />
+                <ScalarProperty Name="SupportType" ColumnName="SupportType" />
+                <ScalarProperty Name="TicketLogDate" ColumnName="TicketLogDate" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="QueueName" ColumnName="QueueName" />
+                <ScalarProperty Name="PanNumber" ColumnName="PanNumber" />
+                <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+                <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
+                <ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
+                <ScalarProperty Name="GSTNumber" ColumnName="GSTNumber" />
+                <ScalarProperty Name="BusinessTypeId" ColumnName="BusinessTypeId" />
+                <ScalarProperty Name="BusinessTypeName" ColumnName="BusinessTypeName" />
+                <ScalarProperty Name="PaymentTermsId" ColumnName="PaymentTermsId" />
+                <ScalarProperty Name="PaymentTerms" ColumnName="PaymentTerms" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductDescriptionId" ColumnName="ProductDescriptionId" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
+                <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
+                <ScalarProperty Name="WarrantyTypeId" ColumnName="WarrantyTypeId" />
+                <ScalarProperty Name="WarrantyType" ColumnName="WarrantyType" />
+                <ScalarProperty Name="WarrantyNumber" ColumnName="WarrantyNumber" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="OperatingSystemId" ColumnName="OperatingSystemId" />
+                <ScalarProperty Name="OperatingSystemName" ColumnName="OperatingSystemName" />
+                <ScalarProperty Name="ReportedIssue" ColumnName="ReportedIssue" />
+                <ScalarProperty Name="MiscellaneousRemark" ColumnName="MiscellaneousRemark" />
+                <ScalarProperty Name="IssueDescriptionId" ColumnName="IssueDescriptionId" />
+                <ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
+                <ScalarProperty Name="EngineerDiagnosis" ColumnName="EngineerDiagnosis" />
+                <ScalarProperty Name="EngineerId" ColumnName="EngineerId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="PersonalNumber" ColumnName="PersonalNumber" />
+                <ScalarProperty Name="EngineerAllocatedDate" ColumnName="EngineerAllocatedDate" />
+                <ScalarProperty Name="DigitUEFIFailureID" ColumnName="DigitUEFIFailureID" />
+                <ScalarProperty Name="CustomerComment" ColumnName="CustomerComment" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="WorkOrderEnquiryId" ColumnName="WorkOrderEnquiryId" />
+                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ProductMakeId" ColumnName="ProductMakeId" />
+                <ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
+                <ScalarProperty Name="ProductModelId" ColumnName="ProductModelId" />
+                <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
+                <ScalarProperty Name="OrderTypeId" ColumnName="OrderTypeId" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="OrderTypeCode" ColumnName="OrderTypeCode" />
+                <ScalarProperty Name="ResolutionSummary" ColumnName="ResolutionSummary" />
+                <ScalarProperty Name="DelayTypeId" ColumnName="DelayTypeId" />
+                <ScalarProperty Name="DelayType" ColumnName="DelayType" />
+                <ScalarProperty Name="WOAccessoryId" ColumnName="WOAccessoryId" />
+                <ScalarProperty Name="RepairClassTypeId" ColumnName="RepairClassTypeId" />
+                <ScalarProperty Name="RepairClassType" ColumnName="RepairClassType" />
+                <ScalarProperty Name="WOEnqCustFeedbackId" ColumnName="WOEnqCustFeedbackId" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="CaseStatusId" ColumnName="CaseStatusId" />
+                <ScalarProperty Name="CaseStatusName" ColumnName="CaseStatusName" />
+                <ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
+                <ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
+                <ScalarProperty Name="CustomerSecondaryName" ColumnName="CustomerSecondaryName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetWOListForEmployees" FunctionName="dbOraRegaModel.Store.GetWOListForEmployees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetWOListForEmployees_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="TicketLogDate" ColumnName="TicketLogDate" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="ReportedIssue" ColumnName="ReportedIssue" />
+                <ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="LastEngineerHistoryDate" ColumnName="LastEngineerHistoryDate" />
+                <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="VisitStatus" ColumnName="VisitStatus" />
+                <ScalarProperty Name="EngineerId" ColumnName="EngineerId" />
+                <ScalarProperty Name="EngineerName" ColumnName="EngineerName" />
+                <ScalarProperty Name="EngineerAllocatedDate" ColumnName="EngineerAllocatedDate" />
+                <ScalarProperty Name="RescheduleReason" ColumnName="RescheduleReason" />
+                <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
+                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

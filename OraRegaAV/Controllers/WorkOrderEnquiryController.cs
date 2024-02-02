@@ -16,6 +16,7 @@ using OraRegaAV.Controllers.API;
 using System.Data.Entity.Migrations;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using OraRegaAV.Models.Enums;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers
 {
@@ -37,13 +38,19 @@ namespace OraRegaAV.Controllers
 
             try
             {
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 lstWOEnquiries = await Task.Run(() => db.GetWorkOrderEnquiriesList(
                     parameters.CompanyId.SanitizeValue(),
                     parameters.BranchId.SanitizeValue(),
                     parameters.EnquiryStatusId.SanitizeValue(),
-                    0//Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)
+                    0,//Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal
                     ).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstWOEnquiries;
             }
             catch (Exception ex)

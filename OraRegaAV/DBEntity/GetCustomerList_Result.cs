@@ -14,7 +14,7 @@ namespace OraRegaAV.DBEntity
     public partial class GetCustomerList_Result
     {
         public int UserId { get; set; }
-        public Nullable<int> CustomerId { get; set; }
+        public int CustomerId { get; set; }
         public string CustFirstName { get; set; }
         public string CustLastName { get; set; }
         public string CustEmail { get; set; }

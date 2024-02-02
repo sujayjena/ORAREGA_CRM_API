@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -47,7 +48,7 @@ namespace OraRegaAV.Controllers.Customers
         [HttpPost]
         [CustomAuthenticationFilter]
         [ValidateModel]
-        public async Task<Response> GetCustomerList(int customerId = 0)
+        public async Task<Response> GetCustomerList(CustomerSearchParams parameters)
         {
             byte[] profilePicture = null;
             List<GetCustomerList_Result> customerList;
@@ -57,7 +58,8 @@ namespace OraRegaAV.Controllers.Customers
 
             try
             {
-                customerList = await Task.Run(() => db.GetCustomerList(customerId).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                customerList = await Task.Run(() => db.GetCustomerList(parameters.customerId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 List<object> vlist = new List<object>();
                 foreach (var item in customerList)
@@ -95,6 +97,7 @@ namespace OraRegaAV.Controllers.Customers
                     vlist.Add(vResult);
                 };
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = vlist;
 
                 _response.Message = "Customer profile details retrieved successfully";
