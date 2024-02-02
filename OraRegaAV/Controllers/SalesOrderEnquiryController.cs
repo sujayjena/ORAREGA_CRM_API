@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -196,7 +197,10 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                lstSOEnquiries = await Task.Run(() => db.GetSOEnquiryList(parameters.CompanyId, parameters.BranchId, parameters.EnquiryStatusId, 0).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstSOEnquiries = await Task.Run(() => db.GetSOEnquiryList(parameters.CompanyId, parameters.BranchId, parameters.EnquiryStatusId, 0, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+                
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstSOEnquiries;
             }
             catch (Exception ex)

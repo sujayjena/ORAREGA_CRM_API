@@ -9,6 +9,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
@@ -33,13 +34,15 @@ namespace OraRegaAV.Controllers
         {
             try
             {
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 List<GetStockTransferOutChallanList_Result> advanceList = new List<GetStockTransferOutChallanList_Result>();
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                 if (userId > 0)
                 {
-                    advanceList = db.GetStockTransferOutChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, userId).ToList();
+                    advanceList = db.GetStockTransferOutChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, parameters.SearchValue, userId, parameters.PageSize, parameters.PageNo, vTotal).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)
@@ -58,13 +61,15 @@ namespace OraRegaAV.Controllers
         {
             try
             {
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 List<GetStockTransferInChallanList_Result> dataList = new List<GetStockTransferInChallanList_Result>();
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                 if (userId > 0)
                 {
-                    dataList = db.GetStockTransferInChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.ChallanNo, parameters.DockerNo, userId).ToList();
+                    dataList = db.GetStockTransferInChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.ChallanNo, parameters.DockerNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = dataList;
             }
             catch (Exception ex)
@@ -408,17 +413,19 @@ namespace OraRegaAV.Controllers
 
         [HttpPost]
         [Route("api/StockTransferAPI/GetStockTransferInList")]
-        public Response GetStockTransferInList(string ChallanNo = "")
+        public Response GetStockTransferInList(GetStockTransferInSearchParameters parameters)
         {
             try
             {
                 List<GetStockTransferInList_Result> advanceList = new List<GetStockTransferInList_Result>();
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 if (userId > 0)
                 {
-                    advanceList = db.GetStockTransferInList(ChallanNo).ToList();
+                    advanceList = db.GetStockTransferInList(parameters.ChallanNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)

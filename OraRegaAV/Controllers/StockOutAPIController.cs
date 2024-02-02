@@ -7,6 +7,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
@@ -90,11 +91,13 @@ namespace OraRegaAV.Controllers
             {
                 List<GetStockOut_DAO_ChallanList_Result> advanceList = new List<GetStockOut_DAO_ChallanList_Result>();
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 if (userId > 0)
                 {
-                    advanceList = db.GetStockOut_DAO_ChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, userId).ToList();
+                    advanceList = db.GetStockOut_DAO_ChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)
@@ -280,18 +283,20 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        [Route("api/StockOutAPIController/GetStockOut_Defective_ChallanList")]
+        [Route("api/StockOutAPIController/GetStockOut_DAO_ChallanList")]
         public async Task<Response> GetStockOut_Defective_ChallanList(StockTransferOutDOA_DefectiveSearchParameters parameters)
         {
             try
             {
                 List<GetStockOut_Defective_ChallanList_Result> advanceList = new List<GetStockOut_Defective_ChallanList_Result>();
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 if (userId > 0)
                 {
-                    advanceList = db.GetStockOut_Defective_ChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, userId).ToList();
+                    advanceList = db.GetStockOut_Defective_ChallanList(parameters.ComapnyId, parameters.BranchFromId, parameters.DockerNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)

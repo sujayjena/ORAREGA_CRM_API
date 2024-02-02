@@ -34,6 +34,12 @@ namespace OraRegaAV.Models
         public int BranchFromId { get; set; }
         public string ChallanNo { get; set; }
         public string DockerNo { get; set; }
+
+        public string SearchValue { get; set; }
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class StockTransferInSearchParameters
@@ -45,6 +51,23 @@ namespace OraRegaAV.Models
         public int BranchFromId { get; set; }
         public string ChallanNo { get; set; }
         public string DockerNo { get; set; }
+
+        public string SearchValue { get; set; }
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
+    }
+
+    public class GetStockTransferInSearchParameters
+    {
+        public string ChallanNo { get; set; }
+
+        public string SearchValue { get; set; }
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class StockTransferResponse

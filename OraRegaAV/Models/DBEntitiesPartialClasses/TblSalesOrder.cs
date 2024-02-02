@@ -4,6 +4,7 @@
     using OraRegaAV.Models.Constants;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     public class TblSalesOrderMetadata
@@ -70,6 +71,12 @@
         public int? BranchId { get; set; }
 
         public int? SalesOrderStatusId { get; set; }
+
+        public string SearchValue { get; set; }
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
 
         [JsonIgnore]
         public int? LoggedInUserId { get; set; }

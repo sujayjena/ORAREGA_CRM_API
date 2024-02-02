@@ -9,6 +9,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -200,15 +201,13 @@ namespace OraRegaAV.Controllers
             try
             {
                 //loggedInUserId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
 
                 await Task.Run(() =>
                 {
-                    lstResult = db.GetSalesOrdersList(
-                        parameters.CompanyId.SanitizeValue(),
-                        parameters.BranchId.SanitizeValue(),
-                        parameters.SalesOrderStatusId.SanitizeValue(),
-                        loggedInUserId).ToList();
+                    lstResult = db.GetSalesOrdersList(parameters.CompanyId.SanitizeValue(),parameters.BranchId.SanitizeValue(),parameters.SalesOrderStatusId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, loggedInUserId).ToList();
 
+                    _response.TotalCount = Convert.ToInt32(vTotal.Value);
                     _response.Data = lstResult;
                 });
             }
