@@ -39,9 +39,12 @@ namespace OraRegaAV.Models
         public int CompanyId { get; set; }
         [DefaultValue(0)]
         public int BranchId { get; set; }
-        public string UniqueCode { get; set; }
-        public string PartNumber { get; set; }
-        public string PartDesc { get; set; }
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
 

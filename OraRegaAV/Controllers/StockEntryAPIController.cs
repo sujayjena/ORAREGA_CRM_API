@@ -20,6 +20,7 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using OfficeOpenXml.Interfaces.Drawing.Text;
 using System.Data.Entity;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -344,8 +345,10 @@ namespace OraRegaAV.Controllers.API
 
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                partsListForAllocation = db.GetPartsListForAllocation(parameters.CompanyId, parameters.BranchId, parameters.UniqueCode.SanitizeValue(), parameters.PartNumber.SanitizeValue(), parameters.PartDesc.SanitizeValue(), userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                partsListForAllocation = db.GetPartsListForAllocation(parameters.CompanyId, parameters.BranchId, parameters.SearchValue.SanitizeValue(), userId, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = partsListForAllocation;
             }
             catch (Exception ex)

@@ -1224,35 +1224,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailList_Result>("GetPartDetailList", idParameter, companyIdParameter, branchIdParameter, userIdParameter);
         }
     
-        public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(Nullable<int> companyId, Nullable<int> branchId, string uniqueCode, string partNumber, string partDesc, Nullable<int> userId)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId.HasValue ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
-    
-            var uniqueCodeParameter = uniqueCode != null ?
-                new ObjectParameter("UniqueCode", uniqueCode) :
-                new ObjectParameter("UniqueCode", typeof(string));
-    
-            var partNumberParameter = partNumber != null ?
-                new ObjectParameter("PartNumber", partNumber) :
-                new ObjectParameter("PartNumber", typeof(string));
-    
-            var partDescParameter = partDesc != null ?
-                new ObjectParameter("PartDesc", partDesc) :
-                new ObjectParameter("PartDesc", typeof(string));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartsListForAllocation_Result>("GetPartsListForAllocation", companyIdParameter, branchIdParameter, uniqueCodeParameter, partNumberParameter, partDescParameter, userIdParameter);
-        }
-    
         public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -1940,6 +1911,35 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("FilterType", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_StockSummary_Inventory_Result>("GetDashboard_StockSummary_Inventory", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
+        }
+    
+        public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(Nullable<int> companyId, Nullable<int> branchId, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartsListForAllocation_Result>("GetPartsListForAllocation", companyIdParameter, branchIdParameter, searchValueParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }
