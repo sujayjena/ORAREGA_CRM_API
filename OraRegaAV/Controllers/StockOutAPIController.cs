@@ -284,7 +284,7 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        [Route("api/StockOutAPIController/GetStockOut_DAO_ChallanList")]
+        [Route("api/StockOutAPIController/GetStockOut_Defective_ChallanList")]
         public async Task<Response> GetStockOut_Defective_ChallanList(StockTransferOutDOA_DefectiveSearchParameters parameters)
         {
             try

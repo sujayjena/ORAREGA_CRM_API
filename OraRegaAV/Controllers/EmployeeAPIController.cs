@@ -866,7 +866,7 @@ namespace OraRegaAV.Controllers.API
                     await db.SaveChangesAsync();
 
                     //Update Employee Role Permission
-                    if(tbl.RoleId != null)
+                    if(tbl.RoleId != null && tbl.RoleId != parameters.RoleId)
                     {
                         db.SaveEmployeeRolePermission(tbl.RoleId, parameters.Id, Utilities.GetUserID(ActionContext.Request));
                     }
