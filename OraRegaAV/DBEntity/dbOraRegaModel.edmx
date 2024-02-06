@@ -2571,6 +2571,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="StockEntryData" Type="xml" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="SaveEmployeeRolePermission" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleId" Type="int" Mode="In" />
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+          <Parameter Name="CreatedBy" Type="int" Mode="In" />
+        </Function>
         <Function Name="SaveRoleDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RoleId" Type="bigint" Mode="In" />
           <Parameter Name="RoleName" Type="varchar" Mode="In" />
@@ -4219,7 +4224,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetEmployeesListByReportingTo" ReturnType="Collection(dbOraRegaModel.GetEmployeesListByReportingTo_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="SaveEmployeeRolePermission">
+            <Parameter Name="RoleId" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="CreatedBy" Mode="In" Type="Int32" />
           </FunctionImport>
         
          
@@ -12101,6 +12111,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SaveEmployeeRolePermission" FunctionName="dbOraRegaModel.Store.SaveEmployeeRolePermission" />
   				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

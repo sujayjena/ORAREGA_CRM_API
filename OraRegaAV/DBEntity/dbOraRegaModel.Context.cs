@@ -2242,5 +2242,22 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesListByReportingTo_Result>("GetEmployeesListByReportingTo", employeeIdParameter);
         }
+    
+        public virtual int SaveEmployeeRolePermission(Nullable<int> roleId, Nullable<int> employeeId, Nullable<int> createdBy)
+        {
+            var roleIdParameter = roleId.HasValue ?
+                new ObjectParameter("RoleId", roleId) :
+                new ObjectParameter("RoleId", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(int));
+    
+            var createdByParameter = createdBy.HasValue ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SaveEmployeeRolePermission", roleIdParameter, employeeIdParameter, createdByParameter);
+        }
     }
 }
