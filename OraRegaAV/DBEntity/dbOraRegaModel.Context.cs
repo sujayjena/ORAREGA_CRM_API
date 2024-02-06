@@ -749,19 +749,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductDescriptionList_Result>("GetProductDescriptionList");
         }
     
-        public virtual ObjectResult<GetWOEnquiryDetailsForCustomer_Result> GetWOEnquiryDetailsForCustomer(Nullable<int> customerId, Nullable<int> wOEnquiryId)
-        {
-            var customerIdParameter = customerId.HasValue ?
-                new ObjectParameter("CustomerId", customerId) :
-                new ObjectParameter("CustomerId", typeof(int));
-    
-            var wOEnquiryIdParameter = wOEnquiryId.HasValue ?
-                new ObjectParameter("WOEnquiryId", wOEnquiryId) :
-                new ObjectParameter("WOEnquiryId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiryDetailsForCustomer_Result>("GetWOEnquiryDetailsForCustomer", customerIdParameter, wOEnquiryIdParameter);
-        }
-    
         public virtual ObjectResult<GetSOEnquiryDetailsForCustomer_Result> GetSOEnquiryDetailsForCustomer(Nullable<int> customerId, Nullable<int> sOEnquiryId)
         {
             var customerIdParameter = customerId.HasValue ?
@@ -813,23 +800,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("WorkOrderNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderDetails_Result>("GetWorkOrderDetails", workOrderNumberParameter);
-        }
-    
-        public virtual ObjectResult<GetRequestForAdvanceList_Result> GetRequestForAdvanceList(Nullable<int> employeeId, string claimId, Nullable<int> advanceStatusId)
-        {
-            var employeeIdParameter = employeeId.HasValue ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(int));
-    
-            var claimIdParameter = claimId != null ?
-                new ObjectParameter("ClaimId", claimId) :
-                new ObjectParameter("ClaimId", typeof(string));
-    
-            var advanceStatusIdParameter = advanceStatusId.HasValue ?
-                new ObjectParameter("AdvanceStatusId", advanceStatusId) :
-                new ObjectParameter("AdvanceStatusId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRequestForAdvanceList_Result>("GetRequestForAdvanceList", employeeIdParameter, claimIdParameter, advanceStatusIdParameter);
         }
     
         public virtual ObjectResult<GetSalesOrderDetails_Result> GetSalesOrderDetails(string salesOrderNo)
@@ -908,27 +878,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrderProductsList_Result>("GetSalesOrderProductsList", salesOrderIdParameter);
         }
     
-        public virtual ObjectResult<GetClaimSettlementList_Result> GetClaimSettlementList(Nullable<int> claimSattlementId, Nullable<int> employeeId, string claimId, Nullable<int> settlementStatusId)
-        {
-            var claimSattlementIdParameter = claimSattlementId.HasValue ?
-                new ObjectParameter("ClaimSattlementId", claimSattlementId) :
-                new ObjectParameter("ClaimSattlementId", typeof(int));
-    
-            var employeeIdParameter = employeeId.HasValue ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(int));
-    
-            var claimIdParameter = claimId != null ?
-                new ObjectParameter("ClaimId", claimId) :
-                new ObjectParameter("ClaimId", typeof(string));
-    
-            var settlementStatusIdParameter = settlementStatusId.HasValue ?
-                new ObjectParameter("SettlementStatusId", settlementStatusId) :
-                new ObjectParameter("SettlementStatusId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClaimSettlementList_Result>("GetClaimSettlementList", claimSattlementIdParameter, employeeIdParameter, claimIdParameter, settlementStatusIdParameter);
-        }
-    
         public virtual ObjectResult<GetStockTransferList_Result> GetStockTransferList(string dockerNo, Nullable<int> userid)
         {
             var dockerNoParameter = dockerNo != null ?
@@ -998,58 +947,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleTypeList_Result>("GetVehicleTypeList");
         }
     
-        public virtual ObjectResult<GetBannerList_Result> GetBannerList(string appType, Nullable<bool> isActive)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            var isActiveParameter = isActive.HasValue ?
-                new ObjectParameter("IsActive", isActive) :
-                new ObjectParameter("IsActive", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBannerList_Result>("GetBannerList", appTypeParameter, isActiveParameter);
-        }
-    
-        public virtual ObjectResult<GetOfferAdsList_Result> GetOfferAdsList(string appType, Nullable<bool> isActive)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            var isActiveParameter = isActive.HasValue ?
-                new ObjectParameter("IsActive", isActive) :
-                new ObjectParameter("IsActive", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOfferAdsList_Result>("GetOfferAdsList", appTypeParameter, isActiveParameter);
-        }
-    
-        public virtual ObjectResult<GetOurProductList_Result> GetOurProductList(string appType, Nullable<bool> isActive)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            var isActiveParameter = isActive.HasValue ?
-                new ObjectParameter("IsActive", isActive) :
-                new ObjectParameter("IsActive", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurProductList_Result>("GetOurProductList", appTypeParameter, isActiveParameter);
-        }
-    
-        public virtual ObjectResult<GetOurServiceList_Result> GetOurServiceList(string appType, Nullable<bool> isActive)
-        {
-            var appTypeParameter = appType != null ?
-                new ObjectParameter("AppType", appType) :
-                new ObjectParameter("AppType", typeof(string));
-    
-            var isActiveParameter = isActive.HasValue ?
-                new ObjectParameter("IsActive", isActive) :
-                new ObjectParameter("IsActive", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurServiceList_Result>("GetOurServiceList", appTypeParameter, isActiveParameter);
-        }
-    
         public virtual ObjectResult<GetPaymentPolicyList_Result> GetPaymentPolicyList(Nullable<bool> isActive)
         {
             var isActiveParameter = isActive.HasValue ?
@@ -1108,23 +1005,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEngineerVisitHistoryList_Result>("GetEngineerVisitHistoryList", engineerIdParameter, workOrderNumberParameter);
         }
     
-        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> employeeId, string workOrderNumber, Nullable<int> statusId)
-        {
-            var employeeIdParameter = employeeId.HasValue ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(int));
-    
-            var workOrderNumberParameter = workOrderNumber != null ?
-                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
-                new ObjectParameter("WorkOrderNumber", typeof(string));
-    
-            var statusIdParameter = statusId.HasValue ?
-                new ObjectParameter("StatusId", statusId) :
-                new ObjectParameter("StatusId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelClaimList_Result>("GetTravelClaimList", employeeIdParameter, workOrderNumberParameter, statusIdParameter);
-        }
-    
         public virtual ObjectResult<GetPartDetailTransferHistoryLogList_Result> GetPartDetailTransferHistoryLogList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> partId)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -1165,15 +1045,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
-        }
-    
-        public virtual ObjectResult<GetWOCustomerFeedbackList_Result> GetWOCustomerFeedbackList(string workOrderNo)
-        {
-            var workOrderNoParameter = workOrderNo != null ?
-                new ObjectParameter("WorkOrderNo", workOrderNo) :
-                new ObjectParameter("WorkOrderNo", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOCustomerFeedbackList_Result>("GetWOCustomerFeedbackList", workOrderNoParameter);
         }
     
         public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy, Nullable<int> userId)
@@ -2100,6 +1971,276 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", companyIdParameter, branchIdParameter, orderStatusIdParameter, engineerIdParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetWOEnquiryDetailsForCustomer_Result> GetWOEnquiryDetailsForCustomer(Nullable<int> customerId, Nullable<int> wOEnquiryId)
+        {
+            var customerIdParameter = customerId.HasValue ?
+                new ObjectParameter("CustomerId", customerId) :
+                new ObjectParameter("CustomerId", typeof(int));
+    
+            var wOEnquiryIdParameter = wOEnquiryId.HasValue ?
+                new ObjectParameter("WOEnquiryId", wOEnquiryId) :
+                new ObjectParameter("WOEnquiryId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiryDetailsForCustomer_Result>("GetWOEnquiryDetailsForCustomer", customerIdParameter, wOEnquiryIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWOCustomerFeedbackList_Result> GetWOCustomerFeedbackList(string workOrderNo, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var workOrderNoParameter = workOrderNo != null ?
+                new ObjectParameter("WorkOrderNo", workOrderNo) :
+                new ObjectParameter("WorkOrderNo", typeof(string));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOCustomerFeedbackList_Result>("GetWOCustomerFeedbackList", workOrderNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetRequestForAdvanceList_Result> GetRequestForAdvanceList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> employeeId, string claimId, Nullable<int> advanceStatusId, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(int));
+    
+            var claimIdParameter = claimId != null ?
+                new ObjectParameter("ClaimId", claimId) :
+                new ObjectParameter("ClaimId", typeof(string));
+    
+            var advanceStatusIdParameter = advanceStatusId.HasValue ?
+                new ObjectParameter("AdvanceStatusId", advanceStatusId) :
+                new ObjectParameter("AdvanceStatusId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRequestForAdvanceList_Result>("GetRequestForAdvanceList", companyIdParameter, branchIdParameter, employeeIdParameter, claimIdParameter, advanceStatusIdParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetClaimSettlementList_Result> GetClaimSettlementList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> claimSattlementId, Nullable<int> employeeId, string claimId, Nullable<int> settlementStatusId, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var claimSattlementIdParameter = claimSattlementId.HasValue ?
+                new ObjectParameter("ClaimSattlementId", claimSattlementId) :
+                new ObjectParameter("ClaimSattlementId", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(int));
+    
+            var claimIdParameter = claimId != null ?
+                new ObjectParameter("ClaimId", claimId) :
+                new ObjectParameter("ClaimId", typeof(string));
+    
+            var settlementStatusIdParameter = settlementStatusId.HasValue ?
+                new ObjectParameter("SettlementStatusId", settlementStatusId) :
+                new ObjectParameter("SettlementStatusId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClaimSettlementList_Result>("GetClaimSettlementList", companyIdParameter, branchIdParameter, claimSattlementIdParameter, employeeIdParameter, claimIdParameter, settlementStatusIdParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> employeeId, string workOrderNumber, Nullable<int> statusId, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(int));
+    
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("StatusId", statusId) :
+                new ObjectParameter("StatusId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelClaimList_Result>("GetTravelClaimList", companyIdParameter, branchIdParameter, employeeIdParameter, workOrderNumberParameter, statusIdParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetBannerList_Result> GetBannerList(string appType, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBannerList_Result>("GetBannerList", appTypeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetOfferAdsList_Result> GetOfferAdsList(string appType, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOfferAdsList_Result>("GetOfferAdsList", appTypeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetOurProductList_Result> GetOurProductList(string appType, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurProductList_Result>("GetOurProductList", appTypeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetOurServiceList_Result> GetOurServiceList(string appType, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var appTypeParameter = appType != null ?
+                new ObjectParameter("AppType", appType) :
+                new ObjectParameter("AppType", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOurServiceList_Result>("GetOurServiceList", appTypeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetEmployeesListByReportingTo_Result> GetEmployeesListByReportingTo(Nullable<long> employeeId)
+        {
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesListByReportingTo_Result>("GetEmployeesListByReportingTo", employeeIdParameter);
         }
     }
 }

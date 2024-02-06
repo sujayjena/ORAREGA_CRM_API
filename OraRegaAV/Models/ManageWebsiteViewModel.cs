@@ -11,6 +11,14 @@ namespace OraRegaAV.Models
         [DefaultValue("")]
         public string AppType { get; set; }
         public bool? IsActive { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
     public class WebsiteSerachParameter
     {

@@ -22,6 +22,7 @@ using static System.Net.WebRequestMethods;
 using DocumentFormat.OpenXml.VariantTypes;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers
 {
@@ -41,8 +42,13 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                List<GetClaimSettlementList_Result> advanceList = db.GetClaimSettlementList(0,parameters.EmployeeId, parameters.ClaimId, parameters.SettlementStatusId).ToList();
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                List<GetClaimSettlementList_Result> advanceList = db.GetClaimSettlementList(parameters.CompanyId, parameters.BranchId, 0, parameters.EmployeeId,
+                    parameters.ClaimId, parameters.SettlementStatusId, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)
@@ -64,7 +70,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                var vObjClaimDtl = db.GetClaimSettlementList(claimSattlementId, 0, "", 0).FirstOrDefault();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var vObjClaimDtl = db.GetClaimSettlementList(0, 0, claimSattlementId, 0, "", 0, 0, "0", 0, 0, vTotal).FirstOrDefault();
                 if (vObjClaimDtl != null)
                 {
                     claimSettlement.Id = vObjClaimDtl.Id;
@@ -280,7 +287,8 @@ namespace OraRegaAV.Controllers
             {
                 var vClaimIdList = db.tblClaimSettlements.Where(x => x.ClaimId != string.Empty && x.EmployeeId == employeeId).Select(x => x.ClaimId).ToList();
 
-                List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(0, "", 0).Where(x => x.AdvanceStatusId == 2 && !vClaimIdList.Any(e => x.ClaimId.Contains(e)) && x.EmployeeId == employeeId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(0, 0, 0, "", 0, 0, "", 0, 0, vTotal).Where(x => x.AdvanceStatusId == 2 && !vClaimIdList.Any(e => x.ClaimId.Contains(e)) && x.EmployeeId == employeeId).ToList();
                 foreach (var item in advanceList)
                 {
                     var v1Obj = new { ClaimId = item.ClaimId, Amount = item.Amount };

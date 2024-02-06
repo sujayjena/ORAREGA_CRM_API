@@ -46,5 +46,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> ProductTypeId { get; set; }
         public Nullable<int> ProductMakeId { get; set; }
         public string ProdDescriptionIfOther { get; set; }
+        public string OrganizationName { get; set; }
     }
 }

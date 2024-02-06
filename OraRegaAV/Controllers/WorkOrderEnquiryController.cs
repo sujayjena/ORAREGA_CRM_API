@@ -140,7 +140,7 @@ namespace OraRegaAV.Controllers
                 parameters.Comment = postedForm["Comment"].SanitizeValue();
                 parameters.SourceChannelId = Convert.ToInt32(postedForm["SourceChannelId"] ?? "0");
                 parameters.ProdModelIfOther = postedForm["ProdModelIfOther"].SanitizeValue();
-
+                parameters.OrganizationName = postedForm["OrganizationName"].SanitizeValue();
 
 
                 #region WO Enquiry Main form Validation check
@@ -344,6 +344,7 @@ namespace OraRegaAV.Controllers
                     tblWorkOrderEnquiry.ProductTypeId = parameters.ProductTypeId;
                     tblWorkOrderEnquiry.ProductMakeId = parameters.ProductMakeId;
                     tblWorkOrderEnquiry.ProdModelIfOther = parameters.ProdModelIfOther;
+                    tblWorkOrderEnquiry.OrganizationName = parameters.OrganizationName;
 
                     db.tblWorkOrderEnquiries.Add(tblWorkOrderEnquiry);
                     await db.SaveChangesAsync();
@@ -405,6 +406,7 @@ namespace OraRegaAV.Controllers
                     tblWorkOrderEnquiry.ProductTypeId = parameters.ProductTypeId;
                     tblWorkOrderEnquiry.ProductMakeId = parameters.ProductMakeId;
                     tblWorkOrderEnquiry.ProdModelIfOther = parameters.ProdModelIfOther;
+                    tblWorkOrderEnquiry.OrganizationName = parameters.OrganizationName;
 
                     _response.Message = $"Work Order Enquiry details updated successfully";
                 }

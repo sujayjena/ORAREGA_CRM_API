@@ -746,6 +746,8 @@ namespace OraRegaAV.Controllers
                     vItemObj.RescheduleReason = obj.RescheduleReason;
                     vItemObj.RescheduleDate = obj.RescheduleDate;
                     vItemObj.ServiceAddressId = obj.ServiceAddressId;
+                    vItemObj.CaseStatusId = obj.CaseStatusId;
+                    vItemObj.CaseStatusName = obj.CaseStatusName;
 
                     var vtblEngineerVisitHistoryObj = db.tblEngineerVisitHistories.Where(x => x.WorkOrderNumber == obj.WorkOrderNumber && x.EngineerId == obj.EngineerId).OrderByDescending(x => x.VisitDate).FirstOrDefault();
                     if (vtblEngineerVisitHistoryObj != null)

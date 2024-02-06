@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -150,7 +151,8 @@ namespace OraRegaAV.Controllers
             GetBannerList_Result bannerList_Result;
             try
             {
-                bannerList_Result = await Task.Run(() => db.GetBannerList("", null).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                bannerList_Result = await Task.Run(() => db.GetBannerList("", null,"",0,0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (bannerList_Result != null)
                 {
@@ -183,7 +185,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                bannerList = await Task.Run(() => db.GetBannerList(request.AppType, request.IsActive).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                bannerList = await Task.Run(() => db.GetBannerList(request.AppType, request.IsActive, request.SearchValue, request.PageSize, request.PageNo, vTotal).ToList());
                 foreach (var obj in bannerList)
                 {
                     if (!string.IsNullOrEmpty(obj.ImageFilePath))
@@ -193,6 +196,7 @@ namespace OraRegaAV.Controllers
                     }
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = bannerList;
             }
             catch (Exception ex)
@@ -330,7 +334,8 @@ namespace OraRegaAV.Controllers
             GetOfferAdsList_Result offerAdsList_Result;
             try
             {
-                offerAdsList_Result = await Task.Run(() => db.GetOfferAdsList("", null).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                offerAdsList_Result = await Task.Run(() => db.GetOfferAdsList("", null,"",0,0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (offerAdsList_Result != null)
                 {
@@ -363,7 +368,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                offerAdsList = await Task.Run(() => db.GetOfferAdsList(request.AppType, request.IsActive).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                offerAdsList = await Task.Run(() => db.GetOfferAdsList(request.AppType, request.IsActive, request.SearchValue, request.PageSize, request.PageNo, vTotal).ToList());
                 foreach (var obj in offerAdsList)
                 {
                     if (!string.IsNullOrEmpty(obj.ImageFilePath))
@@ -373,6 +379,7 @@ namespace OraRegaAV.Controllers
                     }
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = offerAdsList;
             }
             catch (Exception ex)
@@ -474,7 +481,8 @@ namespace OraRegaAV.Controllers
             GetOurServiceList_Result ourServiceList_Result;
             try
             {
-                ourServiceList_Result = await Task.Run(() => db.GetOurServiceList("", null).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                ourServiceList_Result = await Task.Run(() => db.GetOurServiceList("", null,"",0,0,vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (ourServiceList_Result != null)
                 {
@@ -507,7 +515,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                ourServiceList = await Task.Run(() => db.GetOurServiceList(request.AppType, request.IsActive).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                ourServiceList = await Task.Run(() => db.GetOurServiceList(request.AppType, request.IsActive, request.SearchValue, request.PageSize, request.PageNo, vTotal).ToList());
                 foreach (var obj in ourServiceList)
                 {
                     if (!string.IsNullOrEmpty(obj.ImageFile))
@@ -517,6 +526,7 @@ namespace OraRegaAV.Controllers
                     }
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = ourServiceList;
             }
             catch (Exception ex)
@@ -618,7 +628,8 @@ namespace OraRegaAV.Controllers
             GetOurProductList_Result ourProductList_Result;
             try
             {
-                ourProductList_Result = await Task.Run(() => db.GetOurProductList("", null).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                ourProductList_Result = await Task.Run(() => db.GetOurProductList("", null,"",0,0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (ourProductList_Result != null)
                 {
@@ -651,7 +662,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                ourProductList = await Task.Run(() => db.GetOurProductList(request.AppType, request.IsActive).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                ourProductList = await Task.Run(() => db.GetOurProductList(request.AppType, request.IsActive, request.SearchValue, request.PageSize, request.PageNo, vTotal).ToList());
                 foreach (var obj in ourProductList)
                 {
                     if (!string.IsNullOrEmpty(obj.ImageFile))
@@ -661,6 +673,7 @@ namespace OraRegaAV.Controllers
                     }
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = ourProductList;
             }
             catch (Exception ex)

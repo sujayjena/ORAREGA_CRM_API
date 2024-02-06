@@ -25,8 +25,26 @@ namespace OraRegaAV.Models
 
     public class RequestForAdvanceListViewModel
     {
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
+
+        [DefaultValue(0)]
         public Nullable<int> EmployeeId { get; set; }
+
         public string ClaimId { get; set; }
+
+        [DefaultValue(0)]
         public Nullable<int> AdvanceStatusId { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

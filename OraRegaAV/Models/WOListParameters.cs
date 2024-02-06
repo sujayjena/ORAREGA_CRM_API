@@ -205,6 +205,8 @@ namespace OraRegaAV.Models
         public int ServiceAddressId { get; set; }
 
         public List<UsersAddresses_Result> Addresses;
+        public int? CaseStatusId { get; set; }
+        public string CaseStatusName { get; set; }
     }
 
     public class UsersAddresses_Result

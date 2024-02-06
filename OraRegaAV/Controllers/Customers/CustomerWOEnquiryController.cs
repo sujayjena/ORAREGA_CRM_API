@@ -14,6 +14,7 @@ using System.Linq;
 using System.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.Customers
 {
@@ -356,14 +357,16 @@ namespace OraRegaAV.Controllers.Customers
         }
 
         [HttpPost]
-        public async Task<Response> WOEnquiryFeedbackList(string WorkOrderNo="")
+        public async Task<Response> WOEnquiryFeedbackList(SearchWOEnquiryFeedback parameters)
         {
             List<GetWOCustomerFeedbackList_Result> advanceList = new List<GetWOCustomerFeedbackList_Result>();
 
             try
             {
-                advanceList = db.GetWOCustomerFeedbackList(WorkOrderNo).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                advanceList = await Task.Run(() => db.GetWOCustomerFeedbackList(parameters.WorkOrderNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)

@@ -15,6 +15,7 @@ using OraRegaAV.Models.Constants;
 using Microsoft.AspNetCore.Mvc;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Models;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API 
 {
@@ -128,8 +129,13 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(parameters.EmployeeId, parameters.ClaimId, parameters.AdvanceStatusId).ToList();
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(parameters.CompanyId, parameters.BranchId,parameters.EmployeeId,
+                    parameters.ClaimId, parameters.AdvanceStatusId, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
             }
             catch (Exception ex)
@@ -147,7 +153,8 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                var advanceObj = db.GetRequestForAdvanceList(0, "", 0).Where(x => x.Id == AdvanceId).FirstOrDefault();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var advanceObj = db.GetRequestForAdvanceList(0, 0, 0, "", 0, 0, "", 0, 0, vTotal).Where(x => x.Id == AdvanceId).FirstOrDefault();
 
                 _response.Data = advanceObj;
             }

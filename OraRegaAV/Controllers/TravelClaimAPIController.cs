@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -35,8 +36,13 @@ namespace OraRegaAV.Controllers
             List<GetTravelClaimList_Result> lstTravelClaim;
             try
             {
-                lstTravelClaim = await Task.Run(() => db.GetTravelClaimList(paramater.EmployeeId, paramater.WorkOrderNumber, paramater.StatusId).ToList());
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstTravelClaim = await Task.Run(() => db.GetTravelClaimList(paramater.CompanyId, paramater.BranchId, paramater.EmployeeId, paramater.WorkOrderNumber,
+                    paramater.StatusId, userId, paramater.SearchValue, paramater.PageSize, paramater.PageNo, vTotal).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstTravelClaim;
             }
             catch (Exception ex)
@@ -59,7 +65,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                vcareerPost = await Task.Run(() => db.GetTravelClaimList(0, "", 0).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                vcareerPost = await Task.Run(() => db.GetTravelClaimList(0, 0, 0, "", 0, 0, "",  0, 0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (vcareerPost != null)
                 {

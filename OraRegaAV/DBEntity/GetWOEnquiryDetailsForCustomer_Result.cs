@@ -60,7 +60,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> PurchaseCountryId { get; set; }
         public string CountryName { get; set; }
         public Nullable<int> OSId { get; set; }
-        public string OrderStatusName { get; set; }
+        public string OperatingSystemName { get; set; }
         public Nullable<int> SourceChannelId { get; set; }
         public Nullable<int> EnquiryStatusId { get; set; }
         public string EnquiryStatusName { get; set; }
@@ -71,6 +71,8 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> OrderTypeId { get; set; }
         public string OrderType { get; set; }
+        public string ProdDescriptionIfOther { get; set; }
+        public string OrganizationName { get; set; }
         public string FilesOriginalName { get; set; }
         public string AttributeImagePath { get; set; }
     }

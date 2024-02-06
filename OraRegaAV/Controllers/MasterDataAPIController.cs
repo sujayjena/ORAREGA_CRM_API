@@ -863,5 +863,25 @@ namespace OraRegaAV.Controllers
 
             return _response;
         }
+
+        [HttpPost]
+        public async Task<Response> GetEmployeesListByReportingTo(int EmployeeId = 0)
+        {
+            List<GetEmployeesListByReportingTo_Result> listResult;
+            try
+            {
+                listResult = await Task.Run(() => db.GetEmployeesListByReportingTo(EmployeeId).ToList());
+
+                _response.Data = listResult;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
     }
 }
