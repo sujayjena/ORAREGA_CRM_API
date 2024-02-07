@@ -804,11 +804,11 @@ namespace OraRegaAV.Controllers.API
                         tblUser.IsActive = tbl.IsActive;
 
                         tblUser.ModifiedDate = DateTime.Now;
-                        tblUser.ModifiedBy = Utilities.GetUserID(ActionContext.Request); 
+                        tblUser.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
 
                         if (!string.IsNullOrWhiteSpace(parameters.Password))
                         {
-                            tblUser.Password = Utilities.EncryptString(parameters.Password); 
+                            tblUser.Password = Utilities.EncryptString(parameters.Password);
                         }
 
                         foreach (var permanentAddress in parameters.PermanentAddress)
@@ -866,7 +866,7 @@ namespace OraRegaAV.Controllers.API
                     await db.SaveChangesAsync();
 
                     //Update Employee Role Permission
-                    if(tbl.RoleId != null && tbl.RoleId != parameters.RoleId)
+                    if (tbl.RoleId > 0)
                     {
                         db.SaveEmployeeRolePermission(tbl.RoleId, parameters.Id, Utilities.GetUserID(ActionContext.Request));
                     }
