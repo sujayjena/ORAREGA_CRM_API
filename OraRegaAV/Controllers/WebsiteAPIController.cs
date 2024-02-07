@@ -797,7 +797,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
-                caseStatusList_Result = await Task.Run(() => db.GetTestimonialList(null).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                caseStatusList_Result = await Task.Run(() => db.GetTestimonialList(null,"",0,0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (caseStatusList_Result != null && !string.IsNullOrEmpty(caseStatusList_Result.FileName))
                 {
@@ -826,7 +827,8 @@ namespace OraRegaAV.Controllers
             List<GetTestimonialList_Result> caseStatusList;
             try
             {
-                caseStatusList = await Task.Run(() => db.GetTestimonialList(parameter.IsActive).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                caseStatusList = await Task.Run(() => db.GetTestimonialList(parameter.IsActive, parameter.SearchValue, parameter.PageSize, parameter.PageNo, vTotal).ToList());
 
                 foreach (var item in caseStatusList)
                 {
@@ -837,6 +839,7 @@ namespace OraRegaAV.Controllers
                     }
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = caseStatusList;
             }
             catch (Exception ex)
@@ -1289,12 +1292,14 @@ namespace OraRegaAV.Controllers
         [Route("api/WebsiteAPI/GetCareerPostList")]
         public async Task<Response> GetCareerPostList(WebsiteSerachParameter parameter)
         {
-            List<tblCareerPost> careerPost;
+            List<GetCareerPostList_Result> careerPost;
 
             try
             {
-                careerPost = await db.tblCareerPosts.Where(x => (x.IsActive == parameter.IsActive || parameter.IsActive == null)).ToListAsync();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                careerPost = await Task.Run(() => db.GetCareerPostList(parameter.IsActive, parameter.SearchValue, parameter.PageSize, parameter.PageNo, vTotal).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = careerPost;
             }
             catch (Exception ex)

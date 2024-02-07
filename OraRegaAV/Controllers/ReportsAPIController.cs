@@ -29,6 +29,7 @@ using OfficeOpenXml.Style;
 using OraRegaAV.Helpers;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Globalization;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -58,8 +59,10 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo,vTotal).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = WorkOrderEnquiryList;
 
             }
@@ -83,7 +86,8 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, 0, 0, vTotal).ToList();
 
                 if (WorkOrderEnquiryList.Count == 0)
                 {
@@ -244,8 +248,10 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetWorkOrderCreationReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetWorkOrderCreationReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo, vTotal).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = WorkOrderCreationList;
 
             }
@@ -269,7 +275,8 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetWorkOrderCreationReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetWorkOrderCreationReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, 0, 0, vTotal).ToList();
 
                 if (WorkOrderCreationList.Count == 0)
                 {
@@ -437,8 +444,10 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetWorkOrderCloserReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetWorkOrderCloserReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo, vTotal).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = WorkOrderCreationList;
 
             }
@@ -461,7 +470,8 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetWorkOrderCloserReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetWorkOrderCloserReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, 0, 0, vTotal).ToList();
 
                 if (WorkOrderCreationList.Count == 0)
                 {
@@ -679,8 +689,10 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetInventoryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetInventoryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo, vTotal).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = WorkOrderCreationList;
 
             }
@@ -703,7 +715,8 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetInventoryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetInventoryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, userId, 0, 0, vTotal).ToList();
 
                 if (WorkOrderCreationList.Count == 0)
                 {
@@ -887,8 +900,10 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var WorkOrderCreationList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var WorkOrderCreationList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo, vTotal).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = WorkOrderCreationList;
 
             }
@@ -911,7 +926,8 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var salesList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId).ToList();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var salesList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId,0,0,vTotal).ToList();
 
                 if (salesList.Count == 0)
                 {

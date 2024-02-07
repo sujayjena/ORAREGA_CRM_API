@@ -13,6 +13,7 @@ namespace OraRegaAV.DBEntity
     
     public partial class GetWorkOrderCloserReport_Result
     {
+        public int Id { get; set; }
         public Nullable<System.DateTime> CloserDate { get; set; }
         public string WorkOrderNumber { get; set; }
         public string QuotationNo { get; set; }

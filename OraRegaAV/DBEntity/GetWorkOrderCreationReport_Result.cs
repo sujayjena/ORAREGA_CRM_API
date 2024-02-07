@@ -13,6 +13,7 @@ namespace OraRegaAV.DBEntity
     
     public partial class GetWorkOrderCreationReport_Result
     {
+        public int Id { get; set; }
         public string SupportType { get; set; }
         public string WorkOrderNumber { get; set; }
         public Nullable<System.DateTime> WorkOrderLogDate { get; set; }

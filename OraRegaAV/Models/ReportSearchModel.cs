@@ -18,6 +18,12 @@ namespace OraRegaAV.Models
         public string BranchId { get; set; }
         [DefaultValue(0)]
         public int StateId { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class WorkOrderReport_Search
@@ -31,6 +37,12 @@ namespace OraRegaAV.Models
         public string BranchId { get; set; }
         [DefaultValue(0)]
         public int StateId { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class InventoryReport_Search
@@ -42,6 +54,12 @@ namespace OraRegaAV.Models
         public int CompanyId { get; set; }
         [DefaultValue("")]
         public string BranchId { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
 }
