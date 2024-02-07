@@ -5,6 +5,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -86,8 +87,12 @@ namespace OraRegaAV.Controllers
             try
             {
                 var loggedInUserId = Utilities.GetUserID(ActionContext.Request);
-                lstLeaves = await Task.Run(() => db.GetLeaves(parameters.EmployeeName, parameters.LeaveType, parameters.LeaveReason, parameters.LeaveStatusId, parameters.IsActive, loggedInUserId).ToList());
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstLeaves = await Task.Run(() => db.GetLeaves(parameters.CompanyId, parameters.BranchId, parameters.EmployeeName, parameters.LeaveType, 
+                    parameters.LeaveReason, parameters.LeaveStatusId, parameters.IsActive, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstLeaves;
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -12,9 +13,24 @@ namespace OraRegaAV.DBEntity
     }
     public class AttendanceHistorySearchParameters
     {
-        public string EmployeeName { get; set; }
+        [DefaultValue(0)]
+        public int CompanyId { get; set; }
+
+        [DefaultValue(0)]
+        public int BranchId { get; set; }
+
         public DateTime? FromPunchInDate { get; set; }
         public DateTime? ToPunchInDate { get; set; }
+        public string EmployeeName { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
+
         //public bool? IsActive { get; set; }
     }
     public class PunchInOutRequestModel

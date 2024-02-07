@@ -504,52 +504,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesListByRole_Result>("GetEmployeesListByRole", empCodeParameter);
         }
     
-        public virtual ObjectResult<GetAttendanceHistoryList_Result> GetAttendanceHistoryList(string employeeName, Nullable<System.DateTime> fromPunchInDate, Nullable<System.DateTime> toPunchInDate)
-        {
-            var employeeNameParameter = employeeName != null ?
-                new ObjectParameter("EmployeeName", employeeName) :
-                new ObjectParameter("EmployeeName", typeof(string));
-    
-            var fromPunchInDateParameter = fromPunchInDate.HasValue ?
-                new ObjectParameter("FromPunchInDate", fromPunchInDate) :
-                new ObjectParameter("FromPunchInDate", typeof(System.DateTime));
-    
-            var toPunchInDateParameter = toPunchInDate.HasValue ?
-                new ObjectParameter("ToPunchInDate", toPunchInDate) :
-                new ObjectParameter("ToPunchInDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAttendanceHistoryList_Result>("GetAttendanceHistoryList", employeeNameParameter, fromPunchInDateParameter, toPunchInDateParameter);
-        }
-    
-        public virtual ObjectResult<GetLeaves_Result> GetLeaves(string employeeName, string leaveType, string leaveReason, Nullable<int> leaveStatusId, Nullable<bool> isActive, Nullable<int> loggedInUserId)
-        {
-            var employeeNameParameter = employeeName != null ?
-                new ObjectParameter("EmployeeName", employeeName) :
-                new ObjectParameter("EmployeeName", typeof(string));
-    
-            var leaveTypeParameter = leaveType != null ?
-                new ObjectParameter("LeaveType", leaveType) :
-                new ObjectParameter("LeaveType", typeof(string));
-    
-            var leaveReasonParameter = leaveReason != null ?
-                new ObjectParameter("LeaveReason", leaveReason) :
-                new ObjectParameter("LeaveReason", typeof(string));
-    
-            var leaveStatusIdParameter = leaveStatusId.HasValue ?
-                new ObjectParameter("LeaveStatusId", leaveStatusId) :
-                new ObjectParameter("LeaveStatusId", typeof(int));
-    
-            var isActiveParameter = isActive.HasValue ?
-                new ObjectParameter("IsActive", isActive) :
-                new ObjectParameter("IsActive", typeof(bool));
-    
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLeaves_Result>("GetLeaves", employeeNameParameter, leaveTypeParameter, leaveReasonParameter, leaveStatusIdParameter, isActiveParameter, loggedInUserIdParameter);
-        }
-    
         public virtual ObjectResult<GetLeaveDetailsById_Result> GetLeaveDetailsById(Nullable<long> id)
         {
             var idParameter = id.HasValue ?
@@ -2331,6 +2285,96 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderCreationReport_Result>("GetWorkOrderCreationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetLeaves_Result> GetLeaves(Nullable<int> companyId, Nullable<int> branchId, string employeeName, string leaveType, string leaveReason, Nullable<int> leaveStatusId, Nullable<bool> isActive, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var employeeNameParameter = employeeName != null ?
+                new ObjectParameter("EmployeeName", employeeName) :
+                new ObjectParameter("EmployeeName", typeof(string));
+    
+            var leaveTypeParameter = leaveType != null ?
+                new ObjectParameter("LeaveType", leaveType) :
+                new ObjectParameter("LeaveType", typeof(string));
+    
+            var leaveReasonParameter = leaveReason != null ?
+                new ObjectParameter("LeaveReason", leaveReason) :
+                new ObjectParameter("LeaveReason", typeof(string));
+    
+            var leaveStatusIdParameter = leaveStatusId.HasValue ?
+                new ObjectParameter("LeaveStatusId", leaveStatusId) :
+                new ObjectParameter("LeaveStatusId", typeof(int));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLeaves_Result>("GetLeaves", companyIdParameter, branchIdParameter, employeeNameParameter, leaveTypeParameter, leaveReasonParameter, leaveStatusIdParameter, isActiveParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetAttendanceHistoryList_Result> GetAttendanceHistoryList(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromPunchInDate, Nullable<System.DateTime> toPunchInDate, string employeeName, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var fromPunchInDateParameter = fromPunchInDate.HasValue ?
+                new ObjectParameter("FromPunchInDate", fromPunchInDate) :
+                new ObjectParameter("FromPunchInDate", typeof(System.DateTime));
+    
+            var toPunchInDateParameter = toPunchInDate.HasValue ?
+                new ObjectParameter("ToPunchInDate", toPunchInDate) :
+                new ObjectParameter("ToPunchInDate", typeof(System.DateTime));
+    
+            var employeeNameParameter = employeeName != null ?
+                new ObjectParameter("EmployeeName", employeeName) :
+                new ObjectParameter("EmployeeName", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAttendanceHistoryList_Result>("GetAttendanceHistoryList", companyIdParameter, branchIdParameter, fromPunchInDateParameter, toPunchInDateParameter, employeeNameParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }

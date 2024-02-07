@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -27,7 +28,13 @@ namespace OraRegaAV.Controllers.API
             IEnumerable<GetAttendanceHistoryList_Result> attendanceHistory;
             try
             {
-                attendanceHistory = db.GetAttendanceHistoryList(parameters.EmployeeName, parameters.FromPunchInDate, parameters.ToPunchInDate);
+                var loggedInUserId = Utilities.GetUserID(ActionContext.Request);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                attendanceHistory = db.GetAttendanceHistoryList(parameters.CompanyId, parameters.BranchId, parameters.FromPunchInDate, parameters.ToPunchInDate, 
+                    parameters.EmployeeName, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal);
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = attendanceHistory;
             }
             catch (Exception ex)
@@ -47,7 +54,8 @@ namespace OraRegaAV.Controllers.API
             IEnumerable<GetAttendanceHistoryList_Result> attendanceHistory;
             try
             {
-                attendanceHistory = db.GetAttendanceHistoryList("", null, null).Where(x => x.UserId == userId);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                attendanceHistory = db.GetAttendanceHistoryList(0, 0, null, null, "", 0, "", 0, 0, vTotal).Where(x => x.UserId == userId);
                 _response.Data = attendanceHistory;
             }
             catch (Exception ex)
