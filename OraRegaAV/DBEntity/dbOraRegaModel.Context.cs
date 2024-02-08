@@ -546,9 +546,25 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCountryList_Result>("GetCountryList");
         }
     
-        public virtual ObjectResult<GetDepartmentList_Result> GetDepartmentList()
+        public virtual ObjectResult<GetDepartmentList_Result> GetDepartmentList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDepartmentList_Result>("GetDepartmentList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDepartmentList_Result>("GetDepartmentList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetPincodeList_Result> GetPincodeList()
@@ -591,7 +607,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetGSTMappingList_Result>("GetGSTMappingList");
         }
     
-        public virtual ObjectResult<GetRoleHierarchy_Result> GetRoleHierarchy(Nullable<int> reportingTo, Nullable<bool> isActive)
+        public virtual ObjectResult<GetRoleHierarchy_Result> GetRoleHierarchy(Nullable<int> reportingTo, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var reportingToParameter = reportingTo.HasValue ?
                 new ObjectParameter("ReportingTo", reportingTo) :
@@ -601,7 +617,23 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("IsActive", isActive) :
                 new ObjectParameter("IsActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleHierarchy_Result>("GetRoleHierarchy", reportingToParameter, isActiveParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleHierarchy_Result>("GetRoleHierarchy", reportingToParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetAccessoriesList_Result> GetAccessoriesList()
@@ -659,17 +691,25 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWarrantyTypeList_Result>("GetWarrantyTypeList");
         }
     
-        public virtual ObjectResult<GetRolesList_Result> GetRolesList(string roleName, Nullable<bool> isActive)
+        public virtual ObjectResult<GetRolesList_Result> GetRolesList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            var roleNameParameter = roleName != null ?
-                new ObjectParameter("RoleName", roleName) :
-                new ObjectParameter("RoleName", typeof(string));
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
     
-            var isActiveParameter = isActive.HasValue ?
-                new ObjectParameter("IsActive", isActive) :
-                new ObjectParameter("IsActive", typeof(bool));
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRolesList_Result>("GetRolesList", roleNameParameter, isActiveParameter);
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRolesList_Result>("GetRolesList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetReportingToEmployeeForSelectList_Result> GetReportingToEmployeeForSelectList(Nullable<long> roleId, Nullable<long> regionId)
@@ -726,7 +766,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBusinessType_Result>("GetBusinessType");
         }
     
-        public virtual ObjectResult<GetEmployeesList_Result> GetEmployeesList(string empCode, string empName, string email, Nullable<bool> isActive)
+        public virtual ObjectResult<GetEmployeesList_Result> GetEmployeesList(string empCode, string empName, string email, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var empCodeParameter = empCode != null ?
                 new ObjectParameter("EmpCode", empCode) :
@@ -744,7 +784,23 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("IsActive", isActive) :
                 new ObjectParameter("IsActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesList_Result>("GetEmployeesList", empCodeParameter, empNameParameter, emailParameter, isActiveParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesList_Result>("GetEmployeesList", empCodeParameter, empNameParameter, emailParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetWorkOrderDetails_Result> GetWorkOrderDetails(string workOrderNumber)

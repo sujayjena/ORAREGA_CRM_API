@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -887,25 +888,32 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/EmployeeAPI/GetEmployeesList")]
-        public Response GetEmployeesList(EmployeeSearchParameters parameters)
+        public async Task<Response> GetEmployeesList(EmployeeSearchParameters parameters)
         {
             List<GetEmployeesList_Result> lstEmployee;
 
             try
             {
-                lstEmployee = db.GetEmployeesList(
+                var userId = Utilities.GetUserID(ActionContext.Request);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstEmployee = await Task.Run(() => db.GetEmployeesList(
                     parameters.EmpCode.SanitizeValue(),
                     parameters.EmpName.SanitizeValue(),
                     parameters.Email.SanitizeValue(),
-                    parameters.IsActive
-                ).ToList();
+                    parameters.IsActive,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal,
+                    userId).ToList());
 
-                var userId = Utilities.GetUserID(ActionContext.Request);
                 if (userId > 1)
                 {
                     lstEmployee = lstEmployee.Where(x => x.Id > 1).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstEmployee;
             }
             catch (Exception ex)

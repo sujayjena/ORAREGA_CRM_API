@@ -23,16 +23,16 @@ namespace OraRegaAV.Controllers.API
         }
         [HttpPost]
         [Route("api/AttendanceAPI/GetAttendanceHistotyList")]
-        public Response GetAttendanceHistotyList(AttendanceHistorySearchParameters parameters)
+        public async Task<Response> GetAttendanceHistotyList(AttendanceHistorySearchParameters parameters)
         {
-            IEnumerable<GetAttendanceHistoryList_Result> attendanceHistory;
+            List<GetAttendanceHistoryList_Result> attendanceHistory;
             try
             {
                 var loggedInUserId = Utilities.GetUserID(ActionContext.Request);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                attendanceHistory = db.GetAttendanceHistoryList(parameters.CompanyId, parameters.BranchId, parameters.FromPunchInDate, parameters.ToPunchInDate, 
-                    parameters.EmployeeName, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal);
+                attendanceHistory = await Task.Run(() => db.GetAttendanceHistoryList(parameters.CompanyId, parameters.BranchId, parameters.FromPunchInDate, parameters.ToPunchInDate,
+                    parameters.EmployeeName, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = attendanceHistory;

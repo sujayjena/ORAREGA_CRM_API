@@ -1,6 +1,7 @@
 ﻿using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace OraRegaAV.DBEntity
@@ -73,5 +74,12 @@ namespace OraRegaAV.DBEntity
         public string EmpName { get; set; }
         public string Email { get; set; }
         public bool? IsActive { get; set; }
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

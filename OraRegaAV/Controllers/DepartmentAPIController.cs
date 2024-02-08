@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using OraRegaAV.Helpers;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -105,13 +106,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/DepartmentAPI/GetDepartmentList")]
-        public async Task<Response> GetDepartmentList()
+        public async Task<Response> GetDepartmentList(DepartmentSearchParameters parameters)
         {
             List<GetDepartmentList_Result> departmentList;
             try
             {
-                departmentList = await Task.Run(() => db.GetDepartmentList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                departmentList = await Task.Run(() => db.GetDepartmentList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = departmentList;
             }
             catch (Exception ex)

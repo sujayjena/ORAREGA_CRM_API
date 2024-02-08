@@ -8,6 +8,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -78,14 +79,17 @@ namespace OraRegaAV.Controllers.API
             List<GetRolesList_Result> rolesListList;
             try
             {
-                rolesListList = await Task.Run(() => db.GetRolesList(parameters.RoleName, parameters.IsActive).ToList());
-
                 var userId = Utilities.GetUserID(ActionContext.Request);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                rolesListList = await Task.Run(() => db.GetRolesList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
                 if (userId > 1)
                 {
                     rolesListList = rolesListList.Where(x => x.Id > 1).ToList();
                 }
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = rolesListList;
             }
             catch (Exception ex)
@@ -168,8 +172,12 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                roleHierarchies = await Task.Run(() => db.GetRoleHierarchy(parameters.ReportingTo, parameters.IsActive).ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                roleHierarchies = await Task.Run(() => db.GetRoleHierarchy(parameters.ReportingTo, parameters.IsActive, parameters.SearchValue, parameters.PageSize, parameters.PageNo,vTotal,userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = roleHierarchies;
             }
             catch (Exception ex)
@@ -190,7 +198,8 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var parameters = new RoleHierarchySearchParameters();
-                roleHierarchies = await Task.Run(() => db.GetRoleHierarchy(parameters.ReportingTo, parameters.IsActive).Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                roleHierarchies = await Task.Run(() => db.GetRoleHierarchy(parameters.ReportingTo, parameters.IsActive,"",0,0, vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
 
                 _response.Data = roleHierarchies;
             }

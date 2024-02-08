@@ -1209,6 +1209,7 @@
     <Compile Include="Models\AdminCommonViewModel.cs" />
     <Compile Include="Models\CareerPostViewModel.cs" />
     <Compile Include="Models\DashboardModel.cs" />
+    <Compile Include="Models\DepartmentModels.cs" />
     <Compile Include="Models\ManageWebsiteViewModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\BranchQueueSaveModel.cs" />
