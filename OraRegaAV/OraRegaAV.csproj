@@ -347,6 +347,7 @@
     <Compile Include="Controllers\AddressAPIController.cs" />
     <Compile Include="Controllers\ApiCustomBaseController.cs" />
     <Compile Include="Controllers\AttendanceAPIController.cs" />
+    <Compile Include="Controllers\SmsAPIController.cs" />
     <Compile Include="Controllers\BranchAPIController.cs" />
     <Compile Include="Controllers\BusinessTypeAPIController.cs" />
     <Compile Include="Controllers\CaseStatusAPIController.cs" />
@@ -1203,6 +1204,7 @@
     <Compile Include="Helpers\EncryptDecryptHelper.cs" />
     <Compile Include="Helpers\FileManager.cs" />
     <Compile Include="Helpers\LogWriter.cs" />
+    <Compile Include="Helpers\SmsSender.cs" />
     <Compile Include="Helpers\TrackingModuleLog.cs" />
     <Compile Include="Helpers\ValueSanitizerHelper.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
@@ -1305,6 +1307,7 @@
     <Compile Include="Models\RoleHierarchyModel.cs" />
     <Compile Include="Models\SalesOrderDetailsResult.cs" />
     <Compile Include="Models\SelectListItem.cs" />
+    <Compile Include="Models\SmsModel.cs" />
     <Compile Include="Models\SMTPConfigurationModel.cs" />
     <Compile Include="Models\StockAllocationModels.cs" />
     <Compile Include="Models\StockPartStatusModel.cs" />
