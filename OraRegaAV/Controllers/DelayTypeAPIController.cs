@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -70,7 +71,8 @@ namespace OraRegaAV.Controllers.API
             GetDelayTypeList_Result getDelayTypeList_Result;
             try
             {
-                getDelayTypeList_Result = await Task.Run(() => db.GetDelayTypeList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                getDelayTypeList_Result = await Task.Run(() => db.GetDelayTypeList("",0,0,vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = getDelayTypeList_Result;
             }
             catch (Exception ex)
@@ -84,13 +86,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/DelayTypeAPI/GetDelayTypeList")]
-        public async Task<Response> GetDelayTypeList()
+        public async Task<Response> GetDelayTypeList(AdministratorSearchParameters parameters)
         {
             List<GetDelayTypeList_Result> lstDelayType;
             try
             {
-                lstDelayType = await Task.Run(() => db.GetDelayTypeList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstDelayType = await Task.Run(() => db.GetDelayTypeList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstDelayType;
             }
             catch (Exception ex)

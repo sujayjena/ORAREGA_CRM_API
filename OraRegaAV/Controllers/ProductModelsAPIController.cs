@@ -8,6 +8,7 @@ using System.Web.Http;
 using System;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models.Constants;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -105,9 +106,13 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 tblProductModels = db.GetProductModelsList(ObjProductModelSearchParams.ProductModel, ObjProductModelSearchParams.ProductMake,
-                ObjProductModelSearchParams.ProductType, ObjProductModelSearchParams.OrderTypeCode, ObjProductModelSearchParams.IsActive).ToList();
+                ObjProductModelSearchParams.ProductType, ObjProductModelSearchParams.OrderTypeCode, ObjProductModelSearchParams.IsActive,
+                ObjProductModelSearchParams.SearchValue, ObjProductModelSearchParams.PageSize, ObjProductModelSearchParams.PageNo,vTotal,userId).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = tblProductModels;
             }
             catch (Exception ex)
@@ -143,8 +148,9 @@ namespace OraRegaAV.Controllers.API
                 //    .Where(model => model.Id == ProductModelId)
                 //    .FirstOrDefault();
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 objtblProductModel = db.GetProductModelsList(
-                    string.Empty, string.Empty, string.Empty, string.Empty, null).Where(model => model.Id == ProductModelId).FirstOrDefault();
+                    string.Empty, string.Empty, string.Empty, string.Empty, null,"",0,0,vTotal,0).Where(model => model.Id == ProductModelId).FirstOrDefault();
 
                 _response.Data = objtblProductModel;
             }

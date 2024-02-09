@@ -112,7 +112,8 @@ namespace OraRegaAV.Controllers
                         stockTransferResponse.CreatedDate = vStockTransferOutObj.CreatedDate;
 
                         // Branch From
-                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId).ToList().FirstOrDefault();
+                        var vTotalFrom = new ObjectParameter("Total", typeof(int));
+                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId, "", 0, 0, vTotalFrom, 0).ToList().FirstOrDefault();
                         if (vBranchFromDetail != null)
                         {
                             stockTransferResponse.BranchFrom.Id = vBranchFromDetail.Id;
@@ -133,7 +134,8 @@ namespace OraRegaAV.Controllers
                         }
 
                         // Branch To
-                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId).ToList().FirstOrDefault();
+                        var vTotalTo = new ObjectParameter("Total", typeof(int));
+                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId, "", 0, 0, vTotalTo, 0).ToList().FirstOrDefault();
                         if (vBranchToDetail != null)
                         {
                             stockTransferResponse.BranchTo.Id = vBranchToDetail.Id;
@@ -229,7 +231,8 @@ namespace OraRegaAV.Controllers
                         stockTransferResponse.CreatedDate = vStockTransferOutObj.CreatedDate;
 
                         // Branch From
-                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId).ToList().FirstOrDefault();
+                        var vTotalFrom = new ObjectParameter("Total", typeof(int));
+                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId, "", 0, 0, vTotalFrom, 0).ToList().FirstOrDefault();
                         if (vBranchFromDetail != null)
                         {
                             stockTransferResponse.BranchFrom.Id = vBranchFromDetail.Id;
@@ -250,7 +253,8 @@ namespace OraRegaAV.Controllers
                         }
 
                         // Branch To
-                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId).ToList().FirstOrDefault();
+                        var vTotalTo = new ObjectParameter("Total", typeof(int));
+                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId, "", 0, 0, vTotalTo, 0).ToList().FirstOrDefault();
                         if (vBranchToDetail != null)
                         {
                             stockTransferResponse.BranchTo.Id = vBranchToDetail.Id;

@@ -175,7 +175,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMenuList_Result>("GetMenuList", userIdParameter);
         }
     
-        public virtual ObjectResult<GetProductMakesList_Result> GetProductMakesList(string productMake, string productType, string orderTypeCode, Nullable<bool> isActive)
+        public virtual ObjectResult<GetProductMakesList_Result> GetProductMakesList(string productMake, string productType, string orderTypeCode, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var productMakeParameter = productMake != null ?
                 new ObjectParameter("ProductMake", productMake) :
@@ -193,10 +193,26 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("IsActive", isActive) :
                 new ObjectParameter("IsActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductMakesList_Result>("GetProductMakesList", productMakeParameter, productTypeParameter, orderTypeCodeParameter, isActiveParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductMakesList_Result>("GetProductMakesList", productMakeParameter, productTypeParameter, orderTypeCodeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetProductModelsList_Result> GetProductModelsList(string productModel, string productMake, string productType, string orderTypeCode, Nullable<bool> isActive)
+        public virtual ObjectResult<GetProductModelsList_Result> GetProductModelsList(string productModel, string productMake, string productType, string orderTypeCode, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var productModelParameter = productModel != null ?
                 new ObjectParameter("ProductModel", productModel) :
@@ -218,10 +234,26 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("IsActive", isActive) :
                 new ObjectParameter("IsActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductModelsList_Result>("GetProductModelsList", productModelParameter, productMakeParameter, productTypeParameter, orderTypeCodeParameter, isActiveParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductModelsList_Result>("GetProductModelsList", productModelParameter, productMakeParameter, productTypeParameter, orderTypeCodeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetProductTypesList_Result> GetProductTypesList(string productType, string orderTypeCode, Nullable<bool> isActive)
+        public virtual ObjectResult<GetProductTypesList_Result> GetProductTypesList(string productType, string orderTypeCode, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var productTypeParameter = productType != null ?
                 new ObjectParameter("ProductType", productType) :
@@ -235,7 +267,23 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("IsActive", isActive) :
                 new ObjectParameter("IsActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductTypesList_Result>("GetProductTypesList", productTypeParameter, orderTypeCodeParameter, isActiveParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductTypesList_Result>("GetProductTypesList", productTypeParameter, orderTypeCodeParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetStockEntryList_Result> GetStockEntryList(Nullable<int> id, string docketNo, Nullable<int> companyId, Nullable<int> branchId, Nullable<int> vendorId, string uniqueCode, string partName, string partDescription, string partNumber, Nullable<System.DateTime> receivedDate)
@@ -531,19 +579,67 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBranchListByState_Result>("GetBranchListByState", idParameter);
         }
     
-        public virtual ObjectResult<GetAreaList_Result> GetAreaList()
+        public virtual ObjectResult<GetAreaList_Result> GetAreaList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAreaList_Result>("GetAreaList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAreaList_Result>("GetAreaList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetCityList_Result> GetCityList()
+        public virtual ObjectResult<GetCityList_Result> GetCityList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCityList_Result>("GetCityList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCityList_Result>("GetCityList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetCountryList_Result> GetCountryList()
+        public virtual ObjectResult<GetCountryList_Result> GetCountryList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCountryList_Result>("GetCountryList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCountryList_Result>("GetCountryList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetDepartmentList_Result> GetDepartmentList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
@@ -567,44 +663,172 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDepartmentList_Result>("GetDepartmentList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetPincodeList_Result> GetPincodeList()
+        public virtual ObjectResult<GetPincodeList_Result> GetPincodeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPincodeList_Result>("GetPincodeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPincodeList_Result>("GetPincodeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetStateList_Result> GetStateList()
+        public virtual ObjectResult<GetStateList_Result> GetStateList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStateList_Result>("GetStateList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStateList_Result>("GetStateList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetStockPartStatusList_Result> GetStockPartStatusList()
+        public virtual ObjectResult<GetStockPartStatusList_Result> GetStockPartStatusList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockPartStatusList_Result>("GetStockPartStatusList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockPartStatusList_Result>("GetStockPartStatusList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetDelayTypeList_Result> GetDelayTypeList()
+        public virtual ObjectResult<GetDelayTypeList_Result> GetDelayTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDelayTypeList_Result>("GetDelayTypeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDelayTypeList_Result>("GetDelayTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetRepairClassTypeList_Result> GetRepairClassTypeList()
+        public virtual ObjectResult<GetRepairClassTypeList_Result> GetRepairClassTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRepairClassTypeList_Result>("GetRepairClassTypeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRepairClassTypeList_Result>("GetRepairClassTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetRescheduleReasonList_Result> GetRescheduleReasonList()
+        public virtual ObjectResult<GetRescheduleReasonList_Result> GetRescheduleReasonList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRescheduleReasonList_Result>("GetRescheduleReasonList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRescheduleReasonList_Result>("GetRescheduleReasonList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetTravelRangeList_Result> GetTravelRangeList()
+        public virtual ObjectResult<GetTravelRangeList_Result> GetTravelRangeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelRangeList_Result>("GetTravelRangeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTravelRangeList_Result>("GetTravelRangeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetGSTMappingList_Result> GetGSTMappingList()
+        public virtual ObjectResult<GetGSTMappingList_Result> GetGSTMappingList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetGSTMappingList_Result>("GetGSTMappingList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetGSTMappingList_Result>("GetGSTMappingList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetRoleHierarchy_Result> GetRoleHierarchy(Nullable<int> reportingTo, Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
@@ -636,44 +860,172 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleHierarchy_Result>("GetRoleHierarchy", reportingToParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetAccessoriesList_Result> GetAccessoriesList()
+        public virtual ObjectResult<GetAccessoriesList_Result> GetAccessoriesList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAccessoriesList_Result>("GetAccessoriesList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAccessoriesList_Result>("GetAccessoriesList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetCompanyTypeList_Result> GetCompanyTypeList()
+        public virtual ObjectResult<GetCompanyTypeList_Result> GetCompanyTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCompanyTypeList_Result>("GetCompanyTypeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCompanyTypeList_Result>("GetCompanyTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetHSNCodeGSTMappingList_Result> GetHSNCodeGSTMappingList()
+        public virtual ObjectResult<GetHSNCodeGSTMappingList_Result> GetHSNCodeGSTMappingList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetHSNCodeGSTMappingList_Result>("GetHSNCodeGSTMappingList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetHSNCodeGSTMappingList_Result>("GetHSNCodeGSTMappingList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetIssueDescriptionList_Result> GetIssueDescriptionList()
+        public virtual ObjectResult<GetIssueDescriptionList_Result> GetIssueDescriptionList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetIssueDescriptionList_Result>("GetIssueDescriptionList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetIssueDescriptionList_Result>("GetIssueDescriptionList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetLeaveTypeList_Result> GetLeaveTypeList()
+        public virtual ObjectResult<GetLeaveTypeList_Result> GetLeaveTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLeaveTypeList_Result>("GetLeaveTypeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLeaveTypeList_Result>("GetLeaveTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetOperatingSystemList_Result> GetOperatingSystemList()
+        public virtual ObjectResult<GetOperatingSystemList_Result> GetOperatingSystemList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOperatingSystemList_Result>("GetOperatingSystemList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOperatingSystemList_Result>("GetOperatingSystemList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetPaymentTermsList_Result> GetPaymentTermsList()
+        public virtual ObjectResult<GetPaymentTermsList_Result> GetPaymentTermsList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentTermsList_Result>("GetPaymentTermsList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentTermsList_Result>("GetPaymentTermsList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetPriorityList_Result> GetPriorityList()
+        public virtual ObjectResult<GetPriorityList_Result> GetPriorityList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPriorityList_Result>("GetPriorityList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPriorityList_Result>("GetPriorityList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetSalesOrderStatusList_Result> GetSalesOrderStatusList()
@@ -681,14 +1033,46 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrderStatusList_Result>("GetSalesOrderStatusList");
         }
     
-        public virtual ObjectResult<GetSupportTypeList_Result> GetSupportTypeList()
+        public virtual ObjectResult<GetSupportTypeList_Result> GetSupportTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSupportTypeList_Result>("GetSupportTypeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSupportTypeList_Result>("GetSupportTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetWarrantyTypeList_Result> GetWarrantyTypeList()
+        public virtual ObjectResult<GetWarrantyTypeList_Result> GetWarrantyTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWarrantyTypeList_Result>("GetWarrantyTypeList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWarrantyTypeList_Result>("GetWarrantyTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetRolesList_Result> GetRolesList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
@@ -738,9 +1122,25 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetGST_N_StateCode_ByCompanyNState_Result>("GetGST_N_StateCode_ByCompanyNState", companyIdParameter, stateIdParameter);
         }
     
-        public virtual ObjectResult<GetProductDescriptionList_Result> GetProductDescriptionList()
+        public virtual ObjectResult<GetProductDescriptionList_Result> GetProductDescriptionList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductDescriptionList_Result>("GetProductDescriptionList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductDescriptionList_Result>("GetProductDescriptionList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetSOEnquiryDetailsForCustomer_Result> GetSOEnquiryDetailsForCustomer(Nullable<int> customerId, Nullable<int> sOEnquiryId)
@@ -756,9 +1156,25 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSOEnquiryDetailsForCustomer_Result>("GetSOEnquiryDetailsForCustomer", customerIdParameter, sOEnquiryIdParameter);
         }
     
-        public virtual ObjectResult<GetCaseStatusList_Result> GetCaseStatusList()
+        public virtual ObjectResult<GetCaseStatusList_Result> GetCaseStatusList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCaseStatusList_Result>("GetCaseStatusList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCaseStatusList_Result>("GetCaseStatusList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetBusinessType_Result> GetBusinessType()
@@ -830,7 +1246,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleMaster_EmployeePermissionList_Result>("GetRoleMaster_EmployeePermissionList", employeeIdParameter);
         }
     
-        public virtual ObjectResult<GetBranchList_Result> GetBranchList(Nullable<int> companyId, Nullable<int> branchId)
+        public virtual ObjectResult<GetBranchList_Result> GetBranchList(Nullable<int> companyId, Nullable<int> branchId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
@@ -840,16 +1256,48 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("BranchId", branchId) :
                 new ObjectParameter("BranchId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBranchList_Result>("GetBranchList", companyIdParameter, branchIdParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBranchList_Result>("GetBranchList", companyIdParameter, branchIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetCompanyList_Result> GetCompanyList(Nullable<int> companyId)
+        public virtual ObjectResult<GetCompanyList_Result> GetCompanyList(Nullable<int> companyId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCompanyList_Result>("GetCompanyList", companyIdParameter);
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCompanyList_Result>("GetCompanyList", companyIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetClaimSettlementItemAttachmentById_Result> GetClaimSettlementItemAttachmentById(Nullable<int> claimSettlementItemId)
@@ -947,9 +1395,25 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInChallanList_Result>("GetStockTransferInChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, dockerNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList()
+        public virtual ObjectResult<GetRatePerKMList_Result> GetRatePerKMList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRatePerKMList_Result>("GetRatePerKMList");
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRatePerKMList_Result>("GetRatePerKMList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetVehicleTypeList_Result> GetVehicleTypeList()
@@ -2431,6 +2895,48 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAttendanceHistoryList_Result>("GetAttendanceHistoryList", companyIdParameter, branchIdParameter, fromPunchInDateParameter, toPunchInDateParameter, employeeNameParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetPartDescriptionList_Result> GetPartDescriptionList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDescriptionList_Result>("GetPartDescriptionList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetOrderTypesListForSelectList_Result> GetOrderTypesListForSelectList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetOrderTypesListForSelectList_Result>("GetOrderTypesListForSelectList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     }
 }

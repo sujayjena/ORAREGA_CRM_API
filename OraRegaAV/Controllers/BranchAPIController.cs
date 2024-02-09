@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -91,7 +92,8 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                objtblBranch = await Task.Run(() => db.GetBranchList(0, 0).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                objtblBranch = await Task.Run(() => db.GetBranchList(0, 0, "",0,0,vTotal,0).ToList().Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = objtblBranch;
             }
             catch (Exception ex)
@@ -111,8 +113,11 @@ namespace OraRegaAV.Controllers.API
             List<GetBranchList_Result> branchList;
             try
             {
-                branchList = await Task.Run(() => db.GetBranchList(parameters.CompanyId, parameters.BranchId).ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                branchList = await Task.Run(() => db.GetBranchList(parameters.CompanyId, parameters.BranchId, parameters.SearchValue, parameters.PageSize, parameters.PageNo,vTotal,userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = branchList;
             }
             catch (Exception ex)

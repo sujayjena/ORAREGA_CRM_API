@@ -1990,8 +1990,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetAccessoriesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetAreaList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAccessoriesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAreaList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetAttendanceHistoryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
@@ -2015,6 +2027,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetBranchList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetBranchListByCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
@@ -2030,8 +2047,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetCaseStatusList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetCityList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetCaseStatusList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCityList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetClaimSettlementItemAttachmentById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ClaimSettlementItemId" Type="int" Mode="In" />
         </Function>
@@ -2053,12 +2082,29 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         </Function>
         <Function Name="GetCompanyList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetCompanyTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetCompanyTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetConfigurationsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ConfigKeys" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="GetCountryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetCountryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetCustomerDetailsByMobile" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MobileNo" Type="varchar" Mode="In" />
         </Function>
@@ -2122,7 +2168,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="UserId" Type="int" Mode="In" />
           <Parameter Name="FilterType" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="GetDelayTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetDelayTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetDepartmentList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
@@ -2161,8 +2213,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="StateId" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetGSTMappingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetHSNCodeGSTMappingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetGSTMappingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetHSNCodeGSTMappingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetInventoryReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
@@ -2173,7 +2237,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetIssueDescriptionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetIssueDescriptionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetLeaveDetailsById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="In" />
         </Function>
@@ -2191,7 +2261,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetLeaveTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetLeaveTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetLoggedInUserDetailsByToken" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Token" Type="varchar" Mode="In" />
         </Function>
@@ -2210,7 +2286,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetOperatingSystemList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetOperatingSystemList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetOrderTypesListForSelectList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetOurProductList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="AppType" Type="char" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
@@ -2226,6 +2315,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="GetPartDescriptionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetPartDetailList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
@@ -2254,18 +2350,47 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetPaymentPolicyList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IsActive" Type="bit" Mode="In" />
         </Function>
-        <Function Name="GetPaymentTermsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetPincodeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetPriorityList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetPaymentTermsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPincodeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPriorityList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetPrivacyAndPolicyList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IsActive" Type="bit" Mode="In" />
         </Function>
-        <Function Name="GetProductDescriptionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetProductDescriptionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetProductMakesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProductMake" Type="varchar" Mode="In" />
           <Parameter Name="ProductType" Type="varchar" Mode="In" />
           <Parameter Name="OrderTypeCode" Type="varchar" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetProductModelDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProdModelId" Type="int" Mode="In" />
@@ -2276,17 +2401,39 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="ProductType" Type="varchar" Mode="In" />
           <Parameter Name="OrderTypeCode" Type="varchar" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetProductTypesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProductType" Type="varchar" Mode="In" />
           <Parameter Name="OrderTypeCode" Type="varchar" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetRatePerKMList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetRatePerKMList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetRefundAndCancellationPolicyList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IsActive" Type="bit" Mode="In" />
         </Function>
-        <Function Name="GetRepairClassTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetRepairClassTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetReportingToEmployeeForSelectList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RoleId" Type="bigint" Mode="In" />
           <Parameter Name="RegionId" Type="bigint" Mode="In" />
@@ -2303,7 +2450,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetRescheduleReasonList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetRescheduleReasonList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetRoleDetailsById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="In" />
         </Function>
@@ -2386,7 +2539,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetSOEnquiryProductsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SOEnquiryId" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetStateList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetStateList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetStockAllocationToEngineerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
@@ -2455,7 +2614,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         <Function Name="GetStockOutDOAByChallanNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ChallanNumber" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="GetStockPartStatusList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetStockPartStatusList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetStockTransferInChallanList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="int" Mode="In" />
@@ -2488,7 +2653,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetSupportTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetSupportTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetTermsAndConditionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IsActive" Type="bit" Mode="In" />
         </Function>
@@ -2515,7 +2686,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetTravelRangeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetTravelRangeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetUsersAddresses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
@@ -2534,7 +2711,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
-        <Function Name="GetWarrantyTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetWarrantyTypeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetWOCustomerFeedbackList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="WorkOrderNo" Type="varchar" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
@@ -3593,6 +3776,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="ProductType" Mode="In" Type="String" />
             <Parameter Name="OrderTypeCode" Mode="In" Type="String" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetProductModelsList" ReturnType="Collection(dbOraRegaModel.GetProductModelsList_Result)">
             <Parameter Name="ProductModel" Mode="In" Type="String" />
@@ -3600,11 +3788,21 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="ProductType" Mode="In" Type="String" />
             <Parameter Name="OrderTypeCode" Mode="In" Type="String" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetProductTypesList" ReturnType="Collection(dbOraRegaModel.GetProductTypesList_Result)">
             <Parameter Name="ProductType" Mode="In" Type="String" />
             <Parameter Name="OrderTypeCode" Mode="In" Type="String" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockEntryList" ReturnType="Collection(dbOraRegaModel.GetStockEntryList_Result)">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -3728,9 +3926,27 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<FunctionImport Name="GetBranchListByState" ReturnType="Collection(dbOraRegaModel.GetBranchListByState_Result)">
           <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
-					<FunctionImport Name="GetAreaList" ReturnType="Collection(dbOraRegaModel.GetAreaList_Result)" />
-					<FunctionImport Name="GetCityList" ReturnType="Collection(dbOraRegaModel.GetCityList_Result)" />
-					<FunctionImport Name="GetCountryList" ReturnType="Collection(dbOraRegaModel.GetCountryList_Result)" />
+					<FunctionImport Name="GetAreaList" ReturnType="Collection(dbOraRegaModel.GetAreaList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetCityList" ReturnType="Collection(dbOraRegaModel.GetCityList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetCountryList" ReturnType="Collection(dbOraRegaModel.GetCountryList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<FunctionImport Name="GetDepartmentList" ReturnType="Collection(dbOraRegaModel.GetDepartmentList_Result)" >
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -3738,20 +3954,68 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-					<FunctionImport Name="GetPincodeList" ReturnType="Collection(dbOraRegaModel.GetPincodeList_Result)" />
-					<FunctionImport Name="GetStateList" ReturnType="Collection(dbOraRegaModel.GetStateList_Result)" />
+					<FunctionImport Name="GetPincodeList" ReturnType="Collection(dbOraRegaModel.GetPincodeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetStateList" ReturnType="Collection(dbOraRegaModel.GetStateList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<EntitySet Name="tblStockPartStatus" EntityType="dbOraRegaModel.tblStockPartStatu" />
-					<FunctionImport Name="GetStockPartStatusList" ReturnType="Collection(dbOraRegaModel.GetStockPartStatusList_Result)" />
+					<FunctionImport Name="GetStockPartStatusList" ReturnType="Collection(dbOraRegaModel.GetStockPartStatusList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<EntitySet Name="tblDelayTypes" EntityType="dbOraRegaModel.tblDelayType" />
 					<EntitySet Name="tblRepairClassTypes" EntityType="dbOraRegaModel.tblRepairClassType" />
 					<EntitySet Name="tblRescheduleReasons" EntityType="dbOraRegaModel.tblRescheduleReason" />
 					<EntitySet Name="tblTravelRanges" EntityType="dbOraRegaModel.tblTravelRange" />
-					<FunctionImport Name="GetDelayTypeList" ReturnType="Collection(dbOraRegaModel.GetDelayTypeList_Result)" />
-					<FunctionImport Name="GetRepairClassTypeList" ReturnType="Collection(dbOraRegaModel.GetRepairClassTypeList_Result)" />
-					<FunctionImport Name="GetRescheduleReasonList" ReturnType="Collection(dbOraRegaModel.GetRescheduleReasonList_Result)" />
-					<FunctionImport Name="GetTravelRangeList" ReturnType="Collection(dbOraRegaModel.GetTravelRangeList_Result)" />
+					<FunctionImport Name="GetDelayTypeList" ReturnType="Collection(dbOraRegaModel.GetDelayTypeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetRepairClassTypeList" ReturnType="Collection(dbOraRegaModel.GetRepairClassTypeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetRescheduleReasonList" ReturnType="Collection(dbOraRegaModel.GetRescheduleReasonList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetTravelRangeList" ReturnType="Collection(dbOraRegaModel.GetTravelRangeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<EntitySet Name="tblGSTMappings" EntityType="dbOraRegaModel.tblGSTMapping" />
-					<FunctionImport Name="GetGSTMappingList" ReturnType="Collection(dbOraRegaModel.GetGSTMappingList_Result)" />
+					<FunctionImport Name="GetGSTMappingList" ReturnType="Collection(dbOraRegaModel.GetGSTMappingList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<EntitySet Name="tblRatePerKMs" EntityType="dbOraRegaModel.tblRatePerKM" />
 					<FunctionImport Name="GetRoleHierarchy" ReturnType="Collection(dbOraRegaModel.GetRoleHierarchy_Result)">
             <Parameter Name="ReportingTo" Mode="In" Type="Int32" />
@@ -3762,17 +4026,77 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-					<FunctionImport Name="GetAccessoriesList" ReturnType="Collection(dbOraRegaModel.GetAccessoriesList_Result)" />
-					<FunctionImport Name="GetCompanyTypeList" ReturnType="Collection(dbOraRegaModel.GetCompanyTypeList_Result)" />
-					<FunctionImport Name="GetHSNCodeGSTMappingList" ReturnType="Collection(dbOraRegaModel.GetHSNCodeGSTMappingList_Result)" />
-					<FunctionImport Name="GetIssueDescriptionList" ReturnType="Collection(dbOraRegaModel.GetIssueDescriptionList_Result)" />
-					<FunctionImport Name="GetLeaveTypeList" ReturnType="Collection(dbOraRegaModel.GetLeaveTypeList_Result)" />
-					<FunctionImport Name="GetOperatingSystemList" ReturnType="Collection(dbOraRegaModel.GetOperatingSystemList_Result)" />
-					<FunctionImport Name="GetPaymentTermsList" ReturnType="Collection(dbOraRegaModel.GetPaymentTermsList_Result)" />
-					<FunctionImport Name="GetPriorityList" ReturnType="Collection(dbOraRegaModel.GetPriorityList_Result)" />
+					<FunctionImport Name="GetAccessoriesList" ReturnType="Collection(dbOraRegaModel.GetAccessoriesList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetCompanyTypeList" ReturnType="Collection(dbOraRegaModel.GetCompanyTypeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetHSNCodeGSTMappingList" ReturnType="Collection(dbOraRegaModel.GetHSNCodeGSTMappingList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetIssueDescriptionList" ReturnType="Collection(dbOraRegaModel.GetIssueDescriptionList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetLeaveTypeList" ReturnType="Collection(dbOraRegaModel.GetLeaveTypeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetOperatingSystemList" ReturnType="Collection(dbOraRegaModel.GetOperatingSystemList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetPaymentTermsList" ReturnType="Collection(dbOraRegaModel.GetPaymentTermsList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetPriorityList" ReturnType="Collection(dbOraRegaModel.GetPriorityList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<FunctionImport Name="GetSalesOrderStatusList" ReturnType="Collection(dbOraRegaModel.GetSalesOrderStatusList_Result)" />
-					<FunctionImport Name="GetSupportTypeList" ReturnType="Collection(dbOraRegaModel.GetSupportTypeList_Result)" />
-					<FunctionImport Name="GetWarrantyTypeList" ReturnType="Collection(dbOraRegaModel.GetWarrantyTypeList_Result)" />
+					<FunctionImport Name="GetSupportTypeList" ReturnType="Collection(dbOraRegaModel.GetSupportTypeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+					<FunctionImport Name="GetWarrantyTypeList" ReturnType="Collection(dbOraRegaModel.GetWarrantyTypeList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<FunctionImport Name="GetRolesList" ReturnType="Collection(dbOraRegaModel.GetRolesList_Result)">
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -3789,13 +4113,25 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="StateId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblProductDescriptions" EntityType="dbOraRegaModel.tblProductDescription" />
-					<FunctionImport Name="GetProductDescriptionList" ReturnType="Collection(dbOraRegaModel.GetProductDescriptionList_Result)" />
+					<FunctionImport Name="GetProductDescriptionList" ReturnType="Collection(dbOraRegaModel.GetProductDescriptionList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<FunctionImport Name="GetSOEnquiryDetailsForCustomer" ReturnType="Collection(dbOraRegaModel.GetSOEnquiryDetailsForCustomer_Result)">
             <Parameter Name="CustomerId" Mode="In" Type="Int32" />
             <Parameter Name="SOEnquiryId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblCaseStatus" EntityType="dbOraRegaModel.tblCaseStatu" />
-					<FunctionImport Name="GetCaseStatusList" ReturnType="Collection(dbOraRegaModel.GetCaseStatusList_Result)" />
+					<FunctionImport Name="GetCaseStatusList" ReturnType="Collection(dbOraRegaModel.GetCaseStatusList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<EntitySet Name="tblWorkOrders" EntityType="dbOraRegaModel.tblWorkOrder" />
 					<EntitySet Name="tblBusinessTypes" EntityType="dbOraRegaModel.tblBusinessType" />
 					<FunctionImport Name="GetBusinessType" ReturnType="Collection(dbOraRegaModel.GetBusinessType_Result)" />
@@ -3829,9 +4165,19 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<FunctionImport Name="GetBranchList" ReturnType="Collection(dbOraRegaModel.GetBranchList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetCompanyList" ReturnType="Collection(dbOraRegaModel.GetCompanyList_Result)">
-          <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<EntitySet Name="tblEmployees" EntityType="dbOraRegaModel.tblEmployee" />
 
@@ -3894,7 +4240,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<EntitySet Name="tblEngineerVisitHistories" EntityType="dbOraRegaModel.tblEngineerVisitHistory" />
 					<EntitySet Name="tblStockTransferPartDetails" EntityType="dbOraRegaModel.tblStockTransferPartDetail" />
 					<EntitySet Name="tblVehicleTypes" EntityType="dbOraRegaModel.tblVehicleType" />
-					<FunctionImport Name="GetRatePerKMList" ReturnType="Collection(dbOraRegaModel.GetRatePerKMList_Result)" />
+					<FunctionImport Name="GetRatePerKMList" ReturnType="Collection(dbOraRegaModel.GetRatePerKMList_Result)" >
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
 					<FunctionImport Name="GetVehicleTypeList" ReturnType="Collection(dbOraRegaModel.GetVehicleTypeList_Result)" />
 					<EntitySet Name="tblCareerPosts" EntityType="dbOraRegaModel.tblCareerPost" />
 					<FunctionImport Name="GetPaymentPolicyList" ReturnType="Collection(dbOraRegaModel.GetPaymentPolicyList_Result)">
@@ -4348,6 +4700,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetPartDescriptionList" ReturnType="Collection(dbOraRegaModel.GetPartDescriptionList_Result)">
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetOrderTypesListForSelectList" ReturnType="Collection(dbOraRegaModel.GetOrderTypesListForSelectList_Result)">
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
         
          
@@ -7675,6 +8041,16 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="500" />
           <Property Type="Int32" Name="CreatedBy" Nullable="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetPartDescriptionList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="PartDescriptionName" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetOrderTypesListForSelectList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="OrderTypeCode" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="OrderType" Nullable="false" MaxLength="25" />
         </ComplexType>
        
 			</Schema>
@@ -12262,6 +12638,24 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPartDescriptionList" FunctionName="dbOraRegaModel.Store.GetPartDescriptionList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetPartDescriptionList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PartDescriptionName" ColumnName="PartDescriptionName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetOrderTypesListForSelectList" FunctionName="dbOraRegaModel.Store.GetOrderTypesListForSelectList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetOrderTypesListForSelectList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrderTypeCode" ColumnName="OrderTypeCode" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

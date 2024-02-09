@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -74,7 +75,8 @@ namespace OraRegaAV.Controllers.API
             GetGSTMappingList_Result getGSTMappingList_Result;
             try
             {
-                getGSTMappingList_Result = await Task.Run(() => db.GetGSTMappingList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                getGSTMappingList_Result = await Task.Run(() => db.GetGSTMappingList("",0,0,vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = getGSTMappingList_Result;
             }
             catch (Exception ex)
@@ -88,13 +90,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/GSTMappingAPI/GetGSTMappingList")]
-        public async Task<Response> GetGSTMappingList()
+        public async Task<Response> GetGSTMappingList(AdministratorSearchParameters parameters)
         {
             List<GetGSTMappingList_Result> lstGSTMapping;
             try
             {
-                lstGSTMapping = await Task.Run(() => db.GetGSTMappingList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
 
+                lstGSTMapping = await Task.Run(() => db.GetGSTMappingList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstGSTMapping;
             }
             catch (Exception ex)

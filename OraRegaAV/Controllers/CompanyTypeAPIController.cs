@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -91,13 +92,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/CompanyTypeAPI/GetCompanyTypeList")]
-        public async Task<Response> GetCompanyTypeList()
+        public async Task<Response> GetCompanyTypeList(AdministratorSearchParameters parameters)
         {
             List<GetCompanyTypeList_Result> companyTypeList;
             try
             {
-                companyTypeList = await Task.Run(() => db.GetCompanyTypeList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                companyTypeList = await Task.Run(() => db.GetCompanyTypeList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = companyTypeList;
             }
             catch (Exception ex)
@@ -340,7 +344,11 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                lstCompanies = db.GetCompanyList(parameters.CompanyId).ToList();
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstCompanies = db.GetCompanyList(parameters.CompanyId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstCompanies;
             }
             catch (Exception ex)

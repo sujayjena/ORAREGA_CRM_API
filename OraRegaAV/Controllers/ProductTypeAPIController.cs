@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -97,7 +98,12 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                tblProductTypes = db.GetProductTypesList(ObjProductTypeSearchParams.ProductType, ObjProductTypeSearchParams.OrderTypeCode, ObjProductTypeSearchParams.IsActive).ToList();
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                tblProductTypes = db.GetProductTypesList(ObjProductTypeSearchParams.ProductType, ObjProductTypeSearchParams.OrderTypeCode, ObjProductTypeSearchParams.IsActive, 
+                    ObjProductTypeSearchParams.SearchValue, ObjProductTypeSearchParams.PageSize, ObjProductTypeSearchParams.PageNo,vTotal,userId).ToList();
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = tblProductTypes;
             }
             catch (Exception ex)

@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -68,7 +69,8 @@ namespace OraRegaAV.Controllers.API
             GetStockPartStatusList_Result getStockPartStatusList_Result;
             try
             {
-                getStockPartStatusList_Result = await Task.Run(() => db.GetStockPartStatusList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                getStockPartStatusList_Result = await Task.Run(() => db.GetStockPartStatusList("",0,0,vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = getStockPartStatusList_Result;
             }
             catch (Exception ex)
@@ -82,13 +84,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/StockPartStatusAPI/GetStockPartStatusList")]
-        public async Task<Response> GetStockPartStatusList()
+        public async Task<Response> GetStockPartStatusList(AdministratorSearchParameters parameters)
         {
             List<GetStockPartStatusList_Result> lstStockPartStatus;
             try
             {
-                lstStockPartStatus = await Task.Run(() => db.GetStockPartStatusList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstStockPartStatus = await Task.Run(() => db.GetStockPartStatusList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstStockPartStatus;
             }
             catch (Exception ex)

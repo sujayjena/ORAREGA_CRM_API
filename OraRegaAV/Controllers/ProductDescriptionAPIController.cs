@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -104,13 +105,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/ProductDescriptionAPI/GetProductDescriptionList")]
-        public async Task<Response> GetProductDescriptionList()
+        public async Task<Response> GetProductDescriptionList(AdministratorSearchParameters parameters)
         {
             List<GetProductDescriptionList_Result> productDescriptionList;
             try
             {
-                productDescriptionList = await Task.Run(() => db.GetProductDescriptionList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                productDescriptionList = await Task.Run(() => db.GetProductDescriptionList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = productDescriptionList;
             }
             catch (Exception ex)

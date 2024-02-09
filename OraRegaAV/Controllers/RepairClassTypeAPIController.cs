@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -70,7 +71,8 @@ namespace OraRegaAV.Controllers.API
             GetRepairClassTypeList_Result getRepairClassTypeList_Result;
             try
             {
-                getRepairClassTypeList_Result = await Task.Run(() => db.GetRepairClassTypeList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                getRepairClassTypeList_Result = await Task.Run(() => db.GetRepairClassTypeList("",0,0,vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = getRepairClassTypeList_Result;
             }
             catch (Exception ex)
@@ -84,13 +86,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/RepairClassTypeAPI/GetRepairClassTypeList")]
-        public async Task<Response> GetRepairClassTypeList()
+        public async Task<Response> GetRepairClassTypeList(AdministratorSearchParameters parameters)
         {
             List<GetRepairClassTypeList_Result> lstRepairClassTypeList;
             try
             {
-                lstRepairClassTypeList = await Task.Run(() => db.GetRepairClassTypeList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstRepairClassTypeList = await Task.Run(() => db.GetRepairClassTypeList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstRepairClassTypeList;
             }
             catch (Exception ex)

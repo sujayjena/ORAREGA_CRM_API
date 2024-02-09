@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -68,7 +69,8 @@ namespace OraRegaAV.Controllers.API
             GetWarrantyTypeList_Result warrantyTypeList;
             try
             {
-                warrantyTypeList = await Task.Run(() => db.GetWarrantyTypeList().ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                warrantyTypeList = await Task.Run(() => db.GetWarrantyTypeList("",0,0,vTotal,0).ToList().Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = warrantyTypeList;
             }
             catch (Exception ex)
@@ -82,13 +84,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/WarrantyTypeAPI/GetWarrantyTypeList")]
-        public async Task<Response> GetWarrantyTypeList()
+        public async Task<Response> GetWarrantyTypeList(AdministratorSearchParameters parameters)
         {
             List<GetWarrantyTypeList_Result> warrantyTypeList;
             try
             {
-                warrantyTypeList = await Task.Run(() => db.GetWarrantyTypeList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                warrantyTypeList = await Task.Run(() => db.GetWarrantyTypeList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = warrantyTypeList;
             }
             catch (Exception ex)
