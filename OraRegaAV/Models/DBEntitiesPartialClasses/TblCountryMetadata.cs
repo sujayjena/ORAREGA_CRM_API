@@ -1,4 +1,5 @@
 ﻿using OraRegaAV.Models.Constants;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace OraRegaAV.DBEntity

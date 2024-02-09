@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -74,7 +75,8 @@ namespace OraRegaAV.Controllers.API
             GetRatePerKMList_Result getRatePerKMList_Result;
             try
             {
-                getRatePerKMList_Result = await Task.Run(() => db.GetRatePerKMList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                getRatePerKMList_Result = await Task.Run(() => db.GetRatePerKMList("",0,0,vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = getRatePerKMList_Result;
             }
             catch (Exception ex)
@@ -88,13 +90,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/RatePerKMAPI/GetRatePerKMList")]
-        public async Task<Response> GetRatePerKMList()
+        public async Task<Response> GetRatePerKMList(AdministratorSearchParameters parameters)
         {
             List<GetRatePerKMList_Result> lstRatePerKM;
             try
             {
-                lstRatePerKM = await Task.Run(() => db.GetRatePerKMList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstRatePerKM = await Task.Run(() => db.GetRatePerKMList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstRatePerKM;
             }
             catch (Exception ex)

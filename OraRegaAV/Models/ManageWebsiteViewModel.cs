@@ -6,7 +6,7 @@ using System.Web;
 
 namespace OraRegaAV.Models
 {
-    public class SearchParameter
+    public class WebsiteSearchParameter
     {
         [DefaultValue("")]
         public string AppType { get; set; }

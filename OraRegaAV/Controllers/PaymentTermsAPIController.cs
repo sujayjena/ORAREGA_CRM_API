@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -81,13 +82,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/PaymentTermsAPI/GetPaymentTermsList")]
-        public async Task<Response> GetPaymentTermsList()
+        public async Task<Response> GetPaymentTermsList(AdministratorSearchParameters parameters)
         {
             List<GetPaymentTermsList_Result> paymentTermsList;
             try
             {
-                paymentTermsList = await Task.Run(() => db.GetPaymentTermsList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                paymentTermsList = await Task.Run(() => db.GetPaymentTermsList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = paymentTermsList;
             }
             catch (Exception ex)

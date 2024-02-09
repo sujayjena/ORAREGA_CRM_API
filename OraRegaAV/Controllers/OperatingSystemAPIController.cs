@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -82,13 +83,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/OperatingSystemAPI/GetOperatingSystemList")]
-        public async Task<Response> GetOperatingSystemList()
+        public async Task<Response> GetOperatingSystemList(AdministratorSearchParameters parameters)
         {
             List<GetOperatingSystemList_Result> operatingSystemList;
             try
             {
-                operatingSystemList = await Task.Run(() => db.GetOperatingSystemList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                operatingSystemList = await Task.Run(() => db.GetOperatingSystemList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = operatingSystemList;
             }
             catch (Exception ex)

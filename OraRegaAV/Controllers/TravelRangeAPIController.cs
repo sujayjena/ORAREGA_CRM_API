@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -70,7 +71,8 @@ namespace OraRegaAV.Controllers.API
             GetTravelRangeList_Result getTravelRangeList_Result;
             try
             {
-                getTravelRangeList_Result = await Task.Run(() => db.GetTravelRangeList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                getTravelRangeList_Result = await Task.Run(() => db.GetTravelRangeList("",0,0,vTotal,0).Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = getTravelRangeList_Result;
             }
             catch (Exception ex)
@@ -84,13 +86,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/TravelRangeAPI/GetTravelRangeList")]
-        public async Task<Response> GetTravelRangeList()
+        public async Task<Response> GetTravelRangeList(AdministratorSearchParameters parameters)
         {
             List<GetTravelRangeList_Result> lstTravelRange;
             try
             {
-                lstTravelRange = await Task.Run(() => db.GetTravelRangeList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                lstTravelRange = await Task.Run(() => db.GetTravelRangeList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstTravelRange;
             }
             catch (Exception ex)

@@ -5,6 +5,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -99,10 +100,13 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
                 tblProductMakes = db.GetProductMakesList(
                     ObjProductMakeSearchParams.ProductMake, ObjProductMakeSearchParams.ProductType, ObjProductMakeSearchParams.OrderTypeCode,
-                    ObjProductMakeSearchParams.IsActive).ToList();
+                    ObjProductMakeSearchParams.IsActive, ObjProductMakeSearchParams.SearchValue, ObjProductMakeSearchParams.PageSize, ObjProductMakeSearchParams.PageNo,vTotal,userId).ToList();
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = tblProductMakes;
             }
             catch (Exception ex)
@@ -123,7 +127,8 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                tblProductMakes = db.GetProductMakesList(string.Empty, string.Empty, string.Empty, null).Where(m => m.Id == ProductMakeId).FirstOrDefault();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                tblProductMakes = db.GetProductMakesList(string.Empty, string.Empty, string.Empty, null,"",0,0,vTotal,0).Where(m => m.Id == ProductMakeId).FirstOrDefault();
                 _response.Data = tblProductMakes;
             }
             catch (Exception ex)

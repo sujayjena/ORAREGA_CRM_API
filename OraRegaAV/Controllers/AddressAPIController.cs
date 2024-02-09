@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -87,13 +88,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/AddressAPI/GetCountryList")]
-        public async Task<Response> GetCountryList()
+        public async Task<Response> GetCountryList(AdministratorSearchParameters parameters)
         {
             List<GetCountryList_Result> countryList;
             try
             {
-                countryList = await Task.Run(() => db.GetCountryList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                countryList = await Task.Run(() => db.GetCountryList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = countryList;
             }
             catch (Exception ex)
@@ -164,7 +169,8 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                objtblState = await Task.Run(() => db.GetStateList().Where(s => s.Id == StateId).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                objtblState = await Task.Run(() => db.GetStateList("",0,0,vTotal,0).Where(s => s.Id == StateId).FirstOrDefault());
                 _response.Data = objtblState;
             }
             catch (Exception ex)
@@ -179,13 +185,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/AddressAPI/GetStatesList")]
-        public async Task<Response> GetStatesList()
+        public async Task<Response> GetStatesList(AdministratorSearchParameters parameters)
         {
             List<GetStateList_Result> stateList;
             try
             {
-                stateList = await Task.Run(() => db.GetStateList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                stateList = await Task.Run(() => db.GetStateList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = stateList;
             }
             catch (Exception ex)
@@ -278,13 +288,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/AddressAPI/GetCityList")]
-        public async Task<Response> GetCityList()
+        public async Task<Response> GetCityList(AdministratorSearchParameters parameters)
         {
             List<GetCityList_Result> cityList;
             try
             {
-                cityList = await Task.Run(() => db.GetCityList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                cityList = await Task.Run(() => db.GetCityList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = cityList;
             }
             catch (Exception ex)
@@ -356,7 +370,8 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                area = db.GetAreaList().Where(a => a.Id == AreaId).FirstOrDefault();
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                area = db.GetAreaList("", 0, 0, vTotal, 0).Where(a => a.Id == AreaId).FirstOrDefault();
                 _response.Data = area;
             }
             catch (Exception ex)
@@ -371,13 +386,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/AddressAPI/GetAreaList")]
-        public async Task<Response> GetAreaList()
+        public async Task<Response> GetAreaList(AdministratorSearchParameters parameters)
         {
             List<GetAreaList_Result> cityList;
             try
             {
-                cityList = await Task.Run(() => db.GetAreaList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                cityList = await Task.Run(() => db.GetAreaList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = cityList;
             }
             catch (Exception ex)
@@ -474,13 +493,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/AddressAPI/GetPincodeList")]
-        public async Task<Response> GetPincodeList()
+        public async Task<Response> GetPincodeList(AdministratorSearchParameters parameters)
         {
             List<GetPincodeList_Result> cityList;
             try
             {
-                cityList = await Task.Run(() => db.GetPincodeList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                cityList = await Task.Run(() => db.GetPincodeList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = cityList;
             }
             catch (Exception ex)

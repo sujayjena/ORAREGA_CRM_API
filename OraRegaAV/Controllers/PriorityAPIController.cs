@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -81,13 +82,17 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/PriorityAPI/GetPriorityList")]
-        public async Task<Response> GetPriorityList()
+        public async Task<Response> GetPriorityList(AdministratorSearchParameters parameters)
         {
             List<GetPriorityList_Result> priorityList;
             try
             {
-                priorityList = await Task.Run(() => db.GetPriorityList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                priorityList = await Task.Run(() => db.GetPriorityList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = priorityList;
             }
             catch (Exception ex)

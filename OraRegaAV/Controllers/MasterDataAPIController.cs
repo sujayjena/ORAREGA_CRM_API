@@ -7,6 +7,7 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -722,25 +723,28 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetOrderTypesListForSelectList()
+        [Route("api/MasterDataAPI/OrderTypesListForSelectList")]
+        public async Task<Response> OrderTypesListForSelectList(AdministratorSearchParameters parameters)
         {
             List<SelectListItem> selectList;
 
             try
             {
-                await Task.Run(() =>
-                {
-                    selectList = (from o in db.tblOrderTypeMasters
-                                  select o)
-                                  .AsEnumerable()
-                                  .Select(o => new SelectListItem()
-                                  {
-                                      Text = o.OrderType,
-                                      Value = o.OrderTypeCode,
-                                  }).ToList();
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var vPartDescriptionList = await Task.Run(() => db.GetOrderTypesListForSelectList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
-                    _response.Data = selectList;
-                });
+                selectList = (from o in vPartDescriptionList
+                              select o)
+                              .AsEnumerable()
+                              .Select(o => new SelectListItem()
+                              {
+                                  Text = o.OrderType,
+                                  Value = o.OrderTypeCode,
+                              }).ToList();
+
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
+                _response.Data = selectList;
             }
             catch (Exception ex)
             {

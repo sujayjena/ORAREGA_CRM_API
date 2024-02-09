@@ -1,4 +1,5 @@
 ﻿using OraRegaAV.DBEntity;
+using System.ComponentModel;
 
 namespace OraRegaAV.Models
 {
@@ -8,5 +9,15 @@ namespace OraRegaAV.Models
         public tblQueue tblQueue { get { return new tblQueue(); } }
         public tblBranchQueue tblBranchQueue { get { return new tblBranchQueue(); } }
 
+    }
+    public class AdministratorSearchParameters
+    {
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

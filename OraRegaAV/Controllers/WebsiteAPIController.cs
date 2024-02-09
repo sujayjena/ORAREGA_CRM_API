@@ -178,7 +178,7 @@ namespace OraRegaAV.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("api/WebsiteAPI/GetBannerList")]
-        public async Task<Response> GetBannerList(SearchParameter request)
+        public async Task<Response> GetBannerList(WebsiteSearchParameter request)
         {
             var host = Url.Content("~/");
             List<GetBannerList_Result> bannerList;
@@ -361,7 +361,7 @@ namespace OraRegaAV.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("api/WebsiteAPI/GetOfferAdsList")]
-        public async Task<Response> GetOfferAdsList(SearchParameter request)
+        public async Task<Response> GetOfferAdsList(WebsiteSearchParameter request)
         {
             var host = Url.Content("~/");
             List<GetOfferAdsList_Result> offerAdsList;
@@ -508,7 +508,7 @@ namespace OraRegaAV.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("api/WebsiteAPI/GetOurServiceList")]
-        public async Task<Response> GetOurServiceList(SearchParameter request)
+        public async Task<Response> GetOurServiceList(WebsiteSearchParameter request)
         {
             var host = Url.Content("~/");
             List<GetOurServiceList_Result> ourServiceList;
@@ -655,7 +655,7 @@ namespace OraRegaAV.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("api/WebsiteAPI/GetOurProductList")]
-        public async Task<Response> GetOurProductList(SearchParameter request)
+        public async Task<Response> GetOurProductList(WebsiteSearchParameter request)
         {
             var host = Url.Content("~/");
             List<GetOurProductList_Result> ourProductList;

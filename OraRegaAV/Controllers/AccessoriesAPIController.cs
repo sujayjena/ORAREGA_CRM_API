@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -89,13 +90,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/AccessoriesAPI/GetAccessoriesList")]
-        public async Task<Response> GetAccessoriesList()
+        public async Task<Response> GetAccessoriesList(AdministratorSearchParameters parameters)
         {
             List<GetAccessoriesList_Result> accessoriesList;
             try
             {
-                accessoriesList = await Task.Run(() => db.GetAccessoriesList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                accessoriesList = await Task.Run(() => db.GetAccessoriesList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = accessoriesList;
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OraRegaAV.DBEntity
 {
@@ -28,5 +29,12 @@ namespace OraRegaAV.DBEntity
         public string ProductType { get; set; }
         public string ProductMake { get; set; }
         public bool? IsActive { get; set; }
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

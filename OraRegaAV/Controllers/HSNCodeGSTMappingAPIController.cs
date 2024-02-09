@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -91,13 +92,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/HSNCodeGSTMappingAPI/GetHSNCodeGSTMappingList")]
-        public async Task<Response> GetHSNCodeGSTMappingList()
+        public async Task<Response> GetHSNCodeGSTMappingList(AdministratorSearchParameters parameters)
         {
             List<GetHSNCodeGSTMappingList_Result> hsnCodeGSTMappingList;
             try
             {
-                hsnCodeGSTMappingList = await Task.Run(() => db.GetHSNCodeGSTMappingList().ToList());
+                var userId = Utilities.GetUserID(ActionContext.Request);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                hsnCodeGSTMappingList = await Task.Run(() => db.GetHSNCodeGSTMappingList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = hsnCodeGSTMappingList;
             }
             catch (Exception ex)
