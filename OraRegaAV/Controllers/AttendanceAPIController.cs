@@ -32,7 +32,7 @@ namespace OraRegaAV.Controllers.API
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 attendanceHistory = await Task.Run(() => db.GetAttendanceHistoryList(parameters.CompanyId, parameters.BranchId, parameters.FromPunchInDate, parameters.ToPunchInDate,
-                    parameters.EmployeeName, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+                    parameters.EmployeeName, parameters.EmployeeId, parameters.FilterType, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = attendanceHistory;
@@ -55,7 +55,7 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                attendanceHistory = db.GetAttendanceHistoryList(0, 0, null, null, "", 0, "", 0, 0, vTotal).Where(x => x.UserId == userId);
+                attendanceHistory = db.GetAttendanceHistoryList(0, 0, null, null, "",0,"", 0, "", 0, 0, vTotal).Where(x => x.UserId == userId);
                 _response.Data = attendanceHistory;
             }
             catch (Exception ex)

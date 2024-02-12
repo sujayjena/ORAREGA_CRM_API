@@ -40,7 +40,7 @@ namespace OraRegaAV.Controllers
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 lstTravelClaim = await Task.Run(() => db.GetTravelClaimList(paramater.CompanyId, paramater.BranchId, paramater.EmployeeId, paramater.WorkOrderNumber,
-                    paramater.StatusId, userId, paramater.SearchValue, paramater.PageSize, paramater.PageNo, vTotal).ToList());
+                    paramater.StatusId, paramater.FilterType, userId, paramater.SearchValue, paramater.PageSize, paramater.PageNo, vTotal).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstTravelClaim;
@@ -66,7 +66,7 @@ namespace OraRegaAV.Controllers
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                vcareerPost = await Task.Run(() => db.GetTravelClaimList(0, 0, 0, "", 0, 0, "",  0, 0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                vcareerPost = await Task.Run(() => db.GetTravelClaimList(0, 0, 0, "", 0,"", 0, "",  0, 0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (vcareerPost != null)
                 {

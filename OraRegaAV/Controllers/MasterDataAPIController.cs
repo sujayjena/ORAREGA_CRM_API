@@ -162,6 +162,8 @@ namespace OraRegaAV.Controllers
 
             try
             {
+                var userId = Utilities.GetUserID(ActionContext.Request);
+
                 await Task.Run(() =>
                 {
                     selectList = (from o in db.tblEmployees
@@ -173,6 +175,18 @@ namespace OraRegaAV.Controllers
                                       Text = $"{o.EmployeeName} ({o.EmailId})",
                                       Value = o.Id.ToString()
                                   }).ToList();
+
+                    if (userId > 1)
+                    {
+                        if (userId > 2)
+                        {
+                            selectList = selectList.Where(x => x.Value != "1" && x.Value != "2").ToList();
+                        }
+                        else
+                        {
+                            selectList = selectList.Where(x => x.Value != "1").ToList();
+                        }
+                    }
 
                     _response.Data = selectList;
                 });

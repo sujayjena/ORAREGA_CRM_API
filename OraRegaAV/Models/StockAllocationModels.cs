@@ -59,6 +59,17 @@ namespace OraRegaAV.Models
         public string PartName { get; set; }
         public string PartDescription { get; set; }
         public int AllocatedBy { get; set; }
+
+        [DefaultValue("All")]
+        public string FilterType { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class StockAllocation_PartsAllocatedToWorkOrder
@@ -97,6 +108,17 @@ namespace OraRegaAV.Models
         public string PartDescription { get; set; }
         [DefaultValue("W")]
         public string Type { get; set; }
+
+        [DefaultValue("All")]
+        public string FilterType { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 
     public class StockAllocation_PartsAllocatedToEngineer
@@ -160,7 +182,18 @@ namespace OraRegaAV.Models
         public string PartName { get; set; }
         public string PartDescription { get; set; }
         public int StatusId { get; set; }
+
         [DefaultValue("W")]
         public string Type { get; set; }
+
+        [DefaultValue("All")]
+        public string FilterType { get; set; }
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

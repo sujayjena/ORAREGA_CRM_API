@@ -86,7 +86,14 @@ namespace OraRegaAV.Controllers.API
 
                 if (userId > 1)
                 {
-                    rolesListList = rolesListList.Where(x => x.Id > 1).ToList();
+                    if (userId > 2)
+                    {
+                        rolesListList = rolesListList.Where(x => x.Id > 2).ToList();
+                    }
+                    else
+                    {
+                        rolesListList = rolesListList.Where(x => x.Id > 1).ToList();
+                    }
                 }
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);

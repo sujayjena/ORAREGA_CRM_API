@@ -715,7 +715,8 @@ namespace OraRegaAV.Controllers
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var vwoList = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+                var vwoList = await Task.Run(() => db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId,
+                    parameters.FilterType, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 foreach (var obj in vwoList)
                 {

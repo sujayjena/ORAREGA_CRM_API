@@ -910,7 +910,14 @@ namespace OraRegaAV.Controllers.API
 
                 if (userId > 1)
                 {
-                    lstEmployee = lstEmployee.Where(x => x.Id > 1).ToList();
+                    if (userId > 2)
+                    {
+                        lstEmployee = lstEmployee.Where(x => x.Id > 2).ToList();
+                    }
+                    else
+                    {
+                        lstEmployee = lstEmployee.Where(x => x.Id > 1).ToList();
+                    }
                 }
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);

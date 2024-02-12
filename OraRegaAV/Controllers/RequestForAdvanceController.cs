@@ -133,7 +133,7 @@ namespace OraRegaAV.Controllers.API
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(parameters.CompanyId, parameters.BranchId,parameters.EmployeeId,
-                    parameters.ClaimId, parameters.AdvanceStatusId, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                    parameters.ClaimId, parameters.AdvanceStatusId, parameters.FilterType, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
@@ -154,7 +154,7 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var advanceObj = db.GetRequestForAdvanceList(0, 0, 0, "", 0, 0, "", 0, 0, vTotal).Where(x => x.Id == AdvanceId).FirstOrDefault();
+                var advanceObj = db.GetRequestForAdvanceList(0, 0, 0, "", 0,"", 0, "", 0, 0, vTotal).Where(x => x.Id == AdvanceId).FirstOrDefault();
 
                 _response.Data = advanceObj;
             }

@@ -90,7 +90,7 @@ namespace OraRegaAV.Controllers
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 lstLeaves = await Task.Run(() => db.GetLeaves(parameters.CompanyId, parameters.BranchId, parameters.EmployeeName, parameters.LeaveType, 
-                    parameters.LeaveReason, parameters.LeaveStatusId, parameters.IsActive, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+                    parameters.LeaveReason, parameters.LeaveStatusId, parameters.IsActive, parameters.EmployeeId, parameters.FilterType, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = lstLeaves;

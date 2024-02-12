@@ -15,5 +15,8 @@ namespace OraRegaAV.DBEntity
     {
         public int Id { get; set; }
         public string EmployeeName { get; set; }
+        public int CompanyId { get; set; }
+        public int BranchId { get; set; }
+        public int UserId { get; set; }
     }
 }

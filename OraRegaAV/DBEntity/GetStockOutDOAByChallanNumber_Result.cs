@@ -19,8 +19,8 @@ namespace OraRegaAV.DBEntity
         public string CompanyName { get; set; }
         public Nullable<int> BranchFromId { get; set; }
         public string BranchFromName { get; set; }
-        public Nullable<int> BranchToId { get; set; }
-        public string BranchToName { get; set; }
+        public Nullable<int> VendorToId { get; set; }
+        public string VendorToName { get; set; }
         public Nullable<System.DateTime> TransferDate { get; set; }
         public string NewDocketNo { get; set; }
         public Nullable<System.DateTime> StockTransferOutDate { get; set; }

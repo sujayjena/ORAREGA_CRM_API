@@ -62,6 +62,12 @@ namespace OraRegaAV.DBEntity
         public int LeaveStatusId { get; set; }
         public bool IsActive { get; set; }
 
+        [DefaultValue(0)]
+        public int EmployeeId { get; set; }
+
+        [DefaultValue("All")]
+        public string FilterType { get; set; }
+
         public string SearchValue { get; set; }
 
         [DefaultValue(0)]

@@ -46,7 +46,7 @@ namespace OraRegaAV.Controllers
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 List<GetClaimSettlementList_Result> advanceList = db.GetClaimSettlementList(parameters.CompanyId, parameters.BranchId, 0, parameters.EmployeeId,
-                    parameters.ClaimId, parameters.SettlementStatusId, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                    parameters.ClaimId, parameters.SettlementStatusId, parameters.FilterType, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = advanceList;
@@ -71,7 +71,7 @@ namespace OraRegaAV.Controllers
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var vObjClaimDtl = db.GetClaimSettlementList(0, 0, claimSattlementId, 0, "", 0, 0, "0", 0, 0, vTotal).FirstOrDefault();
+                var vObjClaimDtl = db.GetClaimSettlementList(0, 0, claimSattlementId, 0, "", 0,"", 0, "0", 0, 0, vTotal).FirstOrDefault();
                 if (vObjClaimDtl != null)
                 {
                     claimSettlement.Id = vObjClaimDtl.Id;
@@ -288,7 +288,7 @@ namespace OraRegaAV.Controllers
                 var vClaimIdList = db.tblClaimSettlements.Where(x => x.ClaimId != string.Empty && x.EmployeeId == employeeId).Select(x => x.ClaimId).ToList();
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(0, 0, 0, "", 0, 0, "", 0, 0, vTotal).Where(x => x.AdvanceStatusId == 2 && !vClaimIdList.Any(e => x.ClaimId.Contains(e)) && x.EmployeeId == employeeId).ToList();
+                List<GetRequestForAdvanceList_Result> advanceList = db.GetRequestForAdvanceList(0, 0, 0, "", 0,"", 0, "", 0, 0, vTotal).Where(x => x.AdvanceStatusId == 2 && !vClaimIdList.Any(e => x.ClaimId.Contains(e)) && x.EmployeeId == employeeId).ToList();
                 foreach (var item in advanceList)
                 {
                     var v1Obj = new { ClaimId = item.ClaimId, Amount = item.Amount };

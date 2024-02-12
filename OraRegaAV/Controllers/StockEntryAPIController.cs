@@ -456,9 +456,22 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var vObjList = await Task.Run(() => db.GetStockAllocationToWorkOrderList(
+                    parameters.CompanyId,
+                    parameters.BranchId,
+                    parameters.WorkOrderNumber.SanitizeValue(),
+                    parameters.PartName.SanitizeValue(),
+                    parameters.PartDescription.SanitizeValue(),
+                    parameters.AllocatedBy,
+                    parameters.FilterType,
+                    userId,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal).ToList());
 
-                var vObjList = await Task.Run(() => db.GetStockAllocationToWorkOrderList(parameters.CompanyId, parameters.BranchId, parameters.WorkOrderNumber.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.AllocatedBy, userId).ToList());
-
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = vObjList;
             }
             catch (Exception ex)
@@ -529,8 +542,23 @@ namespace OraRegaAV.Controllers.API
 
                 parameters.Type = string.IsNullOrWhiteSpace(parameters.Type) ? "W" : parameters.Type;
 
-                var vObjList = await Task.Run(() => db.GetStockAllocationToEngineerList(parameters.CompanyId, parameters.BranchId, parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.Type.SanitizeValue(), userId).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var vObjList = await Task.Run(() => db.GetStockAllocationToEngineerList(
+                    parameters.CompanyId,
+                    parameters.BranchId,
+                    parameters.EngineerId,
+                    parameters.EngineerName.SanitizeValue(),
+                    parameters.PartName.SanitizeValue(),
+                    parameters.PartDescription.SanitizeValue(),
+                    parameters.Type.SanitizeValue(),
+                    parameters.FilterType,
+                    userId,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = vObjList;
             }
             catch (Exception ex)
@@ -658,8 +686,24 @@ namespace OraRegaAV.Controllers.API
 
                 parameters.Type = string.IsNullOrWhiteSpace(parameters.Type) ? "W" : parameters.Type;
 
-                var vObjList = await Task.Run(() => db.GetStockAllocationToReturnList(parameters.CompanyId, parameters.BranchId, parameters.EngineerId, parameters.EngineerName.SanitizeValue(), parameters.PartName.SanitizeValue(), parameters.PartDescription.SanitizeValue(), parameters.StatusId, parameters.Type.SanitizeValue(), userId).ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var vObjList = await Task.Run(() => db.GetStockAllocationToReturnList(
+                    parameters.CompanyId,
+                    parameters.BranchId,
+                    parameters.EngineerId,
+                    parameters.EngineerName.SanitizeValue(),
+                    parameters.PartName.SanitizeValue(),
+                    parameters.PartDescription.SanitizeValue(),
+                    parameters.StatusId,
+                    parameters.Type.SanitizeValue(),
+                    parameters.FilterType,
+                    userId,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal).ToList());
 
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = vObjList;
             }
             catch (Exception ex)

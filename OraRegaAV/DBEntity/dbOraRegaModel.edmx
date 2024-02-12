@@ -1501,7 +1501,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ChallanNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ComapnyId" Type="int" />
           <Property Name="BranchFromId" Type="int" />
-          <Property Name="BranchToId" Type="int" />
+          <Property Name="VendorToId" Type="int" />
           <Property Name="TransferDate" Type="datetime" />
           <Property Name="NewDocketNo" Type="nvarchar" MaxLength="50" />
           <Property Name="StockTransferOutDate" Type="datetime" />
@@ -2010,6 +2010,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="FromPunchInDate" Type="date" Mode="In" />
           <Parameter Name="ToPunchInDate" Type="date" Mode="In" />
           <Parameter Name="EmployeeName" Type="varchar" Mode="In" />
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
@@ -2074,6 +2076,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="EmployeeId" Type="int" Mode="In" />
           <Parameter Name="ClaimId" Type="nvarchar" Mode="In" />
           <Parameter Name="SettlementStatusId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
@@ -2255,6 +2258,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="LeaveReason" Type="varchar" Mode="In" />
           <Parameter Name="LeaveStatusId" Type="int" Mode="In" />
           <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
@@ -2444,6 +2449,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="EmployeeId" Type="int" Mode="In" />
           <Parameter Name="ClaimId" Type="varchar" Mode="In" />
           <Parameter Name="AdvanceStatusId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
@@ -2554,7 +2560,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PartNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="PartDesc" Type="nvarchar" Mode="In" />
           <Parameter Name="Type" Type="char" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetStockAllocationToReturnList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
@@ -2565,7 +2576,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PartDesc" Type="nvarchar" Mode="In" />
           <Parameter Name="StatusId" Type="int" Mode="In" />
           <Parameter Name="Type" Type="char" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetStockAllocationToWorkOrderList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
@@ -2574,7 +2590,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PartNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="PartDesc" Type="nvarchar" Mode="In" />
           <Parameter Name="AllocatedBy" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetStockEntryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
@@ -2680,6 +2701,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="EmployeeId" Type="int" Mode="In" />
           <Parameter Name="WorkOrderNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="StatusId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
@@ -2741,6 +2763,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="OrderStatusId" Type="int" Mode="In" />
           <Parameter Name="EngineerId" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNo" Type="int" Mode="In" />
@@ -4287,7 +4310,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PartNumber" Mode="In" Type="String" />
             <Parameter Name="PartDesc" Mode="In" Type="String" />
             <Parameter Name="AllocatedBy" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockAllocationToEngineerList" ReturnType="Collection(dbOraRegaModel.GetStockAllocationToEngineerList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -4297,7 +4325,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PartNumber" Mode="In" Type="String" />
             <Parameter Name="PartDesc" Mode="In" Type="String" />
             <Parameter Name="Type" Mode="In" Type="String" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockAllocationToReturnList" ReturnType="Collection(dbOraRegaModel.GetStockAllocationToReturnList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -4308,7 +4341,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PartDesc" Mode="In" Type="String" />
             <Parameter Name="StatusId" Mode="In" Type="Int32" />
             <Parameter Name="Type" Mode="In" Type="String" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetStockTransferOutChallanList" ReturnType="Collection(dbOraRegaModel.GetStockTransferOutChallanList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -4514,6 +4552,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="OrderStatusId" Mode="In" Type="Int32" />
             <Parameter Name="EngineerId" Mode="In" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
@@ -4536,6 +4575,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
             <Parameter Name="ClaimId" Mode="In" Type="String" />
             <Parameter Name="AdvanceStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -4549,6 +4589,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
             <Parameter Name="ClaimId" Mode="In" Type="String" />
             <Parameter Name="SettlementStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -4561,6 +4602,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
             <Parameter Name="StatusId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -4598,9 +4640,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetEmployeesListByReportingTo" ReturnType="Collection(dbOraRegaModel.GetEmployeesListByReportingTo_Result)">
-          <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="SaveEmployeeRolePermission">
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
@@ -4683,6 +4722,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="LeaveReason" Mode="In" Type="String" />
             <Parameter Name="LeaveStatusId" Mode="In" Type="Int32" />
             <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -4695,6 +4736,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="FromPunchInDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToPunchInDate" Mode="In" Type="DateTime" />
             <Parameter Name="EmployeeName" Mode="In" Type="String" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -4714,6 +4757,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetEmployeesListByReportingTo" ReturnType="Collection(dbOraRegaModel.GetEmployeesListByReportingTo_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
           </FunctionImport>
         
          
@@ -7121,7 +7167,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Name="ChallanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
 					<Property Name="ComapnyId" Type="Int32" />
 					<Property Name="BranchFromId" Type="Int32" />
-					<Property Name="BranchToId" Type="Int32" />
+					<Property Name="VendorToId" Type="Int32" />
 					<Property Name="TransferDate" Type="DateTime" Precision="3" />
 					<Property Name="NewDocketNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
 					<Property Name="StockTransferOutDate" Type="DateTime" Precision="3" />
@@ -7184,8 +7230,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
 					<Property Type="Int32" Name="BranchFromId" Nullable="true" />
 					<Property Type="String" Name="BranchFromName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="BranchToId" Nullable="true" />
-					<Property Type="String" Name="BranchToName" Nullable="true" MaxLength="50" />
+					<Property Type="Int32" Name="VendorToId" Nullable="true" />
+					<Property Type="String" Name="VendorToName" Nullable="true" MaxLength="50" />
 					<Property Type="DateTime" Name="TransferDate" Nullable="true" Precision="23" />
 					<Property Type="String" Name="NewDocketNo" Nullable="true" MaxLength="50" />
 					<Property Type="DateTime" Name="StockTransferOutDate" Nullable="true" Precision="23" />
@@ -7216,8 +7262,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
 					<Property Type="Int32" Name="BranchFromId" Nullable="true" />
 					<Property Type="String" Name="BranchFromName" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="BranchToId" Nullable="true" />
-					<Property Type="String" Name="BranchToName" Nullable="true" MaxLength="50" />
+					<Property Type="Int32" Name="VendorToId" Nullable="true" />
+					<Property Type="String" Name="VendorToName" Nullable="true" MaxLength="50" />
 					<Property Type="DateTime" Name="TransferDate" Nullable="true" Precision="23" />
 					<Property Type="String" Name="NewDocketNo" Nullable="true" MaxLength="50" />
 					<Property Type="DateTime" Name="StockTransferOutDate" Nullable="true" Precision="23" />
@@ -7823,10 +7869,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-        <ComplexType Name="GetEmployeesListByReportingTo_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <ComplexType Name="GetTestimonialList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
@@ -8051,6 +8093,13 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="OrderTypeCode" Nullable="false" MaxLength="2" />
           <Property Type="String" Name="OrderType" Nullable="false" MaxLength="25" />
+        </ComplexType>
+        <ComplexType Name="GetEmployeesListByReportingTo_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="Int32" Name="BranchId" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
         </ComplexType>
        
 			</Schema>
@@ -11542,7 +11591,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 								<ScalarProperty Name="StockTransferOutDate" ColumnName="StockTransferOutDate" />
 								<ScalarProperty Name="NewDocketNo" ColumnName="NewDocketNo" />
 								<ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
-								<ScalarProperty Name="BranchToId" ColumnName="BranchToId" />
+								<ScalarProperty Name="VendorToId" ColumnName="VendorToId" />
 								<ScalarProperty Name="BranchFromId" ColumnName="BranchFromId" />
 								<ScalarProperty Name="ComapnyId" ColumnName="ComapnyId" />
 								<ScalarProperty Name="ChallanNo" ColumnName="ChallanNo" />
@@ -11615,8 +11664,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 								<ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
 								<ScalarProperty Name="BranchFromId" ColumnName="BranchFromId" />
 								<ScalarProperty Name="BranchFromName" ColumnName="BranchFromName" />
-								<ScalarProperty Name="BranchToId" ColumnName="BranchToId" />
-								<ScalarProperty Name="BranchToName" ColumnName="BranchToName" />
+								<ScalarProperty Name="VendorToId" ColumnName="VendorToId" />
+								<ScalarProperty Name="VendorToName" ColumnName="VendorToName" />
 								<ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
 								<ScalarProperty Name="NewDocketNo" ColumnName="NewDocketNo" />
 								<ScalarProperty Name="StockTransferOutDate" ColumnName="StockTransferOutDate" />
@@ -11655,8 +11704,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 								<ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
 								<ScalarProperty Name="BranchFromId" ColumnName="BranchFromId" />
 								<ScalarProperty Name="BranchFromName" ColumnName="BranchFromName" />
-								<ScalarProperty Name="BranchToId" ColumnName="BranchToId" />
-								<ScalarProperty Name="BranchToName" ColumnName="BranchToName" />
+								<ScalarProperty Name="VendorToId" ColumnName="VendorToId" />
+								<ScalarProperty Name="VendorToName" ColumnName="VendorToName" />
 								<ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
 								<ScalarProperty Name="NewDocketNo" ColumnName="NewDocketNo" />
 								<ScalarProperty Name="StockTransferOutDate" ColumnName="StockTransferOutDate" />
@@ -12381,14 +12430,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetEmployeesListByReportingTo" FunctionName="dbOraRegaModel.Store.GetEmployeesListByReportingTo">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetEmployeesListByReportingTo_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SaveEmployeeRolePermission" FunctionName="dbOraRegaModel.Store.SaveEmployeeRolePermission" />
           <FunctionImportMapping FunctionImportName="GetTestimonialList" FunctionName="dbOraRegaModel.Store.GetTestimonialList">
             <ResultMapping>
@@ -12656,6 +12697,17 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="OrderTypeCode" ColumnName="OrderTypeCode" />
                 <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetEmployeesListByReportingTo" FunctionName="dbOraRegaModel.Store.GetEmployeesListByReportingTo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetEmployeesListByReportingTo_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -39,6 +39,8 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public Nullable<int> AdvanceStatusId { get; set; }
 
+        [DefaultValue("All")]
+        public string FilterType { get; set; }
         public string SearchValue { get; set; }
 
         [DefaultValue(0)]
