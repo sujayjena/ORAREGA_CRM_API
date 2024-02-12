@@ -135,23 +135,27 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.OTP == Convert.ToInt32(parametrs.OTP) && x.IsVerified == false && x.IsExpired == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.OTP.ToString() == parametrs.OTP && x.IsVerified == false && x.IsExpired == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 if (tbl != null)
                 {
                     tbl.IsVerified = true;
 
                     //db.tblOTPs.AddOrUpdate(tbl);
                     db.SaveChanges();
-                }
 
-                _response.Message = "OTP verified successfully";
+                    _response.Message = "OTP verified successfully";
+                }
+                else
+                {
+                    _response.Message = "Invalid OTP!";
+                }
 
                 _response.IsSuccess = true;
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.Message = "Error occurred during OTP generate";
+                _response.Message = "Error occurred during OTP verified";
                 LogWriter.WriteLog(ex);
             }
 
