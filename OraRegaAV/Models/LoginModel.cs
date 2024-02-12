@@ -26,6 +26,9 @@ namespace OraRegaAV.Models
         //[RegularExpression(ValidationConstant.EmailRegExp + "|" + ValidationConstant.MobileNumberRegExp, ErrorMessage = "Please enter a valid Email or Mobile No.")]
         //public string EmailOrMobileNo { get; set; }
 
+        [Required(ErrorMessage = "Template Name is required")]
+        public string TemplateName { get; set; }
+
         [Required(ErrorMessage = ValidationConstant.MobileNumberRequied_Msg)]
         [RegularExpression(ValidationConstant.MobileNumberRegExp, ErrorMessage = ValidationConstant.MobileNumberRegExp_Msg)]
         public string MobileNo { get; set; }

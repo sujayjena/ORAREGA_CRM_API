@@ -1,4 +1,5 @@
-﻿using OraRegaAV.App_Start;
+﻿using DocumentFormat.OpenXml.Office2016.Excel;
+using OraRegaAV.App_Start;
 using OraRegaAV.CustomFilter;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -29,6 +31,201 @@ namespace OraRegaAV.Controllers.API
         {
 
         }
+
+        [HttpPost]
+        [Route("api/LoginAPI/OTPGenerate")]
+        public Response OTPGenerate(GetOTPModel parametrs)
+        {
+            try
+            {
+                var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.IsVerified == false && x.IsExpired == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                if (tbl != null)
+                {
+                    tbl.IsExpired = true;
+
+                    //db.tblOTPs.AddOrUpdate(tbl);
+                    db.SaveChanges();
+                }
+
+                #region Generate OTP
+
+                int iOTP = Utilities.GenerateRandomNumForOTP();
+
+                var tblotp = new tblOTP()
+                {
+                    TemplateName = parametrs.TemplateName,
+                    Mobile = parametrs.MobileNo,
+                    OTP = iOTP,
+                    IsVerified = false,
+                    IsExpired = false,
+                    CreatedBy = 1,
+                    CreatedDate = DateTime.Now
+                };
+
+                db.tblOTPs.Add(tblotp);
+                db.SaveChanges();
+
+                // Send SMS
+                var tblSMS = new tblSMSLogHistory()
+                {
+                    OTPId= tblotp.Id,
+                    TemplateName = parametrs.TemplateName,
+                    Mobile = parametrs.MobileNo,
+                    TemplateContent = "",
+                    Status = "",
+                    TotalNumberSubmitted = 0,
+                    CampgId = 0,
+                    LogId = "",
+                    Code = 0,
+                    ErrorMessage = "",
+                    CreatedBy = 1,
+                    CreatedDate = DateTime.Now
+                };
+                db.tblSMSLogHistories.Add(tblSMS);
+                db.SaveChanges();
+
+                #endregion
+
+                #region Send SMS
+
+                SmsSender smsSender = new SmsSender();
+                var vSmsRequest = new SmsRequest()
+                {
+                    TemplateName = parametrs.TemplateName,
+                    MobileNo = parametrs.MobileNo,
+                    OTP = iOTP
+                };
+
+                var vSmsResponse = smsSender.SMSSend(vSmsRequest);
+
+                var tblSMSLogHist = db.tblSMSLogHistories.Where(x => x.Id == tblSMS.Id).FirstOrDefault();
+                if (tblSMSLogHist != null)
+                {
+                    tblSMSLogHist.TemplateName = parametrs.TemplateName;
+                    tblSMSLogHist.TemplateContent = vSmsResponse.templatecontent;
+                    tblSMSLogHist.Status = vSmsResponse.status;
+                    tblSMSLogHist.TotalNumberSubmitted = Convert.ToInt32(vSmsResponse.totalnumbers_sbmited);
+                    tblSMSLogHist.CampgId = Convert.ToInt32(vSmsResponse.campg_id);
+                    tblSMSLogHist.LogId = vSmsResponse.logid;
+                    tblSMSLogHist.Code = Convert.ToInt32(vSmsResponse.code);
+                    tblSMSLogHist.ErrorMessage = vSmsResponse.desc;
+
+                    db.SaveChanges();
+                }
+
+                #endregion
+
+                _response.Message = "OTP sent successfully";
+
+                _response.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error occurred during OTP generate";
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/LoginAPI/OTPVerification")]
+        public Response OTPVerification(OTPLoginModel parametrs)
+        {
+            try
+            {
+                var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.OTP == Convert.ToInt32(parametrs.OTP) && x.IsVerified == false && x.IsExpired == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                if (tbl != null)
+                {
+                    tbl.IsVerified = true;
+
+                    //db.tblOTPs.AddOrUpdate(tbl);
+                    db.SaveChanges();
+                }
+
+                _response.Message = "OTP verified successfully";
+
+                _response.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error occurred during OTP generate";
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        //public int GenerateOTP(GetOTPModel parametrs)
+        //{
+        //    var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.IsVerified == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+        //    if (tbl != null)
+        //    {
+        //        tbl.IsExpired = true;
+
+        //        db.SaveChanges();
+        //    }
+
+        //    int iOTP = Utilities.GenerateRandomNumForOTP();
+
+        //    var tblotp = new tblOTP()
+        //    {
+        //        Entity = parametrs.Entity,
+        //        Mobile = parametrs.MobileNo,
+        //        OTP = iOTP,
+        //        IsVerified = false,
+        //        IsExpired = false,
+        //        CreatedBy = 1,
+        //        CreatedDate = DateTime.Now
+        //    };
+
+        //    db.tblOTPs.Add(tblotp);
+        //    db.SaveChanges();
+
+        //    return iOTP;
+        //}
+
+        //public void SendSms(SmsRequest parameters)
+        //{
+        //    var tblSMS = new tblSMSLogHistory()
+        //    {
+        //        Entity = parameters.EntityKey,
+        //        TemplateName = "",
+        //        Mobile = parameters.MobileNo,
+        //        TemplateContent = "",
+        //        Status = "",
+        //        TotalNumberSubmitted = 0,
+        //        CampgId = 0,
+        //        LogId = "",
+        //        Code = 0,
+        //        ErrorMessage = "",
+        //        CreatedBy = 1,
+        //        CreatedDate = DateTime.Now
+        //    };
+        //    db.tblSMSLogHistories.Add(tblSMS);
+        //    db.SaveChanges();
+
+        //    // Send SMS
+        //    SmsSender smsSender = new SmsSender();
+        //    var vSmsResponse = smsSender.SMSSend(parameters);
+
+        //    var tblSMSLogHist = db.tblSMSLogHistories.Where(x => x.Id == tblSMS.Id).FirstOrDefault();
+        //    if (tblSMSLogHist != null)
+        //    {
+        //        tblSMSLogHist.TemplateName = parameters.EntityKey;
+        //        tblSMSLogHist.TemplateContent = vSmsResponse.templatecontent;
+        //        tblSMSLogHist.Status = vSmsResponse.status;
+        //        tblSMSLogHist.TotalNumberSubmitted = Convert.ToInt32(vSmsResponse.totalnumbers_sbmited);
+        //        tblSMSLogHist.CampgId = Convert.ToInt32(vSmsResponse.campg_id);
+        //        tblSMSLogHist.LogId = vSmsResponse.logid;
+        //        tblSMSLogHist.Code = Convert.ToInt32(vSmsResponse.code);
+        //        tblSMSLogHist.ErrorMessage = vSmsResponse.desc;
+
+        //        db.SaveChanges();
+        //    }
+        //}
 
         [HttpPost]
         public Response LoginByEmail(LoginModel objLoginDetail)

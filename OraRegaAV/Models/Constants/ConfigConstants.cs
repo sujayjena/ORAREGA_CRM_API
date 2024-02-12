@@ -14,5 +14,10 @@
         public const string SenderCompanyLogo = "SenderCompanyLogo";
         public const string CustomerSupportEmail = "CustomerSupportEmail";
         public const string CustomerSupportNumber = "CustomerSupportNumber";
+
+        // SMS Setting
+        public const string SMS_AuthKey = "SMS_AuthKey";
+        public const string SMS_SenderId = "SMS_SenderId";
+        public const string SMS_Url = "SMS_Url";
     }
 }

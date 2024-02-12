@@ -766,6 +766,19 @@
           <Property Name="OrderTypeCode" Type="varchar" MaxLength="2" Nullable="false" />
           <Property Name="OrderType" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblOTP">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TemplateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="20" />
+          <Property Name="OTP" Type="int" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="IsExpired" Type="bit" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tblOurProduct">
           <Key>
             <PropertyRef Name="Id" />
@@ -1319,6 +1332,24 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceType" Type="nvarchar" MaxLength="100" />
           <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblSMSLogHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OTPId" Type="int" />
+          <Property Name="TemplateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="500" />
+          <Property Name="TemplateContent" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalNumberSubmitted" Type="int" />
+          <Property Name="CampgId" Type="int" />
+          <Property Name="LogId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="int" />
+          <Property Name="ErrorMessage" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblSOCustomerComment">
           <Key>
@@ -2911,6 +2942,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblOperatingSystem" EntityType="Self.tblOperatingSystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderStatusMaster" EntityType="Self.tblOrderStatusMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderTypeMaster" EntityType="Self.tblOrderTypeMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOTP" EntityType="Self.tblOTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOurProduct" EntityType="Self.tblOurProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOurService" EntityType="Self.tblOurService" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPartDescription" EntityType="Self.tblPartDescription" Schema="dbo" store:Type="Tables" />
@@ -2949,6 +2981,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblSavedProductDetails" EntityType="Self.tblSavedProductDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblServiceAddresss" EntityType="Self.tblServiceAddresss" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblServiceTypes" EntityType="Self.tblServiceTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSMSLogHistory" EntityType="Self.tblSMSLogHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSOCustomerComment" EntityType="Self.tblSOCustomerComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSOEnquiryProducts" EntityType="Self.tblSOEnquiryProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSOPOAttachment" EntityType="Self.tblSOPOAttachment" Schema="dbo" store:Type="Tables" />
@@ -4761,6 +4794,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <FunctionImport Name="GetEmployeesListByReportingTo" ReturnType="Collection(dbOraRegaModel.GetEmployeesListByReportingTo_Result)">
           <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
           </FunctionImport>
+          <EntitySet Name="tblOTPs" EntityType="dbOraRegaModel.tblOTP" />
+          <EntitySet Name="tblSMSLogHistories" EntityType="dbOraRegaModel.tblSMSLogHistory" />
         
          
   
@@ -8101,6 +8136,37 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="BranchId" Nullable="false" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
         </ComplexType>
+        <EntityType Name="tblOTP">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TemplateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OTP" Type="Int32" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="IsExpired" Type="Boolean" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblSMSLogHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OTPId" Type="Int32" />
+          <Property Name="TemplateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TemplateContent" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalNumberSubmitted" Type="Int32" />
+          <Property Name="CampgId" Type="Int32" />
+          <Property Name="LogId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="Int32" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
        
 			</Schema>
 		</edmx:ConceptualModels>
@@ -12711,6 +12777,39 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tblOTPs">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblOTP">
+              <MappingFragment StoreEntitySet="tblOTP">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsExpired" ColumnName="IsExpired" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSMSLogHistories">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblSMSLogHistory">
+              <MappingFragment StoreEntitySet="tblSMSLogHistory">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LogId" ColumnName="LogId" />
+                <ScalarProperty Name="CampgId" ColumnName="CampgId" />
+                <ScalarProperty Name="TotalNumberSubmitted" ColumnName="TotalNumberSubmitted" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TemplateContent" ColumnName="TemplateContent" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="OTPId" ColumnName="OTPId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

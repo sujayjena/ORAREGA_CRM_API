@@ -19,6 +19,7 @@ namespace OraRegaAV.App_Start
                 || string.Equals(operation.operationId, "LoginAPI_GetOTPForEmployeeLogin", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "LoginAPI_GetOTPForCustomerLogin", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "LoginAPI_LoginByOTP", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "LoginAPI_OTPGenerate", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "CustomerRegistration_CustomerSignUp", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "MasterDataAPI_GetStatesForSelectList", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "MasterDataAPI_GetCityForSelectList", StringComparison.OrdinalIgnoreCase)

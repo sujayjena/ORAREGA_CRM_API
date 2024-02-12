@@ -12,18 +12,36 @@ using System.Configuration;
 using System.Collections;
 using OraRegaAV.Models;
 using System.Text.Json;
+using OraRegaAV.DBEntity;
+using OraRegaAV.Models.Constants;
+using Newtonsoft.Json.Linq;
+using Swashbuckle.Swagger;
 
 namespace OraRegaAV.Helpers
 {
     public class SmsSender
     {
-        public SmsResponse SMSSend(string MobileNumber, string Message)
+        private readonly dbOraRegaEntities db = new dbOraRegaEntities();
+
+        public SmsResponse SMSSend(SmsRequest parameters)
         {
             var smsResponse = new SmsResponse();
+            var smsResponse_FromSteviaDigital = new SmsResponse_SteviaDigital();
 
-            string SMS_AuthKey = ConfigurationManager.AppSettings["SMS_AuthKey"];
-            string SMS_SenderId = ConfigurationManager.AppSettings["SMS_SenderId"];
-            string SMS_BaseUrl = ConfigurationManager.AppSettings["SMS_BaseUrl"];
+            string strMessage = string.Empty;
+
+            var configList = db.GetConfigurationsList($"{ConfigConstants.SMS_AuthKey},{ConfigConstants.SMS_SenderId},{ConfigConstants.SMS_Url},{parameters.TemplateName}").ToList();
+            string strTemplateContent = configList.Where(c => c.ConfigKey == parameters.TemplateName).FirstOrDefault().ConfigValue.SanitizeValue();
+
+            if (!string.IsNullOrEmpty(strTemplateContent))
+            {
+                strMessage = strTemplateContent.Replace("{}", parameters.OTP.ToString());
+            }
+
+            string SMS_AuthKey = configList.Where(c => c.ConfigKey == ConfigConstants.SMS_AuthKey).FirstOrDefault().ConfigValue.SanitizeValue();
+            string SMS_SenderId = configList.Where(c => c.ConfigKey == ConfigConstants.SMS_SenderId).FirstOrDefault().ConfigValue.SanitizeValue();
+            string SMS_BaseUrl = configList.Where(c => c.ConfigKey == ConfigConstants.SMS_Url).FirstOrDefault().ConfigValue.SanitizeValue();
+
 
             //Your authentication key  
             string authKey = SMS_AuthKey;
@@ -32,10 +50,10 @@ namespace OraRegaAV.Helpers
             string senderId = SMS_SenderId;
 
             //Multiple mobiles numbers separated by comma  
-            string mobileNumber = MobileNumber;
+            string mobileNumber = parameters.MobileNo;
 
             //Your message to send, Add URL encoding here.  
-            string message = HttpUtility.UrlEncode(Message);
+            string message = HttpUtility.UrlEncode(strMessage);
             //string route = "4";
 
             //Prepare you post parameters  
@@ -45,7 +63,7 @@ namespace OraRegaAV.Helpers
             sbPostData.AppendFormat("&msisdn={0}", mobileNumber);
             sbPostData.AppendFormat("&message={0}", message);
 
-
+            /*
             //Call Send SMS API
             //string baseurl = "https://sms.steviadigital.com/API/sms-api.php?auth=xxxxx&senderid=xxxxx&msisdn=xxxxxx&message="+message;
             string sendSMSUri = SMS_BaseUrl;
@@ -75,8 +93,20 @@ namespace OraRegaAV.Helpers
             reader.Close();
 
             response.Close();
+            */
 
-            smsResponse = JsonSerializer.Deserialize<SmsResponse>(responseString);
+            string responseString = "{\"status\":\"success\",\"totalnumbers_sbmited\":1,\"campg_id\":769208,\"logid\":\"65c5b995a549d\",\"code\":\"100\",\"ts\":\"2024-02-09 11:05:17\"}";
+            smsResponse_FromSteviaDigital = JsonSerializer.Deserialize<SmsResponse_SteviaDigital>(responseString);
+
+            smsResponse.templatecontent = strMessage;
+            smsResponse.status = smsResponse_FromSteviaDigital.status;
+            smsResponse.desc = smsResponse_FromSteviaDigital.desc;
+            smsResponse.totalnumbers_sbmited = smsResponse_FromSteviaDigital.totalnumbers_sbmited;
+            smsResponse.campg_id = smsResponse_FromSteviaDigital.campg_id;
+            smsResponse.logid = smsResponse_FromSteviaDigital.logid;
+            smsResponse.code = smsResponse_FromSteviaDigital.code;
+            smsResponse.ts = smsResponse_FromSteviaDigital.ts;
+
             return smsResponse;
         }
 

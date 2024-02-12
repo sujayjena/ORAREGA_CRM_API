@@ -160,6 +160,8 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblTrackingOrder> tblTrackingOrders { get; set; }
         public virtual DbSet<tblWorkOrderRescheduleHistory> tblWorkOrderRescheduleHistories { get; set; }
         public virtual DbSet<tblWorkOrderEngineerAllocatedHistory> tblWorkOrderEngineerAllocatedHistories { get; set; }
+        public virtual DbSet<tblOTP> tblOTPs { get; set; }
+        public virtual DbSet<tblSMSLogHistory> tblSMSLogHistories { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {

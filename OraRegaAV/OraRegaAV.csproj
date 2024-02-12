@@ -347,7 +347,6 @@
     <Compile Include="Controllers\AddressAPIController.cs" />
     <Compile Include="Controllers\ApiCustomBaseController.cs" />
     <Compile Include="Controllers\AttendanceAPIController.cs" />
-    <Compile Include="Controllers\SmsAPIController.cs" />
     <Compile Include="Controllers\BranchAPIController.cs" />
     <Compile Include="Controllers\BusinessTypeAPIController.cs" />
     <Compile Include="Controllers\CaseStatusAPIController.cs" />
@@ -960,6 +959,9 @@
     <Compile Include="DBEntity\tblOrderTypeMaster.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblOTP.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblOurProduct.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1072,6 +1074,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblServiceType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSMSLogHistory.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblSOCustomerComment.cs">
