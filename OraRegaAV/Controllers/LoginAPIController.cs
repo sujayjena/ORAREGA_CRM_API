@@ -68,7 +68,7 @@ namespace OraRegaAV.Controllers.API
                 // Send SMS
                 var tblSMS = new tblSMSLogHistory()
                 {
-                    OTPId= tblotp.Id,
+                    OTPId = tblotp.Id,
                     TemplateName = parametrs.TemplateName,
                     Mobile = parametrs.MobileNo,
                     TemplateContent = "",
@@ -104,10 +104,10 @@ namespace OraRegaAV.Controllers.API
                     tblSMSLogHist.TemplateName = parametrs.TemplateName;
                     tblSMSLogHist.TemplateContent = vSmsResponse.templatecontent;
                     tblSMSLogHist.Status = vSmsResponse.status;
-                    tblSMSLogHist.TotalNumberSubmitted = Convert.ToInt32(vSmsResponse.totalnumbers_sbmited);
-                    tblSMSLogHist.CampgId = Convert.ToInt32(vSmsResponse.campg_id);
+                    tblSMSLogHist.TotalNumberSubmitted = !string.IsNullOrWhiteSpace(vSmsResponse.totalnumbers_sbmited) ? Convert.ToInt32(vSmsResponse.totalnumbers_sbmited) : 0;
+                    tblSMSLogHist.CampgId = !string.IsNullOrWhiteSpace(vSmsResponse.campg_id) ? Convert.ToInt32(vSmsResponse.campg_id) : 0;
                     tblSMSLogHist.LogId = vSmsResponse.logid;
-                    tblSMSLogHist.Code = Convert.ToInt32(vSmsResponse.code);
+                    tblSMSLogHist.Code = !string.IsNullOrWhiteSpace(vSmsResponse.code) ? Convert.ToInt32(vSmsResponse.code) : 0;
                     tblSMSLogHist.ErrorMessage = vSmsResponse.desc;
 
                     db.SaveChanges();
@@ -115,7 +115,14 @@ namespace OraRegaAV.Controllers.API
 
                 #endregion
 
-                _response.Message = "OTP sent successfully";
+                if(!string.IsNullOrWhiteSpace(vSmsResponse.totalnumbers_sbmited))
+                {
+                    _response.Message = "OTP sent successfully";
+                }
+                else
+                {
+                    _response.Message = "Something went wrong, please try again later";
+                }
 
                 _response.IsSuccess = true;
             }

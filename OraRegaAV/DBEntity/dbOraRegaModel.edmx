@@ -1347,7 +1347,7 @@
           <Property Name="CampgId" Type="int" />
           <Property Name="LogId" Type="nvarchar" MaxLength="50" />
           <Property Name="Code" Type="int" />
-          <Property Name="ErrorMessage" Type="nvarchar" MaxLength="50" />
+          <Property Name="ErrorMessage" Type="nvarchar" MaxLength="500" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
@@ -4796,7 +4796,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <EntitySet Name="tblOTPs" EntityType="dbOraRegaModel.tblOTP" />
           <EntitySet Name="tblSMSLogHistories" EntityType="dbOraRegaModel.tblSMSLogHistory" />
-        
+         
          
   
 				</EntityContainer>
@@ -8163,11 +8163,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CampgId" Type="Int32" />
           <Property Name="LogId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Code" Type="Int32" />
-          <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
-       
+        
 			</Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -12810,7 +12810,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-  				</EntityContainerMapping>
+   				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>
 	</edmx:Runtime>

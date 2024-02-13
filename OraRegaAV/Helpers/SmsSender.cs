@@ -16,6 +16,8 @@ using OraRegaAV.DBEntity;
 using OraRegaAV.Models.Constants;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.Swagger;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace OraRegaAV.Helpers
 {
@@ -26,7 +28,6 @@ namespace OraRegaAV.Helpers
         public SmsResponse SMSSend(SmsRequest parameters)
         {
             var smsResponse = new SmsResponse();
-            var smsResponse_FromSteviaDigital = new SmsResponse_SteviaDigital();
 
             string strMessage = string.Empty;
 
@@ -95,16 +96,29 @@ namespace OraRegaAV.Helpers
             response.Close();
 
             // string responseString = "{\"status\":\"success\",\"totalnumbers_sbmited\":1,\"campg_id\":"769208",\"logid\":\"65c5b995a549d\",\"code\":\"100\",\"ts\":\"2024-02-09 11:05:17\"}";
-            smsResponse_FromSteviaDigital = JsonSerializer.Deserialize<SmsResponse_SteviaDigital>(responseString);
+
+            dynamic jsonResults = JsonConvert.DeserializeObject<dynamic>(responseString);
 
             smsResponse.templatecontent = strMessage;
-            smsResponse.status = smsResponse_FromSteviaDigital.status;
-            smsResponse.desc = smsResponse_FromSteviaDigital.desc;
-            smsResponse.totalnumbers_sbmited = smsResponse_FromSteviaDigital.totalnumbers_sbmited;
-            smsResponse.campg_id = smsResponse_FromSteviaDigital.campg_id;
-            smsResponse.logid = smsResponse_FromSteviaDigital.logid;
-            smsResponse.code = smsResponse_FromSteviaDigital.code;
-            smsResponse.ts = smsResponse_FromSteviaDigital.ts;
+            smsResponse.status = jsonResults.ContainsKey("status") ? jsonResults.status : string.Empty;
+            smsResponse.desc = jsonResults.ContainsKey("desc") ? jsonResults.desc : string.Empty;
+            smsResponse.totalnumbers_sbmited = jsonResults.ContainsKey("totalnumbers_sbmited") ? jsonResults.totalnumbers_sbmited : string.Empty;
+            smsResponse.campg_id = jsonResults.ContainsKey("campg_id") ? jsonResults.campg_id : string.Empty;
+            smsResponse.logid = jsonResults.ContainsKey("logid") ? jsonResults.logid : string.Empty;
+            smsResponse.code = jsonResults.ContainsKey("code") ? jsonResults.code : string.Empty;
+            smsResponse.ts = jsonResults.ContainsKey("ts") ? jsonResults.ts : string.Empty;
+
+
+            // smsResponse_FromSteviaDigital = JsonSerializer.Deserialize<SmsResponse_SteviaDigital>(responseString);
+
+            //smsResponse.templatecontent = strMessage;
+            //smsResponse.status = smsResponse_FromSteviaDigital.status;
+            //smsResponse.desc = smsResponse_FromSteviaDigital.desc;
+            //smsResponse.totalnumbers_sbmited = smsResponse_FromSteviaDigital.totalnumbers_sbmited;
+            //smsResponse.campg_id = smsResponse_FromSteviaDigital.campg_id;
+            //smsResponse.logid = smsResponse_FromSteviaDigital.logid;
+            //smsResponse.code = smsResponse_FromSteviaDigital.code;
+            //smsResponse.ts = smsResponse_FromSteviaDigital.ts;
 
             return smsResponse;
         }
