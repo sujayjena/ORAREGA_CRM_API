@@ -94,7 +94,7 @@ namespace OraRegaAV.Helpers
 
             response.Close();
 
-            // string responseString = "{\"status\":\"success\",\"totalnumbers_sbmited\":1,\"campg_id\":769208,\"logid\":\"65c5b995a549d\",\"code\":\"100\",\"ts\":\"2024-02-09 11:05:17\"}";
+            // string responseString = "{\"status\":\"success\",\"totalnumbers_sbmited\":1,\"campg_id\":"769208",\"logid\":\"65c5b995a549d\",\"code\":\"100\",\"ts\":\"2024-02-09 11:05:17\"}";
             smsResponse_FromSteviaDigital = JsonSerializer.Deserialize<SmsResponse_SteviaDigital>(responseString);
 
             smsResponse.templatecontent = strMessage;

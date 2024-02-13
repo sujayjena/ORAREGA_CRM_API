@@ -143,14 +143,15 @@ namespace OraRegaAV.Controllers.API
                     //db.tblOTPs.AddOrUpdate(tbl);
                     db.SaveChanges();
 
+                    _response.IsSuccess = true;
                     _response.Message = "OTP verified successfully";
                 }
                 else
                 {
+                    _response.IsSuccess = false;
                     _response.Message = "Invalid OTP!";
                 }
 
-                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {

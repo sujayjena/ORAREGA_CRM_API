@@ -32,7 +32,7 @@ namespace OraRegaAV.Models
 
         public int totalnumbers_sbmited { get; set; }
 
-        public int campg_id { get; set; }
+        public string campg_id { get; set; }
 
         public string logid { get; set; }
 
@@ -51,7 +51,7 @@ namespace OraRegaAV.Models
 
         public int totalnumbers_sbmited { get; set; }
 
-        public int campg_id { get; set; }
+        public string campg_id { get; set; }
 
         public string logid { get; set; }
 
