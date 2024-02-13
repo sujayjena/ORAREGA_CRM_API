@@ -1,5 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Office2016.Excel;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models;
@@ -8,9 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -1163,5 +1168,151 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        [Route("api/EmployeeAPI/DownloadEmployeeList")]
+        public Response DownloadEmployeeList(EmployeeSearchParameters parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetEmployeesList(parameters.EmpCode,parameters.EmpName,parameters.Email, parameters.IsActive, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Designation
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Employee_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Employee Code";
+                        WorkSheet1.Cells[1, 3].Value = "User Type";
+                        WorkSheet1.Cells[1, 4].Value = "Employee Name";
+                        WorkSheet1.Cells[1, 5].Value = "Email ID";
+                        WorkSheet1.Cells[1, 6].Value = "Branch";
+                        WorkSheet1.Cells[1, 7].Value = "Personal Number";
+                        WorkSheet1.Cells[1, 8].Value = "Office Number";
+                        WorkSheet1.Cells[1, 9].Value = "Reporting To";
+                        WorkSheet1.Cells[1, 10].Value = "Designation";
+                        WorkSheet1.Cells[1, 11].Value = "Department";
+                        WorkSheet1.Cells[1, 12].Value = "Date of Birth";
+                        WorkSheet1.Cells[1, 13].Value = "Date of Joining";
+                        WorkSheet1.Cells[1, 14].Value = "Emergency Number";
+                        WorkSheet1.Cells[1, 15].Value = "Blood Group";
+                        WorkSheet1.Cells[1, 16].Value = "Status";
+                        WorkSheet1.Cells[1, 17].Value = "IsWebUser";
+                        WorkSheet1.Cells[1, 18].Value = "IsMobileUser";
+                        WorkSheet1.Cells[1, 19].Value = "Created By";
+                        WorkSheet1.Cells[1, 20].Value = "Created Date";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["EmployeeCode"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["UserType"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["EmployeeName"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["EmailId"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PersonalNumber"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["OfficeNumber"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["ReportingToName"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["RoleName"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["DepartmentName"];
+                            WorkSheet1.Cells[recordIndex, 12].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["DateOfBirth"];
+                            WorkSheet1.Cells[recordIndex, 13].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["DateOfJoining"];
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["EmergencyContactNumber"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["BloodGroup"];
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["IsActive"].ToString() == "True" ? "Active" : "In Active";
+                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["IsWebUser"].ToString() == "True" ? "Yes" : "No";
+                            WorkSheet1.Cells[recordIndex, 18].Value = dataRow["IsMobileUser"].ToString() == "True" ? "Yes" : "No";
+                            WorkSheet1.Cells[recordIndex, 19].Value = dataRow["CreatorName"];
+
+                            WorkSheet1.Cells[recordIndex, 20].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 20].Value = dataRow["CreatedDate"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+                        WorkSheet1.Column(13).AutoFit();
+                        WorkSheet1.Column(14).AutoFit();
+                        WorkSheet1.Column(15).AutoFit();
+                        WorkSheet1.Column(16).AutoFit();
+                        WorkSheet1.Column(17).AutoFit();
+                        WorkSheet1.Column(18).AutoFit();
+                        WorkSheet1.Column(19).AutoFit();
+                        WorkSheet1.Column(20).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Employee_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Employee list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
     }
 }

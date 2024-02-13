@@ -1,10 +1,16 @@
-﻿using OraRegaAV.DBEntity;
+﻿using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Core.Objects;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -110,6 +116,104 @@ namespace OraRegaAV.Controllers.API
                 LogWriter.WriteLog(ex);
             }
 
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/GSTMappingAPI/DownloadGSTMappingList")]
+        public Response DownloadGSTMappingList(AdministratorSearchParameters parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetGSTMappingList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("GST_Mapping_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Company Name";
+                        WorkSheet1.Cells[1, 3].Value = "State Name";
+                        WorkSheet1.Cells[1, 4].Value = "Status";
+                        WorkSheet1.Cells[1, 5].Value = "GST Text Field";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["CompanyName"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["StateName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["IsActive"].ToString() == "True" ? "Active" : "In Active";
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["GST"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "GST_Mapping_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "GST Mapping list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
             return _response;
         }
     }
