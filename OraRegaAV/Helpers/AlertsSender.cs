@@ -182,7 +182,7 @@ namespace OraRegaAV.Helpers
             {
                 templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\NewSellEnquiryReceived.html";
                 emailTemplateContent = File.ReadAllText(templateFilePath);
-                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.CustomerSupportEmail).FirstOrDefault().ConfigValue;
+                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SellEnquiryEmail).FirstOrDefault().ConfigValue;
                 customer = await db.tblCustomers.Where(c => c.Id == parameters.CustomerId).FirstOrDefaultAsync() ?? new tblCustomer();
                 defaultAddress = await db.tblPermanentAddresses.Where(addr => addr.Id == parameters.ServiceAddressId).FirstOrDefaultAsync(); //parameters.ServiceAddresses.Where(addr => addr.IsDefault == true).FirstOrDefault();
 
@@ -355,7 +355,7 @@ namespace OraRegaAV.Helpers
             {
                 templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\ExtendWarrantyEnquiryReceived.html";
                 emailTemplateContent = File.ReadAllText(templateFilePath);
-                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.CustomerSupportEmail).FirstOrDefault().ConfigValue;
+                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ExtendWarrantyEnquiryEmail).FirstOrDefault().ConfigValue;
                 customer = await db.tblCustomers.Where(c => c.Id == parameters.CustomerId).FirstOrDefaultAsync();
                 defaultAddress = await db.tblPermanentAddresses.Where(addr => addr.Id == parameters.ServiceAddressId).FirstOrDefaultAsync(); //parameters.ServiceAddresses.Where(addr => addr.IsDefault == true).FirstOrDefault();
 
@@ -518,7 +518,7 @@ namespace OraRegaAV.Helpers
 
                 templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\NewCustomerEnquiry.html";
                 emailTemplateContent = File.ReadAllText(templateFilePath);
-                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.CustomerSupportEmail).FirstOrDefault().ConfigValue;
+                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
 
                 if (emailTemplateContent.IndexOf("[FirstName]", StringComparison.OrdinalIgnoreCase) > 0)

@@ -15,6 +15,12 @@
         public const string CustomerSupportEmail = "CustomerSupportEmail";
         public const string CustomerSupportNumber = "CustomerSupportNumber";
 
+        public const string GeneralCommunicationEmail = "GeneralCommunicationEmail";
+        public const string CareersRelatedEnquiryEmail = "CareersRelatedEnquiryEmail";
+        public const string SellEnquiryEmail = "SellEnquiryEmail";
+        public const string ExtendWarrantyEnquiryEmail = "ExtendWarrantyEnquiryEmail";
+        public const string ContactUsEmail = "ContactUsEmail";
+
         // SMS Setting
         public const string SMS_AuthKey = "SMS_AuthKey";
         public const string SMS_SenderId = "SMS_SenderId";

@@ -663,6 +663,25 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        public Response PasswordEncrypt(string Value)
+        {
+            var vResponse= EncryptDecryptHelper.EncryptString(Value);
+
+            _response.Data = vResponse;
+            _response.IsSuccess = true;
+            return _response;
+        }
+
+        [HttpPost]
+        public Response PasswordDecrypt(string Value)
+        {
+            var vResponse = EncryptDecryptHelper.DecryptString(Value);
+            _response.Data = vResponse;
+            _response.IsSuccess = true;
+            return _response;
+        }
+
         [CustomAuthenticationFilter]
         [HttpGet]
         [Route("api/LoginAPI/GetMenu")]
