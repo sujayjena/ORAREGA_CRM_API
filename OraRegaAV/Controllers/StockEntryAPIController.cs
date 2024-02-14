@@ -21,6 +21,7 @@ using OfficeOpenXml.Interfaces.Drawing.Text;
 using System.Data.Entity;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Data.Entity.Core.Objects;
+using System.Globalization;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -571,6 +572,396 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        [Route("api/StockEntryAPI/DownloadStockAllocationList")]
+        public Response DownloadStockAllocationList(StockAllocationSearchParameters parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetPartsListForAllocation(parameters.CompanyId, parameters.BranchId, parameters.SearchValue.SanitizeValue(), userId, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Stock_Allocation_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Branch";
+                        WorkSheet1.Cells[1, 3].Value = "Spare Tracking Number (STN)";
+                        WorkSheet1.Cells[1, 4].Value = "Docket number";
+                        WorkSheet1.Cells[1, 5].Value = "Received From";
+                        WorkSheet1.Cells[1, 6].Value = "Received Date";
+                        WorkSheet1.Cells[1, 7].Value = "Part Number";
+                        WorkSheet1.Cells[1, 8].Value = "Part Name";
+                        WorkSheet1.Cells[1, 9].Value = "Part Status";
+                        WorkSheet1.Cells[1, 10].Value = "Part Description";
+                        WorkSheet1.Cells[1, 11].Value = "CT/Serial";
+                        WorkSheet1.Cells[1, 12].Value = "HSN Code";
+                        WorkSheet1.Cells[1, 13].Value = "Qty";
+                        WorkSheet1.Cells[1, 14].Value = "Created Date";
+                        WorkSheet1.Cells[1, 15].Value = "Created By";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["UniqueCode"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["DocketNo"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["ReceiveFrom"];
+                            WorkSheet1.Cells[recordIndex, 6].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["ReceiveDate"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PartNumber"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["PartName"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["PartStatus"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["PartDescription"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["CTSerialNo"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["HSNCode"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["Quantity"];
+                            WorkSheet1.Cells[recordIndex, 14].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["CreatedDate"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["CreatorName"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+                        WorkSheet1.Column(13).AutoFit();
+                        WorkSheet1.Column(14).AutoFit();
+                        WorkSheet1.Column(15).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Stock_Allocation_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Stock Allocation list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/StockEntryAPI/DownloadStockAllocatedWorkOrderList")]
+        public Response DownloadStockAllocatedWorkOrderList(StockAllocation_PartsAllocatedToWorkOrder_Search parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetStockAllocationToWorkOrderList(
+                    parameters.CompanyId,
+                    parameters.BranchId,
+                    parameters.WorkOrderNumber.SanitizeValue(),
+                    parameters.PartName.SanitizeValue(),
+                    parameters.PartDescription.SanitizeValue(),
+                    parameters.AllocatedBy,
+                    parameters.FilterType,
+                    userId,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Stock_Allocated_WorkOrder_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Work Order";
+                        WorkSheet1.Cells[1, 3].Value = "Branch Name";
+                        WorkSheet1.Cells[1, 4].Value = "Engineer Name";
+                        WorkSheet1.Cells[1, 5].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 6].Value = "Spare Tracking Number (STN)";
+                        WorkSheet1.Cells[1, 7].Value = "Part Number";
+                        WorkSheet1.Cells[1, 8].Value = "Part Name";
+                        WorkSheet1.Cells[1, 9].Value = "Part Description";
+                        WorkSheet1.Cells[1, 10].Value = "Part Status";
+                        WorkSheet1.Cells[1, 11].Value = "CT/Serial";
+                        WorkSheet1.Cells[1, 12].Value = "Qty";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["EngineerName"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["CustomerName"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["UniqueCode"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PartNumber"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["PartName"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["PartDescription"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["PartStatusName"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["SerialNo"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["Quantity"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Stock_Allocated_WorkOrder_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Stock Allocated Work Order list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/StockEntryAPI/DownloadStockAllocatedEngineerList")]
+        public Response DownloadStockAllocatedEngineerList(StockAllocation_PartsAllocatedToEngineer_Search parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetStockAllocationToEngineerList(
+                    parameters.CompanyId,
+                    parameters.BranchId,
+                    parameters.EngineerId,
+                    parameters.EngineerName.SanitizeValue(),
+                    parameters.PartName.SanitizeValue(),
+                    parameters.PartDescription.SanitizeValue(),
+                    parameters.Type.SanitizeValue(),
+                    parameters.FilterType,
+                    userId,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Stock_Allocated_Engineer_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Branch Name";
+                        WorkSheet1.Cells[1, 3].Value = "Engineer Name";
+                        WorkSheet1.Cells[1, 4].Value = "Work Order";
+                        WorkSheet1.Cells[1, 5].Value = "Spare Tracking Number (STN)";
+                        WorkSheet1.Cells[1, 6].Value = "Part Number";
+                        WorkSheet1.Cells[1, 7].Value = "Part Name";
+                        WorkSheet1.Cells[1, 8].Value = "Part Description";
+                        WorkSheet1.Cells[1, 9].Value = "Part Status";
+                        WorkSheet1.Cells[1, 10].Value = "CT/Serial";
+                        WorkSheet1.Cells[1, 11].Value = "Qty";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["EngineerName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["UniqueCode"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["PartNumber"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PartName"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["PartDescription"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["PartStatusName"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["SerialNo"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["Quantity"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Stock_Allocated_Engineer_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Stock Allocated Engineer list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
         #endregion
 
         #region Stock Return
@@ -716,7 +1107,141 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        [Route("api/StockEntryAPI/DownloadStockReceiveFromEngineerList")]
+        public Response DownloadStockReceiveFromEngineerList(StockAllocation_PartsAllocatedToReturn_Search parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetStockAllocationToReturnList(
+                    parameters.CompanyId,
+                    parameters.BranchId,
+                    parameters.EngineerId,
+                    parameters.EngineerName.SanitizeValue(),
+                    parameters.PartName.SanitizeValue(),
+                    parameters.PartDescription.SanitizeValue(),
+                    parameters.StatusId,
+                    parameters.Type.SanitizeValue(),
+                    parameters.FilterType,
+                    userId,
+                    parameters.SearchValue,
+                    parameters.PageSize,
+                    parameters.PageNo,
+                    vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Stock_Receive_From_Engineer_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Branch Name";
+                        WorkSheet1.Cells[1, 3].Value = "Engineer Name";
+                        WorkSheet1.Cells[1, 4].Value = "Docket No";
+                        WorkSheet1.Cells[1, 5].Value = "HSN Code";
+                        WorkSheet1.Cells[1, 6].Value = "Spare Tracking Number (STN)";
+                        WorkSheet1.Cells[1, 7].Value = "Part Number";
+                        WorkSheet1.Cells[1, 8].Value = "Part Name";
+                        WorkSheet1.Cells[1, 9].Value = "Part Status";
+                        WorkSheet1.Cells[1, 10].Value = "Part Description";
+                        WorkSheet1.Cells[1, 11].Value = "Part Serial No.";
+                        WorkSheet1.Cells[1, 12].Value = "Part Return Status";
+                        WorkSheet1.Cells[1, 13].Value = "Qty";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["EngineerName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["DocketNo"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["HSNCode"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["UniqueCode"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PartNumber"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["PartName"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["ProductStatusName"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["PartDescription"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["SerialNo"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ReturnStatusName"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["Quantity"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+                        WorkSheet1.Column(13).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Stock_Receive_From_Engineer_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Stock Receive From Engineer list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
         #endregion
     }
 }

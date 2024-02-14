@@ -25,6 +25,9 @@ using Microsoft.SqlServer.Server;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
 using System.Data.Entity.Core.Objects;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.IO;
 
 namespace OraRegaAV.Controllers
 {
@@ -1676,6 +1679,314 @@ namespace OraRegaAV.Controllers
                 LogWriter.WriteLog(ex);
             }
 
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/WorkOrder/DownloadWorkOrderList")]
+        public Response DownloadWorkOrderList(WorkOrderSearchParameters parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetWorkOrderList(parameters.CompanyId, parameters.BranchId, parameters.WorkOrderNumber, userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Work_Order_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Work Order Number";
+                        WorkSheet1.Cells[1, 3].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 4].Value = "Support Type";
+                        WorkSheet1.Cells[1, 5].Value = "Product Type";
+                        WorkSheet1.Cells[1, 6].Value = "Case Status";
+                        WorkSheet1.Cells[1, 7].Value = "Serial Number";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["CustomerName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["SupportType"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["ProductType"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["CaseStatusName"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["ProductSerialNumber"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Work_Order_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Work Order list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/WorkOrder/DownloadAllocateWorkOrderList")]
+        public Response DownloadAllocateWorkOrderList(WOListParameters parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId,
+                    parameters.FilterType, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Allocate_Work_Order_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Work Order Number";
+                        WorkSheet1.Cells[1, 3].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 4].Value = "Contact Number";
+                        WorkSheet1.Cells[1, 5].Value = "Address";
+                        WorkSheet1.Cells[1, 6].Value = "Reported Issue";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["FirstName"] +  " " + dataRow["LastName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["Mobile"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["Address"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["ReportedIssue"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Allocate_Work_Order_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Allocate Work Order list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/WorkOrder/DownloadClosedWorkOrderList")]
+        public Response DownloadClosedWorkOrderList(WOListParameters parameters)
+        {
+            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            try
+            {
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var listObj = db.GetWOListForEmployees(parameters.CompanyId, parameters.BranchId, parameters.OrderStatusId, parameters.EmployeeId, userId,
+                    parameters.FilterType, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                if (listObj.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "No records found.";
+                    return _response;
+                }
+                else
+                {
+                    #region Generate Excel file for Department
+
+                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+                    if (export_dt.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage excel = new ExcelPackage();
+                        int recordIndex;
+                        int srNo = 0;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Closed_Work_Order_List");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                        WorkSheet1.Cells[1, 2].Value = "Work Order Number";
+                        WorkSheet1.Cells[1, 3].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 4].Value = "Contact Number";
+                        WorkSheet1.Cells[1, 5].Value = "Address";
+                        WorkSheet1.Cells[1, 6].Value = "Reported Issue";
+
+                        recordIndex = 2;
+                        foreach (DataRow dataRow in export_dt.Rows)
+                        {
+                            srNo++;
+                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["FirstName"] + " " + dataRow["LastName"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["Mobile"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["Address"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["ReportedIssue"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            excel.SaveAs(memoryStream);
+                            memoryStream.Position = 0;
+                            objInvalidFileResponseModel = new InvalidFileResponseModel()
+                            {
+                                FileMemoryStream = memoryStream.ToArray(),
+                                FileName = "Closed_Work_Order_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                                FileUniqueId = uniqueFileId
+                            };
+                        }
+
+                        return new Response()
+                        {
+                            IsSuccess = true,
+                            Message = "Closed Work Order list Generated Successfully.",
+                            Data = objInvalidFileResponseModel
+                        };
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
             return _response;
         }
     }
