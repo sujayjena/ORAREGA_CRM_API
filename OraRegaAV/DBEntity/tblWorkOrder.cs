@@ -67,5 +67,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> WOSnapsId { get; set; }
         public Nullable<int> RescheduleReasonId { get; set; }
         public Nullable<System.DateTime> RescheduleDate { get; set; }
+        public string OrganizationName { get; set; }
     }
 }

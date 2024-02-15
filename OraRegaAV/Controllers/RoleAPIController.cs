@@ -40,6 +40,13 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
+                if (db.tblRoles.Where(d => d.RoleName == objtblRole.RoleName && d.Id != objtblRole.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Role Name is already exists";
+                    return _response;
+                }
+
                 tbl = db.tblRoles.Where(x => x.Id == objtblRole.Id).FirstOrDefault();
 
                 if (tbl == null)

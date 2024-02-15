@@ -652,6 +652,7 @@ namespace OraRegaAV.Controllers
                     workOrder.ProdModelIfOther = workOrderEnquiry.ProdModelIfOther;
                     workOrder.ProdDescriptionIfOther = workOrderEnquiry.ProdDescriptionIfOther;
                     workOrder.ProductId = workOrderEnquiry.ProductModelId;
+                    workOrder.OrganizationName = workOrderEnquiry.OrganizationName;
 
                     db.tblWorkOrders.AddOrUpdate(workOrder);
 

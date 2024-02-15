@@ -906,6 +906,7 @@ namespace OraRegaAV.Controllers
                     workOrderListObj.ProdDescriptionIfOther = workOrderObj.ProdDescriptionIfOther;
                     workOrderListObj.CustomerSecondaryName = workOrderObj.CustomerSecondaryName;
                     workOrderListObj.EngineerMobile = workOrderObj.EngineerMobile;
+                    workOrderListObj.OrganizationName = workOrderObj.OrganizationName;
 
                     var vRemarkList = db.tblWORepairRemarks.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
 

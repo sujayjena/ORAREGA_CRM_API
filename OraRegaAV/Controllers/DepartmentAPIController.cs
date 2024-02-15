@@ -34,9 +34,7 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                if (
-                    db.tblDepartments.Where(d => d.DepartmentName == objtblDepartment.DepartmentName
-                    && d.IsActive == true && d.Id != objtblDepartment.Id).Any())
+                if (db.tblDepartments.Where(d => d.DepartmentName == objtblDepartment.DepartmentName && d.Id != objtblDepartment.Id).Any())
                 {
                     _response.IsSuccess = false;
                     _response.Message = "Department Name is already exists";

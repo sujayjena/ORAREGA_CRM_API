@@ -1937,6 +1937,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CustomerSecondaryName" Type="nvarchar" MaxLength="50" />
           <Property Name="RescheduleReasonId" Type="int" />
           <Property Name="RescheduleDate" Type="datetime" />
+          <Property Name="OrganizationName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblWorkOrderEngineerAllocatedHistory">
           <Key>
@@ -6046,6 +6047,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Name="WOSnapsId" Type="Int32" />
 					<Property Name="RescheduleReasonId" Type="Int32" />
 					<Property Name="RescheduleDate" Type="DateTime" Precision="3" />
+          <Property Name="OrganizationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
 				</EntityType>
 
 				<EntityType Name="tblBusinessType">
@@ -6252,6 +6254,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="50" />
 					<Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="50" />
 					<Property Type="String" Name="CustomerSecondaryName" Nullable="true" MaxLength="50" />
+				    <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
 				</ComplexType>
 				<EntityType Name="tblSOEnquiryProduct">
 					<Key>
@@ -10322,7 +10325,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<EntitySetMapping Name="tblWorkOrders">
 						<EntityTypeMapping TypeName="dbOraRegaModel.tblWorkOrder">
 							<MappingFragment StoreEntitySet="tblWorkOrder">
-								<ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
+								<ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
 								<ScalarProperty Name="RescheduleReasonId" ColumnName="RescheduleReasonId" />
 								<ScalarProperty Name="WOSnapsId" ColumnName="WOSnapsId" />
 								<ScalarProperty Name="WOProofOfPurchaseId" ColumnName="WOProofOfPurchaseId" />
@@ -10598,6 +10602,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 								<ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
 								<ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
 								<ScalarProperty Name="CustomerSecondaryName" ColumnName="CustomerSecondaryName" />
+								<ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
