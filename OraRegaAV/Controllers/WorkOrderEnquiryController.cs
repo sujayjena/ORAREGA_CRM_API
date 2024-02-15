@@ -97,6 +97,26 @@ namespace OraRegaAV.Controllers
                 postedFilesProductIssuePhotos = new List<HttpPostedFile>();
                 postedFilesPurchaseProofPhotos = new List<HttpPostedFile>();
 
+                var allKeys = postedFiles.AllKeys;
+                Dictionary<string, List<HttpPostedFile>> allFilesByKeys = new Dictionary<string, List<HttpPostedFile>>();
+
+                for (int i = 0; i < postedFiles.Count; i++)
+                {
+                    string keyForThisFile = postedFiles.GetKey(i);
+                    if (postedFiles[i].ContentLength > 0)
+                    {
+                        if (allFilesByKeys.ContainsKey(keyForThisFile))
+                        {
+                            allFilesByKeys[keyForThisFile].Add(postedFiles[i]);
+                        }
+                        else
+                        {
+                            allFilesByKeys[keyForThisFile] = new List<HttpPostedFile>();
+                            allFilesByKeys[keyForThisFile].Add(postedFiles[i]);
+                        }
+                    }
+                }
+
                 parameters.Id = Convert.ToInt32(postedForm["Id"].SanitizeValue());
 
                 parameters.MobileNo = postedForm["MobileNo"].SanitizeValue();
@@ -159,6 +179,7 @@ namespace OraRegaAV.Controllers
                 //}
                 #endregion
 
+                /*
                 foreach (string key in postedFiles)
                 {
                     if (string.Equals(key, "ProductIssuePhotos", StringComparison.OrdinalIgnoreCase))
@@ -209,6 +230,61 @@ namespace OraRegaAV.Controllers
                     #endregion
 
                     proofFileparameters.Add(tempPhoto);
+                }
+                */
+
+
+                foreach (var item_Key in allFilesByKeys)
+                {
+                    if (item_Key.Key == "ProductIssuePhotos")
+                    {
+                        foreach (var item_Value in item_Key.Value)
+                        {
+                            tblProductIssuesPhoto tempPhoto = new tblProductIssuesPhoto();
+                            tempPhoto.PhotoPath = item_Value.FileName;
+                            tempPhoto.FilesOriginalName = item_Value.FileName;
+                            tempPhoto.IssueSnap = item_Value;
+                            tempPhoto.IsDeleted = false;
+
+                            #region WO Enquiry Issue photos Validation check
+                            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblProductIssuesPhoto), typeof(TblProductIssuesPhotosMetadata)), typeof(tblProductIssuesPhoto));
+                            _response = ValueSanitizerHelper.GetValidationErrorsList(tempPhoto);
+
+                            if (!_response.IsSuccess)
+                            {
+                                isAllTheIssuePhotoValid = false;
+                                break;
+                            }
+                            #endregion
+
+                            issueFileparameters.Add(tempPhoto);
+                        }
+                    }
+
+                    if (item_Key.Key == "PurchaseProofPhotos")
+                    {
+                        foreach (var item_Value in item_Key.Value)
+                        {
+                            tblPurchaseProofPhoto tempPhoto = new tblPurchaseProofPhoto();
+                            tempPhoto.PhotoPath = item_Value.FileName;
+                            tempPhoto.FilesOriginalName = item_Value.FileName;
+                            tempPhoto.ProofPhoto = item_Value;
+                            tempPhoto.IsDeleted = false;
+
+                            #region WO Enquiry Issue photos Validation check
+                            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblPurchaseProofPhoto), typeof(TblPurchaseProofPhotosMetadata)), typeof(tblPurchaseProofPhoto));
+                            _response = ValueSanitizerHelper.GetValidationErrorsList(tempPhoto);
+
+                            if (!_response.IsSuccess)
+                            {
+                                isAllTheProofPhotoValid = false;
+                                break;
+                            }
+                            #endregion
+
+                            proofFileparameters.Add(tempPhoto);
+                        }
+                    }
                 }
 
                 if (!isAllTheIssuePhotoValid)
@@ -705,7 +781,7 @@ namespace OraRegaAV.Controllers
                         WorkSheet1.Column(4).AutoFit();
                         WorkSheet1.Column(5).AutoFit();
                         WorkSheet1.Column(6).AutoFit();
-                       
+
                         using (MemoryStream memoryStream = new MemoryStream())
                         {
                             excel.SaveAs(memoryStream);

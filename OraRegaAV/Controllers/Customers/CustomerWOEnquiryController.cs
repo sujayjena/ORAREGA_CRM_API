@@ -50,6 +50,23 @@ namespace OraRegaAV.Controllers.Customers
                 postedForm = HttpContext.Current.Request.Form;
                 postedFiles = HttpContext.Current.Request.Files;
 
+                var allKeys = postedFiles.AllKeys;
+                Dictionary<string, List<HttpPostedFile>> allFilesByKeys = new Dictionary<string, List<HttpPostedFile>>();
+
+                for (int i = 0; i < postedFiles.Count; i++)
+                {
+                    string keyForThisFile = postedFiles.GetKey(i);
+                    if (allFilesByKeys.ContainsKey(keyForThisFile))
+                    {
+                        allFilesByKeys[keyForThisFile].Add(postedFiles[i]);
+                    }
+                    else
+                    {
+                        allFilesByKeys[keyForThisFile] = new List<HttpPostedFile>();
+                        allFilesByKeys[keyForThisFile].Add(postedFiles[i]);
+                    }
+                }
+
                 parameters.Id = Convert.ToInt32(postedForm["Id"].SanitizeValue());
                 parameters.CustomerId = Convert.ToInt32(postedForm["CustomerId"] ?? "0");
 
@@ -89,6 +106,7 @@ namespace OraRegaAV.Controllers.Customers
                 }
                 #endregion
 
+                /*
                 foreach (string key in postedFiles)
                 {
                     if (key == "IssuePhoto")
@@ -111,6 +129,34 @@ namespace OraRegaAV.Controllers.Customers
                             break;
                         }
                         #endregion
+                    }
+                }
+                */
+
+                foreach (var item_Key in allFilesByKeys)
+                {
+                    if (item_Key.Key == "IssuePhoto")
+                    {
+                        foreach (var item_Value in item_Key.Value)
+                        {
+                            tblProductIssuesPhoto tempPhoto = new tblProductIssuesPhoto();
+                            tempPhoto.PhotoPath = item_Value.FileName;
+                            tempPhoto.FilesOriginalName = item_Value.FileName;
+                            tempPhoto.IssueSnap = item_Value;
+                            tempPhoto.IsDeleted = false;
+                            issueFileparameters.Add(tempPhoto);
+
+                            #region WO Enquiry Issue photos Validation check
+                            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblProductIssuesPhoto), typeof(TblProductIssuesPhotosMetadata)), typeof(tblProductIssuesPhoto));
+                            _response = ValueSanitizerHelper.GetValidationErrorsList(issueFileparameters);
+
+                            if (!_response.IsSuccess)
+                            {
+                                isAllTheIssuePhotoValid = false;
+                                break;
+                            }
+                            #endregion
+                        }
                     }
                 }
 
