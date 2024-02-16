@@ -32,8 +32,22 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                var tbl = db.tblBranches.Where(x => x.Id == objtblBranch.Id).FirstOrDefault();
+                //duplicate checking
+                if (db.tblBranches.Where(d => d.BranchName == objtblBranch.BranchName && d.Id != objtblBranch.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Branch Name is already exists";
+                    return _response;
+                }
 
+                if (db.tblBranches.Where(d => d.AddressLine1 == objtblBranch.AddressLine1 && d.Id != objtblBranch.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "AddressLine 1 is already exists";
+                    return _response;
+                }
+
+                var tbl = db.tblBranches.Where(x => x.Id == objtblBranch.Id).FirstOrDefault();
                 if (tbl == null)
                 {
                     tbl = new tblBranch();

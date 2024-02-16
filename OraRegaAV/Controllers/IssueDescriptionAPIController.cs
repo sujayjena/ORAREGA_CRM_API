@@ -27,6 +27,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblIssueDescriptions.Where(d => d.IssueDescriptionName == objtblIssueDescription.IssueDescriptionName && d.Id != objtblIssueDescription.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Issue Description Name is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblIssueDescriptions.Where(x => x.Id == objtblIssueDescription.Id).FirstOrDefault();
                 if (tbl == null)
                 {

@@ -26,6 +26,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblWarrantyTypes.Where(d => d.WarrantyType == objtblWarrantyType.WarrantyType && d.Id != objtblWarrantyType.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Warranty Type is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblWarrantyTypes.Where(x => x.Id == objtblWarrantyType.Id).FirstOrDefault();
                 if (tbl == null)
                 {

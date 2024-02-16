@@ -28,6 +28,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblRatePerKMs.Where(d => d.VehicleTypeId == ratePerKM_Request.VehicleTypeId && d.KM == ratePerKM_Request.KM && d.Id != ratePerKM_Request.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Vehicle Type is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblRatePerKMs.Where(x => x.Id == ratePerKM_Request.Id).FirstOrDefault();
                 if (tbl == null)
                 {

@@ -28,6 +28,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblDelayTypes.Where(d => d.DelayType == delayType_Request.DelayType && d.Id != delayType_Request.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Delay Type is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblDelayTypes.Where(x => x.Id == delayType_Request.Id).FirstOrDefault();
                 if (tbl == null)
                 {

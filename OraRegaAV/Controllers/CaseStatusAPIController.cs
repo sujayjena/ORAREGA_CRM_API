@@ -29,9 +29,15 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                bool isStatusNameExists;
+                //duplicate checking
+                if (db.tblCaseStatus.Where(d => d.CaseStatusName == request.CaseStatusName && d.Id != request.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Status Name is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblCaseStatus.Where(x => x.Id == request.Id).FirstOrDefault();
-                string Msg = string.Empty;
                 if (tbl == null)
                 {
                     tbl = new tblCaseStatu();
@@ -42,8 +48,7 @@ namespace OraRegaAV.Controllers
 
                     db.tblCaseStatus.Add(tbl);
 
-                    isStatusNameExists = db.tblCaseStatus.Where(s => s.CaseStatusName == request.CaseStatusName).Any();
-                    Msg = "Case Status details saved successfully";
+                    _response.Message = "Case Status details saved successfully";
                 }
                 else
                 {
@@ -52,19 +57,11 @@ namespace OraRegaAV.Controllers
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.ModifiedDate = DateTime.Now;
 
-                    isStatusNameExists = db.tblCaseStatus.Where(s => s.Id != request.Id && s.CaseStatusName == request.CaseStatusName).Any();
-                    Msg = "Case Status details updated successfully";
+                    _response.Message = "Case Status details updated successfully";
                 }
 
-                if (!isStatusNameExists)
-                {
-                    await db.SaveChangesAsync();
-                    _response = new Response() { IsSuccess = true, Message = Msg };
-                }
-                else
-                {
-                    _response = new Response() { IsSuccess = false, Message = "Status Name is already exists" };
-                }
+                await db.SaveChangesAsync();
+                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {

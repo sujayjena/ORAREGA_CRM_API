@@ -26,6 +26,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblPaymentTerms.Where(d => d.PaymentTerms == objtblPaymentTerm.PaymentTerms && d.Id != objtblPaymentTerm.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Payment Terms is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblPaymentTerms.Where(x => x.Id == objtblPaymentTerm.Id).FirstOrDefault();
                 if (tbl == null)
                 {

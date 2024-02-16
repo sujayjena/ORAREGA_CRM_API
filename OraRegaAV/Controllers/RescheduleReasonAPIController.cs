@@ -28,6 +28,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblRescheduleReasons.Where(d => d.RescheduleReason == rescheduleReason_Request.RescheduleReason && d.Id != rescheduleReason_Request.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Reschedule Reason is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblRescheduleReasons.Where(x => x.Id == rescheduleReason_Request.Id).FirstOrDefault();
                 if (tbl == null)
                 {

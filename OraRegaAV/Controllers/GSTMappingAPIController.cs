@@ -34,6 +34,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblGSTMappings.Where(d => d.GST == GSTMapping_Request.GST && d.Id != GSTMapping_Request.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "GST is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblGSTMappings.Where(x => x.Id == GSTMapping_Request.Id).FirstOrDefault();
                 if (tbl == null)
                 {

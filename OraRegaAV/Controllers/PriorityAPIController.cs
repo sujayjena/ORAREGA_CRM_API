@@ -26,6 +26,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblPriorities.Where(d => d.PriorityName == tblPriority.PriorityName && d.Id != tblPriority.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Priority Name is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblPriorities.Where(x => x.Id == tblPriority.Id).FirstOrDefault();
                 if (tbl == null)
                 {

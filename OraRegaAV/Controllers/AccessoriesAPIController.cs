@@ -27,8 +27,15 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                var tbl = db.tblAccessories.Where(x => x.Id == objtblAccessory.Id).FirstOrDefault();
+                //duplicate checking
+                if (db.tblAccessories.Where(d => d.AccessoriesName == objtblAccessory.AccessoriesName && d.Id != objtblAccessory.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Accessory Name is already exists";
+                    return _response;
+                }
 
+                var tbl = db.tblAccessories.Where(x => x.Id == objtblAccessory.Id).FirstOrDefault();
                 if (tbl == null)
                 {
                     tbl = new tblAccessory();

@@ -28,6 +28,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblCountries.Where(d => d.CountryName == objtblCountry.CountryName && d.Id != objtblCountry.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Country Name is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblCountries.Where(x => x.Id == objtblCountry.Id).FirstOrDefault();
 
                 if (tbl == null)
@@ -121,6 +129,14 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
+                //duplicate checking
+                if (db.tblStates.Where(d => d.StateName == objtblState.StateName && d.Id != objtblState.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "State Name is already exists";
+                    return _response;
+                }
+
                 tbl = db.tblStates.Where(x => x.Id == objtblState.Id).FirstOrDefault();
 
                 if (tbl == null)

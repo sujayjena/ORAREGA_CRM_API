@@ -26,6 +26,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblOperatingSystems.Where(d => d.OperatingSystemName == objtblOperatingSystem.OperatingSystemName && d.Id != objtblOperatingSystem.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Operating System Name is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblOperatingSystems.Where(x => x.Id == objtblOperatingSystem.Id).FirstOrDefault();
                 if (tbl == null)
                 {

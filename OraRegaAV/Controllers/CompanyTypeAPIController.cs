@@ -36,8 +36,15 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
-                var tbl = db.tblCompanyTypes.Where(x => x.Id == objtblCompanyType.Id).FirstOrDefault();
+                //duplicate checking
+                if (db.tblCompanyTypes.Where(d => d.CompanyType == objtblCompanyType.CompanyType && d.Id != objtblCompanyType.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Company Type is already exists";
+                    return _response;
+                }
 
+                var tbl = db.tblCompanyTypes.Where(x => x.Id == objtblCompanyType.Id).FirstOrDefault();
                 if (tbl == null)
                 {
                     tbl = new tblCompanyType();

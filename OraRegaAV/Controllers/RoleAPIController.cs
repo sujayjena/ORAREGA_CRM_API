@@ -40,6 +40,7 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
+                //duplicate checking
                 if (db.tblRoles.Where(d => d.RoleName == objtblRole.RoleName && d.Id != objtblRole.Id).Any())
                 {
                     _response.IsSuccess = false;
@@ -147,6 +148,14 @@ namespace OraRegaAV.Controllers.API
             tblRoleHierarchy tbl;
             try
             {
+                //duplicate checking
+                if (db.tblRoleHierarchies.Where(d => d.RoleId == objRolHierarchy.RoleId && d.ReportingTo == objRolHierarchy.ReportingTo && d.Id != objRolHierarchy.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Role Hierarchy is already exists";
+                    return _response;
+                }
+
                 tbl = db.tblRoleHierarchies.Where(x => x.Id == objRolHierarchy.Id).FirstOrDefault();
                 if (tbl == null)
                 {

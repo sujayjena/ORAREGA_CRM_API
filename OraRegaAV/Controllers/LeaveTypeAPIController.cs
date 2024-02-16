@@ -26,6 +26,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblLeaveTypes.Where(d => d.LeaveType == objtblLeaveType.LeaveType && d.Id != objtblLeaveType.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Leave Type is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblLeaveTypes.Where(x => x.Id == objtblLeaveType.Id).FirstOrDefault();
                 if (tbl == null)
                 {

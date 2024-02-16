@@ -32,6 +32,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblHSNCodeGSTMappings.Where(d => d.HSNCode == objtblHSNCodeGSTMapping.HSNCode && d.StateStatus == objtblHSNCodeGSTMapping.StateStatus && d.Id != objtblHSNCodeGSTMapping.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "HSN Code GST Mapping is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblHSNCodeGSTMappings.Where(x => x.Id == objtblHSNCodeGSTMapping.Id).FirstOrDefault();
                 if (tbl == null)
                 {

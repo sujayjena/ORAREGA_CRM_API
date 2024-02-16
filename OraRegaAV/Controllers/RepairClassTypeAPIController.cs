@@ -28,6 +28,14 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                //duplicate checking
+                if (db.tblRepairClassTypes.Where(d => d.RepairClassType == repairClassType_Request.RepairClassType && d.Id != repairClassType_Request.Id).Any())
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Repair Class Type is already exists";
+                    return _response;
+                }
+
                 var tbl = db.tblRepairClassTypes.Where(x => x.Id == repairClassType_Request.Id).FirstOrDefault();
                 if (tbl == null)
                 {
