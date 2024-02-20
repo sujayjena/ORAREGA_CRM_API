@@ -3022,5 +3022,42 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesListByReportingTo_Result>("GetEmployeesListByReportingTo", employeeIdParameter);
         }
+    
+        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, Nullable<int> branchId, string quotationNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(int));
+    
+            var quotationNumberParameter = quotationNumber != null ?
+                new ObjectParameter("QuotationNumber", quotationNumber) :
+                new ObjectParameter("QuotationNumber", typeof(string));
+    
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
     }
 }
