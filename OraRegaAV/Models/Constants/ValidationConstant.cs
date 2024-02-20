@@ -198,7 +198,7 @@ namespace OraRegaAV.Models.Constants
         public const string DesignationRegExp_Msg = @"Designation is Invalid";
         public const string Designation_MaxLength_Msg = "More than 100 characters are not allowed for Designation";
 
-        public const string ImageFileRegExp = @"^[a-zA-Z0-9\s_\\.:-]+(png|jpg|jpeg)$";
+        public const string ImageFileRegExp = @"^[a-zA-Z0-9\s_\\.:-]+(pdf|png|jpg|jpeg)$";
         public const string ImageFileRegExp_Msg = "Image file name is not valid or file type is other than png or jpg or jpeg";
 
         public const string PurchaseProofFileRegExp = @"^[a-zA-Z0-9\s_\\.:-]+(pdf|png|jpg|jpeg)$";

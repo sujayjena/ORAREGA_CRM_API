@@ -898,7 +898,7 @@ namespace OraRegaAV.App_Start
                     type = "file",
                     required = false,
                     pattern = ValidationConstant.ImageFileRegExp,
-                    description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
+                    description = $"png | jpg | jpeg | pdf. Validation pattern = {ValidationConstant.ImageFileRegExp}"
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -908,7 +908,7 @@ namespace OraRegaAV.App_Start
                     type = "file",
                     required = false,
                     pattern = ValidationConstant.ImageFileRegExp,
-                    description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
+                    description = $"png | jpg | jpeg | pdf. Validation pattern = {ValidationConstant.ImageFileRegExp}"
                 });
             }
             #endregion
@@ -1490,7 +1490,7 @@ namespace OraRegaAV.App_Start
                     type = "file",
                     required = false,
                     pattern = ValidationConstant.ImageFileRegExp,
-                    description = $".png | .jpg | .jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}."
+                    description = $".png | .jpg | .jpeg | .pdf. Validation pattern = {ValidationConstant.ImageFileRegExp}."
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -1500,7 +1500,7 @@ namespace OraRegaAV.App_Start
                     type = "file",
                     required = false,
                     pattern = ValidationConstant.ImageFileRegExp,
-                    description = $".png | .jpg | .jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}."
+                    description = $".png | .jpg | .jpeg | .pdf. Validation pattern = {ValidationConstant.ImageFileRegExp}."
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -1510,7 +1510,7 @@ namespace OraRegaAV.App_Start
                     type = "file",
                     required = false,
                     pattern = ValidationConstant.ImageFileRegExp,
-                    description = $".png | .jpg | .jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}."
+                    description = $".png | .jpg | .jpeg | .pdf. Validation pattern = {ValidationConstant.ImageFileRegExp}."
                 });
             }
             #endregion

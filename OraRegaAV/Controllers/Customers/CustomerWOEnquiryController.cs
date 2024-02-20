@@ -323,8 +323,13 @@ namespace OraRegaAV.Controllers.Customers
         {
             GetWOEnquiryDetailsForCustomer_Result result;
             List<tblProductIssuesPhoto> lstWOEnquiryIssueSnaps;
-            List<byte[]> lstIssueSnaps = new List<byte[]>();
+            List<tblPurchaseProofPhoto> lstWOEnquiryPurchaseProofPhoto;
+            //List<byte[]> lstIssueSnaps = new List<byte[]>();
+            //List<byte[]> lstPurchaseProofPhoto = new List<byte[]>();
+            List<string> lstIssueSnaps = new List<string>();
+            List<string> lstPurchaseProofPhoto = new List<string>();
             FileManager fileManager = new FileManager();
+            var host = Url.Content("~/");
 
             try
             {
@@ -338,16 +343,26 @@ namespace OraRegaAV.Controllers.Customers
                     result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), WOEnquiryId).FirstOrDefault();
 
                     lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == WOEnquiryId && ip.IsDeleted == false).ToListAsync();
+                    lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == WOEnquiryId && ip.IsDeleted == false).ToListAsync();
 
                     foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
                     {
-                        lstIssueSnaps.Add(fileManager.GetWOEnqIssueSnaps(WOEnquiryId, ip.PhotoPath, HttpContext.Current));
+                        //lstIssueSnaps.Add(fileManager.GetWOEnqIssueSnaps(WOEnquiryId, ip.PhotoPath, HttpContext.Current));
+                        var path = host + fileManager.GetWOEnqIssueSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
+                        lstIssueSnaps.Add(path);
+                    }
+
+                    foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
+                    {
+                        var path = host + fileManager.GetWOProductProofSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
+                        lstPurchaseProofPhoto.Add(path);
                     }
 
                     _response.Data = new
                     {
                         WOEnquiryDetails = result,
-                        IssueSnaps = lstIssueSnaps
+                        IssueSnaps = lstIssueSnaps,
+                        PurchaseProof = lstPurchaseProofPhoto
                     };
                 }
             }

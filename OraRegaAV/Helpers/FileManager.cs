@@ -208,12 +208,23 @@ namespace OraRegaAV.Helpers
 
             return result;
         }
+        public string GetWOEnqIssueSnapsFile(int WOEnquiryId, string imageFileName)
+        {
+            var path = "Uploads/WOEnquiries/IssueSnaps/" + WOEnquiryId + "/" + imageFileName;
+            return path;
+        }
 
         public string UploadWOProductProofSnaps(int woEnquiryId, HttpPostedFile file, HttpContext context)
         {
             string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\WOEnquiries\\ProductProofs\\{woEnquiryId}\\";
             string fileName = SaveFileToPath(folderPath, file);
             return fileName;
+        }
+
+        public string GetWOProductProofSnapsFile(int WOEnquiryId, string imageFileName)
+        {
+            var path = "Uploads/WOEnquiries/ProductProofs/" + WOEnquiryId + "/" + imageFileName;
+            return path;
         }
 
         public string ExtendedWarrantyProofSnaps(int extendedWarrantryId, HttpPostedFile file, HttpContext context)
