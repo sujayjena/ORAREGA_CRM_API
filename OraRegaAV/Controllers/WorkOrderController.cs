@@ -76,8 +76,27 @@ namespace OraRegaAV.Controllers
                 postedFilesProductIssuePhotos = new List<HttpPostedFile>();
                 postedFilesPurchaseProofPhotos = new List<HttpPostedFile>();
 
-                parameters.Id = Convert.ToInt32(postedForm["Id"].SanitizeValue());
+                var allKeys = postedFiles.AllKeys;
+                Dictionary<string, List<HttpPostedFile>> allFilesByKeys = new Dictionary<string, List<HttpPostedFile>>();
 
+                for (int i = 0; i < postedFiles.Count; i++)
+                {
+                    string keyForThisFile = postedFiles.GetKey(i);
+                    if (postedFiles[i].ContentLength > 0)
+                    {
+                        if (allFilesByKeys.ContainsKey(keyForThisFile))
+                        {
+                            allFilesByKeys[keyForThisFile].Add(postedFiles[i]);
+                        }
+                        else
+                        {
+                            allFilesByKeys[keyForThisFile] = new List<HttpPostedFile>();
+                            allFilesByKeys[keyForThisFile].Add(postedFiles[i]);
+                        }
+                    }
+                }
+
+                parameters.Id = Convert.ToInt32(postedForm["Id"].SanitizeValue());
                 parameters.SupportTypeId = Convert.ToInt32(postedForm["SupportTypeId"] ?? "0");
                 //parameters.TicketLogDate = Convert.ToDateTime(postedForm["TicketLogDate"] ?? null);
                 parameters.TicketLogDate = DateTime.Now;
@@ -195,6 +214,70 @@ namespace OraRegaAV.Controllers
                 //    proofFileparameters.Clear();
                 //    return _response;
                 //}
+
+                foreach (var item_Key in allFilesByKeys)
+                {
+                    if (item_Key.Key == "ProductIssuePhotos")
+                    {
+                        foreach (var item_Value in item_Key.Value)
+                        {
+                            tblProductIssuesPhoto tempPhoto = new tblProductIssuesPhoto();
+                            tempPhoto.PhotoPath = item_Value.FileName;
+                            tempPhoto.FilesOriginalName = item_Value.FileName;
+                            tempPhoto.IssueSnap = item_Value;
+                            tempPhoto.IsDeleted = false;
+
+                            #region Work Order Product Issue photos Validation check
+                            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblProductIssuesPhoto), typeof(TblProductIssuesPhotosMetadata)), typeof(tblProductIssuesPhoto));
+                            _response = ValueSanitizerHelper.GetValidationErrorsList(tempPhoto);
+
+                            if (!_response.IsSuccess)
+                            {
+                                isAllTheIssuePhotoValid = false;
+                                break;
+                            }
+                            #endregion
+
+                            issueFileparameters.Add(tempPhoto);
+                        }
+                    }
+
+                    if (item_Key.Key == "PurchaseProofPhotos")
+                    {
+                        foreach (var item_Value in item_Key.Value)
+                        {
+                            tblPurchaseProofPhoto tempPhoto = new tblPurchaseProofPhoto();
+                            tempPhoto.PhotoPath = item_Value.FileName;
+                            tempPhoto.FilesOriginalName = item_Value.FileName;
+                            tempPhoto.ProofPhoto = item_Value;
+                            tempPhoto.IsDeleted = false;
+
+                            #region Work Order Purchase Proof photos Validation check
+                            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(tblPurchaseProofPhoto), typeof(TblPurchaseProofPhotosMetadata)), typeof(tblPurchaseProofPhoto));
+                            _response = ValueSanitizerHelper.GetValidationErrorsList(tempPhoto);
+
+                            if (!_response.IsSuccess)
+                            {
+                                isAllTheProofPhotoValid = false;
+                                break;
+                            }
+                            #endregion
+
+                            proofFileparameters.Add(tempPhoto);
+                        }
+                    }
+                }
+
+                if (!isAllTheIssuePhotoValid)
+                {
+                    issueFileparameters.Clear();
+                    return _response;
+                }
+                else if (!isAllTheProofPhotoValid)
+                {
+                    proofFileparameters.Clear();
+                    return _response;
+                }
 
                 tblWorkOrder = await db.tblWorkOrders.Where(w => w.Id == parameters.Id).FirstOrDefaultAsync();
 
@@ -316,6 +399,8 @@ namespace OraRegaAV.Controllers
                     trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.Created), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
 
                     #endregion
+
+                    await db.SaveChangesAsync();
                 }
                 else
                 {
@@ -376,12 +461,50 @@ namespace OraRegaAV.Controllers
                     tblWorkOrder.ProdDescriptionIfOther = parameters.ProdDescriptionIfOther;
                     tblWorkOrder.CustomerSecondaryName = parameters.CustomerSecondaryName;
 
-
-
                     _response.Message = $"Work Order details updated successfully";
                 }
 
                 //If new files are uploaded then to delete old/existing issue snap files of Work Enquiry
+                if (issueFileparameters.Count > 0)
+                {
+                    fileManager.DeleteWorkOrderProductIssue(tblWorkOrder.Id, HttpContext.Current);
+
+                    //To set Delete flags for Old files
+                    db.tblProductIssuesPhotos.Where(p => p.WorkOrderId == tblWorkOrder.Id).ToList().ForEach(p =>
+                    {
+                        p.IsDeleted = true;
+                    });
+                }
+
+                //If new files are uploaded then to delete old/existing Product Proof files of Work Enquiry
+                if (proofFileparameters.Count > 0)
+                {
+                    fileManager.DeleteWorkOrderPurchaseProof(tblWorkOrder.Id, HttpContext.Current);
+
+                    //To set Delete flags for Old files
+                    db.tblPurchaseProofPhotos.Where(p => p.WorkOrderId == tblWorkOrder.Id).ToList().ForEach(p =>
+                    {
+                        p.IsDeleted = true;
+                    });
+                }
+
+                foreach (tblProductIssuesPhoto issueFile in issueFileparameters)
+                {
+                    issueFile.WOEnquiryId = 0;
+                    issueFile.WorkOrderId = tblWorkOrder.Id;
+                    issueFile.PhotoPath = fileManager.UploadWorkOrderProductIssue(issueFile.WorkOrderId ?? 0, issueFile.IssueSnap, HttpContext.Current);
+                    db.tblProductIssuesPhotos.Add(issueFile);
+                }
+
+                foreach (tblPurchaseProofPhoto proofFile in proofFileparameters)
+                {
+                    proofFile.WOEnquiryId = 0;
+                    proofFile.WorkOrderId = tblWorkOrder.Id;
+                    proofFile.PhotoPath = fileManager.UploadWorkOrderPurchaseProof(proofFile.WorkOrderId ?? 0 , proofFile.ProofPhoto, HttpContext.Current);
+                    db.tblPurchaseProofPhotos.Add(proofFile);
+                }
+
+                ////If new files are uploaded then to delete old/existing issue snap files of Work Enquiry
                 //if (issueFileparameters.Count > 0)
                 //{
                 //    fileManager.DeleteWOSnaps(tblWorkOrder.Id, HttpContext.Current);
@@ -393,7 +516,7 @@ namespace OraRegaAV.Controllers
                 //    });
                 //}
 
-                //If new files are uploaded then to delete old/existing Product Proof files of Work Enquiry
+                ////If new files are uploaded then to delete old/ existing Product Proof files of Work Enquiry
                 //if (proofFileparameters.Count > 0)
                 //{
                 //    fileManager.DeleteWOProofOfPurchase(tblWorkOrder.Id, HttpContext.Current);

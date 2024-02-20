@@ -280,5 +280,46 @@ namespace OraRegaAV.Helpers
             {
             }
         }
+
+        public string UploadWorkOrderProductIssue(int workOrderId, HttpPostedFile file, HttpContext context)
+        {
+            string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\WorkOrder\\ProductIssue\\{workOrderId}\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+        public string GetWorkOrderProductIssueFile(int workOrderId, string imageFileName)
+        {
+            var path = "Uploads/WorkOrder/ProductIssue/" + workOrderId + "/" + imageFileName;
+            return path;
+        }
+        public void DeleteWorkOrderProductIssue(int workOrderId, HttpContext context)
+        {
+            string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\WorkOrder\\ProductIssue\\{workOrderId}\\";
+            if (Directory.Exists(folderPath))
+            {
+                Directory.Delete(folderPath, true);
+            }
+        }
+
+        public string UploadWorkOrderPurchaseProof(int workOrderId, HttpPostedFile file, HttpContext context)
+        {
+            string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\WorkOrder\\PurchaseProofPhotos\\{workOrderId}\\";
+            string fileName = SaveFileToPath(folderPath, file);
+            return fileName;
+        }
+
+        public string GetWorkOrderPurchaseProofFile(int workOrderId, string imageFileName)
+        {
+            var path = "Uploads/WorkOrder/PurchaseProofPhotos/" + workOrderId + "/" + imageFileName;
+            return path;
+        }
+        public void DeleteWorkOrderPurchaseProof(int workOrderId, HttpContext context)
+        {
+            string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\WorkOrder\\PurchaseProofPhotos\\{workOrderId}\\";
+            if (Directory.Exists(folderPath))
+            {
+                Directory.Delete(folderPath, true);
+            }
+        }
     }
 }
