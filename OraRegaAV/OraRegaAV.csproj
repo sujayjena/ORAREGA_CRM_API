@@ -374,6 +374,7 @@
     <Compile Include="Controllers\OperatingSystemAPIController.cs" />
     <Compile Include="Controllers\PartDescriptionAPIController.cs" />
     <Compile Include="Controllers\PartDetailAPIController.cs" />
+    <Compile Include="Controllers\QuotationAPIController.cs" />
     <Compile Include="Controllers\RatePerKMAPIController.cs" />
     <Compile Include="Controllers\RepairClassTypeAPIController.cs" />
     <Compile Include="Controllers\RequestForAdvanceController.cs" />
@@ -1034,6 +1035,12 @@
     <Compile Include="DBEntity\tblQueue.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblQuotation.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotationPartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblRatePerKM.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1309,6 +1316,7 @@
     <Compile Include="Models\PartDetailsModels.cs" />
     <Compile Include="Models\ProductDescriptionViewModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\QuotationViewModel.cs" />
     <Compile Include="Models\RatePerKMModel.cs" />
     <Compile Include="Models\RepairClassTypeModel.cs" />
     <Compile Include="Models\ReportSearchModel.cs" />
@@ -1365,6 +1373,7 @@
     <Folder Include="Uploads\WOEnquiries\ProductProofs\" />
     <Folder Include="Views\BusinessTypeAPI\" />
     <Folder Include="Views\ContactUsAPI\" />
+    <Folder Include="Views\QuotationAPI\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

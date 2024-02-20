@@ -147,6 +147,8 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrderEngineerAllocatedHistory" Width="1.5" PointX="35.375" PointY="15.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblOTP" Width="1.5" PointX="35.375" PointY="18.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblSMSLogHistory" Width="1.5" PointX="35.375" PointY="22.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotation" Width="1.5" PointX="35.375" PointY="27.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetail" Width="1.5" PointX="29.375" PointY="35.75" />
        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
