@@ -26,5 +26,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsRegistrationPending { get; set; }
+        public string SourceChannel { get; set; }
     }
 }

@@ -183,7 +183,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{\r\n\t\"Id\": 0,\r\n\t\"FirstName\": \"string\",\r\n\t\"LastName\": \"string\",\r\n\t\"Email\": \"string\",\r\n\t\"Mobile\": \"string\",\r\n\t\"TermsConditionsAccepted\": false,\r\n\t\"Addresses\": [\r\n\t\t{{\r\n\t\t\t\"Id\": 0,\r\n\t\t\t\"NameForAddress\": \"string\",\r\n\t\t\t\"MobileNo\": \"string\",\r\n\t\t\t\"Address\": \"string\",\r\n\t\t\t\"StateId\": 0,\r\n\t\t\t\"CityId\": 0,\r\n\t\t\t\"AreaId\": 0,\r\n\t\t\t\"PinCodeId\": 0,\r\n\t\t\t\"IsActive\": true,\r\n\t\t\t\"IsDefault\": false,\r\n\t\t\t\"AddressType\":0\r\n\t\t}}\r\n\t]\r\n}}"
+                    description = $"{{\r\n\t\"Id\": 0,\r\n\t\"FirstName\": \"string\",\r\n\t\"LastName\": \"string\",\r\n\t\"Email\": \"string\",\r\n\t\"Mobile\": \"string\",\r\n\t\"SourceChannel\":\"W\",\r\n\t\"TermsConditionsAccepted\": false,\r\n\t\"Addresses\": [\r\n\t\t{{\r\n\t\t\t\"Id\": 0,\r\n\t\t\t\"NameForAddress\": \"string\",\r\n\t\t\t\"MobileNo\": \"string\",\r\n\t\t\t\"Address\": \"string\",\r\n\t\t\t\"StateId\": 0,\r\n\t\t\t\"CityId\": 0,\r\n\t\t\t\"AreaId\": 0,\r\n\t\t\t\"PinCodeId\": 0,\r\n\t\t\t\"IsActive\": true,\r\n\t\t\t\"IsDefault\": false,\r\n\t\t\t\"AddressType\":0\r\n\t\t}}\r\n\t]\r\n}}"
                 });
 
                 #region OLD Parameters

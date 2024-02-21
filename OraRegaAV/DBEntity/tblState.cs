@@ -22,5 +22,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> StateCode { get; set; }
+        public string StateShortCode { get; set; }
     }
 }

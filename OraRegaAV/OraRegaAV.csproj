@@ -367,6 +367,7 @@
     <Compile Include="Controllers\EmployeeAPIController.cs" />
     <Compile Include="Controllers\GSTMappingAPIController.cs" />
     <Compile Include="Controllers\HSNCodeGSTMappingAPIController.cs" />
+    <Compile Include="Controllers\InvoiceAPIController.cs" />
     <Compile Include="Controllers\IssueDescriptionAPIController.cs" />
     <Compile Include="Controllers\LeaveTypeAPIController.cs" />
     <Compile Include="Controllers\LoginAPIController.cs" />
@@ -541,6 +542,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetInventoryReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetInvoiceList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetIssueDescriptionList_Result.cs">
@@ -930,6 +934,12 @@
     <Compile Include="DBEntity\tblHSNCodeGSTMapping.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblInvoice.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblInvoicePartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblIssueDescription.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1233,6 +1243,7 @@
     <Compile Include="Models\CareerPostViewModel.cs" />
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\DepartmentModels.cs" />
+    <Compile Include="Models\InvoiceViewModel.cs" />
     <Compile Include="Models\ManageWebsiteViewModel.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\BranchQueueSaveModel.cs" />

@@ -24,6 +24,7 @@ namespace OraRegaAV.Controllers
             _response.IsSuccess = true;
         }
 
+        /*
         [HttpPost]
         [Route("api/QuotationAPI/SaveQuotation")]
         public async Task<Response> SaveQuotation(QuotationRequest request)
@@ -380,5 +381,6 @@ namespace OraRegaAV.Controllers
 
             return _response;
         }
+        */
     }
 }

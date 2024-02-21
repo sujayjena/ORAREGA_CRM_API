@@ -144,6 +144,7 @@ namespace OraRegaAV.Controllers.API
                     tbl = new tblState();
                     tbl.StateName = objtblState.StateName;
                     tbl.StateCode= objtblState.StateCode;
+                    tbl.StateShortCode = objtblState.StateShortCode;
                     tbl.IsActive = objtblState.IsActive;
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.CreatedDate = DateTime.Now;
@@ -156,6 +157,7 @@ namespace OraRegaAV.Controllers.API
                 {
                     tbl.StateName = objtblState.StateName;
                     tbl.StateCode = objtblState.StateCode;
+                    tbl.StateShortCode = objtblState.StateShortCode;
                     tbl.IsActive = objtblState.IsActive;
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.ModifiedDate = DateTime.Now;

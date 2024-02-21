@@ -149,6 +149,8 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblSMSLogHistory" Width="1.5" PointX="35.375" PointY="22.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotation" Width="1.5" PointX="35.375" PointY="27.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetail" Width="1.5" PointX="29.375" PointY="35.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoice" Width="1.5" PointX="35.375" PointY="32.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoicePartDetail" Width="1.5" PointX="36.375" PointY="0.75" />
        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

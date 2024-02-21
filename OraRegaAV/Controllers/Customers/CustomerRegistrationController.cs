@@ -408,6 +408,7 @@ namespace OraRegaAV.Controllers.Customers
                     tblCustomer.IsActive = true;
                     tblCustomer.IsRegistrationPending = false;
                     tblCustomer.ProfilePicturePath = parameters.ProfilePicturePath;
+                    tblCustomer.SourceChannel = parameters.SourceChannel;
 
                     tblCustomer.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties.ContainsKey("UserId") ? ActionContext.Request.Properties["UserId"] : 0);
                     tblCustomer.CreatedDate = DateTime.Now;
@@ -430,6 +431,8 @@ namespace OraRegaAV.Controllers.Customers
                     }
                     tblCustomer.IsActive = true;
                     tblCustomer.IsRegistrationPending = false;
+                    tblCustomer.SourceChannel = parameters.SourceChannel;
+
                     tblCustomer.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                     tblCustomer.ModifiedDate = DateTime.Now;
 

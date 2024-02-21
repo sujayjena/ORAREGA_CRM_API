@@ -10,16 +10,17 @@
 namespace OraRegaAV.DBEntity
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GetStateList_Result
+    public partial class tblInvoicePartDetail
     {
         public int Id { get; set; }
-        public string StateName { get; set; }
-        public Nullable<int> StateCode { get; set; }
-        public string StateShortCode { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public string CreatorName { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> InvoiceId { get; set; }
+        public Nullable<int> PartId { get; set; }
+        public Nullable<int> Qty { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public Nullable<int> DiscPerct { get; set; }
+        public Nullable<decimal> DiscValue { get; set; }
+        public Nullable<decimal> TotalAmount { get; set; }
     }
 }
