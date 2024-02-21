@@ -6318,6 +6318,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="50" />
 					<Property Type="String" Name="CustomerSecondaryName" Nullable="true" MaxLength="50" />
 				    <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
+					<Property Type="Int32" Name="RescheduleReasonId" Nullable="true" />
+					<Property Type="String" Name="RescheduleReason" Nullable="true" />
+					<Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
 				</ComplexType>
 				<EntityType Name="tblSOEnquiryProduct">
 					<Key>
@@ -10740,6 +10743,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 								<ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
 								<ScalarProperty Name="CustomerSecondaryName" ColumnName="CustomerSecondaryName" />
 								<ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+							    <ScalarProperty Name="RescheduleReasonId" ColumnName="RescheduleReasonId" />
+						        <ScalarProperty Name="RescheduleReason" ColumnName="RescheduleReason" />
+					            <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>

@@ -1030,6 +1030,9 @@ namespace OraRegaAV.Controllers
                     workOrderListObj.CustomerSecondaryName = workOrderObj.CustomerSecondaryName;
                     workOrderListObj.EngineerMobile = workOrderObj.EngineerMobile;
                     workOrderListObj.OrganizationName = workOrderObj.OrganizationName;
+                    workOrderListObj.RescheduleReasonId = workOrderObj.RescheduleReasonId;
+                    workOrderListObj.RescheduleReason = workOrderObj.RescheduleReason;
+                    workOrderListObj.RescheduleDate = workOrderObj.RescheduleDate;
 
                     var vRemarkList = db.tblWORepairRemarks.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
 

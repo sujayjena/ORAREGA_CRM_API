@@ -98,5 +98,8 @@ namespace OraRegaAV.DBEntity
         public string ProdDescriptionIfOther { get; set; }
         public string CustomerSecondaryName { get; set; }
         public string OrganizationName { get; set; }
+        public Nullable<int> RescheduleReasonId { get; set; }
+        public string RescheduleReason { get; set; }
+        public Nullable<System.DateTime> RescheduleDate { get; set; }
     }
 }
