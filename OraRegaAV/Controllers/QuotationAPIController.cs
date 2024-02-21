@@ -140,8 +140,8 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        [Route("api/QuotationAPI/GetQuotationList")]
-        public Response GetQuotationList(QuotationSearchParameters parameters)
+        [Route("api/QuotationAPI/QuotationList")]
+        public Response QuotationList(QuotationSearchParameters parameters)
         {
             List<GetQuotationList_Response> tblQuotationList = new List<GetQuotationList_Response>();
 
@@ -193,8 +193,8 @@ namespace OraRegaAV.Controllers
                         CreatorName = item.CreatorName,
                     };
 
-                    var vWOPartsList = db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == item.WorkOrderId).ToList();
-                    foreach (var itemWOPart in vWOPartsList)
+                    var vPartsList = db.tblQuotationPartDetails.Where(x => x.QuotationId == item.Id).ToList();
+                    foreach (var itemWOPart in vPartsList)
                     {
                         string sPartName = "";
                         string sPartNumber = "";
@@ -232,16 +232,137 @@ namespace OraRegaAV.Controllers
                             PartNumber = sPartNumber,
                             HSN_SAC = sHSNCode,
                             PartDescription = sPartDescription,
-                            Qty = itemWOPart.Quantity,
-                            Price = vPartObj.PurchasePrice,
-                            DiscPerct = 0,
-                            DiscValue = 0,
-                            CGSTPerct = 0,
-                            CGSTValue = 0,
-                            SGSTPerct = 0,
-                            SGSTValue = 0,
-                            IGSTPerct = 0,
-                            IGSTValue = 0
+                            Qty = itemWOPart.Qty,
+                            Price = itemWOPart.Price,
+                            DiscPerct = itemWOPart.DiscPerct,
+                            DiscValue = itemWOPart.DiscValue,
+                            CGSTPerct = itemWOPart.CGSTPerct,
+                            CGSTValue = itemWOPart.CGSTValue,
+                            SGSTPerct = itemWOPart.SGSTPerct,
+                            SGSTValue = itemWOPart.SGSTValue,
+                            IGSTPerct = itemWOPart.IGSTPerct,
+                            IGSTValue = itemWOPart.IGSTValue
+                        });
+                    }
+
+                    tblQuotationList.Add(vItemObj);
+                }
+
+                _response.Data = tblQuotationList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/QuotationAPI/QuotationDetailByQuotationNumber")]
+        public Response QuotationDetailByQuotationNumber(string QuotationNumber)
+        {
+            List<GetQuotationList_Response> tblQuotationList = new List<GetQuotationList_Response>();
+
+            try
+            {
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                var vQuotationObjList = db.GetQuotationList(0, 0, QuotationNumber, string.Empty, string.Empty, 0, 0, vTotal, userId).ToList();
+
+                foreach (var item in vQuotationObjList)
+                {
+                    var vItemObj = new GetQuotationList_Response()
+                    {
+                        Id = item.Id,
+                        QuoteDate = item.QuoteDate,
+                        QuotationNumber = item.QuotationNumber,
+                        WorkOrderId = item.WorkOrderId,
+                        WorkOrderNumber = item.WorkOrderNumber,
+                        CustomerGstNumber = item.CustomerGstNumber,
+                        ServiceAddressId = item.ServiceAddressId,
+                        BillToAddress = item.BillToAddress,
+                        DeliverToAddress = item.DeliverToAddress,
+                        CustomerName = item.CustomerName,
+                        ContactPerson = item.ContactPerson,
+                        CustomerEmail = item.CustomerEmail,
+                        CustomerMobile = item.CustomerMobile,
+                        BranchId = item.BranchId,
+                        BranchName = item.BranchName,
+                        BranchOfficeAddress = item.BranchOfficeAddress,
+                        BranchGSTNumber = item.BranchGSTNumber,
+                        ProductModelId = item.ProductModelId,
+                        ProductModel = item.ProductModel,
+                        ProdModelIfOther = item.ProdModelIfOther,
+                        ProductSerialNumber = item.ProductSerialNumber,
+                        ProductNumber = item.ProductNumber,
+                        ProductDescriptionId = item.ProductDescriptionId,
+                        ProductDescription = item.ProductDescription,
+                        ProdDescriptionIfOther = item.ProdDescriptionIfOther,
+                        PlaceOfSupply = item.PlaceOfSupply,
+                        StateCode = item.StateCode,
+                        AmountBeforeTax = item.AmountBeforeTax,
+                        TotalCGSTValue = item.TotalCGSTValue,
+                        TotalSGSTValue = item.TotalSGSTValue,
+                        GrossAmount = item.GrossAmount,
+                        AdvanceReceived = item.AdvanceReceived,
+                        AmountPaid = item.AmountPaid,
+                        CreatedBy = item.CreatedBy,
+                        CreatorName = item.CreatorName,
+                    };
+
+                    var vPartsList = db.tblQuotationPartDetails.Where(x => x.QuotationId == item.Id).ToList();
+                    foreach (var itemWOPart in vPartsList)
+                    {
+                        string sPartName = "";
+                        string sPartNumber = "";
+                        string sUniqueNumber = "";
+                        string sPartDescription = "";
+                        string sSerialNumber = "";
+                        string sPartStatus = "";
+                        string sHSNCode = "";
+
+                        var vPartObj = db.tblPartDetails.Where(x => x.Id == itemWOPart.PartId).FirstOrDefault();
+                        if (vPartObj != null)
+                        {
+                            //var vPartStatusObj = db.tblPartDescriptions.Where(x => x.Id == itemWOPart.PartStatusId).FirstOrDefault();
+                            //if (vPartStatusObj != null)
+                            //{
+                            //    sPartStatus = vPartStatusObj.PartDescriptionName;
+                            //}
+
+                            var objHSN = db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartObj.HSNCodeId).FirstOrDefault();
+                            if (objHSN != null)
+                            {
+                                sHSNCode = objHSN.HSNCode;
+                            }
+
+                            sPartName = vPartObj.PartName;
+                            sPartNumber = vPartObj.PartNumber;
+                            sUniqueNumber = vPartObj.UniqueCode;
+                            sPartDescription = vPartObj.PartDescription;
+                            sSerialNumber = vPartObj.CTSerialNo;
+                        }
+
+                        vItemObj.PartList.Add(new QuotationPartDetails_Response
+                        {
+                            PartId = vPartObj.Id,
+                            PartNumber = sPartNumber,
+                            HSN_SAC = sHSNCode,
+                            PartDescription = sPartDescription,
+                            Qty = itemWOPart.Qty,
+                            Price = itemWOPart.Price,
+                            DiscPerct = itemWOPart.DiscPerct,
+                            DiscValue = itemWOPart.DiscValue,
+                            CGSTPerct = itemWOPart.CGSTPerct,
+                            CGSTValue = itemWOPart.CGSTValue,
+                            SGSTPerct = itemWOPart.SGSTPerct,
+                            SGSTValue = itemWOPart.SGSTValue,
+                            IGSTPerct = itemWOPart.IGSTPerct,
+                            IGSTValue = itemWOPart.IGSTValue
                         });
                     }
 
