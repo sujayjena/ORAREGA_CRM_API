@@ -653,6 +653,28 @@
           <Property Name="DiscValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="tblInvoiceServiceChargeDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="int" />
+          <Property Name="ProductTypeId" Type="int" />
+          <Property Name="HSNCodeId" Type="int" />
+          <Property Name="TravelRangeId" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="int" />
+          <Property Name="DiscValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="int" />
+          <Property Name="CGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="int" />
+          <Property Name="SGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="int" />
+          <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
         <EntityType Name="tblIssueDescription">
           <Key>
             <PropertyRef Name="Id" />
@@ -1181,6 +1203,28 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuotationId" Type="int" />
           <Property Name="PartId" Type="int" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="int" />
+          <Property Name="DiscValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="int" />
+          <Property Name="CGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="int" />
+          <Property Name="SGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="int" />
+          <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tblQuotationServiceChargeDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuotationId" Type="int" />
+          <Property Name="ProductTypeId" Type="int" />
+          <Property Name="HSNCodeId" Type="int" />
+          <Property Name="TravelRangeId" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="Qty" Type="int" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="DiscPerct" Type="int" />
@@ -3032,6 +3076,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblHSNCodeGSTMapping" EntityType="Self.tblHSNCodeGSTMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblInvoice" EntityType="Self.tblInvoice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblInvoicePartDetails" EntityType="Self.tblInvoicePartDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="Self.tblInvoiceServiceChargeDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblIssueDescription" EntityType="Self.tblIssueDescription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblLeaveMaster" EntityType="Self.tblLeaveMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblLeaveType" EntityType="Self.tblLeaveType" Schema="dbo" store:Type="Tables" />
@@ -3070,6 +3115,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblQueue" EntityType="Self.tblQueue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuotation" EntityType="Self.tblQuotation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuotationPartDetails" EntityType="Self.tblQuotationPartDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="Self.tblQuotationServiceChargeDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRatePerKM" EntityType="Self.tblRatePerKM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRefundAndCancellationPolicy" EntityType="Self.tblRefundAndCancellationPolicy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRepairClassType" EntityType="Self.tblRepairClassType" Schema="dbo" store:Type="Tables" />
@@ -4926,6 +4972,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
+          <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
           
           
          
@@ -8426,6 +8474,50 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="tblQuotationServiceChargeDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationId" Type="Int32" />
+          <Property Name="ProductTypeId" Type="Int32" />
+          <Property Name="HSNCodeId" Type="Int32" />
+          <Property Name="TravelRangeId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="Int32" />
+          <Property Name="DiscValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tblInvoiceServiceChargeDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" />
+          <Property Name="ProductTypeId" Type="Int32" />
+          <Property Name="HSNCodeId" Type="Int32" />
+          <Property Name="TravelRangeId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="Int32" />
+          <Property Name="DiscValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
         
 			</Schema>
 		</edmx:ConceptualModels>
@@ -13210,6 +13302,52 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tblQuotationServiceChargeDetails">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetail">
+              <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetails">
+                <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="DiscValue" ColumnName="DiscValue" />
+                <ScalarProperty Name="DiscPerct" ColumnName="DiscPerct" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TravelRangeId" ColumnName="TravelRangeId" />
+                <ScalarProperty Name="HSNCodeId" ColumnName="HSNCodeId" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblInvoiceServiceChargeDetails">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoiceServiceChargeDetail">
+              <MappingFragment StoreEntitySet="tblInvoiceServiceChargeDetails">
+                <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="DiscValue" ColumnName="DiscValue" />
+                <ScalarProperty Name="DiscPerct" ColumnName="DiscPerct" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TravelRangeId" ColumnName="TravelRangeId" />
+                <ScalarProperty Name="HSNCodeId" ColumnName="HSNCodeId" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
      				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

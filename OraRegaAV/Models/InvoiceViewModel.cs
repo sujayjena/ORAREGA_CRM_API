@@ -11,6 +11,7 @@ namespace OraRegaAV.Models
     {
         public InvoiceRequest()
         {
+            serviceChargeDetails = new ServiceChargeDetails();
             invoicePartDetails = new List<InvoicePartDetails>();
         }
 
@@ -31,9 +32,9 @@ namespace OraRegaAV.Models
         public Nullable<decimal> TotalAmountWithGST { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
 
+        public ServiceChargeDetails serviceChargeDetails { get; set; }
         public List<InvoicePartDetails> invoicePartDetails { get; set; }
     }
-
     public class InvoicePartDetails
     {
         public int PartId { get; set; }
@@ -64,6 +65,7 @@ namespace OraRegaAV.Models
     {
         public GetInvoiceList_Response()
         {
+            serviceChargeDetails = new ServiceChargeDetails();
             PartList = new List<InvoicePartDetails_Response>();
         }
 
@@ -100,6 +102,7 @@ namespace OraRegaAV.Models
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
 
+        public ServiceChargeDetails serviceChargeDetails { get; set; }
         public List<InvoicePartDetails_Response> PartList { get; set; }
     }
 

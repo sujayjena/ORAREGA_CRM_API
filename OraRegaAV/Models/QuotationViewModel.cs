@@ -30,7 +30,7 @@ namespace OraRegaAV.Models
             customerDetails = new CustomerDetails();
             productDetails = new ProductDetails();
             serviceChargeDetails = new ServiceChargeDetails();
-            PartDetails = new List<PartDetails>();
+            partDetails = new List<PartDetails>();
         }
 
         public int QuotationId { get; set; }
@@ -47,6 +47,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaid { get; set; }
+        public int StatusId { get; set; }
 
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
@@ -56,11 +57,12 @@ namespace OraRegaAV.Models
         public CustomerDetails customerDetails { get; set; }
         public ProductDetails productDetails { get; set; }
         public ServiceChargeDetails serviceChargeDetails { get; set; }
-        public List<PartDetails> PartDetails { get; set; }
+        public List<PartDetails> partDetails { get; set; }
     }
 
     public class CustomerDetails
     {
+        public int CustomerId { get; set; }
         public string OrganizationName { get; set; }
         public string CustomerName { get; set; }
         public string CustomerGstNumber { get; set; }
@@ -99,14 +101,15 @@ namespace OraRegaAV.Models
         public Nullable<int> HSNCodeId { get; set; }
         public string HSNCode { get; set; }
 
-        public Nullable<int> TravelZoneId { get; set; }
-        public string TravelZone { get; set; }
+        public Nullable<int> TravelRangeId { get; set; }
+        public string TravelRange { get; set; }
 
         public Nullable<decimal> Price { get; set; }
+        public int Qty { get; set; }
 
         public string Description { get; set; }
 
-        public Nullable<decimal> Discount { get; set; }
+        //public Nullable<decimal> Discount { get; set; }
 
         public Nullable<int> DiscPerct { get; set; }
         public Nullable<decimal> DiscValue { get; set; }

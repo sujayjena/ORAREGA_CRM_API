@@ -72,23 +72,51 @@ namespace OraRegaAV.Controllers
                     db.tblInvoices.Add(tbl);
                     await db.SaveChangesAsync();
 
-                    //foreach (var item in request.invoicePartDetails)
-                    //{
-                    //    tblInvoicePartDetail vItem = new tblInvoicePartDetail()
-                    //    {
-                    //        InvoiceId = tbl.Id,
-                    //        PartId = item.PartId,
-                    //        Qty = item.Qty,
-                    //        Price = item.Price,
-                    //        DiscPerct = item.DiscPerct,
-                    //        DiscValue = item.DiscValue,
-                    //        TotalAmount = item.TotalAmount,
-                    //    };
+                    //Service Charge
+                    if (request.serviceChargeDetails.ProductTypeId != null)
+                    {
+                        var vServiceCharge = new tblInvoiceServiceChargeDetail()
+                        {
+                            InvoiceId = tbl.Id,
+                            ProductTypeId = request.serviceChargeDetails.ProductTypeId,
+                            HSNCodeId = request.serviceChargeDetails.HSNCodeId,
+                            TravelRangeId = request.serviceChargeDetails.TravelRangeId,
+                            Price = request.serviceChargeDetails.Price,
+                            Qty = request.serviceChargeDetails.Qty,
+                            Description = request.serviceChargeDetails.Description == "" ? "Service Charge" : request.serviceChargeDetails.Description,
+                            DiscPerct = request.serviceChargeDetails.DiscPerct,
+                            DiscValue = request.serviceChargeDetails.DiscValue,
+                            CGSTPerct = request.serviceChargeDetails.CGSTPerct,
+                            CGSTValue = request.serviceChargeDetails.CGSTValue,
+                            SGSTPerct = request.serviceChargeDetails.SGSTPerct,
+                            SGSTValue = request.serviceChargeDetails.SGSTValue,
+                            IGSTPerct = request.serviceChargeDetails.IGSTPerct,
+                            IGSTValue = request.serviceChargeDetails.IGSTValue,
+                            PriceAfterDisc = request.serviceChargeDetails.PriceAfterDisc,
+                        };
 
-                    //    db.tblInvoicePartDetails.Add(vItem);
+                        db.tblInvoiceServiceChargeDetails.Add(vServiceCharge);
+                        await db.SaveChangesAsync();
+                    }
 
-                    //    await db.SaveChangesAsync();
-                    //}
+                    //Part Details
+                    foreach (var item in request.invoicePartDetails)
+                    {
+                        tblInvoicePartDetail vItem = new tblInvoicePartDetail()
+                        {
+                            InvoiceId = tbl.Id,
+                            PartId = item.PartId,
+                            Qty = item.Qty,
+                            Price = item.Price,
+                            DiscPerct = item.DiscPerct,
+                            DiscValue = item.DiscValue,
+                            TotalAmount = item.TotalAmount,
+                        };
+
+                        db.tblInvoicePartDetails.Add(vItem);
+
+                        await db.SaveChangesAsync();
+                    }
 
                     _response.IsSuccess = true;
                     _response.Message = "Invoice details saved successfully";
@@ -107,91 +135,17 @@ namespace OraRegaAV.Controllers
         [Route("api/InvoiceAPI/InvoiceList")]
         public Response InvoiceList(InvoiceSearchParameters parameters)
         {
-            List<GetInvoiceList_Response> tblInvoiceList = new List<GetInvoiceList_Response>();
+            List<GetInvoiceList_Result> invoiceList_Result = new List<GetInvoiceList_Result>();
 
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var vInvoiceObjList = db.GetInvoiceList(parameters.CompanyId, parameters.BranchId, parameters.InvoiceNumber, parameters.WorkOrderNumber, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+                invoiceList_Result = db.GetInvoiceList(parameters.CompanyId, parameters.BranchId, parameters.InvoiceNumber, parameters.WorkOrderNumber, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
 
-                foreach (var item in vInvoiceObjList)
-                {
-                    var vItemObj = new GetInvoiceList_Response()
-                    {
-                        Id = item.Id,
-                        InvoiceDate = item.InvoiceDate,
-                        InvoiceNumber = item.InvoiceNumber,
-                        QuotationId = item.QuotationId,
-                        QuotationNumber = item.QuotationNumber,
-                        WorkOrderId = item.WorkOrderId,
-                        WorkOrderNumber = item.WorkOrderNumber,
-                        ProductSerialNumber = item.ProductSerialNumber,
-                        BranchId = item.BranchId,
-                        BranchName = item.BranchName,
-                        BranchOfficeAddress = item.BranchOfficeAddress,
-                        BranchGSTNumber = item.BranchGSTNumber,
-                        StateCode = item.StateCode,
-                        CustomerGstNumber = item.CustomerGstNumber,
-                        ServiceAddressId = item.ServiceAddressId,
-                        BillToAddress = item.BillToAddress,
-                        CustomerName = item.CustomerName,
-                        ContactPerson = item.ContactPerson,
-                        CustomerEmail = item.CustomerEmail,
-                        CustomerMobile = item.CustomerMobile,
-
-                        AmountBeforeTax = item.AmountBeforeTax,
-                        CGSTPerct = item.CGSTPerct,
-                        CGSTValue = item.CGSTValue,
-                        SGSTPerct = item.SGSTPerct,
-                        SGSTValue = item.SGSTValue,
-                        IGSTPerct = item.IGSTPerct,
-                        IGSTValue = item.IGSTValue,
-                        TotalAmountWithGST = item.TotalAmountWithGST,
-                        AmountPaidAfter = item.AmountPaidAfter,
-                        CreatedBy = item.CreatedBy,
-                        CreatorName = item.CreatorName,
-                    };
-
-                    var vPartsList = db.tblQuotationPartDetails.Where(x => x.Id == item.QuotationId).ToList();
-                    foreach (var itemWOPart in vPartsList)
-                    {
-                        string sPartNumber = "";
-                        string sPartDescription = "";
-                        string sHSNCode = "";
-
-                        var vPartObj = db.tblPartDetails.Where(x => x.Id == itemWOPart.PartId).FirstOrDefault();
-                        if (vPartObj != null)
-                        {
-                            var objHSN = db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartObj.HSNCodeId).FirstOrDefault();
-                            if (objHSN != null)
-                            {
-                                sHSNCode = objHSN.HSNCode;
-                            }
-
-                            sPartNumber = vPartObj.PartNumber;
-                            sPartDescription = vPartObj.PartDescription;
-                        }
-
-                        vItemObj.PartList.Add(new InvoicePartDetails_Response
-                        {
-                            PartId = vPartObj.Id,
-                            PartNumber = sPartNumber,
-                            HSN_SAC = sHSNCode,
-                            PartDescription = sPartDescription,
-                            Qty = itemWOPart.Qty,
-                            Price = itemWOPart.Price,
-                            DiscPerct = itemWOPart.DiscPerct,
-                            DiscValue = itemWOPart.DiscValue,
-                            //TotalAmount = itemWOPart.a,
-                        });
-                    }
-
-                    tblInvoiceList.Add(vItemObj);
-                }
-
-                _response.Data = tblInvoiceList;
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
+                _response.Data = invoiceList_Result;
             }
             catch (Exception ex)
             {
@@ -204,8 +158,8 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        [Route("api/InvoiceAPI/InvoiceDetailByInvoiceNumber")]
-        public Response InvoiceDetailByInvoiceNumber(string InvoiceNumber)
+        [Route("api/InvoiceAPI/GetInvoiceDetail")]
+        public Response GetInvoiceDetail(string InvoiceNumber)
         {
             List<GetInvoiceList_Response> tblInvoiceList = new List<GetInvoiceList_Response>();
 
@@ -254,36 +208,33 @@ namespace OraRegaAV.Controllers
                         CreatorName = item.CreatorName,
                     };
 
-                    //get service charge details
-                    //var vServiceChargeDetailList = db.tblQuotationServiceChargeDetailses.Where(x => x.Id == item.QuotationId).ToList();
-                    //foreach (var itemServiceCharge in vServiceChargeDetailList)
-                    //{
-                    //    string sPartNumber = "";
-                    //    string sHSNCode = "";
+                    // Service Charge
+                    var serviceChargeObj = db.tblInvoiceServiceChargeDetails.Where(x => x.InvoiceId == item.Id).FirstOrDefault();
+                    if (serviceChargeObj != null)
+                    {
+                        vItemObj.serviceChargeDetails.ProductTypeId = serviceChargeObj.ProductTypeId;
+                        vItemObj.serviceChargeDetails.ProductType = db.tblProductTypes.Where(x => x.Id == serviceChargeObj.ProductTypeId).Select(x => x.ProductType).FirstOrDefault();
+                        vItemObj.serviceChargeDetails.HSNCodeId = serviceChargeObj.HSNCodeId;
+                        vItemObj.serviceChargeDetails.HSNCode = db.tblHSNCodeGSTMappings.Where(x => x.Id == serviceChargeObj.HSNCodeId).Select(x => x.HSNCode).FirstOrDefault();
+                        vItemObj.serviceChargeDetails.TravelRangeId = serviceChargeObj.TravelRangeId;
+                        vItemObj.serviceChargeDetails.TravelRange = db.tblTravelRanges.Where(x => x.Id == serviceChargeObj.TravelRangeId).Select(x => x.TravelRange).FirstOrDefault();
+                        vItemObj.serviceChargeDetails.Price = serviceChargeObj.Price;
+                        vItemObj.serviceChargeDetails.Qty = serviceChargeObj.Qty??0;
+                        vItemObj.serviceChargeDetails.Description = serviceChargeObj.Description == "" ? "Service Charge" : serviceChargeObj.Description;
+                        vItemObj.serviceChargeDetails.DiscPerct = serviceChargeObj.DiscPerct;
+                        vItemObj.serviceChargeDetails.DiscValue = serviceChargeObj.DiscValue;
+                        vItemObj.serviceChargeDetails.CGSTPerct = serviceChargeObj.CGSTPerct;
+                        vItemObj.serviceChargeDetails.CGSTValue = serviceChargeObj.CGSTValue;
+                        vItemObj.serviceChargeDetails.SGSTPerct = serviceChargeObj.SGSTPerct;
+                        vItemObj.serviceChargeDetails.SGSTValue = serviceChargeObj.SGSTValue;
+                        vItemObj.serviceChargeDetails.IGSTPerct = serviceChargeObj.IGSTPerct;
+                        vItemObj.serviceChargeDetails.IGSTValue = serviceChargeObj.IGSTValue;
+                        vItemObj.serviceChargeDetails.PriceAfterDisc = serviceChargeObj.PriceAfterDisc;
+                    }
 
-                    //    var objHSN = db.tblHSNCodeGSTMappings.Where(x => x.Id == itemServiceCharge.HSNCodeId).FirstOrDefault();
-                    //    if (objHSN != null)
-                    //    {
-                    //        sHSNCode = objHSN.HSNCode;
-                    //    }
-
-                    //    vItemObj.PartList.Add(new InvoicePartDetails_Response
-                    //    {
-                    //        PartId = 0,
-                    //        PartNumber = sPartNumber,
-                    //        HSN_SAC = sHSNCode,
-                    //        PartDescription = itemServiceCharge.Description,
-                    //        Qty = itemServiceCharge.Qty,
-                    //        Price = itemServiceCharge.Price,
-                    //        DiscPerct = itemServiceCharge.DiscPerct,
-                    //        DiscValue = itemServiceCharge.DiscValue,
-                    //        //TotalAmount = itemWOPart.TotalAmount,
-                    //    });
-                    //}
-
-                    //get part details
-                    var vPartsList = db.tblQuotationPartDetails.Where(x => x.Id == item.QuotationId).ToList();
-                    foreach (var itemWOPart in vPartsList)
+                    // Part Details
+                    var invoicePartObj = db.tblInvoicePartDetails.Where(x => x.InvoiceId == item.Id).ToList();
+                    foreach (var itemWOPart in invoicePartObj)
                     {
                         string sPartNumber = "";
                         string sPartDescription = "";
@@ -312,7 +263,7 @@ namespace OraRegaAV.Controllers
                             Price = itemWOPart.Price,
                             DiscPerct = itemWOPart.DiscPerct,
                             DiscValue = itemWOPart.DiscValue,
-                            //TotalAmount = itemWOPart.TotalAmount,
+                            TotalAmount = itemWOPart.TotalAmount,
                         });
                     }
 
