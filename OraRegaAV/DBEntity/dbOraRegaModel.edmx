@@ -1168,6 +1168,7 @@
           <Property Name="GrossAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaid" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -8321,6 +8322,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="tblQuotationPartDetail">
           <Key>
@@ -8416,30 +8418,23 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="DateTime" Name="InvoiceDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="InvoiceNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="QuotationId" Nullable="true" />
+          <Property Type="String" Name="QuotationNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CustomerGstNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
-          <Property Type="String" Name="BillToAddress" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="DeliverToAddress" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ContactPerson" Nullable="true" MaxLength="101" />
-          <Property Type="String" Name="CustomerEmail" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="CustomerMobile" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="BranchId" Nullable="true" />
           <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="BranchOfficeAddress" Nullable="true" />
           <Property Type="String" Name="BranchGSTNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="ProductModelId" Nullable="true" />
-          <Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="ProductDescriptionId" Nullable="true" />
-          <Property Type="String" Name="ProductDescription" Nullable="true" />
-          <Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="PlaceOfSupply" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="StateCode" Nullable="true" />
+          <Property Type="String" Name="CustomerGstNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
+          <Property Type="String" Name="BillToAddress" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ContactPerson" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="CustomerEmail" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CustomerMobile" Nullable="true" MaxLength="20" />
           <Property Type="Decimal" Name="AmountBeforeTax" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="CGSTPerct" Nullable="true" />
           <Property Type="Decimal" Name="CGSTValue" Nullable="true" Precision="18" Scale="2" />
@@ -13106,6 +13101,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotations">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotation">
               <MappingFragment StoreEntitySet="tblQuotation">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -13226,30 +13222,23 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
                 <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
                 <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
                 <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="CustomerGstNumber" ColumnName="CustomerGstNumber" />
-                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
-                <ScalarProperty Name="BillToAddress" ColumnName="BillToAddress" />
-                <ScalarProperty Name="DeliverToAddress" ColumnName="DeliverToAddress" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
-                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
-                <ScalarProperty Name="CustomerMobile" ColumnName="CustomerMobile" />
+                <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
                 <ScalarProperty Name="BranchId" ColumnName="BranchId" />
                 <ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="BranchOfficeAddress" ColumnName="BranchOfficeAddress" />
                 <ScalarProperty Name="BranchGSTNumber" ColumnName="BranchGSTNumber" />
-                <ScalarProperty Name="ProductModelId" ColumnName="ProductModelId" />
-                <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
-                <ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
-                <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
-                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
-                <ScalarProperty Name="ProductDescriptionId" ColumnName="ProductDescriptionId" />
-                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
-                <ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
-                <ScalarProperty Name="PlaceOfSupply" ColumnName="PlaceOfSupply" />
                 <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="CustomerGstNumber" ColumnName="CustomerGstNumber" />
+                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
+                <ScalarProperty Name="BillToAddress" ColumnName="BillToAddress" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+                <ScalarProperty Name="CustomerMobile" ColumnName="CustomerMobile" />
                 <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
                 <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
                 <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />

@@ -70,30 +70,24 @@ namespace OraRegaAV.Models
         public int Id { get; set; }
         public System.DateTime InvoiceDate { get; set; }
         public string InvoiceNumber { get; set; }
+        public int? QuotationId { get; set; }
+        public string QuotationNumber { get; set; }
         public int WorkOrderId { get; set; }
         public string WorkOrderNumber { get; set; }
-        public string CustomerGstNumber { get; set; }
-        public int ServiceAddressId { get; set; }
-        public string BillToAddress { get; set; }
-        public string DeliverToAddress { get; set; }
-        public string CustomerName { get; set; }
-        public string ContactPerson { get; set; }
-        public string CustomerEmail { get; set; }
-        public string CustomerMobile { get; set; }
+        public string ProductSerialNumber { get; set; }
         public Nullable<int> BranchId { get; set; }
         public string BranchName { get; set; }
         public string BranchOfficeAddress { get; set; }
         public string BranchGSTNumber { get; set; }
-        public Nullable<int> ProductModelId { get; set; }
-        public string ProductModel { get; set; }
-        public string ProdModelIfOther { get; set; }
-        public string ProductSerialNumber { get; set; }
-        public string ProductNumber { get; set; }
-        public Nullable<int> ProductDescriptionId { get; set; }
-        public string ProductDescription { get; set; }
-        public string ProdDescriptionIfOther { get; set; }
-        public string PlaceOfSupply { get; set; }
         public Nullable<int> StateCode { get; set; }
+        public string CustomerGstNumber { get; set; }
+        public int ServiceAddressId { get; set; }
+        public string BillToAddress { get; set; }
+        public string CustomerName { get; set; }
+        public string ContactPerson { get; set; }
+        public string CustomerEmail { get; set; }
+        public string CustomerMobile { get; set; }
+     
         public Nullable<decimal> AmountBeforeTax { get; set; }
         public Nullable<int> CGSTPerct { get; set; }
         public Nullable<decimal> CGSTValue { get; set; }
