@@ -23,15 +23,16 @@ namespace OraRegaAV.Models
         public int PageNo { get; set; }
     }
 
-    public class QuotationRequest
+    public class Quotation
     {
-        public QuotationRequest()
+        public Quotation()
         {
             customerDetails = new CustomerDetails();
             productDetails = new ProductDetails();
             serviceChargeDetails = new ServiceChargeDetails();
             PartDetails = new List<PartDetails>();
         }
+
         public int QuotationId { get; set; }
         public DateTime QuoteDate { get; set; }
         public string QuotationNumber { get; set; }
@@ -43,7 +44,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> AmountBeforeTax { get; set; }
         public Nullable<decimal> TotalCGSTValue { get; set; }
         public Nullable<decimal> TotalSGSTValue { get; set; }
-        public Nullable<decimal> GrossAmount { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaid { get; set; }
 
@@ -64,7 +65,7 @@ namespace OraRegaAV.Models
         public string CustomerName { get; set; }
         public string CustomerGstNumber { get; set; }
         public string CustomerMobile { get; set; }
-        public string CustomerStateCode { get; set; }
+        public int CustomerStateCode { get; set; }
         public string CustomerEmail { get; set; }
         public string BillToAddress { get; set; }
         public string DeliverToAddress { get; set; }
@@ -106,6 +107,16 @@ namespace OraRegaAV.Models
         public string Description { get; set; }
 
         public Nullable<decimal> Discount { get; set; }
+
+        public Nullable<int> DiscPerct { get; set; }
+        public Nullable<decimal> DiscValue { get; set; }
+        public Nullable<int> CGSTPerct { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<int> SGSTPerct { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<int> IGSTPerct { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> PriceAfterDisc { get; set; }
     }
 
     public class PartDetails

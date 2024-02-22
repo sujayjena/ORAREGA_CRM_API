@@ -27,5 +27,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> PriceAfterDisc { get; set; }
     }
 }
