@@ -625,6 +625,9 @@
     <Compile Include="DBEntity\GetProductTypesList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetQuotationList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetRatePerKMList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
