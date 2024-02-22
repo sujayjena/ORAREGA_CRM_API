@@ -18,34 +18,11 @@ namespace OraRegaAV.DBEntity
         public string QuotationNumber { get; set; }
         public int WorkOrderId { get; set; }
         public string WorkOrderNumber { get; set; }
-        public string CustomerGstNumber { get; set; }
-        public int ServiceAddressId { get; set; }
-        public string BillToAddress { get; set; }
-        public string DeliverToAddress { get; set; }
         public string CustomerName { get; set; }
-        public string ContactPerson { get; set; }
-        public string CustomerEmail { get; set; }
-        public string CustomerMobile { get; set; }
-        public Nullable<int> BranchId { get; set; }
-        public string BranchName { get; set; }
-        public string BranchOfficeAddress { get; set; }
-        public string BranchGSTNumber { get; set; }
-        public Nullable<int> ProductModelId { get; set; }
-        public string ProductModel { get; set; }
-        public string ProdModelIfOther { get; set; }
-        public string ProductSerialNumber { get; set; }
-        public string ProductNumber { get; set; }
-        public Nullable<int> ProductDescriptionId { get; set; }
-        public string ProductDescription { get; set; }
-        public string ProdDescriptionIfOther { get; set; }
-        public string PlaceOfSupply { get; set; }
-        public Nullable<int> StateCode { get; set; }
-        public Nullable<decimal> AmountBeforeTax { get; set; }
-        public Nullable<decimal> TotalCGSTValue { get; set; }
-        public Nullable<decimal> TotalSGSTValue { get; set; }
         public Nullable<decimal> GrossAmount { get; set; }
-        public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaid { get; set; }
+        public int StatusId { get; set; }
+        public string StatusName { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
     }
