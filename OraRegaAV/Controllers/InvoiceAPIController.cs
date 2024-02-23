@@ -75,8 +75,9 @@ namespace OraRegaAV.Controllers
                         tbl.IGSTPerct = vQuotationObj.IGSTPerct;
                         tbl.IGSTValue = vQuotationObj.IGSTValue;
                         tbl.GrossAmountIncludeTax = vQuotationObj.GrossAmountIncludeTax;
-                        tbl.GrossAmountIncludeTax = vQuotationObj.AdvanceReceived;
+                        tbl.AdvanceReceived = vQuotationObj.AdvanceReceived;
                         tbl.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
+                        tbl.StatusId = 4;
 
                         tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                         tbl.CreatedDate = DateTime.Now;
@@ -142,6 +143,21 @@ namespace OraRegaAV.Controllers
                         }
                         #endregion
 
+                        #region update quotation status
+
+                        vQuotationObj.StatusId = 4;
+                        await db.SaveChangesAsync();
+
+                        #endregion
+
+                        #region Track Quotation Log
+                        if (tbl.InvoiceNumber != "")
+                        {
+                            CreateQuotationLog(tbl.InvoiceNumber);
+                        }
+
+                        #endregion
+
                         _response.IsSuccess = true;
                         _response.Message = "Invoice details saved successfully";
                     }
@@ -196,8 +212,9 @@ namespace OraRegaAV.Controllers
                     tbl.IGSTPerct = request.IGSTPerct;
                     tbl.IGSTValue = request.IGSTValue;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
-                    tbl.GrossAmountIncludeTax = request.AdvanceReceived;
+                    tbl.AdvanceReceived = request.AdvanceReceived;
                     tbl.AmountPaidAfter = request.AmountPaidAfter;
+                    tbl.StatusId = 4;
 
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.CreatedDate = DateTime.Now;
@@ -256,6 +273,23 @@ namespace OraRegaAV.Controllers
 
                         await db.SaveChangesAsync();
                     }
+
+                    #region update quotation status
+                    var vQuotationObj = db.tblQuotations.Where(x => x.WorkOrderId == request.WorkOrderId).FirstOrDefault();
+                    if (vQuotationObj != null)
+                    {
+                        vQuotationObj.StatusId = 4;
+                        await db.SaveChangesAsync();
+                    }
+                    #endregion
+
+                    #region Track Quotation Log
+                    if (tbl.InvoiceNumber != "")
+                    {
+                        CreateQuotationLog(tbl.InvoiceNumber);
+                    }
+
+                    #endregion
 
                     _response.IsSuccess = true;
                     _response.Message = "Invoice details saved successfully";
@@ -425,6 +459,110 @@ namespace OraRegaAV.Controllers
             }
 
             return _response;
+        }
+
+        public string CreateQuotationLog(string InvoiceNumber)
+        {
+            try
+            {
+                if (InvoiceNumber != "")
+                {
+                    #region Header Details
+                    var vInvoice = db.tblInvoices.Where(x => x.InvoiceNumber == InvoiceNumber).FirstOrDefault();
+                    if (vInvoice != null)
+                    {
+                        tblQuotationLog tbl = new tblQuotationLog();
+                        var vQuotation = db.tblQuotations.Where(x => x.WorkOrderId == vInvoice.WorkOrderId).FirstOrDefault();
+                        if (vQuotation != null)
+                        {
+                            tbl = new tblQuotationLog();
+                            tbl.QuoteDate = vQuotation.QuoteDate;
+                            tbl.QuotationId = vQuotation.Id;
+
+                            tbl.AmountBeforeTax = vQuotation.AmountBeforeTax;
+                            tbl.CGSTPerct = vQuotation.CGSTPerct;
+                            tbl.CGSTValue = vQuotation.CGSTValue;
+                            tbl.SGSTPerct = vQuotation.SGSTPerct;
+                            tbl.SGSTValue = vQuotation.SGSTValue;
+                            tbl.IGSTPerct = vQuotation.IGSTPerct;
+                            tbl.IGSTValue = vQuotation.IGSTValue;
+
+                            tbl.GrossAmountIncludeTax = vQuotation.GrossAmountIncludeTax;
+                            tbl.AdvanceReceived = vQuotation.AdvanceReceived;
+                            tbl.AmountPaidAfter = vQuotation.AmountPaidAfter;
+                            tbl.StatusId = vQuotation.StatusId;
+
+                            tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
+                            tbl.CreatedDate = DateTime.Now;
+
+                            db.tblQuotationLogs.Add(tbl);
+                            db.SaveChanges();
+
+                            #region Service Charge
+                            var vServiceChargeDetails = db.tblQuotationServiceChargeDetails.Where(x => x.QuotationId == vQuotation.Id).FirstOrDefault();
+                            if (vServiceChargeDetails != null)
+                            {
+                                var vServiceCharge = new tblQuotationServiceChargeDetailsLog()
+                                {
+                                    QuotationLogId = tbl.Id,
+                                    ProductTypeId = vServiceChargeDetails.ProductTypeId,
+                                    HSNCodeId = vServiceChargeDetails.HSNCodeId,
+                                    TravelRangeId = vServiceChargeDetails.TravelRangeId,
+                                    Price = vServiceChargeDetails.Price,
+                                    Qty = vServiceChargeDetails.Qty,
+                                    Description = vServiceChargeDetails.Description,
+                                    DiscPerct = vServiceChargeDetails.DiscPerct,
+                                    DiscValue = vServiceChargeDetails.DiscValue,
+                                    CGSTPerct = vServiceChargeDetails.CGSTPerct,
+                                    CGSTValue = vServiceChargeDetails.CGSTValue,
+                                    SGSTPerct = vServiceChargeDetails.SGSTPerct,
+                                    SGSTValue = vServiceChargeDetails.SGSTValue,
+                                    IGSTPerct = vServiceChargeDetails.IGSTPerct,
+                                    IGSTValue = vServiceChargeDetails.IGSTValue,
+                                    PriceAfterDisc = vServiceChargeDetails.PriceAfterDisc,
+                                };
+
+                                db.tblQuotationServiceChargeDetailsLogs.Add(vServiceCharge);
+                                db.SaveChanges();
+                            }
+                            #endregion
+
+                            #region Part Details
+                            var vpartDetails = db.tblQuotationPartDetails.Where(x => x.QuotationId == vQuotation.Id).ToList();
+                            foreach (var item in vpartDetails)
+                            {
+                                var vItem = new tblQuotationPartDetailsLog()
+                                {
+                                    QuotationLogId = tbl.Id,
+                                    PartId = item.PartId,
+                                    Qty = item.Qty,
+                                    Price = item.Price,
+                                    DiscPerct = item.DiscPerct,
+                                    DiscValue = item.DiscValue,
+                                    CGSTPerct = item.CGSTPerct,
+                                    CGSTValue = item.CGSTValue,
+                                    SGSTPerct = item.SGSTPerct,
+                                    SGSTValue = item.SGSTValue,
+                                    IGSTPerct = item.IGSTPerct,
+                                    IGSTValue = item.IGSTValue,
+                                    PriceAfterDisc = item.PriceAfterDisc,
+                                };
+
+                                db.tblQuotationPartDetailsLogs.Add(vItem);
+
+                                db.SaveChanges();
+                            }
+                            #endregion
+                        }
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteLog(ex);
+            }
+            return "";
         }
     }
 }

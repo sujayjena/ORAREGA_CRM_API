@@ -1254,6 +1254,29 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
         </EntityType>
+        <EntityType Name="tblQuotationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuoteDate" Type="datetime" Nullable="false" />
+          <Property Name="QuotationId" Type="int" Nullable="false" />
+          <Property Name="AmountBeforeTax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="int" />
+          <Property Name="CGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="int" />
+          <Property Name="SGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="int" />
+          <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
         <EntityType Name="tblQuotationPartDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -1273,12 +1296,53 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="tblQuotationPartDetailsLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuotationLogId" Type="int" />
+          <Property Name="PartId" Type="int" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="int" />
+          <Property Name="DiscValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="int" />
+          <Property Name="CGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="int" />
+          <Property Name="SGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="int" />
+          <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
         <EntityType Name="tblQuotationServiceChargeDetails">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuotationId" Type="int" />
+          <Property Name="ProductTypeId" Type="int" />
+          <Property Name="HSNCodeId" Type="int" />
+          <Property Name="TravelRangeId" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="int" />
+          <Property Name="DiscValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="int" />
+          <Property Name="CGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="int" />
+          <Property Name="SGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="int" />
+          <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tblQuotationServiceChargeDetailsLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuotationLogId" Type="int" />
           <Property Name="ProductTypeId" Type="int" />
           <Property Name="HSNCodeId" Type="int" />
           <Property Name="TravelRangeId" Type="int" />
@@ -3172,8 +3236,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblPurchaseProofPhotos" EntityType="Self.tblPurchaseProofPhotos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQueue" EntityType="Self.tblQueue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuotation" EntityType="Self.tblQuotation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuotationLog" EntityType="Self.tblQuotationLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuotationPartDetails" EntityType="Self.tblQuotationPartDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuotationPartDetailsLog" EntityType="Self.tblQuotationPartDetailsLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="Self.tblQuotationServiceChargeDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuotationServiceChargeDetailsLog" EntityType="Self.tblQuotationServiceChargeDetailsLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRatePerKM" EntityType="Self.tblRatePerKM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRefundAndCancellationPolicy" EntityType="Self.tblRefundAndCancellationPolicy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRepairClassType" EntityType="Self.tblRepairClassType" Schema="dbo" store:Type="Tables" />
@@ -5076,6 +5143,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblQuotations" EntityType="dbOraRegaModel.tblQuotation" />
           <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" />
           <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
+          <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
+          <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
+          <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
           
           
          
@@ -8682,6 +8752,70 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblQuotationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QuotationId" Type="Int32" Nullable="false" />
+          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblQuotationPartDetailsLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationLogId" Type="Int32" />
+          <Property Name="PartId" Type="Int32" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="Int32" />
+          <Property Name="DiscValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tblQuotationServiceChargeDetailsLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationLogId" Type="Int32" />
+          <Property Name="ProductTypeId" Type="Int32" />
+          <Property Name="HSNCodeId" Type="Int32" />
+          <Property Name="TravelRangeId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DiscPerct" Type="Int32" />
+          <Property Name="DiscValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         
 			</Schema>
@@ -13573,6 +13707,73 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
                 <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
                 <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuotationLogs">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationLog">
+              <MappingFragment StoreEntitySet="tblQuotationLog">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
+                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuotationPartDetailsLogs">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationPartDetailsLog">
+              <MappingFragment StoreEntitySet="tblQuotationPartDetailsLog">
+                <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="DiscValue" ColumnName="DiscValue" />
+                <ScalarProperty Name="DiscPerct" ColumnName="DiscPerct" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="QuotationLogId" ColumnName="QuotationLogId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuotationServiceChargeDetailsLogs">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetailsLog">
+              <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetailsLog">
+                <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="DiscValue" ColumnName="DiscValue" />
+                <ScalarProperty Name="DiscPerct" ColumnName="DiscPerct" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TravelRangeId" ColumnName="TravelRangeId" />
+                <ScalarProperty Name="HSNCodeId" ColumnName="HSNCodeId" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="QuotationLogId" ColumnName="QuotationLogId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

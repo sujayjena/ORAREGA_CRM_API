@@ -220,6 +220,15 @@ namespace OraRegaAV.Controllers
                         await db.SaveChangesAsync();
                     }
 
+                    #region Track Quotation Log
+
+                    if (tbl.QuotationNumber != "")
+                    {
+                        CreateQuotationLog(tbl.QuotationNumber);
+                    }
+
+                    #endregion
+
                     _response.IsSuccess = true;
                     _response.Message = "Quotation details saved successfully";
                 }
@@ -313,6 +322,15 @@ namespace OraRegaAV.Controllers
 
                         await db.SaveChangesAsync();
                     }
+
+                    #region Track Quotation Log
+
+                    if (tbl.QuotationNumber != "")
+                    {
+                        CreateQuotationLog(tbl.QuotationNumber);
+                    }
+
+                    #endregion
 
                     _response.IsSuccess = true;
                     _response.Message = "Quotation details updated successfully";
@@ -562,6 +580,108 @@ namespace OraRegaAV.Controllers
             }
 
             return _response;
+        }
+
+        public string CreateQuotationLog(string QuotationNumber)
+        {
+            try
+            {
+                if (QuotationNumber != "")
+                {
+                    #region Header Details
+
+                    tblQuotationLog tbl = new tblQuotationLog();
+                    var vQuotation = db.tblQuotations.Where(x => x.QuotationNumber == QuotationNumber).FirstOrDefault();
+                    if (vQuotation != null)
+                    {
+                        tbl = new tblQuotationLog();
+                        tbl.QuoteDate = vQuotation.QuoteDate;
+                        tbl.QuotationId = vQuotation.Id;
+
+                        tbl.AmountBeforeTax = vQuotation.AmountBeforeTax;
+                        tbl.CGSTPerct = vQuotation.CGSTPerct;
+                        tbl.CGSTValue = vQuotation.CGSTValue;
+                        tbl.SGSTPerct = vQuotation.SGSTPerct;
+                        tbl.SGSTValue = vQuotation.SGSTValue;
+                        tbl.IGSTPerct = vQuotation.IGSTPerct;
+                        tbl.IGSTValue = vQuotation.IGSTValue;
+
+                        tbl.GrossAmountIncludeTax = vQuotation.GrossAmountIncludeTax;
+                        tbl.AdvanceReceived = vQuotation.AdvanceReceived;
+                        tbl.AmountPaidAfter = vQuotation.AmountPaidAfter;
+                        tbl.StatusId = vQuotation.StatusId;
+
+                        tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
+                        tbl.CreatedDate = DateTime.Now;
+
+                        db.tblQuotationLogs.Add(tbl);
+                        db.SaveChanges();
+
+                        #region Service Charge
+                        var vServiceChargeDetails = db.tblQuotationServiceChargeDetails.Where(x => x.QuotationId == vQuotation.Id).FirstOrDefault();
+                        if (vServiceChargeDetails != null)
+                        {
+                            var vServiceCharge = new tblQuotationServiceChargeDetailsLog()
+                            {
+                                QuotationLogId = tbl.Id,
+                                ProductTypeId = vServiceChargeDetails.ProductTypeId,
+                                HSNCodeId = vServiceChargeDetails.HSNCodeId,
+                                TravelRangeId = vServiceChargeDetails.TravelRangeId,
+                                Price = vServiceChargeDetails.Price,
+                                Qty = vServiceChargeDetails.Qty,
+                                Description = vServiceChargeDetails.Description,
+                                DiscPerct = vServiceChargeDetails.DiscPerct,
+                                DiscValue = vServiceChargeDetails.DiscValue,
+                                CGSTPerct = vServiceChargeDetails.CGSTPerct,
+                                CGSTValue = vServiceChargeDetails.CGSTValue,
+                                SGSTPerct = vServiceChargeDetails.SGSTPerct,
+                                SGSTValue = vServiceChargeDetails.SGSTValue,
+                                IGSTPerct = vServiceChargeDetails.IGSTPerct,
+                                IGSTValue = vServiceChargeDetails.IGSTValue,
+                                PriceAfterDisc = vServiceChargeDetails.PriceAfterDisc,
+                            };
+
+                            db.tblQuotationServiceChargeDetailsLogs.Add(vServiceCharge);
+                            db.SaveChanges();
+                        }
+                        #endregion
+
+                        #region Part Details
+                        var vpartDetails = db.tblQuotationPartDetails.Where(x => x.QuotationId == vQuotation.Id).ToList();
+                        foreach (var item in vpartDetails)
+                        {
+                            var vItem = new tblQuotationPartDetailsLog()
+                            {
+                                QuotationLogId = tbl.Id,
+                                PartId = item.PartId,
+                                Qty = item.Qty,
+                                Price = item.Price,
+                                DiscPerct = item.DiscPerct,
+                                DiscValue = item.DiscValue,
+                                CGSTPerct = item.CGSTPerct,
+                                CGSTValue = item.CGSTValue,
+                                SGSTPerct = item.SGSTPerct,
+                                SGSTValue = item.SGSTValue,
+                                IGSTPerct = item.IGSTPerct,
+                                IGSTValue = item.IGSTValue,
+                                PriceAfterDisc = item.PriceAfterDisc,
+                            };
+
+                            db.tblQuotationPartDetailsLogs.Add(vItem);
+
+                            db.SaveChanges();
+                        }
+                        #endregion
+                    }
+
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteLog(ex);
+            }
+            return "";
         }
     }
 }
