@@ -25,8 +25,10 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
-        public Nullable<decimal> TotalAmountWithGST { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
+        public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
+        public int StatusId { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

@@ -7,44 +7,6 @@ using System.Web;
 
 namespace OraRegaAV.Models
 {
-    public class InvoiceRequest
-    {
-        public InvoiceRequest()
-        {
-            serviceChargeDetails = new ServiceChargeDetails();
-            invoicePartDetails = new List<InvoicePartDetails>();
-        }
-
-        public int Id { get; set; }
-
-        public DateTime InvoiceDate { get; set; }
-
-        [Required(ErrorMessage = "Work Order is required.")]
-        public int WorkOrderId { get; set; }
-
-        public Nullable<decimal> AmountBeforeTax { get; set; }
-        public Nullable<int> CGSTPerct { get; set; }
-        public Nullable<decimal> CGSTValue { get; set; }
-        public Nullable<int> SGSTPerct { get; set; }
-        public Nullable<decimal> SGSTValue { get; set; }
-        public Nullable<int> IGSTPerct { get; set; }
-        public Nullable<decimal> IGSTValue { get; set; }
-        public Nullable<decimal> TotalAmountWithGST { get; set; }
-        public Nullable<decimal> AmountPaidAfter { get; set; }
-
-        public ServiceChargeDetails serviceChargeDetails { get; set; }
-        public List<InvoicePartDetails> invoicePartDetails { get; set; }
-    }
-    public class InvoicePartDetails
-    {
-        public int PartId { get; set; }
-        public Nullable<int> Qty { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public Nullable<int> DiscPerct { get; set; }
-        public Nullable<decimal> DiscValue { get; set; }
-        public Nullable<int> TotalAmount { get; set; }
-    }
-
     public class InvoiceSearchParameters
     {
         [DefaultValue(0)]
@@ -61,12 +23,49 @@ namespace OraRegaAV.Models
         public int PageNo { get; set; }
     }
 
+    public class Invoice
+    {
+        public Invoice()
+        {
+            serviceChargeDetails = new ServiceChargeDetails();
+            partDetails = new List<PartDetails>();
+        }
+
+        public int InvoiceId { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public string InvoiceNumber { get; set; }
+        public int WorkOrderId { get; set; }
+        public string WorkOrderNumber { get; set; }
+        public Nullable<int> BranchId { get; set; }
+        public string BranchName { get; set; }
+
+        public Nullable<decimal> AmountBeforeTax { get; set; }
+        public Nullable<int> CGSTPerct { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<int> SGSTPerct { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<int> IGSTPerct { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
+        public Nullable<decimal> AdvanceReceived { get; set; }
+        public Nullable<decimal> AmountPaidAfter { get; set; }
+        public int StatusId { get; set; }
+
+        public Nullable<int> CreatedBy { get; set; }
+        public string CreatorName { get; set; }
+        public Nullable<int> ModifyBy { get; set; }
+        public string ModifierName { get; set; }
+
+        public ServiceChargeDetails serviceChargeDetails { get; set; }
+        public List<PartDetails> partDetails { get; set; }
+    }
+
     public partial class GetInvoiceList_Response
     {
         public GetInvoiceList_Response()
         {
             serviceChargeDetails = new ServiceChargeDetails();
-            PartList = new List<InvoicePartDetails_Response>();
+            partDetails = new List<PartDetails>();
         }
 
         public int Id { get; set; }
@@ -103,19 +102,7 @@ namespace OraRegaAV.Models
         public string CreatorName { get; set; }
 
         public ServiceChargeDetails serviceChargeDetails { get; set; }
-        public List<InvoicePartDetails_Response> PartList { get; set; }
+        public List<PartDetails> partDetails { get; set; }
     }
 
-    public class InvoicePartDetails_Response
-    {
-        public int PartId { get; set; }
-        public string PartNumber { get; set; }
-        public string HSN_SAC { get; set; }
-        public string PartDescription { get; set; }
-        public Nullable<int> Qty { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public Nullable<int> DiscPerct { get; set; }
-        public Nullable<decimal> DiscValue { get; set; }
-        public Nullable<decimal> TotalAmount { get; set; }
-    }
 }

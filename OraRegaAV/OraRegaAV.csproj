@@ -817,6 +817,9 @@
     <Compile Include="DBEntity\ModuleMaster.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\OLD_tblWorkOrderEnquiry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\RoleMaster_Employee_Permission.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>

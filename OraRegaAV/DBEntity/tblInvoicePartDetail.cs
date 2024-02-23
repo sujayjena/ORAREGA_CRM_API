@@ -21,6 +21,12 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> DiscPerct { get; set; }
         public Nullable<decimal> DiscValue { get; set; }
-        public Nullable<decimal> TotalAmount { get; set; }
+        public Nullable<int> CGSTPerct { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<int> SGSTPerct { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<int> IGSTPerct { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> PriceAfterDisc { get; set; }
     }
 }

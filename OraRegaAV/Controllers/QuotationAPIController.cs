@@ -43,11 +43,15 @@ namespace OraRegaAV.Controllers
                     quotationObj.BranchId = workOrderObj.BranchId;
                     quotationObj.BranchName = workOrderObj.BranchName;
                     quotationObj.AmountBeforeTax = 0;
-                    quotationObj.TotalCGSTValue = 0;
-                    quotationObj.TotalSGSTValue = 0;
+                    quotationObj.CGSTPerct = 0;
+                    quotationObj.CGSTValue = 0;
+                    quotationObj.SGSTPerct = 0;
+                    quotationObj.SGSTValue = 0;
+                    quotationObj.IGSTPerct = 0;
+                    quotationObj.IGSTValue = 0;
                     quotationObj.GrossAmountIncludeTax = 0;
                     quotationObj.AdvanceReceived = 0;
-                    quotationObj.AmountPaid = 0;
+                    quotationObj.AmountPaidAfter = 0;
                     quotationObj.CreatedBy = 0;
                     quotationObj.CreatorName = string.Empty;
                     quotationObj.ModifyBy = 0;
@@ -146,11 +150,16 @@ namespace OraRegaAV.Controllers
                     tbl.WorkOrderId = request.WorkOrderId;
 
                     tbl.AmountBeforeTax = request.AmountBeforeTax;
-                    tbl.TotalCGSTValue = request.TotalCGSTValue;
-                    tbl.TotalSGSTValue = request.TotalSGSTValue;
-                    tbl.GrossAmount = request.GrossAmountIncludeTax;
+                    tbl.CGSTPerct = request.CGSTPerct;
+                    tbl.CGSTValue = request.CGSTValue;
+                    tbl.SGSTPerct = request.SGSTPerct;
+                    tbl.SGSTValue = request.SGSTValue;
+                    tbl.IGSTPerct = request.IGSTPerct;
+                    tbl.IGSTValue = request.IGSTValue;
+
+                    tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
                     tbl.AdvanceReceived = request.AdvanceReceived;
-                    tbl.AmountPaid = request.AmountPaid;
+                    tbl.AmountPaidAfter = request.AmountPaidAfter;
                     tbl.StatusId = 1;
 
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
@@ -220,11 +229,16 @@ namespace OraRegaAV.Controllers
                     tbl.WorkOrderId = request.WorkOrderId;
 
                     tbl.AmountBeforeTax = request.AmountBeforeTax;
-                    tbl.TotalCGSTValue = request.TotalCGSTValue;
-                    tbl.TotalSGSTValue = request.TotalSGSTValue;
-                    tbl.GrossAmount = request.GrossAmountIncludeTax;
+                    tbl.CGSTPerct = request.CGSTPerct;
+                    tbl.CGSTValue = request.CGSTValue;
+                    tbl.SGSTPerct = request.SGSTPerct;
+                    tbl.SGSTValue = request.SGSTValue;
+                    tbl.IGSTPerct = request.IGSTPerct;
+                    tbl.IGSTValue = request.IGSTValue;
+
+                    tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
                     tbl.AdvanceReceived = request.AdvanceReceived;
-                    tbl.AmountPaid = request.AmountPaid;
+                    tbl.AmountPaidAfter = request.AmountPaidAfter;
                     tbl.StatusId = request.StatusId;
 
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
@@ -366,11 +380,15 @@ namespace OraRegaAV.Controllers
                             quotationObj.BranchId = workOrderObj.BranchId;
                             quotationObj.BranchName = workOrderObj.BranchName;
                             quotationObj.AmountBeforeTax = vQuotationObj.AmountBeforeTax;
-                            quotationObj.TotalCGSTValue = vQuotationObj.TotalCGSTValue;
-                            quotationObj.TotalSGSTValue = vQuotationObj.TotalSGSTValue;
-                            quotationObj.GrossAmountIncludeTax = vQuotationObj.GrossAmount;
+                            quotationObj.CGSTPerct = vQuotationObj.CGSTPerct;
+                            quotationObj.CGSTValue = vQuotationObj.CGSTValue;
+                            quotationObj.SGSTPerct = vQuotationObj.SGSTPerct;
+                            quotationObj.SGSTValue = vQuotationObj.SGSTValue;
+                            quotationObj.IGSTPerct = vQuotationObj.IGSTPerct;
+                            quotationObj.IGSTValue = vQuotationObj.IGSTValue;
+                            quotationObj.GrossAmountIncludeTax = vQuotationObj.GrossAmountIncludeTax;
                             quotationObj.AdvanceReceived = vQuotationObj.AdvanceReceived;
-                            quotationObj.AmountPaid = vQuotationObj.AmountPaid;
+                            quotationObj.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
                             quotationObj.CreatedBy = vQuotationObj.CreatedBy;
                             quotationObj.ModifyBy = vQuotationObj.ModifiedBy; ;
 

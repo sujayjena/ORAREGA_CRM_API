@@ -19,15 +19,19 @@ namespace OraRegaAV.DBEntity
         public string QuotationNumber { get; set; }
         public int WorkOrderId { get; set; }
         public Nullable<decimal> AmountBeforeTax { get; set; }
-        public Nullable<decimal> TotalCGSTValue { get; set; }
-        public Nullable<decimal> TotalSGSTValue { get; set; }
-        public Nullable<decimal> GrossAmount { get; set; }
+        public Nullable<int> CGSTPerct { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<int> SGSTPerct { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<int> IGSTPerct { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AdvanceReceived { get; set; }
-        public Nullable<decimal> AmountPaid { get; set; }
+        public Nullable<decimal> AmountPaidAfter { get; set; }
+        public int StatusId { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
-        public int StatusId { get; set; }
     }
 }
