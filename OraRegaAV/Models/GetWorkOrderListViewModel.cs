@@ -107,6 +107,8 @@ namespace OraRegaAV.Models
         public List<WORepairRemark> WORepairRemarkList { get; set; }
         public List<WOAccessory> WOAccessoryList { get; set; }
         public List<WOPartList> WOPartList { get; set; }
+        public List<string> IssueSnapsList { get; set; }
+        public List<string> PurchaseProofPhotoList { get; set; }
     }
 
     public class WORepairRemark
