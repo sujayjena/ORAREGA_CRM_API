@@ -4594,11 +4594,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<FunctionImport Name="GetUsersTemporaryAddresses" ReturnType="Collection(dbOraRegaModel.GetUsersTemporaryAddresses_Result)">
           <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-					<FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
-            <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
-            <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
-            <Parameter Name="SearchValue" Mode="In" Type="String" />
-          </FunctionImport>
 					<EntitySet Name="tblWorkOrderRescheduleHistories" EntityType="dbOraRegaModel.tblWorkOrderRescheduleHistory" />
 					<FunctionImport Name="GetWorkOrderRescheduleHistoryList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderRescheduleHistoryList_Result)">
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -4974,6 +4969,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
           <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
+          <FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
+            <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+          </FunctionImport>
           
           
          
@@ -7535,30 +7535,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Type="Int32" Name="AddressTypeId" Nullable="true" />
 					<Property Type="String" Name="AddressType" Nullable="true" MaxLength="10" />
 				</ComplexType>
-				<ComplexType Name="GetWOEnquiriesListForCustomer_Result">
-					<Property Type="Int32" Name="Id" Nullable="false" />
-					<Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
-					<Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
-					<Property Type="String" Name="ServiceAddress" Nullable="true" MaxLength="500" />
-					<Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
-					<Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
-					<Property Type="String" Name="Comment" Nullable="false" MaxLength="4000" />
-					<Property Type="String" Name="IssueDesc" Nullable="true" MaxLength="4000" />
-					<Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
-					<Property Type="String" Name="PaymentStatus" Nullable="true" MaxLength="30" />
-					<Property Type="Int32" Name="EnquiryStatusId" Nullable="true" />
-					<Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
-					<Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="500" />
-					<Property Type="Int32" Name="ProductTypeId" Nullable="true" />
-					<Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
-					<Property Type="Int32" Name="ProductMakeId" Nullable="true" />
-					<Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
-					<Property Type="Int32" Name="WorkOrderId" Nullable="true" />
-					<Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-				</ComplexType>
 				<EntityType Name="tblWorkOrderRescheduleHistory">
 					<Key>
 						<PropertyRef Name="Id" />
@@ -8518,6 +8494,37 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
+        <ComplexType Name="GetWOEnquiriesListForCustomer_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ServiceAddress" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AreaName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Comment" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="IssueDesc" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PaymentStatus" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="EnquiryStatusId" Nullable="true" />
+          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="ProductTypeId" Nullable="true" />
+          <Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ProductMakeId" Nullable="true" />
+          <Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="WorkOrderId" Nullable="true" />
+          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="OrderStatusId" Nullable="true" />
+          <Property Type="String" Name="OrderStatus" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="CaseStatusId" Nullable="true" />
+          <Property Type="String" Name="CaseStatusName" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="RescheduleReasonId" Nullable="true" />
+          <Property Type="String" Name="RescheduleReason" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
+        </ComplexType>
         
 			</Schema>
 		</edmx:ConceptualModels>
@@ -12196,34 +12203,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
-					<FunctionImportMapping FunctionImportName="GetWOEnquiriesListForCustomer" FunctionName="dbOraRegaModel.Store.GetWOEnquiriesListForCustomer">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="dbOraRegaModel.GetWOEnquiriesListForCustomer_Result">
-								<ScalarProperty Name="Id" ColumnName="Id" />
-								<ScalarProperty Name="Mobile" ColumnName="Mobile" />
-								<ScalarProperty Name="FirstName" ColumnName="FirstName" />
-								<ScalarProperty Name="LastName" ColumnName="LastName" />
-								<ScalarProperty Name="ServiceAddress" ColumnName="ServiceAddress" />
-								<ScalarProperty Name="StateName" ColumnName="StateName" />
-								<ScalarProperty Name="CityName" ColumnName="CityName" />
-								<ScalarProperty Name="AreaName" ColumnName="AreaName" />
-								<ScalarProperty Name="Pincode" ColumnName="Pincode" />
-								<ScalarProperty Name="Comment" ColumnName="Comment" />
-								<ScalarProperty Name="IssueDesc" ColumnName="IssueDesc" />
-								<ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
-								<ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-								<ScalarProperty Name="EnquiryStatusId" ColumnName="EnquiryStatusId" />
-								<ScalarProperty Name="StatusName" ColumnName="StatusName" />
-								<ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
-								<ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
-								<ScalarProperty Name="ProductType" ColumnName="ProductType" />
-								<ScalarProperty Name="ProductMakeId" ColumnName="ProductMakeId" />
-								<ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
-								<ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-								<ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
 					<EntitySetMapping Name="tblWorkOrderRescheduleHistories">
 						<EntityTypeMapping TypeName="dbOraRegaModel.tblWorkOrderRescheduleHistory">
 							<MappingFragment StoreEntitySet="tblWorkOrderRescheduleHistory">
@@ -13348,6 +13327,41 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetWOEnquiriesListForCustomer" FunctionName="dbOraRegaModel.Store.GetWOEnquiriesListForCustomer">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetWOEnquiriesListForCustomer_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="ServiceAddress" ColumnName="ServiceAddress" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IssueDesc" ColumnName="IssueDesc" />
+                <ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="EnquiryStatusId" ColumnName="EnquiryStatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductMakeId" ColumnName="ProductMakeId" />
+                <ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="CaseStatusId" ColumnName="CaseStatusId" />
+                <ScalarProperty Name="CaseStatusName" ColumnName="CaseStatusName" />
+                <ScalarProperty Name="RescheduleReasonId" ColumnName="RescheduleReasonId" />
+                <ScalarProperty Name="RescheduleReason" ColumnName="RescheduleReason" />
+                <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
      				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

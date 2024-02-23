@@ -35,5 +35,12 @@ namespace OraRegaAV.DBEntity
         public string ProductMake { get; set; }
         public Nullable<int> WorkOrderId { get; set; }
         public string WorkOrderNumber { get; set; }
+        public Nullable<int> OrderStatusId { get; set; }
+        public string OrderStatus { get; set; }
+        public Nullable<int> CaseStatusId { get; set; }
+        public string CaseStatusName { get; set; }
+        public Nullable<int> RescheduleReasonId { get; set; }
+        public string RescheduleReason { get; set; }
+        public Nullable<System.DateTime> RescheduleDate { get; set; }
     }
 }

@@ -938,6 +938,9 @@ namespace OraRegaAV.Controllers
         [HttpPost]
         public async Task<Response> GetWorkOrderDetails(string WorkOrderNumber)
         {
+            var host = Url.Content("~/");
+            FileManager fileManager = new FileManager();
+
             GetWorkOrderListViewModel workOrderListObj = new GetWorkOrderListViewModel();
             try
             {
@@ -1116,6 +1119,27 @@ namespace OraRegaAV.Controllers
                         });
                     }
                     workOrderListObj.WOPartList = woPart;
+
+                    var lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WorkOrderId == workOrderObj.Id && ip.IsDeleted == false).ToListAsync();
+                    var lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WorkOrderId == workOrderObj.Id && ip.IsDeleted == false).ToListAsync();
+
+                    List<string> lstIssueSnaps = new List<string>();
+                    List<string> lstPurchaseProofPhoto = new List<string>();
+
+                    foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
+                    {
+                        var path = host + fileManager.GetWorkOrderProductIssueFile(ip.WorkOrderId??0, ip.PhotoPath);
+                        lstIssueSnaps.Add(path);
+                    }
+
+                    foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
+                    {
+                        var path = host + fileManager.GetWorkOrderPurchaseProofFile(ip.WorkOrderId??0, ip.PhotoPath);
+                        lstPurchaseProofPhoto.Add(path);
+                    }
+
+                    workOrderListObj.IssueSnapsList = lstIssueSnaps;
+                    workOrderListObj.PurchaseProofPhotoList = lstPurchaseProofPhoto;
 
                     _response.Data = workOrderListObj;
                 }
