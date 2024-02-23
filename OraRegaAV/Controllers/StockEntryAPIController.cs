@@ -1034,15 +1034,27 @@ namespace OraRegaAV.Controllers.API
                         var vReturnPartObj = await Task.Run(() => db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId && x.ReturnStatusId == 1).FirstOrDefaultAsync());
                         if (vReturnPartObj != null)
                         {
-
-                            var vEngineerPartObj = await Task.Run(() => db.tblPartsAllocatedToEngineers.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId).FirstOrDefaultAsync());
-                            if (vEngineerPartObj != null)
+                            if (item.StatusId != 3)
                             {
-                                vEngineerPartObj.IsReturn = true;
+                                if (vReturnPartObj.WorkOrderId != null && vReturnPartObj.WorkOrderId > 0)
+                                {
+                                    var vWorkOrderPartObj = await Task.Run(() => db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == vReturnPartObj.WorkOrderId && x.PartId == item.PartId).FirstOrDefaultAsync());
+                                    if (vWorkOrderPartObj != null)
+                                    {
+                                        vWorkOrderPartObj.IsReturn = true;
+
+                                        await db.SaveChangesAsync();
+                                    }
+                                }
+
+                                var vEngineerPartObj = await Task.Run(() => db.tblPartsAllocatedToEngineers.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId).FirstOrDefaultAsync());
+                                if (vEngineerPartObj != null)
+                                {
+                                    vEngineerPartObj.IsReturn = true;
+
+                                    await db.SaveChangesAsync();
+                                }
                             }
-
-                            await db.SaveChangesAsync();
-
 
                             vReturnPartObj.ReturnStatusId = item.StatusId;
 
