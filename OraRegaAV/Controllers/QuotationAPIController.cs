@@ -683,5 +683,188 @@ namespace OraRegaAV.Controllers
             }
             return "";
         }
+
+        [HttpPost]
+        [Route("api/QuotationAPI/GetQuotationLogList")]
+        public Response GetQuotationLogList(string QuotationNumber)
+        {
+            List<Quotation> quotationObjList = new List<Quotation>();
+
+            try
+            {
+                var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == QuotationNumber).FirstOrDefault();
+                if (vQuotationObj != null)
+                {
+                    var vQuotationLogsObj = db.tblQuotationLogs.Where(x => x.QuotationId == vQuotationObj.Id).ToList();
+                    foreach (var item in vQuotationLogsObj)
+                    {
+                        var vquotationNewObj = new Quotation();
+
+                        var vWorkOrderObj = db.tblWorkOrders.Where(x => x.Id == vQuotationObj.WorkOrderId).FirstOrDefault();
+                        if (vWorkOrderObj != null)
+                        {
+                            var workOrderObj = db.GetWorkOrderDetails(vWorkOrderObj.WorkOrderNumber).FirstOrDefault();
+                            if (workOrderObj != null)
+                            {
+                                // Header Detail
+                                vquotationNewObj.QuotationId = item.Id;
+                                vquotationNewObj.QuoteDate = item.QuoteDate;
+                                vquotationNewObj.QuotationNumber = vQuotationObj.QuotationNumber;
+                                vquotationNewObj.WorkOrderId = workOrderObj.Id;
+                                vquotationNewObj.WorkOrderNumber = workOrderObj.WorkOrderNumber;
+                                vquotationNewObj.BranchId = workOrderObj.BranchId;
+                                vquotationNewObj.BranchName = workOrderObj.BranchName;
+                                vquotationNewObj.AmountBeforeTax = item.AmountBeforeTax;
+                                vquotationNewObj.CGSTPerct = item.CGSTPerct;
+                                vquotationNewObj.CGSTValue = item.CGSTValue;
+                                vquotationNewObj.SGSTPerct = item.SGSTPerct;
+                                vquotationNewObj.SGSTValue = item.SGSTValue;
+                                vquotationNewObj.IGSTPerct = item.IGSTPerct;
+                                vquotationNewObj.IGSTValue = item.IGSTValue;
+                                vquotationNewObj.GrossAmountIncludeTax = item.GrossAmountIncludeTax;
+                                vquotationNewObj.AdvanceReceived = item.AdvanceReceived;
+                                vquotationNewObj.AmountPaidAfter = item.AmountPaidAfter;
+                                vquotationNewObj.CreatedBy = item.CreatedBy;
+                                vquotationNewObj.ModifyBy = item.ModifiedBy; ;
+
+                                var userCreatorObj = db.tblUsers.Where(x => x.Id == item.CreatedBy).FirstOrDefault();
+                                if (userCreatorObj != null)
+                                {
+                                    vquotationNewObj.CreatorName = db.tblEmployees.Where(x => x.Id == userCreatorObj.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                                }
+
+                                var userModifiedObj = db.tblUsers.Where(x => x.Id == item.ModifiedBy).FirstOrDefault();
+                                if (userModifiedObj != null)
+                                {
+                                    vquotationNewObj.ModifierName = db.tblEmployees.Where(x => x.Id == userModifiedObj.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                                }
+
+                                // Customer Detail
+                                var vWorkOrderCustomerObj = db.tblCustomers.Where(w => w.Id == workOrderObj.CustomerId).FirstOrDefault();
+                                if (vWorkOrderCustomerObj != null)
+                                {
+                                    vquotationNewObj.customerDetails.CustomerId = workOrderObj.CustomerId;
+                                    vquotationNewObj.customerDetails.OrganizationName = workOrderObj.CompanyName;
+                                    vquotationNewObj.customerDetails.CustomerName = vWorkOrderCustomerObj.FirstName + " " + vWorkOrderCustomerObj.LastName;
+                                    vquotationNewObj.customerDetails.CustomerGstNumber = workOrderObj.GSTNumber;
+                                    vquotationNewObj.customerDetails.CustomerMobile = vWorkOrderCustomerObj.Mobile;
+                                    vquotationNewObj.customerDetails.CustomerEmail = vWorkOrderCustomerObj.Email;
+
+                                    var vWorkOrderCustomerAddressObj = db.tblPermanentAddresses.Where(w => w.Id == workOrderObj.ServiceAddressId).FirstOrDefault();
+                                    if (vWorkOrderCustomerAddressObj != null)
+                                    {
+                                        vquotationNewObj.customerDetails.BillToAddress = vWorkOrderCustomerAddressObj.Address;
+                                        vquotationNewObj.customerDetails.DeliverToAddress = vWorkOrderCustomerAddressObj.Address;
+                                    }
+
+                                    var vWorkOrderBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
+                                    if (vWorkOrderBranchObj != null)
+                                    {
+                                        var vWorkOrderStateObj = db.tblStates.Where(w => w.Id == vWorkOrderBranchObj.StateId).FirstOrDefault();
+                                        if (vWorkOrderStateObj != null)
+                                        {
+                                            vquotationNewObj.customerDetails.CustomerStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
+                                        }
+                                    }
+                                }
+
+                                // Product Detail
+                                vquotationNewObj.productDetails.ProductTypeId = workOrderObj.ProductTypeId;
+                                vquotationNewObj.productDetails.ProductType = workOrderObj.ProductType;
+                                vquotationNewObj.productDetails.ProductMakeId = workOrderObj.ProductMakeId;
+                                vquotationNewObj.productDetails.ProductMake = workOrderObj.ProductMake;
+                                vquotationNewObj.productDetails.ProductModelId = workOrderObj.ProductModelId;
+                                vquotationNewObj.productDetails.ProductModel = workOrderObj.ProductModel;
+                                vquotationNewObj.productDetails.ProdModelIfOther = workOrderObj.ProdModelIfOther;
+                                vquotationNewObj.productDetails.ProductDescriptionId = workOrderObj.ProductDescriptionId;
+                                vquotationNewObj.productDetails.ProductDescription = workOrderObj.ProductDescription;
+                                vquotationNewObj.productDetails.ProdDescriptionIfOther = workOrderObj.ProdDescriptionIfOther;
+                                vquotationNewObj.productDetails.ProductSerialNumber = workOrderObj.ProductSerialNumber;
+                                vquotationNewObj.productDetails.ProductNumber = workOrderObj.ProductNumber;
+
+                                // Service Charge
+                                var serviceChargeObj = db.tblQuotationServiceChargeDetails.Where(x => x.QuotationId == item.Id).FirstOrDefault();
+                                if (serviceChargeObj != null)
+                                {
+                                    vquotationNewObj.serviceChargeDetails.ProductTypeId = serviceChargeObj.ProductTypeId;
+                                    vquotationNewObj.serviceChargeDetails.ProductType = db.tblProductTypes.Where(x => x.Id == serviceChargeObj.ProductTypeId).Select(x => x.ProductType).FirstOrDefault();
+                                    vquotationNewObj.serviceChargeDetails.HSNCodeId = serviceChargeObj.HSNCodeId;
+                                    vquotationNewObj.serviceChargeDetails.HSNCode = db.tblHSNCodeGSTMappings.Where(x => x.Id == serviceChargeObj.HSNCodeId).Select(x => x.HSNCode).FirstOrDefault();
+                                    vquotationNewObj.serviceChargeDetails.TravelRangeId = serviceChargeObj.TravelRangeId;
+                                    vquotationNewObj.serviceChargeDetails.TravelRange = db.tblTravelRanges.Where(x => x.Id == serviceChargeObj.TravelRangeId).Select(x => x.TravelRange).FirstOrDefault();
+                                    vquotationNewObj.serviceChargeDetails.Price = serviceChargeObj.Price;
+                                    vquotationNewObj.serviceChargeDetails.Description = serviceChargeObj.Description;
+                                    vquotationNewObj.serviceChargeDetails.DiscPerct = serviceChargeObj.DiscPerct;
+                                    vquotationNewObj.serviceChargeDetails.DiscValue = serviceChargeObj.DiscValue;
+                                    vquotationNewObj.serviceChargeDetails.CGSTPerct = serviceChargeObj.CGSTPerct;
+                                    vquotationNewObj.serviceChargeDetails.CGSTValue = serviceChargeObj.CGSTValue;
+                                    vquotationNewObj.serviceChargeDetails.SGSTPerct = serviceChargeObj.SGSTPerct;
+                                    vquotationNewObj.serviceChargeDetails.SGSTValue = serviceChargeObj.SGSTValue;
+                                    vquotationNewObj.serviceChargeDetails.IGSTPerct = serviceChargeObj.IGSTPerct;
+                                    vquotationNewObj.serviceChargeDetails.IGSTValue = serviceChargeObj.IGSTValue;
+                                    vquotationNewObj.serviceChargeDetails.PriceAfterDisc = serviceChargeObj.PriceAfterDisc;
+                                }
+
+                                // Part Details
+                                var quotationPartObj = db.tblQuotationPartDetails.Where(x => x.QuotationId == item.Id).ToList();
+                                foreach (var itemWOPart in quotationPartObj)
+                                {
+                                    string sPartNumber = "";
+                                    string sPartDescription = "";
+                                    int sHSNCodeId = 0;
+                                    string sHSNCode = "";
+
+                                    var vPartObj = db.tblPartDetails.Where(x => x.Id == itemWOPart.PartId).FirstOrDefault();
+                                    if (vPartObj != null)
+                                    {
+                                        var objHSN = db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartObj.HSNCodeId).FirstOrDefault();
+                                        if (objHSN != null)
+                                        {
+                                            sHSNCodeId = objHSN.Id;
+                                            sHSNCode = objHSN.HSNCode;
+                                        }
+
+                                        sPartNumber = vPartObj.PartNumber;
+                                        sPartDescription = vPartObj.PartDescription;
+                                    }
+
+                                    vquotationNewObj.partDetails.Add(new PartDetails
+                                    {
+                                        PartId = vPartObj.Id,
+                                        PartNumber = sPartNumber,
+                                        HSNCodeId = sHSNCodeId,
+                                        HSNCode = sHSNCode,
+                                        PartDescription = sPartDescription,
+                                        Qty = itemWOPart.Qty,
+                                        Price = itemWOPart.Price,
+                                        DiscPerct = itemWOPart.DiscPerct,
+                                        DiscValue = itemWOPart.DiscValue,
+                                        CGSTPerct = itemWOPart.CGSTPerct,
+                                        CGSTValue = itemWOPart.CGSTValue,
+                                        SGSTPerct = itemWOPart.SGSTPerct,
+                                        SGSTValue = itemWOPart.SGSTValue,
+                                        IGSTPerct = itemWOPart.IGSTPerct,
+                                        IGSTValue = itemWOPart.IGSTValue,
+                                        PriceAfterDisc = itemWOPart.PriceAfterDisc,
+                                    });
+                                }
+                            }
+                        }
+
+                        quotationObjList.Add(vquotationNewObj);
+                    }
+                }
+
+                _response.Data = quotationObjList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
     }
 }

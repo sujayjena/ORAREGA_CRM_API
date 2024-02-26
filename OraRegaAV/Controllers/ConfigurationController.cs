@@ -191,7 +191,7 @@ namespace OraRegaAV.Controllers
         {
             //bodyContent = "Hello";
 
-            var isEmailSent = new AlertsSender().SendEmail("emailSubject", "emailContent", EmailTo, null);
+            var isEmailSent = new AlertsSender().SendEmailTest("emailSubject", "emailContent", EmailTo, null);
 
             //string isEmailSent = "";
             //try
@@ -244,6 +244,38 @@ namespace OraRegaAV.Controllers
             //    sendMail = ex.Message.ToString();
             //    Console.WriteLine(ex.ToString());
             //}
+
+            _response.Data = "Email Sent : " + isEmailSent;
+
+            return _response;
+        }
+
+        [HttpPost]
+        public Response MailTest(string EmailTo)
+        {
+            var isEmailSent = "";
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient smtpclient = new SmtpClient();
+                smtpclient.Host = "relay-hosting.secureserver.net";
+                //smtpclient.UseDefaultCredentials = false;
+
+                smtpclient.EnableSsl = true;
+                smtpclient.Port= 465;
+
+                smtpclient.Credentials = new System.Net.NetworkCredential("no_reply@quikservindia.com", "Quikserv@123");
+                mail.From = new MailAddress("no_reply@quikservindia.com");
+                mail.To.Add("sujay930@gmail.com");
+                mail.Subject = $"Test Email";
+                mail.IsBodyHtml = true;
+                mail.Body = HttpUtility.HtmlDecode("test");
+                smtpclient.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                isEmailSent = ex.Message;
+            }
 
             _response.Data = "Email Sent : " + isEmailSent;
 
