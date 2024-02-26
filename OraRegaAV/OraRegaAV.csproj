@@ -841,6 +841,9 @@
     <Compile Include="DBEntity\tblBranch.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblBranchMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblBranchQueue.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>

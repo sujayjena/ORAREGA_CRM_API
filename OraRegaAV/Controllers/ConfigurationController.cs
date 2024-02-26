@@ -191,7 +191,7 @@ namespace OraRegaAV.Controllers
         {
             //bodyContent = "Hello";
 
-            var isEmailSent = new AlertsSender().SendEmailTest("emailSubject", "emailContent", EmailTo, null);
+            var isEmailSent = new AlertsSender().SendEmail("emailSubject", "emailContent", EmailTo, null);
 
             //string isEmailSent = "";
             //try
@@ -258,18 +258,19 @@ namespace OraRegaAV.Controllers
             {
                 MailMessage mail = new MailMessage();
                 SmtpClient smtpclient = new SmtpClient();
-                smtpclient.Host = "relay-hosting.secureserver.net";
+                //smtpclient.Host = "relay-hosting.secureserver.net";
+                smtpclient.Host = "smtpout.secureserver.net";
                 //smtpclient.UseDefaultCredentials = false;
 
                 smtpclient.EnableSsl = true;
-                smtpclient.Port= 465;
+                smtpclient.Port= 587;
 
                 smtpclient.Credentials = new System.Net.NetworkCredential("no_reply@quikservindia.com", "Quikserv@123");
                 mail.From = new MailAddress("no_reply@quikservindia.com");
-                mail.To.Add("sujay930@gmail.com");
+                mail.To.Add(EmailTo);
                 mail.Subject = $"Test Email";
                 mail.IsBodyHtml = true;
-                mail.Body = HttpUtility.HtmlDecode("test");
+                mail.Body = HttpUtility.HtmlDecode("test from Dev team");
                 smtpclient.Send(mail);
             }
             catch (Exception ex)

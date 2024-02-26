@@ -189,6 +189,14 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="AreaId" Type="int" />
         </EntityType>
+        <EntityType Name="tblBranchMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="BranchId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblBranchQueue">
           <Key>
             <PropertyRef Name="Id" />
@@ -3164,6 +3172,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblArea" EntityType="Self.tblArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBanner" EntityType="Self.tblBanner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBranch" EntityType="Self.tblBranch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblBranchMapping" EntityType="Self.tblBranchMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBranchQueue" EntityType="Self.tblBranchQueue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBusinessType" EntityType="Self.tblBusinessType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCareer" EntityType="Self.tblCareer" Schema="dbo" store:Type="Tables" />
@@ -5121,18 +5130,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetQuotationList" ReturnType="Collection(dbOraRegaModel.GetQuotationList_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
-            <Parameter Name="QuotationNumber" Mode="In" Type="String" />
-            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
-            <Parameter Name="SearchValue" Mode="In" Type="String" />
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-            <Parameter Name="PageNo" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
+           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
           <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
           <FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
@@ -5146,6 +5144,18 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
           <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
           <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
+          <EntitySet Name="tblBranchMappings" EntityType="dbOraRegaModel.tblBranchMapping" />
+          <FunctionImport Name="GetQuotationList" ReturnType="Collection(dbOraRegaModel.GetQuotationList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="QuotationNumber" Mode="In" Type="String" />
+            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
           
           
          
@@ -8553,21 +8563,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="GetQuotationList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="DateTime" Name="QuoteDate" Nullable="false" Precision="23" />
-          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
-          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
-          <Property Type="Decimal" Name="GrossAmount" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="AmountPaid" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="StatusId" Nullable="false" />
-          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-        </ComplexType>
-        <EntityType Name="tblQuotationServiceChargeDetail">
+         <EntityType Name="tblQuotationServiceChargeDetail">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -8817,6 +8813,36 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="tblBranchMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="BranchId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="GetQuotationList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="DateTime" Name="QuoteDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
+          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
+          <Property Type="Decimal" Name="AmountBeforeTax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="CGSTPerct" Nullable="true" />
+          <Property Type="Decimal" Name="CGSTValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="SGSTPerct" Nullable="true" />
+          <Property Type="Decimal" Name="SGSTValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="IGSTPerct" Nullable="true" />
+          <Property Type="Decimal" Name="IGSTValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossAmountIncludeTax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AdvanceReceived" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AmountPaidAfter" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="StatusId" Nullable="false" />
+          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+        </ComplexType>
         
 			</Schema>
 		</edmx:ConceptualModels>
@@ -13497,25 +13523,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetQuotationList" FunctionName="dbOraRegaModel.Store.GetQuotationList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetQuotationList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
-                <ScalarProperty Name="AmountPaid" ColumnName="AmountPaid" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="tblQuotationServiceChargeDetails">
+           <EntitySetMapping Name="tblQuotationServiceChargeDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetail">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetails">
                 <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
@@ -13778,6 +13786,41 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblBranchMappings">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblBranchMapping">
+              <MappingFragment StoreEntitySet="tblBranchMapping">
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetQuotationList" FunctionName="dbOraRegaModel.Store.GetQuotationList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetQuotationList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
      				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

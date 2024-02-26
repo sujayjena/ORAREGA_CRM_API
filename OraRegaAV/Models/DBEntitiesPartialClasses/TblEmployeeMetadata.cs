@@ -62,6 +62,7 @@ namespace OraRegaAV.DBEntity
     [MetadataType(typeof(TblEmployeeMetadata))]
     public partial class tblEmployee
     {
+        public List<tblBranchMapping> BranchList { get; set; }
         public List<tblPermanentAddress> PermanentAddress { get; set; }
         public List<tblTemporaryAddress> TemporaryAddress { get; set; }
 

@@ -172,6 +172,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblQuotationLog> tblQuotationLogs { get; set; }
         public virtual DbSet<tblQuotationPartDetailsLog> tblQuotationPartDetailsLogs { get; set; }
         public virtual DbSet<tblQuotationServiceChargeDetailsLog> tblQuotationServiceChargeDetailsLogs { get; set; }
+        public virtual DbSet<tblBranchMapping> tblBranchMappings { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -3051,6 +3052,23 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceList_Result>("GetInvoiceList", companyIdParameter, branchIdParameter, invoiceNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
+        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
+        {
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
+                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
+                new ObjectParameter("EnquiryStatusId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
+        }
+    
         public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, Nullable<int> branchId, string quotationNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -3086,23 +3104,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
-        }
-    
-        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
-        {
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
-                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
-                new ObjectParameter("EnquiryStatusId", typeof(int));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
         }
     }
 }

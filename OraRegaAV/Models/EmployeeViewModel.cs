@@ -13,6 +13,7 @@ public class Employee_Response
 {
     public Employee_Response()
     {
+        BranchList = new List<EmployeeBranch>();
         TemporaryAddress = new List<TemporaryAddresses_Response>();
     }
 
@@ -55,6 +56,7 @@ public class Employee_Response
     public byte[] AadharCard { get; set; }
     public byte[] PanCard { get; set; }
 
+    public List<EmployeeBranch> BranchList { get; set; }
     public List<tblPermanentAddress> PermanentAddress { get; set; }
     public List<TemporaryAddresses_Response> TemporaryAddress { get; set; }
 }
@@ -77,4 +79,47 @@ public class TemporaryAddresses_Response
     public Nullable<bool> IsActive { get; set; }
     public Nullable<int> AddressTypeId { get; set; }
     public string AddressType { get; set; }
+}
+
+public class EmployeesList_Result
+{
+    public EmployeesList_Result()
+    {
+        BranchList = new List<EmployeeBranch>();
+    }
+
+    public int Id { get; set; }
+    public string EmployeeName { get; set; }
+    public string EmployeeCode { get; set; }
+    public string EmailId { get; set; }
+    public int UserTypeId { get; set; }
+    public string UserType { get; set; }
+    public Nullable<int> ReportingTo { get; set; }
+    public string ReportingToName { get; set; }
+    public Nullable<int> RoleId { get; set; }
+    public string RoleName { get; set; }
+    public int BranchId { get; set; }
+    public string BranchName { get; set; }
+    public int DepartmentId { get; set; }
+    public string DepartmentName { get; set; }
+    public string PersonalNumber { get; set; }
+    public string OfficeNumber { get; set; }
+    public Nullable<System.DateTime> DateOfBirth { get; set; }
+    public Nullable<System.DateTime> DateOfJoining { get; set; }
+    public string EmergencyContactNumber { get; set; }
+    public string BloodGroup { get; set; }
+    public Nullable<bool> IsWebUser { get; set; }
+    public Nullable<bool> IsMobileUser { get; set; }
+    public Nullable<int> CreatedBy { get; set; }
+    public string CreatorName { get; set; }
+    public Nullable<System.DateTime> CreatedDate { get; set; }
+    public string ProfileImagePath { get; set; }
+    public Nullable<bool> IsActive { get; set; }
+
+    public List<EmployeeBranch> BranchList { get; set; }
+}
+
+public class EmployeeBranch
+{
+    public int BranchId { get; set; }
 }

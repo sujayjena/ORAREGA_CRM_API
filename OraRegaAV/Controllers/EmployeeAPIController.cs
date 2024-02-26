@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Office2016.Excel;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2016.Excel;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -430,6 +431,8 @@ namespace OraRegaAV.Controllers.API
                     return _response;
                 }
 
+
+
                 tblEmployee = new tblEmployee();
                 tblEmployee.EmployeeCode = parameters.EmployeeCode;
                 tblEmployee.EmployeeName = parameters.EmployeeName;
@@ -497,6 +500,23 @@ namespace OraRegaAV.Controllers.API
 
                 //    };
                 //}
+
+                #region Multiple Branch Maping
+
+                foreach (var item in parameters.BranchList)
+                {
+                    var vtblBranchMapping = new tblBranchMapping()
+                    {
+                        EmployeeId = tblEmployee.Id,
+                        BranchId = item.BranchId
+                    };
+
+                    db.tblBranchMappings.AddOrUpdate(vtblBranchMapping);
+
+                }
+                await db.SaveChangesAsync();
+
+                #endregion
 
                 tblUser = new tblUser();
                 //password = Utilities.CreateRandomPassword();
@@ -871,6 +891,31 @@ namespace OraRegaAV.Controllers.API
 
                     await db.SaveChangesAsync();
 
+
+                    #region Multiple Branch Maping
+
+                    var vBranchMapList = db.tblBranchMappings.Where(u => u.EmployeeId == parameters.Id).ToList();
+                    if (vBranchMapList.Count > 0)
+                    {
+                        db.tblBranchMappings.RemoveRange(vBranchMapList);
+                        await db.SaveChangesAsync();
+                    }
+
+                    foreach (var item in parameters.BranchList)
+                    {
+                        var vtblBranchMapping = new tblBranchMapping()
+                        {
+                            EmployeeId = parameters.Id,
+                            BranchId = item.BranchId
+                        };
+
+                        db.tblBranchMappings.AddOrUpdate(vtblBranchMapping);
+                    }
+                    await db.SaveChangesAsync();
+
+                    #endregion
+
+
                     //Update Employee Role Permission
                     if (tbl.RoleId > 0)
                     {
@@ -895,23 +940,68 @@ namespace OraRegaAV.Controllers.API
         [Route("api/EmployeeAPI/GetEmployeesList")]
         public async Task<Response> GetEmployeesList(EmployeeSearchParameters parameters)
         {
-            List<GetEmployeesList_Result> lstEmployee;
+            List<EmployeesList_Result> lstEmployee = new List<EmployeesList_Result>();
 
             try
             {
                 var userId = Utilities.GetUserID(ActionContext.Request);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                lstEmployee = await Task.Run(() => db.GetEmployeesList(
-                    parameters.EmpCode.SanitizeValue(),
-                    parameters.EmpName.SanitizeValue(),
-                    parameters.Email.SanitizeValue(),
-                    parameters.IsActive,
-                    parameters.SearchValue,
-                    parameters.PageSize,
-                    parameters.PageNo,
-                    vTotal,
-                    userId).ToList());
+                var vEmployeeList = await Task.Run(() => db.GetEmployeesList(
+                     parameters.EmpCode.SanitizeValue(),
+                     parameters.EmpName.SanitizeValue(),
+                     parameters.Email.SanitizeValue(),
+                     parameters.IsActive,
+                     parameters.SearchValue,
+                     parameters.PageSize,
+                     parameters.PageNo,
+                     vTotal,
+                     userId).ToList());
+
+                foreach (var item in vEmployeeList)
+                {
+                    var empObj = new EmployeesList_Result()
+                    {
+                        Id = item.Id,
+                        EmployeeName = item.EmployeeName,
+                        EmployeeCode = item.EmployeeCode,
+                        EmailId = item.EmailId,
+                        UserTypeId = item.UserTypeId,
+                        UserType = item.UserType,
+                        ReportingTo = item.ReportingTo,
+                        ReportingToName = item.ReportingToName,
+                        RoleId = item.RoleId,
+                        RoleName = item.RoleName,
+                        BranchId = item.BranchId,
+                        BranchName = item.BranchName,
+                        DepartmentId = item.DepartmentId,
+                        DepartmentName = item.PersonalNumber,
+                        PersonalNumber = item.PersonalNumber,
+                        OfficeNumber = item.OfficeNumber,
+                        DateOfBirth = item.DateOfBirth,
+                        DateOfJoining = item.DateOfJoining,
+                        EmergencyContactNumber = item.EmergencyContactNumber,
+                        BloodGroup = item.BloodGroup,
+                        IsWebUser = item.IsWebUser,
+                        IsMobileUser = item.IsMobileUser,
+                        CreatedBy = item.CreatedBy,
+                        CreatorName = item.CreatorName,
+                        CreatedDate = item.CreatedDate,
+                        ProfileImagePath = item.ProfileImagePath,
+                        IsActive = item.IsActive,
+                    };
+
+                    var vBranckObjList = await db.tblBranchMappings.Where(x => x.EmployeeId == item.Id).ToListAsync();
+
+                    empObj.BranchList.AddRange(from itemBranch in vBranckObjList
+                                               let employeeBranch = new EmployeeBranch()
+                                               {
+                                                   BranchId = itemBranch.BranchId
+                                               }
+                                               select employeeBranch);
+
+                    lstEmployee.Add(empObj);
+                };
 
                 if (userId > 1)
                 {
@@ -1025,6 +1115,15 @@ namespace OraRegaAV.Controllers.API
                     employeeReponse.CompanyId = employee.CompanyId;
                     employeeReponse.IsTemporaryAddressIsSame = employee.IsTemporaryAddressIsSame;
 
+                    var vBranckObjList = await db.tblBranchMappings.Where(x => x.EmployeeId == employee.Id).ToListAsync();
+
+                    employeeReponse.BranchList.AddRange(from itemBranch in vBranckObjList
+                                               let employeeBranch = new EmployeeBranch()
+                                               {
+                                                   BranchId = itemBranch.BranchId
+                                               }
+                                               select employeeBranch);
+
                     if (!string.IsNullOrEmpty(employee.ProfileImagePath))
                     {
                         employeeReponse.ProfileImagePath = employee.ProfileImagePath;
@@ -1125,6 +1224,15 @@ namespace OraRegaAV.Controllers.API
                         employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
                     }
 
+                    var vBranckObjList = await db.tblBranchMappings.Where(x => x.EmployeeId == employee.Id).ToListAsync();
+
+                    employeeReponse.BranchList.AddRange(from itemBranch in vBranckObjList
+                                                        let employeeBranch = new EmployeeBranch()
+                                                        {
+                                                            BranchId = itemBranch.BranchId
+                                                        }
+                                                        select employeeBranch);
+
                     if (userDetail != null)
                     {
                         employeeReponse.PermanentAddress = db.tblPermanentAddresses.Where(x => x.UserId == userDetail.Id && x.IsDefault == true).ToList();
@@ -1179,7 +1287,7 @@ namespace OraRegaAV.Controllers.API
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var listObj = db.GetEmployeesList(parameters.EmpCode,parameters.EmpName,parameters.Email, parameters.IsActive, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+                var listObj = db.GetEmployeesList(parameters.EmpCode, parameters.EmpName, parameters.Email, parameters.IsActive, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
 
                 if (listObj.Count == 0)
                 {

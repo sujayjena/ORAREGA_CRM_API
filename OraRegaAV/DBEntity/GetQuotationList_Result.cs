@@ -19,8 +19,16 @@ namespace OraRegaAV.DBEntity
         public int WorkOrderId { get; set; }
         public string WorkOrderNumber { get; set; }
         public string CustomerName { get; set; }
-        public Nullable<decimal> GrossAmount { get; set; }
-        public Nullable<decimal> AmountPaid { get; set; }
+        public Nullable<decimal> AmountBeforeTax { get; set; }
+        public Nullable<int> CGSTPerct { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<int> SGSTPerct { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<int> IGSTPerct { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
+        public Nullable<decimal> AdvanceReceived { get; set; }
+        public Nullable<decimal> AmountPaidAfter { get; set; }
         public int StatusId { get; set; }
         public string StatusName { get; set; }
         public Nullable<int> CreatedBy { get; set; }
