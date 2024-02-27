@@ -509,27 +509,27 @@ namespace OraRegaAV.Controllers
 
                                     sPartNumber = vPartObj.PartNumber;
                                     sPartDescription = vPartObj.PartDescription;
-                                }
 
-                                quotationObj.partDetails.Add(new PartDetails
-                                {
-                                    PartId = vPartObj.Id,
-                                    PartNumber = sPartNumber,
-                                    HSNCodeId = sHSNCodeId,
-                                    HSNCode = sHSNCode,
-                                    PartDescription = sPartDescription,
-                                    Qty = itemWOPart.Qty,
-                                    Price = itemWOPart.Price,
-                                    DiscPerct = itemWOPart.DiscPerct,
-                                    DiscValue = itemWOPart.DiscValue,
-                                    CGSTPerct = itemWOPart.CGSTPerct,
-                                    CGSTValue = itemWOPart.CGSTValue,
-                                    SGSTPerct = itemWOPart.SGSTPerct,
-                                    SGSTValue = itemWOPart.SGSTValue,
-                                    IGSTPerct = itemWOPart.IGSTPerct,
-                                    IGSTValue = itemWOPart.IGSTValue,
-                                    PriceAfterDisc = itemWOPart.PriceAfterDisc,
-                                });
+                                    quotationObj.partDetails.Add(new PartDetails
+                                    {
+                                        PartId = vPartObj.Id,
+                                        PartNumber = sPartNumber,
+                                        HSNCodeId = sHSNCodeId,
+                                        HSNCode = sHSNCode,
+                                        PartDescription = sPartDescription,
+                                        Qty = itemWOPart.Qty,
+                                        Price = itemWOPart.Price,
+                                        DiscPerct = itemWOPart.DiscPerct,
+                                        DiscValue = itemWOPart.DiscValue,
+                                        CGSTPerct = itemWOPart.CGSTPerct,
+                                        CGSTValue = itemWOPart.CGSTValue,
+                                        SGSTPerct = itemWOPart.SGSTPerct,
+                                        SGSTValue = itemWOPart.SGSTValue,
+                                        IGSTPerct = itemWOPart.IGSTPerct,
+                                        IGSTValue = itemWOPart.IGSTValue,
+                                        PriceAfterDisc = itemWOPart.PriceAfterDisc,
+                                    });
+                                }
                             }
                         }
                     }
@@ -826,27 +826,27 @@ namespace OraRegaAV.Controllers
 
                                         sPartNumber = vPartObj.PartNumber;
                                         sPartDescription = vPartObj.PartDescription;
-                                    }
 
-                                    vquotationNewObj.partDetails.Add(new PartDetails
-                                    {
-                                        PartId = vPartObj.Id,
-                                        PartNumber = sPartNumber,
-                                        HSNCodeId = sHSNCodeId,
-                                        HSNCode = sHSNCode,
-                                        PartDescription = sPartDescription,
-                                        Qty = itemWOPart.Qty,
-                                        Price = itemWOPart.Price,
-                                        DiscPerct = itemWOPart.DiscPerct,
-                                        DiscValue = itemWOPart.DiscValue,
-                                        CGSTPerct = itemWOPart.CGSTPerct,
-                                        CGSTValue = itemWOPart.CGSTValue,
-                                        SGSTPerct = itemWOPart.SGSTPerct,
-                                        SGSTValue = itemWOPart.SGSTValue,
-                                        IGSTPerct = itemWOPart.IGSTPerct,
-                                        IGSTValue = itemWOPart.IGSTValue,
-                                        PriceAfterDisc = itemWOPart.PriceAfterDisc,
-                                    });
+                                        vquotationNewObj.partDetails.Add(new PartDetails
+                                        {
+                                            PartId = vPartObj.Id,
+                                            PartNumber = sPartNumber,
+                                            HSNCodeId = sHSNCodeId,
+                                            HSNCode = sHSNCode,
+                                            PartDescription = sPartDescription,
+                                            Qty = itemWOPart.Qty,
+                                            Price = itemWOPart.Price,
+                                            DiscPerct = itemWOPart.DiscPerct,
+                                            DiscValue = itemWOPart.DiscValue,
+                                            CGSTPerct = itemWOPart.CGSTPerct,
+                                            CGSTValue = itemWOPart.CGSTValue,
+                                            SGSTPerct = itemWOPart.SGSTPerct,
+                                            SGSTValue = itemWOPart.SGSTValue,
+                                            IGSTPerct = itemWOPart.IGSTPerct,
+                                            IGSTValue = itemWOPart.IGSTValue,
+                                            PriceAfterDisc = itemWOPart.PriceAfterDisc,
+                                        });
+                                    }
                                 }
                             }
                         }

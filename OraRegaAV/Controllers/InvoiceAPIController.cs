@@ -330,7 +330,7 @@ namespace OraRegaAV.Controllers
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                var vQuotationObjList = db.GetInvoiceList(0, 0, InvoiceNumber, string.Empty, string.Empty, 0, 0, vTotal, userId).ToList();
+                var vQuotationObjList = db.GetInvoiceList(0, "", InvoiceNumber, string.Empty, string.Empty, 0, 0, vTotal, userId).ToList();
 
                 foreach (var item in vQuotationObjList)
                 {
@@ -364,7 +364,7 @@ namespace OraRegaAV.Controllers
                         SGSTValue = item.SGSTValue,
                         IGSTPerct = item.IGSTPerct,
                         IGSTValue = item.IGSTValue,
-                        TotalAmountWithGST = item.TotalAmountWithGST,
+                        GrossAmountIncludeTax = item.GrossAmountIncludeTax,
                         AmountPaidAfter = item.AmountPaidAfter,
                         CreatedBy = item.CreatedBy,
                         CreatorName = item.CreatorName,
@@ -413,26 +413,26 @@ namespace OraRegaAV.Controllers
 
                             sPartNumber = vPartObj.PartNumber;
                             sPartDescription = vPartObj.PartDescription;
-                        }
 
-                        vItemObj.partDetails.Add(new PartDetails
-                        {
-                            PartId = vPartObj.Id,
-                            PartNumber = sPartNumber,
-                            HSNCode = sHSNCode,
-                            PartDescription = sPartDescription,
-                            Qty = itemWOPart.Qty,
-                            Price = itemWOPart.Price,
-                            DiscPerct = itemWOPart.DiscPerct,
-                            DiscValue = itemWOPart.DiscValue,
-                            CGSTPerct = itemWOPart.CGSTPerct,
-                            CGSTValue = itemWOPart.CGSTValue,
-                            SGSTPerct = itemWOPart.SGSTPerct,
-                            SGSTValue = itemWOPart.SGSTValue,
-                            IGSTPerct = itemWOPart.IGSTPerct,
-                            IGSTValue = itemWOPart.IGSTValue,
-                            PriceAfterDisc = itemWOPart.PriceAfterDisc,
-                        });
+                            vItemObj.partDetails.Add(new PartDetails
+                            {
+                                PartId = vPartObj.Id,
+                                PartNumber = sPartNumber,
+                                HSNCode = sHSNCode,
+                                PartDescription = sPartDescription,
+                                Qty = itemWOPart.Qty,
+                                Price = itemWOPart.Price,
+                                DiscPerct = itemWOPart.DiscPerct,
+                                DiscValue = itemWOPart.DiscValue,
+                                CGSTPerct = itemWOPart.CGSTPerct,
+                                CGSTValue = itemWOPart.CGSTValue,
+                                SGSTPerct = itemWOPart.SGSTPerct,
+                                SGSTValue = itemWOPart.SGSTValue,
+                                IGSTPerct = itemWOPart.IGSTPerct,
+                                IGSTValue = itemWOPart.IGSTValue,
+                                PriceAfterDisc = itemWOPart.PriceAfterDisc,
+                            });
+                        }
                     }
 
                     tblInvoiceList.Add(vItemObj);

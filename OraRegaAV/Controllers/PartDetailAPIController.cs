@@ -179,11 +179,11 @@ namespace OraRegaAV.Controllers.API
         [HttpPost]
         public Response PartDetailsById([FromBody] int Id)
         {
-            _response = RetrievePartsList(Id, 0, 0, "", 0, 0, 0);
+            _response = RetrievePartsList(Id, 0, "", "", 0, 0, 0);
             return _response;
         }
 
-        private Response RetrievePartsList(int Id = 0, int CompanyId = 0, int BranchId = 0, string SearchValue = "", int UserId = 0, int PageSize = 0, int PageNo = 0)
+        private Response RetrievePartsList(int Id = 0, int CompanyId = 0, string BranchId = "", string SearchValue = "", int UserId = 0, int PageSize = 0, int PageNo = 0)
         {
             List<GetPartDetailList_Result> tblPartDetailList;
 

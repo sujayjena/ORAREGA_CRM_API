@@ -40,7 +40,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
-        public Nullable<decimal> TotalAmountWithGST { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }

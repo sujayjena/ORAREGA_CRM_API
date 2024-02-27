@@ -45,8 +45,13 @@ namespace OraRegaAV.Models
     {
         [DefaultValue(0)]
         public int ComapnyId { get; set; }
-        [DefaultValue(0)]
-        public int BranchFromId { get; set; }
+
+        //[DefaultValue(0)]
+        //public int BranchFromId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchFromId { get; set; }
+
         public string ChallanNo { get; set; }
         public string DockerNo { get; set; }
 

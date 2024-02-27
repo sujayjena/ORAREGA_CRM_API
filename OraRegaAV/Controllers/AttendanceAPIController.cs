@@ -61,7 +61,7 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                attendanceHistory = db.GetAttendanceHistoryList(0, 0, null, null, "",0,"", 0, "", 0, 0, vTotal).Where(x => x.UserId == userId);
+                attendanceHistory = db.GetAttendanceHistoryList(0, "", null, null, "",0,"", 0, "", 0, 0, vTotal).Where(x => x.UserId == userId);
                 _response.Data = attendanceHistory;
             }
             catch (Exception ex)

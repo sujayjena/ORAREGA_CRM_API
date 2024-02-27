@@ -61,5 +61,4 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int PageNo { get; set; }
     }
-
 }

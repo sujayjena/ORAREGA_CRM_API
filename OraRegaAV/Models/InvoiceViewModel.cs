@@ -11,8 +11,12 @@ namespace OraRegaAV.Models
     {
         [DefaultValue(0)]
         public int CompanyId { get; set; }
-        [DefaultValue(0)]
-        public int BranchId { get; set; }
+        //[DefaultValue(0)]
+        //public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchId { get; set; }
+
         public string InvoiceNumber { get; set; }
         public string WorkOrderNumber { get; set; }
 
@@ -96,7 +100,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
-        public Nullable<decimal> TotalAmountWithGST { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }

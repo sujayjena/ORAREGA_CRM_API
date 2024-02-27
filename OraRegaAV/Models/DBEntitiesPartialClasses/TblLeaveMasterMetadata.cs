@@ -53,8 +53,11 @@ namespace OraRegaAV.DBEntity
         [DefaultValue(0)]
         public int CompanyId { get; set; }
 
-        [DefaultValue(0)]
-        public int BranchId { get; set; }
+        //[DefaultValue(0)]
+        //public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchId { get; set; }
 
         public string EmployeeName { get; set; }
         public string LeaveType { get; set; }

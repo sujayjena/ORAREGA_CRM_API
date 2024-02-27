@@ -155,7 +155,7 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var advanceObj = db.GetRequestForAdvanceList(0, 0, 0, "", 0,"", 0, "", 0, 0, vTotal).Where(x => x.Id == AdvanceId).FirstOrDefault();
+                var advanceObj = db.GetRequestForAdvanceList(0, "", 0, "", 0,"", 0, "", 0, 0, vTotal).Where(x => x.Id == AdvanceId).FirstOrDefault();
 
                 _response.Data = advanceObj;
             }

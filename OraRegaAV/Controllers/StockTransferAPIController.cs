@@ -161,7 +161,7 @@ namespace OraRegaAV.Controllers
                         foreach (var item in vStockTransferOutPartDetailList)
                         {
                             var vTotal = new ObjectParameter("Total", typeof(int));
-                            var vPartObj = db.GetPartDetailList(item.PartId, 0, 0, "", 0, 0, 0, vTotal).ToList().FirstOrDefault();
+                            var vPartObj = db.GetPartDetailList(item.PartId, 0, "", "", 0, 0, 0, vTotal).ToList().FirstOrDefault();
 
                             var vItemObj = new PartDetail_Response()
                             {
@@ -280,7 +280,7 @@ namespace OraRegaAV.Controllers
                         foreach (var item in vStockTransferOutPartDetailList)
                         {
                             var vTotal = new ObjectParameter("Total", typeof(int));
-                            var vPartObj = db.GetPartDetailList(item.PartId, 0, 0, "", 0, 0, 0, vTotal).ToList().FirstOrDefault();
+                            var vPartObj = db.GetPartDetailList(item.PartId, 0, "", "", 0, 0, 0, vTotal).ToList().FirstOrDefault();
 
                             var vItemObj = new PartDetail_Response()
                             {

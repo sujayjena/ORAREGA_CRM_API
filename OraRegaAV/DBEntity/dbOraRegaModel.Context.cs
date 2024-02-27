@@ -1371,15 +1371,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInOutByChallanNumber_Result>("GetStockTransferInOutByChallanNumber", challanNumberParameter);
         }
     
-        public virtual ObjectResult<GetStockTransferInChallanList_Result> GetStockTransferInChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, string dockerNo, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetStockTransferInChallanList_Result> GetStockTransferInChallanList(Nullable<int> companyId, string branchId, string challanNumber, string dockerNo, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var challanNumberParameter = challanNumber != null ?
                 new ObjectParameter("ChallanNumber", challanNumber) :
@@ -1525,15 +1525,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(Nullable<int> companyId, string branchId, string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var workOrderNoParameter = workOrderNo != null ?
                 new ObjectParameter("WorkOrderNo", workOrderNo) :
@@ -1574,15 +1574,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToWorkOrderList_Result>("GetStockAllocationToWorkOrderList", companyIdParameter, branchIdParameter, workOrderNoParameter, partNumberParameter, partDescParameter, allocatedByParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetStockAllocationToEngineerList_Result> GetStockAllocationToEngineerList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetStockAllocationToEngineerList_Result> GetStockAllocationToEngineerList(Nullable<int> companyId, string branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var engineerIdParameter = engineerId.HasValue ?
                 new ObjectParameter("EngineerId", engineerId) :
@@ -1627,15 +1627,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToEngineerList_Result>("GetStockAllocationToEngineerList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, string branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var engineerIdParameter = engineerId.HasValue ?
                 new ObjectParameter("EngineerId", engineerId) :
@@ -1684,15 +1684,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetStockTransferOutChallanList_Result> GetStockTransferOutChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetStockTransferOutChallanList_Result> GetStockTransferOutChallanList(Nullable<int> companyId, string branchId, string challanNumber, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var challanNumberParameter = challanNumber != null ?
                 new ObjectParameter("ChallanNumber", challanNumber) :
@@ -1717,15 +1717,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferOutChallanList_Result>("GetStockTransferOutChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, searchValueParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetSOEnquiryList_Result> GetSOEnquiryList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> enquiryStatusId, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetSOEnquiryList_Result> GetSOEnquiryList(Nullable<int> companyId, string branchId, Nullable<int> enquiryStatusId, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
                 new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
@@ -1750,15 +1750,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSOEnquiryList_Result>("GetSOEnquiryList", companyIdParameter, branchIdParameter, enquiryStatusIdParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetStockOut_Defective_ChallanList_Result> GetStockOut_Defective_ChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetStockOut_Defective_ChallanList_Result> GetStockOut_Defective_ChallanList(Nullable<int> companyId, string branchId, string challanNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var challanNumberParameter = challanNumber != null ?
                 new ObjectParameter("ChallanNumber", challanNumber) :
@@ -1783,15 +1783,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockOut_Defective_ChallanList_Result>("GetStockOut_Defective_ChallanList", companyIdParameter, branchIdParameter, challanNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetStockOut_DAO_ChallanList_Result> GetStockOut_DAO_ChallanList(Nullable<int> companyId, Nullable<int> branchId, string challanNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetStockOut_DAO_ChallanList_Result> GetStockOut_DAO_ChallanList(Nullable<int> companyId, string branchId, string challanNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var challanNumberParameter = challanNumber != null ?
                 new ObjectParameter("ChallanNumber", challanNumber) :
@@ -1894,15 +1894,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderRescheduleHistoryList_Result>("GetWorkOrderRescheduleHistoryList", fromDateParameter, toDateParameter, workOrderIdParameter, rescheduleReasonIdParameter);
         }
     
-        public virtual ObjectResult<GetSalesOrdersList_Result> GetSalesOrdersList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> salesOrderStatusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> loggedInUserId)
+        public virtual ObjectResult<GetSalesOrdersList_Result> GetSalesOrdersList(Nullable<int> companyId, string branchId, Nullable<int> salesOrderStatusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> loggedInUserId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var salesOrderStatusIdParameter = salesOrderStatusId.HasValue ?
                 new ObjectParameter("SalesOrderStatusId", salesOrderStatusId) :
@@ -2118,15 +2118,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_StockSummary_Inventory_Result>("GetDashboard_StockSummary_Inventory", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(Nullable<int> companyId, Nullable<int> branchId, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetPartsListForAllocation_Result> GetPartsListForAllocation(Nullable<int> companyId, string branchId, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var searchValueParameter = searchValue != null ?
                 new ObjectParameter("SearchValue", searchValue) :
@@ -2147,7 +2147,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartsListForAllocation_Result>("GetPartsListForAllocation", companyIdParameter, branchIdParameter, searchValueParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetPartDetailList_Result> GetPartDetailList(Nullable<int> id, Nullable<int> companyId, Nullable<int> branchId, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetPartDetailList_Result> GetPartDetailList(Nullable<int> id, Nullable<int> companyId, string branchId, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var idParameter = id.HasValue ?
                 new ObjectParameter("Id", id) :
@@ -2157,9 +2157,9 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var searchValueParameter = searchValue != null ?
                 new ObjectParameter("SearchValue", searchValue) :
@@ -2238,15 +2238,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCustomerList_Result>("GetCustomerList", customerIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetWorkOrderEnquiriesList_Result> GetWorkOrderEnquiriesList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> enquiryStatusId, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetWorkOrderEnquiriesList_Result> GetWorkOrderEnquiriesList(Nullable<int> companyId, string branchId, Nullable<int> enquiryStatusId, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
                 new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
@@ -2271,15 +2271,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderEnquiriesList_Result>("GetWorkOrderEnquiriesList", companyIdParameter, branchIdParameter, enquiryStatusIdParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, Nullable<int> branchId, string workOrderNumber, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, string branchId, string workOrderNumber, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var workOrderNumberParameter = workOrderNumber != null ?
                 new ObjectParameter("WorkOrderNumber", workOrderNumber) :
@@ -2304,15 +2304,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> orderStatusId, Nullable<int> engineerId, Nullable<int> userId, string filterType, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> companyId, string branchId, Nullable<int> orderStatusId, Nullable<int> engineerId, Nullable<int> userId, string filterType, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var orderStatusIdParameter = orderStatusId.HasValue ?
                 new ObjectParameter("OrderStatusId", orderStatusId) :
@@ -2379,15 +2379,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOCustomerFeedbackList_Result>("GetWOCustomerFeedbackList", workOrderNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetRequestForAdvanceList_Result> GetRequestForAdvanceList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> employeeId, string claimId, Nullable<int> advanceStatusId, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetRequestForAdvanceList_Result> GetRequestForAdvanceList(Nullable<int> companyId, string branchId, Nullable<int> employeeId, string claimId, Nullable<int> advanceStatusId, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("EmployeeId", employeeId) :
@@ -2424,15 +2424,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRequestForAdvanceList_Result>("GetRequestForAdvanceList", companyIdParameter, branchIdParameter, employeeIdParameter, claimIdParameter, advanceStatusIdParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetClaimSettlementList_Result> GetClaimSettlementList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> claimSattlementId, Nullable<int> employeeId, string claimId, Nullable<int> settlementStatusId, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetClaimSettlementList_Result> GetClaimSettlementList(Nullable<int> companyId, string branchId, Nullable<int> claimSattlementId, Nullable<int> employeeId, string claimId, Nullable<int> settlementStatusId, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var claimSattlementIdParameter = claimSattlementId.HasValue ?
                 new ObjectParameter("ClaimSattlementId", claimSattlementId) :
@@ -2473,15 +2473,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClaimSettlementList_Result>("GetClaimSettlementList", companyIdParameter, branchIdParameter, claimSattlementIdParameter, employeeIdParameter, claimIdParameter, settlementStatusIdParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> employeeId, string workOrderNumber, Nullable<int> statusId, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetTravelClaimList_Result> GetTravelClaimList(Nullable<int> companyId, string branchId, Nullable<int> employeeId, string workOrderNumber, Nullable<int> statusId, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("EmployeeId", employeeId) :
@@ -2858,15 +2858,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderCreationReport_Result>("GetWorkOrderCreationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetLeaves_Result> GetLeaves(Nullable<int> companyId, Nullable<int> branchId, string employeeName, string leaveType, string leaveReason, Nullable<int> leaveStatusId, Nullable<bool> isActive, Nullable<int> employeeId, string filterType, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetLeaves_Result> GetLeaves(Nullable<int> companyId, string branchId, string employeeName, string leaveType, string leaveReason, Nullable<int> leaveStatusId, Nullable<bool> isActive, Nullable<int> employeeId, string filterType, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var employeeNameParameter = employeeName != null ?
                 new ObjectParameter("EmployeeName", employeeName) :
@@ -2915,15 +2915,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLeaves_Result>("GetLeaves", companyIdParameter, branchIdParameter, employeeNameParameter, leaveTypeParameter, leaveReasonParameter, leaveStatusIdParameter, isActiveParameter, employeeIdParameter, filterTypeParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetAttendanceHistoryList_Result> GetAttendanceHistoryList(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromPunchInDate, Nullable<System.DateTime> toPunchInDate, string employeeName, Nullable<int> employeeId, string filterType, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetAttendanceHistoryList_Result> GetAttendanceHistoryList(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromPunchInDate, Nullable<System.DateTime> toPunchInDate, string employeeName, Nullable<int> employeeId, string filterType, Nullable<int> loggedInUserId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromPunchInDateParameter = fromPunchInDate.HasValue ?
                 new ObjectParameter("FromPunchInDate", fromPunchInDate) :
@@ -3015,15 +3015,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesListByReportingTo_Result>("GetEmployeesListByReportingTo", employeeIdParameter);
         }
     
-        public virtual ObjectResult<GetInvoiceList_Result> GetInvoiceList(Nullable<int> companyId, Nullable<int> branchId, string invoiceNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetInvoiceList_Result> GetInvoiceList(Nullable<int> companyId, string branchId, string invoiceNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var invoiceNumberParameter = invoiceNumber != null ?
                 new ObjectParameter("InvoiceNumber", invoiceNumber) :
@@ -3069,15 +3069,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
         }
     
-        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, Nullable<int> branchId, string quotationNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var quotationNumberParameter = quotationNumber != null ?
                 new ObjectParameter("QuotationNumber", quotationNumber) :
@@ -3104,6 +3104,80 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetInvoiceReport_Result> GetInvoiceReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("StateId", stateId) :
+                new ObjectParameter("StateId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceReport_Result>("GetInvoiceReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetQuotationReport_Result> GetQuotationReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("StateId", stateId) :
+                new ObjectParameter("StateId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationReport_Result>("GetQuotationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }

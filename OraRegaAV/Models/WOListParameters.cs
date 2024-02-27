@@ -10,7 +10,12 @@ namespace OraRegaAV.Models
     public class WOEnquiryListParameters
     {
         public int? CompanyId { get; set; }
-        public int? BranchId { get; set; }
+
+        //[DefaultValue(0)]
+        //public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchId { get; set; }
 
         ///<summary>
         ///0 = All, 1 = New, 2 = Accepted, 3 = Rejected, 4 = History
@@ -33,8 +38,12 @@ namespace OraRegaAV.Models
     {
         [DefaultValue(0)]
         public int CompanyId { get; set; }
-        [DefaultValue(0)]
-        public int BranchId { get; set; }
+
+        //[DefaultValue(0)]
+        //public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchId { get; set; }
 
         //[Range(1, int.MaxValue, ErrorMessage = "Employee ID is required")]
         public int OrderStatusId { get; set; }
@@ -237,8 +246,11 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int CompanyId { get; set; }
 
-        [DefaultValue(0)]
-        public int BranchId { get; set; }
+        //[DefaultValue(0)]
+        //public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchId { get; set; }
 
         public string @WorkOrderNumber { get; set; }
 

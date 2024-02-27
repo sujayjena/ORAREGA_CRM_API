@@ -71,7 +71,7 @@ namespace OraRegaAV.Controllers
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                vcareerPost = await Task.Run(() => db.GetTravelClaimList(0, 0, 0, "", 0,"", 0, "",  0, 0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                vcareerPost = await Task.Run(() => db.GetTravelClaimList(0, "", 0, "", 0,"", 0, "",  0, 0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 if (vcareerPost != null)
                 {
