@@ -115,7 +115,7 @@ namespace OraRegaAV.Controllers.API
 
                 #endregion
 
-                if(!string.IsNullOrWhiteSpace(vSmsResponse.totalnumbers_sbmited))
+                if (!string.IsNullOrWhiteSpace(vSmsResponse.totalnumbers_sbmited))
                 {
                     _response.Message = "OTP sent successfully";
                 }
@@ -330,11 +330,17 @@ namespace OraRegaAV.Controllers.API
                                 objLoginModelResponse.CompanyName = vCompanyObj.CompanyName;
                             }
 
-                            var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
-                            if (vBranchObj != null)
+                            //var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
+                            //if (vBranchObj != null)
+                            //{
+                            //    objLoginModelResponse.BranchId = vBranchObj.Id;
+                            //    objLoginModelResponse.BranchName = vBranchObj.BranchName;
+                            //}
+
+                            var vBranchObj = db.tblBranchMappings.Where(x => x.EmployeeId == vEmployeeObj.Id).ToList();
+                            if (vBranchObj.Count > 0)
                             {
-                                objLoginModelResponse.BranchId = vBranchObj.Id;
-                                objLoginModelResponse.BranchName = vBranchObj.BranchName;
+                                objLoginModelResponse.BranchId = string.Join(",", vBranchObj.Select(x => x.BranchId));
                             }
 
                             var vDepartmentObj = db.tblDepartments.Where(x => x.Id == vEmployeeObj.DepartmentId).FirstOrDefault();
@@ -622,11 +628,17 @@ namespace OraRegaAV.Controllers.API
                                 objLoginModelResponse.CompanyName = vCompanyObj.CompanyName;
                             }
 
-                            var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
-                            if (vBranchObj != null)
+                            //var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
+                            //if (vBranchObj != null)
+                            //{
+                            //    objLoginModelResponse.BranchId = vEmployeeObj.BranchId;
+                            //    objLoginModelResponse.BranchName = vBranchObj.BranchName;
+                            //}
+
+                            var vBranchObj = db.tblBranchMappings.Where(x => x.EmployeeId == vEmployeeObj.Id).ToList();
+                            if (vBranchObj.Count > 0)
                             {
-                                objLoginModelResponse.BranchId = vEmployeeObj.BranchId;
-                                objLoginModelResponse.BranchName = vBranchObj.BranchName;
+                                objLoginModelResponse.BranchId = string.Join(",", vBranchObj.Select(x => x.BranchId));
                             }
 
                             var vDepartmentObj = db.tblDepartments.Where(x => x.Id == vEmployeeObj.DepartmentId).FirstOrDefault();
@@ -666,7 +678,7 @@ namespace OraRegaAV.Controllers.API
         [HttpPost]
         public Response PasswordEncrypt(string Value)
         {
-            var vResponse= EncryptDecryptHelper.EncryptString(Value);
+            var vResponse = EncryptDecryptHelper.EncryptString(Value);
 
             _response.Data = vResponse;
             _response.IsSuccess = true;

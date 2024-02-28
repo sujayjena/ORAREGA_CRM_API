@@ -64,7 +64,7 @@ namespace OraRegaAV.Models
         public string DepartmentName { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public int BranchId { get; set; }
+        public string BranchId { get; set; }
         public string BranchName { get; set; }
         public string Token { get; set; }
         public List<GetRoleMaster_EmployeePermissionList_Result> userPermissionList { get; set; }
