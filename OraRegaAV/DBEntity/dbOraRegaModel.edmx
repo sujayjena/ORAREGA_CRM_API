@@ -695,6 +695,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblInvoicePartDetails">
           <Key>
@@ -1261,6 +1262,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblQuotationLog">
           <Key>
@@ -1284,6 +1286,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblQuotationPartDetails">
           <Key>
@@ -8602,6 +8605,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Decimal" Name="SGSTValue" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="IGSTPerct" Nullable="true" />
           <Property Type="Decimal" Name="IGSTValue" Nullable="true" Precision="18" Scale="2" />
+		  <Property Type="Decimal" Name="TotalDiscAmt" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="GrossAmountIncludeTax" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="AmountPaidAfter" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
@@ -8724,6 +8728,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="OLD_tblWorkOrderEnquiry">
           <Key>
@@ -8792,6 +8797,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblQuotationLog">
           <Key>
@@ -8815,6 +8821,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblQuotationPartDetailsLog">
           <Key>
@@ -13579,6 +13586,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
                 <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
                 <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
                 <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -13690,6 +13698,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotations">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotation">
               <MappingFragment StoreEntitySet="tblQuotation">
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -13760,6 +13769,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblInvoices">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
               <MappingFragment StoreEntitySet="tblInvoice">
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -13785,6 +13795,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotationLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationLog">
               <MappingFragment StoreEntitySet="tblQuotationLog">
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />

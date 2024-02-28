@@ -50,6 +50,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> TotalDiscAmt { get; set; }
         public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
@@ -100,6 +101,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> TotalDiscAmt { get; set; }
         public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
         public Nullable<int> CreatedBy { get; set; }

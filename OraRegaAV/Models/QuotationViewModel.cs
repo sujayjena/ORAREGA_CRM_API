@@ -44,6 +44,8 @@ namespace OraRegaAV.Models
         public string WorkOrderNumber { get; set; }
         public Nullable<int> BranchId { get; set; }
         public string BranchName { get; set; }
+        public string BranchGSTNumber { get; set; }
+        public int BranchStateCode { get; set; }
 
         public Nullable<decimal> AmountBeforeTax { get; set; }
         public Nullable<int> CGSTPerct { get; set; }
@@ -52,6 +54,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> SGSTValue { get; set; }
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> TotalDiscAmt { get; set; }
         public Nullable<decimal> GrossAmountIncludeTax { get; set; }
         public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
@@ -146,5 +149,11 @@ namespace OraRegaAV.Models
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
         public Nullable<decimal> PriceAfterDisc { get; set; }
+    }
+
+    public class QuotationAcceptNReject
+    {
+        public string QuotationNumber { get; set; }
+        public int StatusId { get; set; }
     }
 }

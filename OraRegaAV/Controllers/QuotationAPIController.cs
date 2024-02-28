@@ -6,6 +6,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,6 +50,7 @@ namespace OraRegaAV.Controllers
                     quotationObj.SGSTValue = 0;
                     quotationObj.IGSTPerct = 0;
                     quotationObj.IGSTValue = 0;
+                    quotationObj.TotalDiscAmt = 0;
                     quotationObj.GrossAmountIncludeTax = 0;
                     quotationObj.AdvanceReceived = 0;
                     quotationObj.AmountPaidAfter = 0;
@@ -79,10 +81,17 @@ namespace OraRegaAV.Controllers
                         var vWorkOrderBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
                         if (vWorkOrderBranchObj != null)
                         {
+                            var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vWorkOrderBranchObj.CompanyId && w.StateId == vWorkOrderBranchObj.StateId && w.IsActive == true).FirstOrDefault();
+                            if (vGSTMappingObj != null)
+                            {
+                                quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
+                            }
+
                             var vWorkOrderStateObj = db.tblStates.Where(w => w.Id == vWorkOrderBranchObj.StateId).FirstOrDefault();
                             if (vWorkOrderStateObj != null)
                             {
                                 quotationObj.customerDetails.CustomerStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
+                                quotationObj.BranchStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
                             }
                         }
                     }
@@ -157,6 +166,7 @@ namespace OraRegaAV.Controllers
                     tbl.IGSTPerct = request.IGSTPerct;
                     tbl.IGSTValue = request.IGSTValue;
 
+                    tbl.TotalDiscAmt = request.TotalDiscAmt;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
                     tbl.AdvanceReceived = request.AdvanceReceived;
                     tbl.AmountPaidAfter = request.AmountPaidAfter;
@@ -245,6 +255,7 @@ namespace OraRegaAV.Controllers
                     tbl.IGSTPerct = request.IGSTPerct;
                     tbl.IGSTValue = request.IGSTValue;
 
+                    tbl.TotalDiscAmt = request.TotalDiscAmt;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
                     tbl.AdvanceReceived = request.AdvanceReceived;
                     tbl.AmountPaidAfter = request.AmountPaidAfter;
@@ -404,6 +415,7 @@ namespace OraRegaAV.Controllers
                             quotationObj.SGSTValue = vQuotationObj.SGSTValue;
                             quotationObj.IGSTPerct = vQuotationObj.IGSTPerct;
                             quotationObj.IGSTValue = vQuotationObj.IGSTValue;
+                            quotationObj.TotalDiscAmt = vQuotationObj.TotalDiscAmt;
                             quotationObj.GrossAmountIncludeTax = vQuotationObj.GrossAmountIncludeTax;
                             quotationObj.AdvanceReceived = vQuotationObj.AdvanceReceived;
                             quotationObj.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
@@ -547,6 +559,38 @@ namespace OraRegaAV.Controllers
             return _response;
         }
 
+        [Route("api/QuotationAPI/QuotationAcceptNReject")]
+        public async Task<Response> QuotationAcceptNReject(QuotationAcceptNReject parameters)
+        {
+            try
+            {
+                var vWorkOrderStatusObj = await db.tblQuotations.Where(w => w.QuotationNumber == parameters.QuotationNumber).FirstOrDefaultAsync();
+                if (vWorkOrderStatusObj != null)
+                {
+                    if (parameters.StatusId > 0)
+                    {
+                        vWorkOrderStatusObj.StatusId = parameters.StatusId;
+
+                        await db.SaveChangesAsync();
+
+                        _response.Message = $"updated";
+                    }
+                }
+                if (_response.Message != null && _response.Message.Length > 0)
+                    _response.Message = $"Quotation details updated successfully";
+                else
+                    _response.Message = $"Quotation details not updated successfully";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
         [HttpPost]
         [Route("api/QuotationAPI/DeleteQuotationPartDetail")]
         public Response DeleteQuotationPartDetail(string QuotationNumber, int PartId)
@@ -606,6 +650,7 @@ namespace OraRegaAV.Controllers
                         tbl.IGSTPerct = vQuotation.IGSTPerct;
                         tbl.IGSTValue = vQuotation.IGSTValue;
 
+                        tbl.TotalDiscAmt = vQuotation.TotalDiscAmt;
                         tbl.GrossAmountIncludeTax = vQuotation.GrossAmountIncludeTax;
                         tbl.AdvanceReceived = vQuotation.AdvanceReceived;
                         tbl.AmountPaidAfter = vQuotation.AmountPaidAfter;
@@ -721,6 +766,7 @@ namespace OraRegaAV.Controllers
                                 vquotationNewObj.SGSTValue = item.SGSTValue;
                                 vquotationNewObj.IGSTPerct = item.IGSTPerct;
                                 vquotationNewObj.IGSTValue = item.IGSTValue;
+                                vquotationNewObj.TotalDiscAmt = item.TotalDiscAmt;
                                 vquotationNewObj.GrossAmountIncludeTax = item.GrossAmountIncludeTax;
                                 vquotationNewObj.AdvanceReceived = item.AdvanceReceived;
                                 vquotationNewObj.AmountPaidAfter = item.AmountPaidAfter;

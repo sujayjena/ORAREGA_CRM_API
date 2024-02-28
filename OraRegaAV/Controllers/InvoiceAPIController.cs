@@ -75,6 +75,7 @@ namespace OraRegaAV.Controllers
                         tbl.SGSTValue = vQuotationObj.SGSTValue;
                         tbl.IGSTPerct = vQuotationObj.IGSTPerct;
                         tbl.IGSTValue = vQuotationObj.IGSTValue;
+                        tbl.TotalDiscAmt = vQuotationObj.TotalDiscAmt;
                         tbl.GrossAmountIncludeTax = vQuotationObj.GrossAmountIncludeTax;
                         tbl.AdvanceReceived = vQuotationObj.AdvanceReceived;
                         tbl.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
@@ -208,6 +209,7 @@ namespace OraRegaAV.Controllers
                     tbl.SGSTValue = request.SGSTValue;
                     tbl.IGSTPerct = request.IGSTPerct;
                     tbl.IGSTValue = request.IGSTValue;
+                    tbl.TotalDiscAmt = request.TotalDiscAmt;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
                     tbl.AdvanceReceived = request.AdvanceReceived;
                     tbl.AmountPaidAfter = request.AmountPaidAfter;
@@ -364,6 +366,7 @@ namespace OraRegaAV.Controllers
                         SGSTValue = item.SGSTValue,
                         IGSTPerct = item.IGSTPerct,
                         IGSTValue = item.IGSTValue,
+                        TotalDiscAmt = item.TotalDiscAmt,
                         GrossAmountIncludeTax = item.GrossAmountIncludeTax,
                         AmountPaidAfter = item.AmountPaidAfter,
                         CreatedBy = item.CreatedBy,
