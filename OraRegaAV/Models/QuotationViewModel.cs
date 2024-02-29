@@ -156,4 +156,10 @@ namespace OraRegaAV.Models
         public string QuotationNumber { get; set; }
         public int StatusId { get; set; }
     }
+
+    public class QuotationImage
+    {
+        public string QuotationNumber { get; set; }
+        public string Base64String { get; set; }
+    }
 }

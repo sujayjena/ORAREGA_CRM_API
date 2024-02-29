@@ -7,8 +7,10 @@ using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace OraRegaAV.Controllers
@@ -452,5 +454,57 @@ namespace OraRegaAV.Controllers
 
             return _response;
         }
+
+        [HttpPost]
+        [Route("api/QuotationAPI/SaveInvoiceImage")]
+        public Response SaveInvoiceImage(InvoiceImage parameters)
+        {
+            try
+            {
+                FileManager fileManager = new FileManager();
+
+                fileManager.UploadInvoice(parameters.InvoiceNumber, parameters.Base64String, HttpContext.Current);
+
+                _response.IsSuccess = true;
+                _response.Message = "Invoice image saved successfully";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/QuotationAPI/GetInvoiceImage")]
+        public Response GetInvoiceImage(string InvoiceNumber)
+        {
+            var host = Url.Content("~/");
+
+            try
+            {
+                var folderPath = host + "Uploads/Invoice/" + InvoiceNumber + ".pdf";
+
+                string fileName = $"{HttpContext.Current.Server.MapPath("~")}\\Uploads\\Invoice\\" + InvoiceNumber + ".pdf";
+
+                if (File.Exists(fileName))
+                {
+                    _response.IsSuccess = true;
+                    _response.Data = folderPath;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
     }
 }

@@ -111,4 +111,10 @@ namespace OraRegaAV.Models
         public List<PartDetails> partDetails { get; set; }
     }
 
+    public class InvoiceImage
+    {
+        public string InvoiceNumber { get; set; }
+        public string Base64String { get; set; }
+    }
+
 }

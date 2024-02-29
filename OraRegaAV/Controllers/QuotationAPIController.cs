@@ -1,4 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using iTextSharp.text.html.simpleparser;
+using iTextSharp.text.pdf;
 using OraRegaAV.Controllers.API;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
@@ -8,9 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 
 namespace OraRegaAV.Controllers
 {
@@ -240,6 +246,7 @@ namespace OraRegaAV.Controllers
                     #endregion
 
                     _response.IsSuccess = true;
+                    _response.Data = tbl.QuotationNumber;
                     _response.Message = "Quotation details saved successfully";
                 }
                 else
@@ -344,6 +351,7 @@ namespace OraRegaAV.Controllers
                     #endregion
 
                     _response.IsSuccess = true;
+                    _response.Data = tbl.QuotationNumber;
                     _response.Message = "Quotation details updated successfully";
                 }
             }
@@ -912,5 +920,478 @@ namespace OraRegaAV.Controllers
 
             return _response;
         }
+
+        [HttpPost]
+        [Route("api/QuotationAPI/SaveQuotationImage")]
+        public Response SaveQuotationImage(QuotationImage parameters)
+        {
+            try
+            {
+                FileManager fileManager = new FileManager();
+
+                fileManager.UploadQuotation(parameters.QuotationNumber, parameters.Base64String, HttpContext.Current);
+
+                _response.IsSuccess = true;
+                _response.Message = "Quotation image saved successfully";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/QuotationAPI/GetQuotationImage")]
+        public Response GetQuotationImage(string QuotationNumber)
+        {
+            var host = Url.Content("~/");
+
+            try
+            {
+                var folderPath = host + "Uploads/Quotation/" + QuotationNumber + ".pdf";
+
+                string fileName = $"{HttpContext.Current.Server.MapPath("~")}\\Uploads\\Quotation\\" + QuotationNumber + ".pdf";
+
+                if (File.Exists(fileName))
+                {
+                    _response.IsSuccess = true;
+                    _response.Data = folderPath;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+
+
+        //[Route("api/QuotationAPI/QuotationDownload")]
+        //public async Task<Response> QuotationDownload(string QuotationNumber)
+        //{
+        //    Quotation quotationObj = new Quotation();
+        //    FileManager fileManager = new FileManager();
+
+        //    try
+        //    {
+        //        var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == QuotationNumber).FirstOrDefault();
+        //        if (vQuotationObj != null)
+        //        {
+        //            var vWorkOrderObj = db.tblWorkOrders.Where(x => x.Id == vQuotationObj.WorkOrderId).FirstOrDefault();
+        //            if (vWorkOrderObj != null)
+        //            {
+        //                var workOrderObj = db.GetWorkOrderDetails(vWorkOrderObj.WorkOrderNumber).FirstOrDefault();
+        //                if (workOrderObj != null)
+        //                {
+        //                    // Header Detail
+        //                    quotationObj.QuotationId = vQuotationObj.Id;
+        //                    quotationObj.QuoteDate = vQuotationObj.QuoteDate;
+        //                    quotationObj.QuotationNumber = vQuotationObj.QuotationNumber;
+        //                    quotationObj.WorkOrderId = workOrderObj.Id;
+        //                    quotationObj.WorkOrderNumber = workOrderObj.WorkOrderNumber;
+        //                    quotationObj.BranchId = workOrderObj.BranchId;
+        //                    quotationObj.BranchName = workOrderObj.BranchName;
+        //                    quotationObj.AmountBeforeTax = vQuotationObj.AmountBeforeTax;
+        //                    quotationObj.CGSTPerct = vQuotationObj.CGSTPerct;
+        //                    quotationObj.CGSTValue = vQuotationObj.CGSTValue;
+        //                    quotationObj.SGSTPerct = vQuotationObj.SGSTPerct;
+        //                    quotationObj.SGSTValue = vQuotationObj.SGSTValue;
+        //                    quotationObj.IGSTPerct = vQuotationObj.IGSTPerct;
+        //                    quotationObj.IGSTValue = vQuotationObj.IGSTValue;
+        //                    quotationObj.TotalDiscAmt = vQuotationObj.TotalDiscAmt;
+        //                    quotationObj.GrossAmountIncludeTax = vQuotationObj.GrossAmountIncludeTax;
+        //                    quotationObj.AdvanceReceived = vQuotationObj.AdvanceReceived;
+        //                    quotationObj.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
+        //                    quotationObj.CreatedBy = vQuotationObj.CreatedBy;
+        //                    quotationObj.ModifyBy = vQuotationObj.ModifiedBy; ;
+
+        //                    var userCreatorObj = db.tblUsers.Where(x => x.Id == vQuotationObj.CreatedBy).FirstOrDefault();
+        //                    if (userCreatorObj != null)
+        //                    {
+        //                        quotationObj.CreatorName = db.tblEmployees.Where(x => x.Id == userCreatorObj.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+        //                    }
+
+        //                    var userModifiedObj = db.tblUsers.Where(x => x.Id == vQuotationObj.ModifiedBy).FirstOrDefault();
+        //                    if (userModifiedObj != null)
+        //                    {
+        //                        quotationObj.ModifierName = db.tblEmployees.Where(x => x.Id == userModifiedObj.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+        //                    }
+
+        //                    // Customer Detail
+        //                    var vWorkOrderCustomerObj = db.tblCustomers.Where(w => w.Id == workOrderObj.CustomerId).FirstOrDefault();
+        //                    if (vWorkOrderCustomerObj != null)
+        //                    {
+        //                        quotationObj.customerDetails.CustomerId = workOrderObj.CustomerId;
+        //                        quotationObj.customerDetails.OrganizationName = workOrderObj.CompanyName;
+        //                        quotationObj.customerDetails.CustomerName = vWorkOrderCustomerObj.FirstName + " " + vWorkOrderCustomerObj.LastName;
+        //                        quotationObj.customerDetails.CustomerGstNumber = workOrderObj.GSTNumber;
+        //                        quotationObj.customerDetails.CustomerMobile = vWorkOrderCustomerObj.Mobile;
+        //                        quotationObj.customerDetails.CustomerEmail = vWorkOrderCustomerObj.Email;
+
+        //                        var vWorkOrderCustomerAddressObj = db.tblPermanentAddresses.Where(w => w.Id == workOrderObj.ServiceAddressId).FirstOrDefault();
+        //                        if (vWorkOrderCustomerAddressObj != null)
+        //                        {
+        //                            quotationObj.customerDetails.BillToAddress = vWorkOrderCustomerAddressObj.Address;
+        //                            quotationObj.customerDetails.DeliverToAddress = vWorkOrderCustomerAddressObj.Address;
+        //                        }
+
+        //                        var vWorkOrderBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
+        //                        if (vWorkOrderBranchObj != null)
+        //                        {
+        //                            var vWorkOrderStateObj = db.tblStates.Where(w => w.Id == vWorkOrderBranchObj.StateId).FirstOrDefault();
+        //                            if (vWorkOrderStateObj != null)
+        //                            {
+        //                                quotationObj.customerDetails.CustomerStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
+        //                            }
+        //                        }
+        //                    }
+
+        //                    // Product Detail
+        //                    quotationObj.productDetails.ProductTypeId = workOrderObj.ProductTypeId;
+        //                    quotationObj.productDetails.ProductType = workOrderObj.ProductType;
+        //                    quotationObj.productDetails.ProductMakeId = workOrderObj.ProductMakeId;
+        //                    quotationObj.productDetails.ProductMake = workOrderObj.ProductMake;
+        //                    quotationObj.productDetails.ProductModelId = workOrderObj.ProductModelId;
+        //                    quotationObj.productDetails.ProductModel = workOrderObj.ProductModel;
+        //                    quotationObj.productDetails.ProdModelIfOther = workOrderObj.ProdModelIfOther;
+        //                    quotationObj.productDetails.ProductDescriptionId = workOrderObj.ProductDescriptionId;
+        //                    quotationObj.productDetails.ProductDescription = workOrderObj.ProductDescription;
+        //                    quotationObj.productDetails.ProdDescriptionIfOther = workOrderObj.ProdDescriptionIfOther;
+        //                    quotationObj.productDetails.ProductSerialNumber = workOrderObj.ProductSerialNumber;
+        //                    quotationObj.productDetails.ProductNumber = workOrderObj.ProductNumber;
+
+        //                    // Service Charge
+        //                    var serviceChargeObj = db.tblQuotationServiceChargeDetails.Where(x => x.QuotationId == vQuotationObj.Id).FirstOrDefault();
+        //                    if (serviceChargeObj != null)
+        //                    {
+        //                        quotationObj.serviceChargeDetails.ProductTypeId = serviceChargeObj.ProductTypeId;
+        //                        quotationObj.serviceChargeDetails.ProductType = db.tblProductTypes.Where(x => x.Id == serviceChargeObj.ProductTypeId).Select(x => x.ProductType).FirstOrDefault();
+        //                        quotationObj.serviceChargeDetails.HSNCodeId = serviceChargeObj.HSNCodeId;
+        //                        quotationObj.serviceChargeDetails.HSNCode = db.tblHSNCodeGSTMappings.Where(x => x.Id == serviceChargeObj.HSNCodeId).Select(x => x.HSNCode).FirstOrDefault();
+        //                        quotationObj.serviceChargeDetails.TravelRangeId = serviceChargeObj.TravelRangeId;
+        //                        quotationObj.serviceChargeDetails.TravelRange = db.tblTravelRanges.Where(x => x.Id == serviceChargeObj.TravelRangeId).Select(x => x.TravelRange).FirstOrDefault();
+        //                        quotationObj.serviceChargeDetails.Price = serviceChargeObj.Price;
+        //                        quotationObj.serviceChargeDetails.Description = serviceChargeObj.Description;
+        //                        quotationObj.serviceChargeDetails.DiscPerct = serviceChargeObj.DiscPerct;
+        //                        quotationObj.serviceChargeDetails.DiscValue = serviceChargeObj.DiscValue;
+        //                        quotationObj.serviceChargeDetails.CGSTPerct = serviceChargeObj.CGSTPerct;
+        //                        quotationObj.serviceChargeDetails.CGSTValue = serviceChargeObj.CGSTValue;
+        //                        quotationObj.serviceChargeDetails.SGSTPerct = serviceChargeObj.SGSTPerct;
+        //                        quotationObj.serviceChargeDetails.SGSTValue = serviceChargeObj.SGSTValue;
+        //                        quotationObj.serviceChargeDetails.IGSTPerct = serviceChargeObj.IGSTPerct;
+        //                        quotationObj.serviceChargeDetails.IGSTValue = serviceChargeObj.IGSTValue;
+        //                        quotationObj.serviceChargeDetails.PriceAfterDisc = serviceChargeObj.PriceAfterDisc;
+        //                    }
+
+        //                    // Part Details
+        //                    var quotationPartObj = db.tblQuotationPartDetails.Where(x => x.QuotationId == vQuotationObj.Id).ToList();
+        //                    foreach (var itemWOPart in quotationPartObj)
+        //                    {
+        //                        string sPartNumber = "";
+        //                        string sPartDescription = "";
+        //                        int sHSNCodeId = 0;
+        //                        string sHSNCode = "";
+
+        //                        var vPartObj = db.tblPartDetails.Where(x => x.Id == itemWOPart.PartId).FirstOrDefault();
+        //                        if (vPartObj != null)
+        //                        {
+        //                            var objHSN = db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartObj.HSNCodeId).FirstOrDefault();
+        //                            if (objHSN != null)
+        //                            {
+        //                                sHSNCodeId = objHSN.Id;
+        //                                sHSNCode = objHSN.HSNCode;
+        //                            }
+
+        //                            sPartNumber = vPartObj.PartNumber;
+        //                            sPartDescription = vPartObj.PartDescription;
+
+        //                            quotationObj.partDetails.Add(new PartDetails
+        //                            {
+        //                                PartId = vPartObj.Id,
+        //                                PartNumber = sPartNumber,
+        //                                HSNCodeId = sHSNCodeId,
+        //                                HSNCode = sHSNCode,
+        //                                PartDescription = sPartDescription,
+        //                                Qty = itemWOPart.Qty,
+        //                                Price = itemWOPart.Price,
+        //                                DiscPerct = itemWOPart.DiscPerct,
+        //                                DiscValue = itemWOPart.DiscValue,
+        //                                CGSTPerct = itemWOPart.CGSTPerct,
+        //                                CGSTValue = itemWOPart.CGSTValue,
+        //                                SGSTPerct = itemWOPart.SGSTPerct,
+        //                                SGSTValue = itemWOPart.SGSTValue,
+        //                                IGSTPerct = itemWOPart.IGSTPerct,
+        //                                IGSTValue = itemWOPart.IGSTValue,
+        //                                PriceAfterDisc = itemWOPart.PriceAfterDisc,
+        //                            });
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        // _response.Data = quotationObj;
+
+        //        bool result = false;
+        //        string templateFilePath, emailTemplateContent, productsListContent;
+        //        string senderCompanyLogo;
+        //        int productIndex;
+
+        //        templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\QuotationTemplate.html";
+        //        emailTemplateContent = File.ReadAllText(templateFilePath);
+
+        //        senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+        //        if (emailTemplateContent.IndexOf("[CustomerDetails_BillToAddress]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        {
+        //            emailTemplateContent = emailTemplateContent.Replace("[CustomerDetails_BillToAddress]", quotationObj.customerDetails.BillToAddress);
+        //        }
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerName]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerName]", $"{customer.FirstName} {customer.LastName}");
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerEmail]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerEmail]", customer.Email);
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerPhone]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerPhone]", customer.Mobile);
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerAlternateNumber]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerAlternateNumber]", parameters.AlternateMobileNo);
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerGstNumber]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerGstNumber]", parameters.CustomerGstNo);
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[PaymentTerm]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[PaymentTerm]", db.tblPaymentTerms.Where(p => p.Id == parameters.PaymentTermId).Select(p => p.PaymentTerms).FirstOrDefault());
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[AddressFullName]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[AddressFullName]", defaultAddress.NameForAddress.SanitizeValue());
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[AddressMobileNo]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[AddressMobileNo]", defaultAddress.MobileNo.SanitizeValue());
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerAddress]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerAddress]", defaultAddress.Address);
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerState]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerState]", db.tblStates.Where(s => s.Id == defaultAddress.StateId).Select(a => a.StateName).FirstOrDefault());
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerCity]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerCity]", db.tblCities.Where(c => c.Id == defaultAddress.CityId).Select(a => a.CityName).FirstOrDefault());
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerArea]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerArea]", db.tblAreas.Where(a => a.Id == defaultAddress.AreaId).Select(a => a.AreaName).FirstOrDefault());
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[CustomerPincode]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[CustomerPincode]", db.tblPincodes.Where(p => p.Id == defaultAddress.PinCodeId).Select(a => a.Pincode).FirstOrDefault());
+        //        //}
+
+        //        if (emailTemplateContent.IndexOf("[PartDetailList]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        {
+        //            productsListContent = string.Empty;
+        //            productIndex = 0;
+
+        //            foreach (var partItem in quotationObj.partDetails)
+        //            {
+        //                productsListContent = $@"{productsListContent}
+        //                <tr>
+        //                    <td style=""padding: 3px; text-align: left; border-bottom: 1px solid #ddd; border: 1px solid #ccc;"">{partItem.PartNumber}</td>
+        //                    <td style=""padding: 3px; text-align: left; border-bottom: 1px solid #ddd; border: 1px solid #ccc;"">{partItem.HSNCode}</td>
+        //                </tr>";
+
+        //                productIndex++;
+        //            }
+
+        //            emailTemplateContent = emailTemplateContent.Replace("[PartDetailList]", productsListContent);
+        //        }
+
+        //        //if (emailTemplateContent.IndexOf("[SenderName]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[SenderName]", db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue);
+        //        //}
+
+        //        //if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
+        //        //{
+        //        //    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+        //        //}
+
+        //        string folderPath = $"{HttpContext.Current.Server.MapPath("~")}" + "Uploads\\Quotation";
+        //        string fileName = folderPath + "\\" + quotationObj.QuotationNumber + ".html";
+
+        //        if (!Directory.Exists(folderPath))
+        //        {
+        //            Directory.CreateDirectory(folderPath);
+        //        }
+
+        //        if (!File.Exists(fileName))
+        //        {
+        //            File.Delete(fileName);
+        //        }
+
+        //        System.IO.File.WriteAllText(fileName, emailTemplateContent);
+
+        //        //fileManager.createPDFLink(emailTemplateContent);
+
+
+        //        string temp_inBase64 = string.Empty;
+        //        Byte[] res = null;
+        //        using (MemoryStream ms = new MemoryStream())
+        //        {
+        //            var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(emailTemplateContent, PdfSharp.PageSize.A4);
+        //            pdf.Save(ms);
+        //            res = ms.ToArray();
+        //        }
+
+
+
+        //        temp_inBase64 = Convert.ToBase64String(res);
+
+
+        //        //System.IO.File.WriteAllText($"{HttpContext.Current.Server.MapPath("~")}\\Uploads\\Quotation\\quotationObj" + quotationObj.QuotationNumber + DateTime.Now + ".htm", emailTemplateContent);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _response.IsSuccess = false;
+        //        _response.Message = ValidationConstant.InternalServerError;
+        //        LogWriter.WriteLog(ex);
+        //    }
+
+        //    return _response;
+        //}
+
+        //[Route("api/QuotationAPI/QuotationDownloadTest")]
+        //public async Task<Response> QuotationDownloadTest()
+        //{
+        //    Quotation quotationObj = new Quotation();
+        //    FileManager fileManager = new FileManager();
+
+        //    try
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.Append("<header class='clearfix'>");
+        //        sb.Append("<h1>INVOICE</h1>");
+        //        sb.Append("<divstyle='border: 1px solid black; margin : 5px;'><divstyle='display: flex; border : 1px solid #ccc; padding : 5px;'><divstyle='border : none; flex: 1; padding: 3px; font-size : 12px;'><divstyle='display : flex;'>Contact:70300-87-300</div><divstyle='display : flex;'>WhatsApp:70300-87-300</div><divstyle='display : flex;'>E-mail:Support@quikservindia.com</div></div><divstyle='flex: 1; padding: 3px; border: 1px solid #ccc; border: none; display: flex; justify-content: center; align-items: center;'><divstyle='font-size: x-large; font-weight: 800;text-align: center;'>Quotation/Proforma</div></div><divstyle='flex: 1; padding: 3px; border: none; font-size : 12px;'><imgstyle='width: 15px; height: 15px'alt='NotFoun'src=[logo]/><divstyle='display : flex;'><div>Brandownedby</div></div><divstyle='display : flex;'><div>ORAREGATECHNOLOGIES(OPC)Pvt.Ltd.</div></div><divstyle='display : flex;'><div>CIN:U72900PN2019OPC182042</div></div></div></div>");
+        //        sb.Append("<div>Company Name</div>");
+        //        sb.Append("<div>455 John Tower,<br /> AZ 85004, US</div>");
+        //        sb.Append("<div>(602) 519-0450</div>");
+        //        sb.Append("<div><a href='mailto:company@example.com'>company@example.com</a></div>");
+        //        sb.Append("</div>");
+        //        sb.Append("<div id='project'>");
+        //        sb.Append("<div><span>PROJECT</span> Website development</div>");
+        //        sb.Append("<div><span>CLIENT</span> John Doe</div>");
+        //        sb.Append("<div><span>ADDRESS</span> 796 Silver Harbour, TX 79273, US</div>");
+        //        sb.Append("<div><span>EMAIL</span> <a href='mailto:john@example.com'>john@example.com</a></div>");
+        //        sb.Append("<div><span>DATE</span> April 13, 2016</div>");
+        //        sb.Append("<div><span>DUE DATE</span> May 13, 2016</div>");
+        //        sb.Append("</div>");
+        //        sb.Append("</header>");
+        //        sb.Append("<main>");
+        //        sb.Append("<table>");
+        //        sb.Append("<thead>");
+        //        sb.Append("<tr>");
+        //        sb.Append("<th class='service'>SERVICE</th>");
+        //        sb.Append("<th class='desc'>DESCRIPTION</th>");
+        //        sb.Append("<th>PRICE</th>");
+        //        sb.Append("<th>QTY</th>");
+        //        sb.Append("<th>TOTAL</th>");
+        //        sb.Append("</tr>");
+        //        sb.Append("</thead>");
+        //        sb.Append("<tbody>");
+        //        sb.Append("<tr>");
+        //        sb.Append("<td class='service'>Design</td>");
+        //        sb.Append("<td class='desc'>Creating a recognizable design solution based on the company's existing visual identity</td>");
+        //        sb.Append("<td class='unit'>$400.00</td>");
+        //        sb.Append("<td class='qty'>2</td>");
+        //        sb.Append("<td class='total'>$800.00</td>");
+        //        sb.Append("</tr>");
+        //        sb.Append("<tr>");
+        //        sb.Append("<td colspan='4'>SUBTOTAL</td>");
+        //        sb.Append("<td class='total'>$800.00</td>");
+        //        sb.Append("</tr>");
+        //        sb.Append("<tr>");
+        //        sb.Append("<td colspan='4'>TAX 25%</td>");
+        //        sb.Append("<td class='total'>$200.00</td>");
+        //        sb.Append("</tr>");
+        //        sb.Append("<tr>");
+        //        sb.Append("<td colspan='4' class='grand total'>GRAND TOTAL</td>");
+        //        sb.Append("<td class='grand total'>$1,000.00</td>");
+        //        sb.Append("</tr>");
+        //        sb.Append("</tbody>");
+        //        sb.Append("</table>");
+        //        sb.Append("<div id='notices'>");
+        //        sb.Append("<div>NOTICE:</div>");
+        //        sb.Append("<div class='notice'>A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>");
+        //        sb.Append("</div>");
+        //        sb.Append("</main>");
+        //        sb.Append("<footer>");
+        //        sb.Append("Invoice was created on a computer and is valid without the signature and seal.");
+        //        sb.Append("</footer>");
+
+        //        StringReader sr = new StringReader(sb.ToString());
+        //        iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 10f, 10f, 10f, 0f);
+        //        HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+
+        //        string temp_inBase64 = string.Empty;
+        //        using (MemoryStream memoryStream = new MemoryStream())
+        //        {
+        //            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
+        //            pdfDoc.Open();
+
+        //            htmlparser.Parse(sr);
+        //            pdfDoc.Close();
+
+        //            byte[] bytes = memoryStream.ToArray();
+        //            memoryStream.Close();
+
+        //            temp_inBase64 = Convert.ToBase64String(bytes);
+        //        }
+
+        //        _response.Data = temp_inBase64;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _response.IsSuccess = false;
+        //        _response.Message = ValidationConstant.InternalServerError;
+        //        LogWriter.WriteLog(ex);
+        //    }
+
+        //    return _response;
+        //}
+
     }
 }

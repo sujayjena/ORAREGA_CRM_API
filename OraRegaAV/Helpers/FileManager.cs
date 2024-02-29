@@ -321,5 +321,44 @@ namespace OraRegaAV.Helpers
                 Directory.Delete(folderPath, true);
             }
         }
+
+        public void UploadQuotation(string QuotationNumber, string base64String, HttpContext context)
+        {
+            try
+            {
+                string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\Quotation\\" + QuotationNumber + ".pdf";
+
+                if (File.Exists(folderPath))
+                {
+                    File.Delete(folderPath);
+                }
+
+                var byteData = Convert.FromBase64String(base64String);
+                File.WriteAllBytes(folderPath, byteData);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public void UploadInvoice(string QuotationNumber, string base64String, HttpContext context)
+        {
+            try
+            {
+                string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\Invoice\\" + QuotationNumber + ".pdf";
+
+                if (File.Exists(folderPath))
+                {
+                    File.Delete(folderPath);
+                }
+
+                var byteData = Convert.FromBase64String(base64String);
+                File.WriteAllBytes(folderPath, byteData);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
     }
 }
