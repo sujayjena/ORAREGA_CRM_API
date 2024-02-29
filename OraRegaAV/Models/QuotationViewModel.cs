@@ -20,6 +20,8 @@ namespace OraRegaAV.Models
         public string QuotationNumber { get; set; }
         public string WorkOrderNumber { get; set; }
 
+        [DefaultValue(0)]
+        public int StatusId { get; set; }
         public string SearchValue { get; set; }
         [DefaultValue(0)]
         public int PageSize { get; set; }
@@ -155,6 +157,7 @@ namespace OraRegaAV.Models
     {
         public string QuotationNumber { get; set; }
         public int StatusId { get; set; }
+        public string Reason { get; set; }
     }
 
     public class QuotationImage

@@ -1263,6 +1263,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblQuotationLog">
           <Key>
@@ -2734,6 +2735,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="QuotationNumber" Type="varchar" Mode="In" />
           <Parameter Name="WorkOrderNumber" Type="varchar" Mode="In" />
+          <Parameter Name="StatusId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNo" Type="int" Mode="In" />
@@ -2815,6 +2817,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="RoleName" Type="varchar" Mode="In" />
         </Function>
         <Function Name="GetRolesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IsActive" Type="bit" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNo" Type="int" Mode="In" />
@@ -4506,6 +4509,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
 					<FunctionImport Name="GetRolesList" ReturnType="Collection(dbOraRegaModel.GetRolesList_Result)">
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
@@ -5175,6 +5179,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="QuotationNumber" Mode="In" Type="String" />
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+            <Parameter Name="StatusId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
@@ -8729,6 +8734,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OLD_tblWorkOrderEnquiry">
           <Key>
@@ -13698,6 +13704,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotations">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotation">
               <MappingFragment StoreEntitySet="tblQuotation">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
                 <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />

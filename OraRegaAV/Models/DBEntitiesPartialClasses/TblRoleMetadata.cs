@@ -38,6 +38,7 @@ namespace OraRegaAV.DBEntity
 
     public class RoleSearchParameters
     {
+        public bool? IsActive { get; set; }
         public string SearchValue { get; set; }
 
         [DefaultValue(0)]

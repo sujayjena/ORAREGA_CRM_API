@@ -96,7 +96,7 @@ namespace OraRegaAV.Controllers.API
                 var userId = Utilities.GetUserID(ActionContext.Request);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                rolesListList = await Task.Run(() => db.GetRolesList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
+                rolesListList = await Task.Run(() => db.GetRolesList(parameters.IsActive,parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
                 if (userId > 1)
                 {
@@ -252,7 +252,7 @@ namespace OraRegaAV.Controllers.API
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var listObj = db.GetRolesList(parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+                var listObj = db.GetRolesList(null,parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
 
                 if (listObj.Count == 0)
                 {
