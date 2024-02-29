@@ -34,5 +34,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<decimal> TotalDiscAmt { get; set; }
+        public string Reason { get; set; }
     }
 }

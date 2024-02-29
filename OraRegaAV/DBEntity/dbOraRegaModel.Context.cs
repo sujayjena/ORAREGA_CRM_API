@@ -1088,8 +1088,12 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWarrantyTypeList_Result>("GetWarrantyTypeList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetRolesList_Result> GetRolesList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetRolesList_Result> GetRolesList(Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
             var searchValueParameter = searchValue != null ?
                 new ObjectParameter("SearchValue", searchValue) :
                 new ObjectParameter("SearchValue", typeof(string));
@@ -1106,7 +1110,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRolesList_Result>("GetRolesList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRolesList_Result>("GetRolesList", isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetReportingToEmployeeForSelectList_Result> GetReportingToEmployeeForSelectList(Nullable<long> roleId, Nullable<long> regionId)
@@ -3069,7 +3073,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
         }
     
-        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, Nullable<int> statusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
@@ -3087,6 +3091,10 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("WorkOrderNumber", workOrderNumber) :
                 new ObjectParameter("WorkOrderNumber", typeof(string));
     
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("StatusId", statusId) :
+                new ObjectParameter("StatusId", typeof(int));
+    
             var searchValueParameter = searchValue != null ?
                 new ObjectParameter("SearchValue", searchValue) :
                 new ObjectParameter("SearchValue", typeof(string));
@@ -3103,7 +3111,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, statusIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetInvoiceReport_Result> GetInvoiceReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
