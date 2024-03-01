@@ -1960,35 +1960,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_WorkOrderSummary_Result>("GetDashboard_WorkOrderSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_WorkOrderAllocated_Result> GetDashboard_WorkOrderAllocated(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId != null ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(string));
-    
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("FromDate", fromDate) :
-                new ObjectParameter("FromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("ToDate", toDate) :
-                new ObjectParameter("ToDate", typeof(System.DateTime));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            var filterTypeParameter = filterType != null ?
-                new ObjectParameter("FilterType", filterType) :
-                new ObjectParameter("FilterType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_WorkOrderAllocated_Result>("GetDashboard_WorkOrderAllocated", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
-        }
-    
         public virtual ObjectResult<GetDashboard_CloseSummary_Result> GetDashboard_CloseSummary(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -3186,6 +3157,35 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationReport_Result>("GetQuotationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetDashboard_WorkOrderAllocated_Result> GetDashboard_WorkOrderAllocated(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var filterTypeParameter = filterType != null ?
+                new ObjectParameter("FilterType", filterType) :
+                new ObjectParameter("FilterType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_WorkOrderAllocated_Result>("GetDashboard_WorkOrderAllocated", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     }
 }

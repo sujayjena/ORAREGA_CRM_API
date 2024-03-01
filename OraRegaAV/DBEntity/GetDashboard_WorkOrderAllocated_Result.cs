@@ -13,9 +13,9 @@ namespace OraRegaAV.DBEntity
     
     public partial class GetDashboard_WorkOrderAllocated_Result
     {
-        public Nullable<int> Allocated { get; set; }
-        public Nullable<int> UnAllocated { get; set; }
-        public Nullable<int> Accepted { get; set; }
-        public Nullable<int> Rejected { get; set; }
+        public int Allocated { get; set; }
+        public int UnAllocated { get; set; }
+        public int Accepted { get; set; }
+        public int Rejected { get; set; }
     }
 }

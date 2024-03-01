@@ -35,7 +35,7 @@
           <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbOraRega19022024.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OLD_tblWorkOrderEnquiry">
           <Key>
             <PropertyRef Name="Id" />
@@ -688,9 +688,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -953,6 +951,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PartNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PartName" Type="varchar" MaxLength="50" />
           <Property Name="PartDescription" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HSNCodeId" Type="int" Nullable="false" />
           <Property Name="CTSerialNo" Type="varchar" MaxLength="50" />
           <Property Name="PartStatusId" Type="int" Nullable="false" />
           <Property Name="SalePrice" Type="money" />
@@ -970,7 +969,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VendorId" Type="int" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="HSNCodeId" Type="int" />
         </EntityType>
         <EntityType Name="tblPartsAllocatedToEngineer">
           <Key>
@@ -1730,7 +1728,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbOraRega19022024.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblStockEntryBulkData">
           <Key>
             <PropertyRef Name="FileId" />
@@ -2264,7 +2262,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <Association Name="FK__tblMenuRo__MenuI__1D7B6025">
+        <Association Name="FK__tblMenuRo__MenuI__59904A2C">
           <End Role="tblMenuMaster" Type="Self.tblMenuMaster" Multiplicity="0..1" />
           <End Role="tblMenuRoleMapping" Type="Self.tblMenuRoleMapping" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3398,7 +3396,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
     [tblStockEntryBulkData].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[tblStockEntryBulkData] AS [tblStockEntryBulkData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__tblMenuRo__MenuI__1D7B6025" Association="Self.FK__tblMenuRo__MenuI__1D7B6025">
+          <AssociationSet Name="FK__tblMenuRo__MenuI__59904A2C" Association="Self.FK__tblMenuRo__MenuI__59904A2C">
             <End Role="tblMenuMaster" EntitySet="tblMenuMaster" />
             <End Role="tblMenuRoleMapping" EntitySet="tblMenuRoleMapping" />
           </AssociationSet>
@@ -4828,14 +4826,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="FilterType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="String" />
-            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-            <Parameter Name="FilterType" Mode="In" Type="String" />
-          </FunctionImport>
+       
           <FunctionImport Name="GetDashboard_CloseSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_CloseSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
@@ -5208,6 +5199,14 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
+          <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
+          </FunctionImport>
           
           
          
@@ -6522,7 +6521,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-					<Property Name="HSNCodeId" Type="Int32" />
+					<Property Name="HSNCodeId" Type="Int32" Nullable="false" />
 					<Property Name="CTSerialNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartStatusId" Type="Int32" Nullable="false" />
 					<Property Name="SalePrice" Type="Decimal" Precision="19" Scale="4" />
@@ -7824,12 +7823,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="InCompleteWorkOrder" Nullable="true" />
           <Property Type="Int32" Name="PendingForPart" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="GetDashboard_WorkOrderAllocated_Result">
-          <Property Type="Int32" Name="Allocated" Nullable="true" />
-          <Property Type="Int32" Name="UnAllocated" Nullable="true" />
-          <Property Type="Int32" Name="Accepted" Nullable="true" />
-          <Property Type="Int32" Name="Rejected" Nullable="true" />
-        </ComplexType>
+       
         <ComplexType Name="GetDashboard_CloseSummary_Result">
           <Property Type="Int32" Name="EngineerId" Nullable="true" />
           <Property Type="String" Name="EngineerName" Nullable="true" MaxLength="50" />
@@ -8916,10 +8910,14 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
         </EntityType>
-        
+        <ComplexType Name="GetDashboard_WorkOrderAllocated_Result">
+          <Property Type="Int32" Name="Allocated" Nullable="false" />
+          <Property Type="Int32" Name="UnAllocated" Nullable="false" />
+          <Property Type="Int32" Name="Accepted" Nullable="false" />
+          <Property Type="Int32" Name="Rejected" Nullable="false" />
+        </ComplexType>
+         
 			</Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -12664,16 +12662,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderAllocated" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderAllocated">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result">
-                <ScalarProperty Name="Allocated" ColumnName="Allocated" />
-                <ScalarProperty Name="UnAllocated" ColumnName="UnAllocated" />
-                <ScalarProperty Name="Accepted" ColumnName="Accepted" />
-                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          
           <FunctionImportMapping FunctionImportName="GetDashboard_CloseSummary" FunctionName="dbOraRegaModel.Store.GetDashboard_CloseSummary">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_CloseSummary_Result">
@@ -13906,8 +13895,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblInvoices">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
               <MappingFragment StoreEntitySet="tblInvoice">
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
                 <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -13929,7 +13916,17 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-     				</EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderAllocated" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderAllocated">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result">
+                <ScalarProperty Name="Allocated" ColumnName="Allocated" />
+                <ScalarProperty Name="UnAllocated" ColumnName="UnAllocated" />
+                <ScalarProperty Name="Accepted" ColumnName="Accepted" />
+                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+         				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>
 	</edmx:Runtime>
