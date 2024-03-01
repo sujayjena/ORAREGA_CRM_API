@@ -1931,15 +1931,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrdersList_Result>("GetSalesOrdersList", companyIdParameter, branchIdParameter, salesOrderStatusIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, loggedInUserIdParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_WorkOrderSummary_Result> GetDashboard_WorkOrderSummary(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        public virtual ObjectResult<GetDashboard_WorkOrderSummary_Result> GetDashboard_WorkOrderSummary(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :
@@ -1960,15 +1960,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_WorkOrderSummary_Result>("GetDashboard_WorkOrderSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_WorkOrderAllocated_Result> GetDashboard_WorkOrderAllocated(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        public virtual ObjectResult<GetDashboard_WorkOrderAllocated_Result> GetDashboard_WorkOrderAllocated(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :
@@ -1989,15 +1989,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_WorkOrderAllocated_Result>("GetDashboard_WorkOrderAllocated", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_CloseSummary_Result> GetDashboard_CloseSummary(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        public virtual ObjectResult<GetDashboard_CloseSummary_Result> GetDashboard_CloseSummary(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :
@@ -2035,15 +2035,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_Customer_Result>("GetDashboard_Customer", fromDateParameter, toDateParameter, userIdParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_SalesOrderSummary_Result> GetDashboard_SalesOrderSummary(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        public virtual ObjectResult<GetDashboard_SalesOrderSummary_Result> GetDashboard_SalesOrderSummary(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :
@@ -2064,15 +2064,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_SalesOrderSummary_Result>("GetDashboard_SalesOrderSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_StockSummary_Result> GetDashboard_StockSummary(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        public virtual ObjectResult<GetDashboard_StockSummary_Result> GetDashboard_StockSummary(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :
@@ -2093,15 +2093,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_StockSummary_Result>("GetDashboard_StockSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetDashboard_StockSummary_Inventory_Result> GetDashboard_StockSummary_Inventory(Nullable<int> companyId, Nullable<int> branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
+        public virtual ObjectResult<GetDashboard_StockSummary_Inventory_Result> GetDashboard_StockSummary_Inventory(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("FromDate", fromDate) :

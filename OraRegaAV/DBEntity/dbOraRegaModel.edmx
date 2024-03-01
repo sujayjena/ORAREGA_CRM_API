@@ -35,7 +35,7 @@
           <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbOrega01032024.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OLD_tblWorkOrderEnquiry">
           <Key>
             <PropertyRef Name="Id" />
@@ -688,7 +688,9 @@ warning 6002: The table/view 'dbOrega01032024.dbo.OLD_tblWorkOrderEnquiry' does 
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -951,7 +953,6 @@ warning 6002: The table/view 'dbOrega01032024.dbo.OLD_tblWorkOrderEnquiry' does 
           <Property Name="PartNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PartName" Type="varchar" MaxLength="50" />
           <Property Name="PartDescription" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="HSNCodeId" Type="int" Nullable="false" />
           <Property Name="CTSerialNo" Type="varchar" MaxLength="50" />
           <Property Name="PartStatusId" Type="int" Nullable="false" />
           <Property Name="SalePrice" Type="money" />
@@ -969,6 +970,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.OLD_tblWorkOrderEnquiry' does 
           <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VendorId" Type="int" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="HSNCodeId" Type="int" />
         </EntityType>
         <EntityType Name="tblPartsAllocatedToEngineer">
           <Key>
@@ -1728,7 +1730,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.OLD_tblWorkOrderEnquiry' does 
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblStockEntryBulkData">
           <Key>
             <PropertyRef Name="FileId" />
@@ -2262,7 +2264,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <Association Name="FK__tblMenuRo__MenuI__59904A2C">
+        <Association Name="FK__tblMenuRo__MenuI__1D7B6025">
           <End Role="tblMenuMaster" Type="Self.tblMenuMaster" Multiplicity="0..1" />
           <End Role="tblMenuRoleMapping" Type="Self.tblMenuRoleMapping" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2404,7 +2406,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
         </Function>
         <Function Name="GetDashboard_CloseSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -2417,7 +2419,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
         </Function>
         <Function Name="GetDashboard_SalesOrderSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -2425,7 +2427,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
         </Function>
         <Function Name="GetDashboard_StockSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -2433,7 +2435,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
         </Function>
         <Function Name="GetDashboard_StockSummary_Inventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -2441,7 +2443,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
         </Function>
         <Function Name="GetDashboard_WorkOrderAllocated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -2449,7 +2451,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
         </Function>
         <Function Name="GetDashboard_WorkOrderSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -3396,7 +3398,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
     [tblStockEntryBulkData].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[tblStockEntryBulkData] AS [tblStockEntryBulkData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__tblMenuRo__MenuI__59904A2C" Association="Self.FK__tblMenuRo__MenuI__59904A2C">
+          <AssociationSet Name="FK__tblMenuRo__MenuI__1D7B6025" Association="Self.FK__tblMenuRo__MenuI__1D7B6025">
             <End Role="tblMenuMaster" EntitySet="tblMenuMaster" />
             <End Role="tblMenuRoleMapping" EntitySet="tblMenuRoleMapping" />
           </AssociationSet>
@@ -4820,7 +4822,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
      
            <FunctionImport Name="GetDashboard_WorkOrderSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -4828,7 +4830,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           </FunctionImport>
           <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -4836,7 +4838,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           </FunctionImport>
           <FunctionImport Name="GetDashboard_CloseSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_CloseSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -4849,7 +4851,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           </FunctionImport>
           <FunctionImport Name="GetDashboard_SalesOrderSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_SalesOrderSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -4857,7 +4859,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           </FunctionImport>
           <FunctionImport Name="GetDashboard_StockSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_StockSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -4865,7 +4867,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           </FunctionImport>
           <FunctionImport Name="GetDashboard_StockSummary_Inventory" ReturnType="Collection(dbOraRegaModel.GetDashboard_StockSummary_Inventory_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -6520,7 +6522,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
 					<Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-					<Property Name="HSNCodeId" Type="Int32" Nullable="false" />
+					<Property Name="HSNCodeId" Type="Int32" />
 					<Property Name="CTSerialNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartStatusId" Type="Int32" Nullable="false" />
 					<Property Name="SalePrice" Type="Decimal" Precision="19" Scale="4" />
@@ -8527,7 +8529,7 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="CompanyId" Nullable="false" />
-          <Property Type="Int32" Name="BranchId" Nullable="false" />
+          <Property Type="String" Name="BranchId" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
         </ComplexType>
         <EntityType Name="tblOTP">
@@ -8914,6 +8916,8 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
         </EntityType>
         
 			</Schema>
@@ -13902,6 +13906,8 @@ warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does no
           <EntitySetMapping Name="tblInvoices">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
               <MappingFragment StoreEntitySet="tblInvoice">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
                 <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
