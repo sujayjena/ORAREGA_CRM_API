@@ -35,7 +35,7 @@
           <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbOrega01032024.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OLD_tblWorkOrderEnquiry">
           <Key>
             <PropertyRef Name="Id" />
@@ -688,9 +688,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -953,6 +951,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PartNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PartName" Type="varchar" MaxLength="50" />
           <Property Name="PartDescription" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HSNCodeId" Type="int" Nullable="false" />
           <Property Name="CTSerialNo" Type="varchar" MaxLength="50" />
           <Property Name="PartStatusId" Type="int" Nullable="false" />
           <Property Name="SalePrice" Type="money" />
@@ -970,7 +969,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VendorId" Type="int" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="HSNCodeId" Type="int" />
         </EntityType>
         <EntityType Name="tblPartsAllocatedToEngineer">
           <Key>
@@ -1730,7 +1728,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbOrega01032024.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblStockEntryBulkData">
           <Key>
             <PropertyRef Name="FileId" />
@@ -2264,7 +2262,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <Association Name="FK__tblMenuRo__MenuI__1D7B6025">
+        <Association Name="FK__tblMenuRo__MenuI__59904A2C">
           <End Role="tblMenuMaster" Type="Self.tblMenuMaster" Multiplicity="0..1" />
           <End Role="tblMenuRoleMapping" Type="Self.tblMenuRoleMapping" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3398,7 +3396,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
     [tblStockEntryBulkData].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[tblStockEntryBulkData] AS [tblStockEntryBulkData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__tblMenuRo__MenuI__1D7B6025" Association="Self.FK__tblMenuRo__MenuI__1D7B6025">
+          <AssociationSet Name="FK__tblMenuRo__MenuI__59904A2C" Association="Self.FK__tblMenuRo__MenuI__59904A2C">
             <End Role="tblMenuMaster" EntitySet="tblMenuMaster" />
             <End Role="tblMenuRoleMapping" EntitySet="tblMenuRoleMapping" />
           </AssociationSet>
@@ -5169,8 +5167,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblInvoicePartDetails" EntityType="dbOraRegaModel.tblInvoicePartDetail" />
           <EntitySet Name="tblQuotations" EntityType="dbOraRegaModel.tblQuotation" />
           <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" />
-          <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
-          <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
+           <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
           <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
           <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
           <EntitySet Name="tblBranchMappings" EntityType="dbOraRegaModel.tblBranchMapping" />
@@ -5208,6 +5205,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
           
           
          
@@ -6522,7 +6520,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 					<Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-					<Property Name="HSNCodeId" Type="Int32" />
+					<Property Name="HSNCodeId" Type="Int32" Nullable="false" />
 					<Property Name="CTSerialNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
 					<Property Name="PartStatusId" Type="Int32" Nullable="false" />
 					<Property Name="SalePrice" Type="Decimal" Precision="19" Scale="4" />
@@ -8780,32 +8778,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="BranchId" Type="Int32" />
           <Property Name="OrganizationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="tblInvoice">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InvoiceNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WorkOrderId" Type="Int32" Nullable="false" />
-          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CGSTPerct" Type="Int32" />
-          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SGSTPerct" Type="Int32" />
-          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IGSTPerct" Type="Int32" />
-          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
-        <EntityType Name="tblQuotationLog">
+         <EntityType Name="tblQuotationLog">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -8919,6 +8892,29 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
         </ComplexType>
+        <EntityType Name="tblInvoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvoiceNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkOrderId" Type="Int32" Nullable="false" />
+          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
         
 			</Schema>
 		</edmx:ConceptualModels>
@@ -13773,33 +13769,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblInvoices">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
-              <MappingFragment StoreEntitySet="tblInvoice">
-                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
-                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
-                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
-                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
-                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
-                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
-                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
-                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
-                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
-                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
-                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
-                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblQuotationLogs">
+           <EntitySetMapping Name="tblQuotationLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationLog">
               <MappingFragment StoreEntitySet="tblQuotationLog">
                 <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
@@ -13929,6 +13899,30 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tblInvoices">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
+              <MappingFragment StoreEntitySet="tblInvoice">
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
      				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

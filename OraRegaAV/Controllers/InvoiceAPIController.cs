@@ -79,9 +79,9 @@ namespace OraRegaAV.Controllers
                         tbl.IGSTValue = vQuotationObj.IGSTValue;
                         tbl.TotalDiscAmt = vQuotationObj.TotalDiscAmt;
                         tbl.GrossAmountIncludeTax = vQuotationObj.GrossAmountIncludeTax;
-                        tbl.AdvanceReceived = vQuotationObj.AdvanceReceived;
+                        //tbl.AdvanceReceived = vQuotationObj.AdvanceReceived;
                         tbl.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
-                        tbl.StatusId = 4;
+                        //tbl.StatusId = 4;
 
                         tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                         tbl.CreatedDate = DateTime.Now;
@@ -213,9 +213,9 @@ namespace OraRegaAV.Controllers
                     tbl.IGSTValue = request.IGSTValue;
                     tbl.TotalDiscAmt = request.TotalDiscAmt;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
-                    tbl.AdvanceReceived = request.AdvanceReceived;
+                    //tbl.AdvanceReceived = request.AdvanceReceived;
                     tbl.AmountPaidAfter = request.AmountPaidAfter;
-                    tbl.StatusId = 4;
+                    //tbl.StatusId = 4;
 
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.CreatedDate = DateTime.Now;

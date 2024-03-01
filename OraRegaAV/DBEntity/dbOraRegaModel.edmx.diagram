@@ -149,8 +149,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblSMSLogHistory" Width="1.5" PointX="35.375" PointY="22.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotation" Width="1.5" PointX="35.375" PointY="27.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetail" Width="1.5" PointX="29.375" PointY="35.75" />
-        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoice" Width="1.5" PointX="35.375" PointY="32.75" />
-        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoicePartDetail" Width="1.5" PointX="36.375" PointY="0.75" />
+         <EntityTypeShape EntityType="dbOraRegaModel.tblInvoicePartDetail" Width="1.5" PointX="36.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" Width="1.5" PointX="0.75" PointY="36.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" Width="1.5" PointX="17.375" PointY="36.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" Width="1.5" PointX="35.375" PointY="27.75" />
@@ -158,6 +157,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" Width="1.5" PointX="31.375" PointY="36.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" Width="1.5" PointX="37.375" PointY="5.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblBranchMapping" Width="1.5" PointX="37.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoice" Width="1.5" PointX="37.375" PointY="14.75" />
        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -168,11 +168,11 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblInvoicePartDetail> tblInvoicePartDetails { get; set; }
         public virtual DbSet<tblQuotation> tblQuotations { get; set; }
         public virtual DbSet<OLD_tblWorkOrderEnquiry> OLD_tblWorkOrderEnquiry { get; set; }
-        public virtual DbSet<tblInvoice> tblInvoices { get; set; }
         public virtual DbSet<tblQuotationLog> tblQuotationLogs { get; set; }
         public virtual DbSet<tblQuotationPartDetailsLog> tblQuotationPartDetailsLogs { get; set; }
         public virtual DbSet<tblQuotationServiceChargeDetailsLog> tblQuotationServiceChargeDetailsLogs { get; set; }
         public virtual DbSet<tblBranchMapping> tblBranchMappings { get; set; }
+        public virtual DbSet<tblInvoice> tblInvoices { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {

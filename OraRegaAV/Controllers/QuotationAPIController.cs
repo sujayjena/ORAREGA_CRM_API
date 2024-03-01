@@ -6,6 +6,7 @@ using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -39,6 +40,15 @@ namespace OraRegaAV.Controllers
             try
             {
                 var workOrderObj = db.GetWorkOrderDetails(WorkOrderNumber).FirstOrDefault();
+
+                var tbl = db.tblQuotations.Where(x => x.WorkOrderId == workOrderObj.Id).FirstOrDefault();
+                if (tbl != null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Quotation is already generated for this work order";
+                    return _response;
+                }
+
                 if (workOrderObj != null)
                 {
                     // Header Detail
@@ -376,7 +386,7 @@ namespace OraRegaAV.Controllers
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                quotationList_Result = db.GetQuotationList(parameters.CompanyId, parameters.BranchId, parameters.QuotationNumber, parameters.WorkOrderNumber,parameters.StatusId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+                quotationList_Result = db.GetQuotationList(parameters.CompanyId, parameters.BranchId, parameters.QuotationNumber, parameters.WorkOrderNumber, parameters.StatusId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = quotationList_Result;
