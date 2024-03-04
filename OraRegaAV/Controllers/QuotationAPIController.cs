@@ -75,6 +75,23 @@ namespace OraRegaAV.Controllers
                     quotationObj.ModifyBy = 0;
                     quotationObj.ModifierName = string.Empty;
 
+                    var vBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
+                    if (vBranchObj != null)
+                    {
+                        var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vBranchObj.CompanyId && w.StateId == vBranchObj.StateId).FirstOrDefault();
+                        if (vGSTMappingObj != null)
+                        {
+                            quotationObj.BranchAddress = vBranchObj.AddressLine1;
+                            quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
+                        }
+
+                        var vBranchStateObj = db.tblStates.Where(w => w.Id == vBranchObj.StateId).FirstOrDefault();
+                        if (vBranchStateObj != null)
+                        {
+                            quotationObj.BranchStateCode = Convert.ToInt32(vBranchStateObj.StateCode);
+                        }
+                    }
+
 
                     // Customer Detail
                     var vWorkOrderCustomerObj = db.tblCustomers.Where(w => w.Id == workOrderObj.CustomerId).FirstOrDefault();
@@ -97,17 +114,17 @@ namespace OraRegaAV.Controllers
                         var vWorkOrderBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
                         if (vWorkOrderBranchObj != null)
                         {
-                            var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vWorkOrderBranchObj.CompanyId && w.StateId == vWorkOrderBranchObj.StateId && w.IsActive == true).FirstOrDefault();
-                            if (vGSTMappingObj != null)
-                            {
-                                quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
-                            }
+                            //var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vWorkOrderBranchObj.CompanyId && w.StateId == vWorkOrderBranchObj.StateId && w.IsActive == true).FirstOrDefault();
+                            //if (vGSTMappingObj != null)
+                            //{
+                            //    quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
+                            //}
 
                             var vWorkOrderStateObj = db.tblStates.Where(w => w.Id == vWorkOrderBranchObj.StateId).FirstOrDefault();
                             if (vWorkOrderStateObj != null)
                             {
                                 quotationObj.customerDetails.CustomerStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
-                                quotationObj.BranchStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
+                                //quotationObj.BranchStateCode = Convert.ToInt32(vWorkOrderStateObj.StateCode);
                             }
                         }
                     }
@@ -426,6 +443,24 @@ namespace OraRegaAV.Controllers
                             quotationObj.WorkOrderNumber = workOrderObj.WorkOrderNumber;
                             quotationObj.BranchId = workOrderObj.BranchId;
                             quotationObj.BranchName = workOrderObj.BranchName;
+
+                            var vBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
+                            if (vBranchObj != null)
+                            {
+                                var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vBranchObj.CompanyId && w.StateId == vBranchObj.StateId).FirstOrDefault();
+                                if (vGSTMappingObj != null)
+                                {
+                                    quotationObj.BranchAddress = vBranchObj.AddressLine1;
+                                    quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
+                                }
+
+                                var vBranchStateObj = db.tblStates.Where(w => w.Id == vBranchObj.StateId).FirstOrDefault();
+                                if (vBranchStateObj != null)
+                                {
+                                    quotationObj.BranchStateCode = Convert.ToInt32(vBranchStateObj.StateCode);
+                                }
+                            }
+
                             quotationObj.AmountBeforeTax = vQuotationObj.AmountBeforeTax;
                             quotationObj.CGSTPerct = vQuotationObj.CGSTPerct;
                             quotationObj.CGSTValue = vQuotationObj.CGSTValue;

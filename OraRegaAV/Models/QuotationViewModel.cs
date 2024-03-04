@@ -46,6 +46,7 @@ namespace OraRegaAV.Models
         public string WorkOrderNumber { get; set; }
         public Nullable<int> BranchId { get; set; }
         public string BranchName { get; set; }
+        public string BranchAddress { get; set; }
         public string BranchGSTNumber { get; set; }
         public int BranchStateCode { get; set; }
 
