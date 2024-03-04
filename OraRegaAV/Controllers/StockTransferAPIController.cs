@@ -382,20 +382,21 @@ namespace OraRegaAV.Controllers
 
         [HttpPost]
         [Route("api/StockTransferAPI/GetChallanList")]
-        public Response GetChallanList(int branchId = 0)
+        public Response GetChallanList(string branchId = "")
         {
             List<dynamic> list = new List<dynamic>();
 
             try
             {
                 var vClaimIdList = new List<string>();
-                if (branchId == 0)
+                if (branchId == "")
                 {
                     vClaimIdList = db.tblStockTransferOuts.Select(x => x.ChallanNo).ToList();
                 }
                 else
                 {
-                    vClaimIdList = db.tblStockTransferOuts.Where(x => x.BranchToId == branchId).Select(x => x.ChallanNo).ToList();
+                    string[] splitBranch = branchId.Split(',');
+                    vClaimIdList = db.tblStockTransferOuts.Where(x => splitBranch.Contains(x.BranchToId.ToString())).Select(x => x.ChallanNo).ToList();
                 }
 
                 foreach (var item in vClaimIdList)
