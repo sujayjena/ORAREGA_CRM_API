@@ -1851,15 +1851,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTrackingOrderLog_Result>("GetTrackingOrderLog", moduleParameter, moduleUniqIdParameter);
         }
     
-        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(Nullable<int> companyId, Nullable<int> branchId, Nullable<int> userType)
+        public virtual ObjectResult<GetEngineerList_Result> GetEngineerList(Nullable<int> companyId, string branchId, Nullable<int> userType)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var userTypeParameter = userType.HasValue ?
                 new ObjectParameter("UserType", userType) :

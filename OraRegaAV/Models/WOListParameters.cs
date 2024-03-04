@@ -112,8 +112,11 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int CompanyId { get; set; }
 
-        [DefaultValue(0)]
-        public int BranchId { get; set; }
+        //[DefaultValue(0)]
+        //public int BranchId { get; set; }
+
+        [DefaultValue("")]
+        public string BranchId { get; set; }
 
         [DefaultValue(0)]
         public int UserType { get; set; }
