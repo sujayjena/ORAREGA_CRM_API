@@ -2907,6 +2907,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="PartNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="PartDesc" Type="nvarchar" Mode="In" />
           <Parameter Name="StatusId" Type="int" Mode="In" />
+          <Parameter Name="ProductStatusId" Type="int" Mode="In" />
           <Parameter Name="Type" Type="char" Mode="In" />
           <Parameter Name="FilterType" Type="varchar" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
@@ -4729,6 +4730,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PartNumber" Mode="In" Type="String" />
             <Parameter Name="PartDesc" Mode="In" Type="String" />
             <Parameter Name="StatusId" Mode="In" Type="Int32" />
+            <Parameter Name="ProductStatusId" Mode="In" Type="Int32" />
             <Parameter Name="Type" Mode="In" Type="String" />
             <Parameter Name="FilterType" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />

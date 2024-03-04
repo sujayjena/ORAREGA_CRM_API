@@ -198,6 +198,7 @@ namespace OraRegaAV.Models
         public string PartName { get; set; }
         public string PartDescription { get; set; }
         public int StatusId { get; set; }
+        public int ProductStatusId { get; set; }
 
         [DefaultValue("W")]
         public string Type { get; set; }

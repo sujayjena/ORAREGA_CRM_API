@@ -1631,7 +1631,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToEngineerList_Result>("GetStockAllocationToEngineerList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, string branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, string branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, Nullable<int> productStatusId, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
@@ -1661,6 +1661,10 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("StatusId", statusId) :
                 new ObjectParameter("StatusId", typeof(int));
     
+            var productStatusIdParameter = productStatusId.HasValue ?
+                new ObjectParameter("ProductStatusId", productStatusId) :
+                new ObjectParameter("ProductStatusId", typeof(int));
+    
             var typeParameter = type != null ?
                 new ObjectParameter("Type", type) :
                 new ObjectParameter("Type", typeof(string));
@@ -1685,7 +1689,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", pageNo) :
                 new ObjectParameter("PageNo", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, productStatusIdParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
         public virtual ObjectResult<GetStockTransferOutChallanList_Result> GetStockTransferOutChallanList(Nullable<int> companyId, string branchId, string challanNumber, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
