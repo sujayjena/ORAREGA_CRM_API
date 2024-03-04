@@ -988,6 +988,7 @@ namespace OraRegaAV.Controllers
                     workOrderListObj.MiscellaneousRemark = workOrderObj.MiscellaneousRemark;
                     workOrderListObj.IssueDescriptionId = workOrderObj.IssueDescriptionId;
                     workOrderListObj.IssueDescriptionName = workOrderObj.IssueDescriptionName;
+                    workOrderListObj.UserTypeId = workOrderObj.UserTypeId;
                     workOrderListObj.EngineerDiagnosis = workOrderObj.EngineerDiagnosis;
                     workOrderListObj.EngineerId = workOrderObj.EngineerId;
                     workOrderListObj.EngineerName = workOrderObj.EngineerName;

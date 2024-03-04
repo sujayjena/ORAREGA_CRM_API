@@ -1236,15 +1236,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesList_Result>("GetEmployeesList", empCodeParameter, empNameParameter, emailParameter, isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetWorkOrderDetails_Result> GetWorkOrderDetails(string workOrderNumber)
-        {
-            var workOrderNumberParameter = workOrderNumber != null ?
-                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
-                new ObjectParameter("WorkOrderNumber", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderDetails_Result>("GetWorkOrderDetails", workOrderNumberParameter);
-        }
-    
         public virtual ObjectResult<GetSalesOrderDetails_Result> GetSalesOrderDetails(string salesOrderNo)
         {
             var salesOrderNoParameter = salesOrderNo != null ?
@@ -3190,6 +3181,15 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("FilterType", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_WorkOrderAllocated_Result>("GetDashboard_WorkOrderAllocated", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderDetails_Result> GetWorkOrderDetails(string workOrderNumber)
+        {
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderDetails_Result>("GetWorkOrderDetails", workOrderNumberParameter);
         }
     }
 }

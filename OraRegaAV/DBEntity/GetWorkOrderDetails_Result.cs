@@ -53,6 +53,7 @@ namespace OraRegaAV.DBEntity
         public string MiscellaneousRemark { get; set; }
         public Nullable<int> IssueDescriptionId { get; set; }
         public string IssueDescriptionName { get; set; }
+        public Nullable<int> UserTypeId { get; set; }
         public string EngineerDiagnosis { get; set; }
         public Nullable<int> EngineerId { get; set; }
         public string EngineerName { get; set; }
