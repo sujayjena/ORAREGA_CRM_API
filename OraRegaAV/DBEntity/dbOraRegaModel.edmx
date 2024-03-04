@@ -2314,7 +2314,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         </Function>
         <Function Name="GetBranchList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNo" Type="int" Mode="In" />
@@ -4574,7 +4574,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
 					<FunctionImport Name="GetBranchList" ReturnType="Collection(dbOraRegaModel.GetBranchList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
@@ -5209,7 +5209,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="FilterType" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetWorkOrderDetails" ReturnType="Collection(dbOraRegaModel.GetWorkOrderDetails_Result)">
-            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+          <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
           </FunctionImport>
           
           

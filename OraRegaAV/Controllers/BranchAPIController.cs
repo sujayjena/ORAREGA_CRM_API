@@ -113,7 +113,7 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                objtblBranch = await Task.Run(() => db.GetBranchList(0, 0, "",0,0,vTotal,0).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                objtblBranch = await Task.Run(() => db.GetBranchList(0, "", "",0,0,vTotal,0).ToList().Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = objtblBranch;
             }
             catch (Exception ex)

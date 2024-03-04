@@ -141,7 +141,7 @@ namespace OraRegaAV.Controllers
 
                         // Branch From
                         var vTotalFrom = new ObjectParameter("Total", typeof(int));
-                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId,"",0,0, vTotalFrom, 0).ToList().FirstOrDefault();
+                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId.ToString(),"",0,0, vTotalFrom, 0).ToList().FirstOrDefault();
                         if (vBranchFromDetail != null)
                         {
                             stockTransferResponse.BranchFrom.Id = vBranchFromDetail.Id;
@@ -346,7 +346,7 @@ namespace OraRegaAV.Controllers
 
                         // Branch From
                         var vTotalFrom = new ObjectParameter("Total", typeof(int));
-                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId, "", 0, 0, vTotalFrom, 0).ToList().FirstOrDefault();
+                        var vBranchFromDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchFromId.ToString(), "", 0, 0, vTotalFrom, 0).ToList().FirstOrDefault();
                         if (vBranchFromDetail != null)
                         {
                             stockTransferResponse.BranchFrom.Id = vBranchFromDetail.Id;
@@ -368,7 +368,7 @@ namespace OraRegaAV.Controllers
 
                         // Branch To
                         var vTotalTo = new ObjectParameter("Total", typeof(int));
-                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId,"", 0, 0, vTotalTo, 0).ToList().FirstOrDefault();
+                        var vBranchToDetail = db.GetBranchList(vStockTransferOutObj.ComapnyId, vStockTransferOutObj.BranchToId.ToString(),"", 0, 0, vTotalTo, 0).ToList().FirstOrDefault();
                         if (vBranchToDetail != null)
                         {
                             stockTransferResponse.BranchTo.Id = vBranchToDetail.Id;

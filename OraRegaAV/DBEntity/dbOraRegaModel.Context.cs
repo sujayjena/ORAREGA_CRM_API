@@ -1254,15 +1254,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleMaster_EmployeePermissionList_Result>("GetRoleMaster_EmployeePermissionList", employeeIdParameter);
         }
     
-        public virtual ObjectResult<GetBranchList_Result> GetBranchList(Nullable<int> companyId, Nullable<int> branchId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        public virtual ObjectResult<GetBranchList_Result> GetBranchList(Nullable<int> companyId, string branchId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(int));
     
-            var branchIdParameter = branchId.HasValue ?
+            var branchIdParameter = branchId != null ?
                 new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(int));
+                new ObjectParameter("BranchId", typeof(string));
     
             var searchValueParameter = searchValue != null ?
                 new ObjectParameter("SearchValue", searchValue) :
