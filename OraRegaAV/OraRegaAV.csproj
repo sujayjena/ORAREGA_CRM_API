@@ -394,6 +394,7 @@
     <Compile Include="Controllers\OperatingSystemAPIController.cs" />
     <Compile Include="Controllers\PartDescriptionAPIController.cs" />
     <Compile Include="Controllers\PartDetailAPIController.cs" />
+    <Compile Include="Controllers\PaymentGatewayAPIController.cs" />
     <Compile Include="Controllers\QuotationAPIController.cs" />
     <Compile Include="Controllers\RatePerKMAPIController.cs" />
     <Compile Include="Controllers\RepairClassTypeAPIController.cs" />
