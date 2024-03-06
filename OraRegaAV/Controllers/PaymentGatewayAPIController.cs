@@ -1,17 +1,24 @@
-﻿using OraRegaAV.DBEntity;
+﻿using Newtonsoft.Json;
+using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
+using Org.BouncyCastle.Utilities.Encoders;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using System.Web.Http;
+using System.Web.Script.Serialization;
+using System.Web.Util;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -19,14 +26,36 @@ namespace OraRegaAV.Controllers.API
     {
         private readonly dbOraRegaEntities db = new dbOraRegaEntities();
         private Response _response = new Response();
+
+        private string PhonePe_Environment { get; set; }
+        private string PhonePe_EnvironmentEndPoint { get; set; }
+        private string Phonepe_MerchantID { get; set; }
+        private string PhonePe_MerchantUserId { get; set; }
+        private string Phonepe_SALTKEY { get; set; }
+        private string Phonepe_SALTKEYINDEX { get; set; }
+        private string PhonePe_RedirectUrl { get; set; }
+        private string PhonePe_CallbackUrl { get; set; }
+
         public PaymentGatewayAPIController()
         {
             _response.IsSuccess = true;
+
+            this.PhonePe_Environment = ConfigurationManager.AppSettings["PhonePe_Environment"];
+            this.PhonePe_EnvironmentEndPoint = ConfigurationManager.AppSettings["PhonePe_EnvironmentEndPoint"];
+
+            this.PhonePe_RedirectUrl = ConfigurationManager.AppSettings["PhonePe_RedirectUrl"];
+            this.PhonePe_CallbackUrl = ConfigurationManager.AppSettings["PhonePe_CallbackUrl"];
+
+            this.Phonepe_MerchantID = ConfigurationManager.AppSettings["PhonePe_MerchantID"];
+            this.PhonePe_MerchantUserId = ConfigurationManager.AppSettings["PhonePe_MerchantUserId"];
+
+            this.Phonepe_SALTKEY = ConfigurationManager.AppSettings["PhonePe_SALTKEY"];
+            this.Phonepe_SALTKEYINDEX = ConfigurationManager.AppSettings["PhonePe_SALTKEYINDEX"];
         }
 
-        // POST: /Home/GeneratePaymentLink
         [HttpPost]
-        public async Task<Response> GeneratePaymentLink(VerifyRequestModel phonePePayment)
+        [Route("api/PaymentGatewayAPI/GeneratePaymentLink")]
+        public async Task<Response> GeneratePaymentLink(PaymentRequest paymentRequest)
         {
             try
             {
@@ -34,17 +63,62 @@ namespace OraRegaAV.Controllers.API
                 //ServicePointManager.Expect100Continue = true;
                 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+                #region Environment
+
+                //var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+                var PhonePeGatewayURL = PhonePe_Environment;
 
                 var httpClient = new HttpClient();
-                var uri = new Uri($"{PhonePeGatewayURL}/pg/v1/pay");
+                //var uri = new Uri($"{PhonePeGatewayURL+}/pg/v1/pay");
+                var uri = new Uri($"{PhonePeGatewayURL + PhonePe_EnvironmentEndPoint}");
+
+                #endregion
+
+                #region Prepare Request Payload
+
+                var vRequestPayload = new RequestPayload()
+                {
+                    merchantId = Phonepe_MerchantID,
+                    merchantTransactionId = paymentRequest.WorkOrderNumber + "" + DateTime.Now.ToString("yyMMddHHmmssffff"),
+                    merchantUserId = PhonePe_MerchantUserId,
+                    amount = paymentRequest.Amount,
+                    redirectUrl = PhonePe_RedirectUrl,
+                    redirectMode = "POST",
+                    callbackUrl = PhonePe_CallbackUrl,
+                    mobileNumber = "9999999999",
+                };
+
+                vRequestPayload.paymentInstrument.type = "PAY_PAGE";
+
+                #endregion
+
+                #region Base64 Encoded & Create Checksum 
+
+                // Convert the JSON Payload to Base64 Encoded Payload
+                var vBase64Encode = StringToBase64(new JavaScriptSerializer().Serialize(vRequestPayload));
+
+                // Create Checksum header
+                //var vSHA256Encode = ComputeSha256Hash(vBase64Encode + "/pg/v1/pay" + Phonepe_SALTKEY);
+                var vSHA256Encode = ComputeSha256Hash(vBase64Encode + PhonePe_EnvironmentEndPoint + Phonepe_SALTKEY);
+
+                var vVerifyRequestModel = new VerifyRequestModel()
+                {
+                    X_VERIFY = (vSHA256Encode + "###" + Phonepe_SALTKEYINDEX),
+                    base64 = vBase64Encode,
+                    TransactionId = vRequestPayload.merchantTransactionId,
+                    MERCHANTID = vRequestPayload.merchantId,
+                };
+
+                #endregion
+
+                #region Send Post Request
 
                 // Add headers
                 httpClient.DefaultRequestHeaders.Add("accept", "application/json");
-                httpClient.DefaultRequestHeaders.Add("X-VERIFY", phonePePayment.X_VERIFY);
+                httpClient.DefaultRequestHeaders.Add("X-VERIFY", vVerifyRequestModel.X_VERIFY);
 
                 // Create JSON request body
-                var jsonBody = $"{{\"request\":\"{phonePePayment.base64}\"}}";
+                var jsonBody = $"{{\"request\":\"{vVerifyRequestModel.base64}\"}}";
                 var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
                 // Send POST request
@@ -54,12 +128,30 @@ namespace OraRegaAV.Controllers.API
                 // Read and deserialize the response content
                 var responseContent = await response.Content.ReadAsStringAsync();
 
+                //var vPhonePeResponse = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                //var vresult_VerifyRequestModel = new JavaScriptSerializer().Serialize(vVerifyRequestModel);
+
+                //var vvfgvf = ("/pg/v1/status/" + Phonepe_MerchantID + "/" + vRequestPayload.merchantTransactionId + Phonepe_SALTKEY);
+                var vSHA256EncodeObj = ComputeSha256Hash("/pg/v1/status/" + Phonepe_MerchantID + "/" + vRequestPayload.merchantTransactionId + Phonepe_SALTKEY);
+                var vCheckOutModelObj = new VerifyRequestModel()
+                {
+                    //SHA256(“/pg/v1/status/{merchantId}/{merchantTransactionId}” + saltKey) + “###” + saltIndex
+                    X_VERIFY = (vSHA256EncodeObj + "###" + Phonepe_SALTKEYINDEX),
+                    base64 = vBase64Encode,
+                    TransactionId = vRequestPayload.merchantTransactionId,
+                    MERCHANTID = Phonepe_MerchantID,
+                };
+
+                var vPhonePeResponseResult = "[" + JsonConvert.DeserializeObject<dynamic>(responseContent) + "," + new JavaScriptSerializer().Serialize(vCheckOutModelObj) + "]";
+
+                #endregion
+
                 // Return a response
                 _response.Message = "Verification successful";
                 _response.IsSuccess = true;
-                _response.Data = responseContent;
+                _response.Data = JsonConvert.DeserializeObject<dynamic>(vPhonePeResponseResult);
 
-                //return Json(new { Success = true, Message = "Verification successful", phonepeResponse = responseContent });
+                // return Json(new { Success = true, Message = "Verification successful", phonepeResponse = vresult });
             }
             catch (Exception ex)
             {
@@ -73,8 +165,8 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
-        // POST: /Home/CheckPaymentStatus
         [HttpPost]
+        [Route("api/PaymentGatewayAPI/CheckPaymentStatus")]
         public async Task<Response> CheckPaymentStatus(VerifyRequestModel phonePePayment)
         {
             try
@@ -102,10 +194,12 @@ namespace OraRegaAV.Controllers.API
                 // Read and deserialize the response content
                 var responseContent = await response.Content.ReadAsStringAsync();
 
+                var vresult = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
                 // Return a response
                 _response.Message = "Verification successful";
                 _response.IsSuccess = true;
-                _response.Data = responseContent;
+                _response.Data = vresult;
 
                 //return Json(new { Success = true, Message = "Verification successful", phonepeResponse = responseContent });
             }
@@ -121,31 +215,7 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
-
-        public void PrepareJson()
-        {
-            string sJsonRequestBody = @"{
-                                        ""merchantId"": ""PGTESTPAYUAT"",
-                                        ""merchantTransactionId"": ""MT7850590068188104"",
-                                        ""merchantUserId"": ""MUID123"",
-                                        ""amount"": 10000,
-                                        ""redirectUrl"": ""https://webhook.site/redirect-url"",
-                                        ""redirectMode"": ""REDIRECT"",
-                                        ""callbackUrl"": ""https://webhook.site/callback-url"",
-                                        ""mobileNumber"": ""9999999999"",
-                                        ""paymentInstrument"": {
-                                        ""type"": ""PAY_PAGE""
-                                        }
-                                    }";
-
-            // Convert the JSON Payload to Base64 Encoded Payload
-            var vBase64Encode = StringToBase64(sJsonRequestBody);
-
-            // Create Checksum header
-            var vSHA256Encode = ComputeSha256Hash(vBase64Encode);
-        }
-
-        public static string StringToBase64(string Base64String)
+        private static string StringToBase64(string Base64String)
         {
 
             // Convert string to Base64
@@ -154,7 +224,7 @@ namespace OraRegaAV.Controllers.API
             return System.Convert.ToBase64String(bytes);
         }
 
-        static string ComputeSha256Hash(string rawData)
+        private static string ComputeSha256Hash(string rawData)
         {
             // Create a SHA256
             using (SHA256 sha256Hash = SHA256.Create())
@@ -171,132 +241,5 @@ namespace OraRegaAV.Controllers.API
                 return builder.ToString();
             }
         }
-
-
-        public class VerifyRequestModel
-        {
-            public string X_VERIFY { get; set; }
-            public string base64 { get; set; }
-            public string TransactionId { get; set; }
-            public string MERCHANTID { get; set; }
-            // Add other properties from the request if needed
-        }
-
-        public class RequestPayload
-        {
-            public string merchantId { get; set; }
-            public string merchantTransactionId { get; set; }
-            public string merchantUserId { get; set; }
-            public string amount { get; set; }
-
-            public string redirectUrl { get; set; }
-            public string redirectMode { get; set; }
-            public string callbackUrl { get; set; }
-            public string mobileNumber { get; set; }
-            public PaymentInstrument paymentInstrument { get; set; }
-        }
-
-        public class PaymentInstrument
-        {
-            public string type { get; set; }
-        }
-
-        public class ResponsePayload
-        {
-            public bool success { get; set; }
-            public string code { get; set; }
-            public string message { get; set; }
-
-            public Response_PaymentMerchant data { get; set; }
-        }
-
-        public class Response_PaymentMerchant
-        {
-            public string merchantId { get; set; }
-            public string merchantTransactionId { get; set; }
-
-            public Response_PaymentInstrumentResponse instrumentResponse { get; set; }
-        }
-
-        public class Response_PaymentInstrumentResponse
-        {
-            public string type { get; set; }
-
-            public Response_PaymentRedirectInfo redirectInfo { get; set; }
-        }
-
-        public class Response_PaymentRedirectInfo
-        {
-            public string url { get; set; }
-            public string method { get; set; }
-        }
-        /*
-                {
-  "success": true,
-  "code": "PAYMENT_INITIATED",
-  "message": "Payment Iniiated",
-  "data": {
-    "merchantId": "PGTESTPAYUAT",
-   	"merchantTransactionId": "MT7850590068188104",
-    "instrumentResponse": {
-   		"type": "PAY_PAGE",
-			"redirectInfo": {
-    		"url": "https://mercury-uat.phonepe.com/transact?token=MjdkNmQ0NjM2MTk5ZTlmNDcxYjY3NTAxNTY5MDFhZDk2ZjFjMDY0YTRiN2VhMjgzNjIwMjBmNzUwN2JiNTkxOWUwNDVkMTM2YTllOTpkNzNkNmM2NWQ2MWNiZjVhM2MwOWMzODU0ZGEzMDczNA",
-      	"method": "GET"
-      }
-   	}
-  }
-}
-         */
-
-
-        //[HttpPost]
-        //[Route("api/DelayTypeAPI/SaveDelayType")]
-        //public async Task<Response> SaveDelayType(DelayType_Request delayType_Request)
-        //{
-        //    try
-        //    {
-        //        //duplicate checking
-        //        if (db.tblDelayTypes.Where(d => d.DelayType == delayType_Request.DelayType && d.Id != delayType_Request.Id).Any())
-        //        {
-        //            _response.IsSuccess = false;
-        //            _response.Message = "Delay Type is already exists";
-        //            return _response;
-        //        }
-
-        //        var tbl = db.tblDelayTypes.Where(x => x.Id == delayType_Request.Id).FirstOrDefault();
-        //        if (tbl == null)
-        //        {
-        //            tbl = new tblDelayType();
-        //            tbl.DelayType = delayType_Request.DelayType;
-        //            tbl.IsActive = delayType_Request.IsActive;
-        //            tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
-        //            tbl.CreatedDate = DateTime.Now;
-        //            db.tblDelayTypes.Add(tbl);
-
-        //            _response.Message = "Delay Type saved successfully";
-        //        }
-        //        else
-        //        {
-        //            tbl.DelayType = delayType_Request.DelayType;
-        //            tbl.IsActive = delayType_Request.IsActive;
-        //            tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
-        //            tbl.ModifiedDate = DateTime.Now;
-
-        //            _response.Message = "Delay Type updated successfully";
-        //        }
-
-        //        await db.SaveChangesAsync();
-        //        _response.IsSuccess = true;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.Message = ValidationConstant.InternalServerError;
-        //        LogWriter.WriteLog(ex);
-        //    }
-        //    return _response;
-        //}
     }
 }
