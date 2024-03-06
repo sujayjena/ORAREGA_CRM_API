@@ -10,13 +10,13 @@
 namespace OraRegaAV.DBEntity
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class tblPayment
+    public partial class GetPaymentList_Result
     {
-        public int Id { get; set; }
-        public string InvoiceNumber { get; set; }
+        public int PaymentId { get; set; }
+        public Nullable<System.DateTime> PaymentDate { get; set; }
         public string MerchantTransactionId { get; set; }
+        public string InvoiceNumber { get; set; }
         public string MobileNumber { get; set; }
         public Nullable<decimal> Amount { get; set; }
         public Nullable<bool> IsSuccess { get; set; }
@@ -24,9 +24,9 @@ namespace OraRegaAV.DBEntity
         public string PaymentMessage { get; set; }
         public string RequestJson { get; set; }
         public string ResponseJson { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
+        public string CreatorName { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
+        public string ModifyName { get; set; }
     }
 }

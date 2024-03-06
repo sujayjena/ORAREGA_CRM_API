@@ -249,6 +249,35 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        [Route("api/PaymentGatewayAPI/GetPaymentList")]
+        public async Task<Response> GetPaymentList(PaymentListParameters parameters)
+        {
+            List<GetPaymentList_Result> lstResult;
+            int loggedInUserId = 0;
+
+            try
+            {
+                var vTotal = new ObjectParameter("Total", typeof(int));
+
+                await Task.Run(() =>
+                {
+                    lstResult = db.GetPaymentList(parameters.InvoiceNumber.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                    _response.TotalCount = Convert.ToInt32(vTotal.Value);
+                    _response.Data = lstResult;
+                });
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
         public void SavePaymentDetails(PaymentRequest RequestParameters, PaymentResponse ResponseParameters, string RequestJson = "", string ResponseJson = "")
         {
             tblPayment tbl;

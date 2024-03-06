@@ -76,4 +76,17 @@ namespace OraRegaAV.Models
         public string Code { get; set; }
         public string Message { get; set; }
     }
+
+    public class PaymentListParameters
+    {
+        public string InvoiceNumber { get; set; }
+
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
+    }
 }

@@ -447,6 +447,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\dbOraRegaModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetAccessoriesList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -622,6 +627,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetPartsListForAllocation_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPaymentList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetPaymentPolicyList_Result.cs">
@@ -1414,7 +1422,7 @@
   <ItemGroup>
     <EntityDeploy Include="DBEntity\dbOraRegaModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>dbOraRegaModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>dbOraRegaModel1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="DBEntity\dbOraRegaModel.edmx.diagram">
       <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
