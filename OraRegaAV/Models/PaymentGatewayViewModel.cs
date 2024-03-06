@@ -1,5 +1,8 @@
-﻿using System;
+﻿using OraRegaAV.Models.Constants;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -12,17 +15,35 @@ namespace OraRegaAV.Models
 
     public class VerifyRequestModel
     {
-        public string X_VERIFY { get; set; }
-        public string base64 { get; set; }
+        [Required(ErrorMessage = "InvoiceNumber is required")]
+        public string InvoiceNumber { get; set; }
+
+        [Required(ErrorMessage = "TransactionId is required")]
         public string TransactionId { get; set; }
+
+        [Required(ErrorMessage = "MERCHANTID is required")]
         public string MERCHANTID { get; set; }
-        // Add other properties from the request if needed
+
+        [Required(ErrorMessage = "X_VERIFY is required")]
+        public string X_VERIFY { get; set; }
+
+        [DefaultValue("")]
+        public string base64 { get; set; }
     }
 
     public class PaymentRequest
     {
-        public string WorkOrderNumber { get; set; }
+        [Required(ErrorMessage = "InvoiceNumber is required")]
+        public string InvoiceNumber { get; set; }
+
+        [Required(ErrorMessage = "Amount is required")]
         public double Amount { get; set; }
+
+        [Required(ErrorMessage = "MobileNumber is required")]
+        [RegularExpression(ValidationConstant.MobileNumberRegExp, ErrorMessage = ValidationConstant.MobileNumberRegExp_Msg)]
+        public string MobileNumber { get; set; }
+
+        public string MerchantTransactionId { get; set; }
     }
 
     public class RequestPayload
@@ -47,5 +68,12 @@ namespace OraRegaAV.Models
     public class PaymentInstrument
     {
         public string type { get; set; }
+    }
+
+    public class PaymentResponse
+    {
+        public bool IsSuccess { get; set; }
+        public string Code { get; set; }
+        public string Message { get; set; }
     }
 }

@@ -1032,6 +1032,9 @@
     <Compile Include="DBEntity\tblPartsAllocatedToWorkOrder.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblPayment.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblPaymentPolicy.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>

@@ -6,7 +6,10 @@ using OraRegaAV.Models.Constants;
 using Org.BouncyCastle.Utilities.Encoders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
@@ -15,10 +18,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 using System.Web.Util;
+using Newtonsoft.Json.Linq;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -79,16 +85,17 @@ namespace OraRegaAV.Controllers.API
                 var vRequestPayload = new RequestPayload()
                 {
                     merchantId = Phonepe_MerchantID,
-                    merchantTransactionId = paymentRequest.WorkOrderNumber + "" + DateTime.Now.ToString("yyMMddHHmmssffff"),
+                    merchantTransactionId = paymentRequest.InvoiceNumber + "" + DateTime.Now.ToString("yyMMddHHmmssffff"),
                     merchantUserId = PhonePe_MerchantUserId,
                     amount = paymentRequest.Amount,
                     redirectUrl = PhonePe_RedirectUrl,
                     redirectMode = "POST",
                     callbackUrl = PhonePe_CallbackUrl,
-                    mobileNumber = "9999999999",
+                    mobileNumber = paymentRequest.MobileNumber,
                 };
 
                 vRequestPayload.paymentInstrument.type = "PAY_PAGE";
+                paymentRequest.MerchantTransactionId = vRequestPayload.merchantTransactionId;
 
                 #endregion
 
@@ -136,6 +143,7 @@ namespace OraRegaAV.Controllers.API
                 var vCheckOutModelObj = new VerifyRequestModel()
                 {
                     //SHA256(“/pg/v1/status/{merchantId}/{merchantTransactionId}” + saltKey) + “###” + saltIndex
+                    InvoiceNumber = paymentRequest.InvoiceNumber,
                     X_VERIFY = (vSHA256EncodeObj + "###" + Phonepe_SALTKEYINDEX),
                     base64 = vBase64Encode,
                     TransactionId = vRequestPayload.merchantTransactionId,
@@ -143,6 +151,12 @@ namespace OraRegaAV.Controllers.API
                 };
 
                 var vPhonePeResponseResult = "[" + JsonConvert.DeserializeObject<dynamic>(responseContent) + "," + new JavaScriptSerializer().Serialize(vCheckOutModelObj) + "]";
+
+                #endregion
+
+                #region Save Payment Detail
+
+                SavePaymentDetails(RequestParameters: paymentRequest, ResponseParameters: null, RequestJson: vPhonePeResponseResult, ResponseJson: String.Empty);
 
                 #endregion
 
@@ -196,6 +210,26 @@ namespace OraRegaAV.Controllers.API
 
                 var vresult = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
+                #region Save Payment Detail
+
+                var vPaymentRequest = new PaymentRequest();
+                var vPaymentResponse = new PaymentResponse();
+                if (vresult != null)
+                {
+                    // vPaymentRequest
+                    vPaymentRequest.InvoiceNumber = phonePePayment.InvoiceNumber;
+                    vPaymentRequest.MerchantTransactionId = phonePePayment.TransactionId;
+
+                    // vPaymentResponse
+                    vPaymentResponse.IsSuccess = vresult.success;
+                    vPaymentResponse.Code = vresult.code;
+                    vPaymentResponse.Message = vresult.message;
+                }
+
+                SavePaymentDetails(RequestParameters: vPaymentRequest, ResponseParameters: vPaymentResponse, RequestJson: string.Empty, ResponseJson: responseContent);
+
+                #endregion
+
                 // Return a response
                 _response.Message = "Verification successful";
                 _response.IsSuccess = true;
@@ -213,6 +247,52 @@ namespace OraRegaAV.Controllers.API
                 //return Json(new { Success = false, Message = "Verification failed", Error = ex.Message });
             }
             return _response;
+        }
+
+        public void SavePaymentDetails(PaymentRequest RequestParameters, PaymentResponse ResponseParameters, string RequestJson = "", string ResponseJson = "")
+        {
+            tblPayment tbl;
+            try
+            {
+                tbl = db.tblPayments.Where(c => c.InvoiceNumber == RequestParameters.InvoiceNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId).FirstOrDefault();
+                if (tbl == null)
+                {
+                    tbl = new tblPayment()
+                    {
+                        InvoiceNumber = RequestParameters.InvoiceNumber,
+                        MerchantTransactionId = RequestParameters.MerchantTransactionId,
+                        MobileNumber = RequestParameters.MobileNumber,
+                        Amount = Convert.ToDecimal(RequestParameters.Amount),
+                        IsSuccess = false,
+                        PaymentStatus = "PAYMENT_INITIATED",
+                        PaymentMessage = "Payment Iniiated",
+                        RequestJson = RequestJson,
+                        ResponseJson = ResponseJson,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = Utilities.GetUserID(ActionContext.Request)
+                    };
+
+                    db.tblPayments.Add(tbl);
+                    db.SaveChangesAsync();
+                }
+                else
+                {
+                    tbl.IsSuccess = ResponseParameters.IsSuccess;
+                    tbl.PaymentStatus = ResponseParameters.Code;
+                    tbl.PaymentMessage = ResponseParameters.Message;
+                    tbl.ResponseJson = ResponseJson;
+                    tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                    tbl.ModifiedDate = DateTime.Now;
+
+                    db.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
         }
 
         private static string StringToBase64(string Base64String)
@@ -243,3 +323,7 @@ namespace OraRegaAV.Controllers.API
         }
     }
 }
+
+
+
+
