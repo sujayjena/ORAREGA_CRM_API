@@ -513,6 +513,12 @@
     <Compile Include="DBEntity\GetDashboard_Customer_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetDashboard_InvoiceSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_QuotationSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetDashboard_SalesOrderSummary_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>

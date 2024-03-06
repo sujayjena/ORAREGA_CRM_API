@@ -2417,6 +2417,22 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="ToDate" Type="datetime" Mode="In" />
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetDashboard_InvoiceSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetDashboard_QuotationSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="varchar" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="FilterType" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="GetDashboard_SalesOrderSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
           <Parameter Name="BranchId" Type="varchar" Mode="In" />
@@ -5210,6 +5226,22 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <FunctionImport Name="GetWorkOrderDetails" ReturnType="Collection(dbOraRegaModel.GetWorkOrderDetails_Result)">
           <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetDashboard_InvoiceSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_InvoiceSummary_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetDashboard_QuotationSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_QuotationSummary_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="FilterType" Mode="In" Type="String" />
           </FunctionImport>
           
           
@@ -8923,6 +8955,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="RescheduleReasonId" Nullable="true" />
           <Property Type="String" Name="RescheduleReason" Nullable="true" MaxLength="100" />
           <Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetDashboard_InvoiceSummary_Result">
+          <Property Type="Int32" Name="TotalInvoice" Nullable="true" />
+          <Property Type="Int32" Name="InvoiceGenerate" Nullable="true" />
+          <Property Type="Int32" Name="PendingInvoice" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetDashboard_QuotationSummary_Result">
+          <Property Type="Int32" Name="TotalQuotation" Nullable="true" />
+          <Property Type="Int32" Name="QuotationGenerate" Nullable="true" />
+          <Property Type="Int32" Name="QuotationGiven" Nullable="true" />
+          <Property Type="Int32" Name="PendingQuotation" Nullable="true" />
+          <Property Type="Int32" Name="ApprovalQuotation" Nullable="true" />
+          <Property Type="Int32" Name="PaymentReceive" Nullable="true" />
+          <Property Type="Int32" Name="PaymentPending" Nullable="true" />
         </ComplexType>
          
 			</Schema>
@@ -13933,6 +13979,28 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="RescheduleReasonId" ColumnName="RescheduleReasonId" />
                 <ScalarProperty Name="RescheduleReason" ColumnName="RescheduleReason" />
                 <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDashboard_InvoiceSummary" FunctionName="dbOraRegaModel.Store.GetDashboard_InvoiceSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_InvoiceSummary_Result">
+                <ScalarProperty Name="TotalInvoice" ColumnName="TotalInvoice" />
+                <ScalarProperty Name="InvoiceGenerate" ColumnName="InvoiceGenerate" />
+                <ScalarProperty Name="PendingInvoice" ColumnName="PendingInvoice" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDashboard_QuotationSummary" FunctionName="dbOraRegaModel.Store.GetDashboard_QuotationSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_QuotationSummary_Result">
+                <ScalarProperty Name="TotalQuotation" ColumnName="TotalQuotation" />
+                <ScalarProperty Name="QuotationGenerate" ColumnName="QuotationGenerate" />
+                <ScalarProperty Name="QuotationGiven" ColumnName="QuotationGiven" />
+                <ScalarProperty Name="PendingQuotation" ColumnName="PendingQuotation" />
+                <ScalarProperty Name="ApprovalQuotation" ColumnName="ApprovalQuotation" />
+                <ScalarProperty Name="PaymentReceive" ColumnName="PaymentReceive" />
+                <ScalarProperty Name="PaymentPending" ColumnName="PaymentPending" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

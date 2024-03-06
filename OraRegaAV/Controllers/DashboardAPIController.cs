@@ -164,5 +164,47 @@ namespace OraRegaAV.Controllers
 
             return _response;
         }
+
+        [HttpPost]
+        [Route("api/DashboardAPI/GetDashboard_QuotationSummary")]
+        public async Task<Response> GetDashboard_QuotationSummary(Dashboard_Search parameter)
+        {
+            List<GetDashboard_QuotationSummary_Result> listObj;
+            try
+            {
+                listObj = await Task.Run(() => db.GetDashboard_QuotationSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
+
+                _response.Data = listObj;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/DashboardAPI/GetDashboard_InvoiceSummary")]
+        public async Task<Response> GetDashboard_InvoiceSummary(Dashboard_Search parameter)
+        {
+            List<GetDashboard_InvoiceSummary_Result> listObj;
+            try
+            {
+                listObj = await Task.Run(() => db.GetDashboard_InvoiceSummary(parameter.CompanyId, parameter.BranchId, parameter.FromDate, parameter.ToDate, parameter.UserId, parameter.FilterType).ToList());
+
+                _response.Data = listObj;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
     }
 }
