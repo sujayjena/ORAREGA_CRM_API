@@ -42,5 +42,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> RescheduleReasonId { get; set; }
         public string RescheduleReason { get; set; }
         public Nullable<System.DateTime> RescheduleDate { get; set; }
+        public string QuotationNumber { get; set; }
+        public string InvoiceNumber { get; set; }
     }
 }

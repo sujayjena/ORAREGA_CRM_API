@@ -8661,7 +8661,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="RescheduleReasonId" Nullable="true" />
           <Property Type="String" Name="RescheduleReason" Nullable="true" MaxLength="100" />
           <Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
-        </ComplexType>
+		  <Property Type="String" Name="QuotationNumber" Nullable="true" MaxLength="50" />
+		  <Property Type="String" Name="InvoiceNumber" Nullable="true" MaxLength="50" />
+		</ComplexType>
         <EntityType Name="tblInvoicePartDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -13693,6 +13695,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="RescheduleReasonId" ColumnName="RescheduleReasonId" />
                 <ScalarProperty Name="RescheduleReason" ColumnName="RescheduleReason" />
                 <ScalarProperty Name="RescheduleDate" ColumnName="RescheduleDate" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
