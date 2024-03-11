@@ -97,4 +97,22 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int PageNo { get; set; }
     }
+
+
+    public class PaymentRequest_SaveParam
+    {
+        public PaymentRequest_SaveParam()
+        {
+            paymentRequest = new PaymentRequest();
+            paymentResponse = new PaymentResponse();
+        }
+
+        public PaymentRequest paymentRequest { get; set; }
+
+        public PaymentResponse paymentResponse { get; set; }
+
+        public string RequestJson { get; set; }
+
+        public string ResponseJson { get; set; }
+    }
 }

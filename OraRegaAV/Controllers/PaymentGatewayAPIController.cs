@@ -158,7 +158,17 @@ namespace OraRegaAV.Controllers.API
 
                 #region Save Payment Detail
 
-                SavePaymentDetails(RequestParameters: paymentRequest, ResponseParameters: null, RequestJson: vPhonePeResponseResult, ResponseJson: String.Empty);
+                var vPaymentRequest_SaveParamObj = new PaymentRequest_SaveParam()
+                {
+                    paymentRequest = paymentRequest,
+                    paymentResponse = null,
+                    RequestJson = vPhonePeResponseResult,
+                    ResponseJson = string.Empty,
+                };
+
+                //SavePaymentDetails(RequestParameters: paymentRequest, ResponseParameters: null, RequestJson: vPhonePeResponseResult, ResponseJson: String.Empty);
+
+                SavePaymentDetails(vPaymentRequest_SaveParamObj);
 
                 #endregion
 
@@ -229,7 +239,17 @@ namespace OraRegaAV.Controllers.API
                     vPaymentResponse.Message = vresult.message;
                 }
 
-                SavePaymentDetails(RequestParameters: vPaymentRequest, ResponseParameters: vPaymentResponse, RequestJson: string.Empty, ResponseJson: responseContent);
+                //SavePaymentDetails(RequestParameters: vPaymentRequest, ResponseParameters: vPaymentResponse, RequestJson: string.Empty, ResponseJson: responseContent);
+
+                var vPaymentRequest_SaveParamObj = new PaymentRequest_SaveParam()
+                {
+                    paymentRequest = vPaymentRequest,
+                    paymentResponse = vPaymentResponse,
+                    RequestJson = string.Empty,
+                    ResponseJson = responseContent,
+                };
+
+                SavePaymentDetails(vPaymentRequest_SaveParamObj);
 
                 #endregion
 
@@ -249,6 +269,166 @@ namespace OraRegaAV.Controllers.API
                 // Handle errors and return an error response
                 //return Json(new { Success = false, Message = "Verification failed", Error = ex.Message });
             }
+            return _response;
+        }
+
+
+        //[HttpPost]
+        //[Route("api/PaymentGatewayAPI/SavePaymentDetails")]
+        //public async Task<Response> SavePaymentDetails(PaymentRequest RequestParameters, PaymentResponse ResponseParameters, string RequestJson = "", string ResponseJson = "")
+        //{
+        //    tblPayment tbl;
+        //    try
+        //    {
+        //        tbl = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+        //        if (tbl == null)
+        //        {
+        //            tbl = new tblPayment()
+        //            {
+        //                QuotationNumber = RequestParameters.QuotationNumber,
+        //                MerchantTransactionId = RequestParameters.MerchantTransactionId,
+        //                MobileNumber = RequestParameters.MobileNumber,
+        //                Amount = Convert.ToDecimal(RequestParameters.Amount),
+        //                IsSuccess = false,
+        //                PaymentStatus = "PAYMENT_INITIATED",
+        //                PaymentMessage = "Payment Iniiated",
+        //                RequestJson = RequestJson,
+        //                ResponseJson = ResponseJson,
+        //                CreatedDate = DateTime.Now,
+        //                CreatedBy = Utilities.GetUserID(ActionContext.Request)
+        //            };
+
+        //            db.tblPayments.Add(tbl);
+        //            db.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+        //            if (tblPaymentsObj != null)
+        //            {
+        //                tbl.IsSuccess = ResponseParameters.IsSuccess;
+        //                tbl.PaymentStatus = ResponseParameters.Code;
+        //                tbl.PaymentMessage = ResponseParameters.Message;
+        //                tbl.ResponseJson = ResponseJson;
+        //                tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+        //                tbl.ModifiedDate = DateTime.Now;
+
+        //                db.SaveChanges();
+
+        //                #region Quotation Table Amount Update
+
+        //                var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == RequestParameters.QuotationNumber).FirstOrDefault();
+        //                if (vQuotationObj != null)
+        //                {
+        //                    if (RequestParameters.PaymentIsAdvance == true)
+        //                    {
+        //                        vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
+        //                        vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
+
+        //                        db.SaveChanges();
+        //                    }
+        //                    else
+        //                    {
+        //                        vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
+
+        //                        db.SaveChanges();
+        //                    }
+        //                }
+
+        //                #endregion
+        //            }
+        //        }
+
+        //        _response.IsSuccess = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _response.IsSuccess = false;
+        //        _response.Message = ValidationConstant.InternalServerError;
+        //        LogWriter.WriteLog(ex);
+        //    }
+
+        //    return _response;
+        //}
+
+        [HttpPost]
+        [Route("api/PaymentGatewayAPI/SavePaymentDetails")]
+        public async Task<Response> SavePaymentDetails(PaymentRequest_SaveParam parameters)
+        {
+            tblPayment tbl;
+            try
+            {
+                tbl = db.tblPayments.Where(c => c.QuotationNumber == parameters.paymentRequest.QuotationNumber && c.MerchantTransactionId == parameters.paymentRequest.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                if (tbl == null)
+                {
+                    tbl = new tblPayment()
+                    {
+                        QuotationNumber = parameters.paymentRequest.QuotationNumber,
+                        MerchantTransactionId = parameters.paymentRequest.MerchantTransactionId,
+                        MobileNumber = parameters.paymentRequest.MobileNumber,
+                        Amount = Convert.ToDecimal(parameters.paymentRequest.Amount),
+                        IsSuccess = false,
+                        PaymentStatus = "PAYMENT_INITIATED",
+                        PaymentMessage = "Payment Iniiated",
+                        RequestJson = parameters.RequestJson,
+                        ResponseJson = string.Empty,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = Utilities.GetUserID(ActionContext.Request)
+                    };
+
+                    db.tblPayments.Add(tbl);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == parameters.paymentRequest.QuotationNumber && c.MerchantTransactionId == parameters.paymentRequest.MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                    if (tblPaymentsObj != null)
+                    {
+                        tbl.IsSuccess = parameters.paymentResponse.IsSuccess;
+                        tbl.PaymentStatus = parameters.paymentResponse.Code;
+                        tbl.PaymentMessage = parameters.paymentResponse.Message;
+                        tbl.ResponseJson = parameters.ResponseJson;
+                        tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                        tbl.ModifiedDate = DateTime.Now;
+
+                        db.SaveChanges();
+
+                        #region Quotation Table Amount Update
+
+                        var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
+                        if (vQuotationObj != null)
+                        {
+                            if (parameters.paymentRequest.PaymentIsAdvance == true)
+                            {
+                                 vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
+                                vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
+
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
+
+                                db.SaveChanges();
+                            }
+                        }
+
+                        #endregion
+
+                    }
+                }
+
+                _response.Message = "Payment saved successfully";
+
+                _response.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
             return _response;
         }
 
@@ -281,79 +461,6 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
-        [HttpPost]
-        [Route("api/PaymentGatewayAPI/SavePaymentDetails")]
-        public void SavePaymentDetails(PaymentRequest RequestParameters, PaymentResponse ResponseParameters, string RequestJson = "", string ResponseJson = "")
-        {
-            tblPayment tbl;
-            try
-            {
-                tbl = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-                if (tbl == null)
-                {
-                    tbl = new tblPayment()
-                    {
-                        QuotationNumber = RequestParameters.QuotationNumber,
-                        MerchantTransactionId = RequestParameters.MerchantTransactionId,
-                        MobileNumber = RequestParameters.MobileNumber,
-                        Amount = Convert.ToDecimal(RequestParameters.Amount),
-                        IsSuccess = false,
-                        PaymentStatus = "PAYMENT_INITIATED",
-                        PaymentMessage = "Payment Iniiated",
-                        RequestJson = RequestJson,
-                        ResponseJson = ResponseJson,
-                        CreatedDate = DateTime.Now,
-                        CreatedBy = Utilities.GetUserID(ActionContext.Request)
-                    };
-
-                    db.tblPayments.Add(tbl);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-                    if (tblPaymentsObj != null)
-                    {
-                        tbl.IsSuccess = ResponseParameters.IsSuccess;
-                        tbl.PaymentStatus = ResponseParameters.Code;
-                        tbl.PaymentMessage = ResponseParameters.Message;
-                        tbl.ResponseJson = ResponseJson;
-                        tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
-                        tbl.ModifiedDate = DateTime.Now;
-
-                        db.SaveChanges();
-
-                        #region Quotation Table Amount Update
-
-                        var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == RequestParameters.QuotationNumber).FirstOrDefault();
-                        if (vQuotationObj != null)
-                        {
-                            if (RequestParameters.PaymentIsAdvance == true)
-                            {
-                                vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
-                                vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
-
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
-
-                                db.SaveChanges();
-                            }
-                        }
-
-                        #endregion
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ValidationConstant.InternalServerError;
-                LogWriter.WriteLog(ex);
-            }
-        }
 
         private static string StringToBase64(string Base64String)
         {
