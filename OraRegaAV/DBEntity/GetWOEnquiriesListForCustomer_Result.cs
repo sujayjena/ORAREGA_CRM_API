@@ -25,7 +25,6 @@ namespace OraRegaAV.DBEntity
         public string Comment { get; set; }
         public string IssueDesc { get; set; }
         public string IssueDescriptionName { get; set; }
-        public string PaymentStatus { get; set; }
         public Nullable<int> EnquiryStatusId { get; set; }
         public string StatusName { get; set; }
         public string ProdModelIfOther { get; set; }
@@ -43,6 +42,8 @@ namespace OraRegaAV.DBEntity
         public string RescheduleReason { get; set; }
         public Nullable<System.DateTime> RescheduleDate { get; set; }
         public string QuotationNumber { get; set; }
+        public string QuotationStatus { get; set; }
         public string InvoiceNumber { get; set; }
+        public string PaymentStatus { get; set; }
     }
 }

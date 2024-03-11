@@ -15,8 +15,12 @@ namespace OraRegaAV.Models
 
     public class VerifyRequestModel
     {
-        [Required(ErrorMessage = "InvoiceNumber is required")]
-        public string InvoiceNumber { get; set; }
+        [Required(ErrorMessage = "QuotationNumber is required")]
+        public string QuotationNumber { get; set; }
+
+        [Required(ErrorMessage = "PaymentType is required")]
+        [DefaultValue(false)]
+        public bool PaymentIsAdvance { get; set; }
 
         [Required(ErrorMessage = "TransactionId is required")]
         public string TransactionId { get; set; }
@@ -33,8 +37,12 @@ namespace OraRegaAV.Models
 
     public class PaymentRequest
     {
-        [Required(ErrorMessage = "InvoiceNumber is required")]
-        public string InvoiceNumber { get; set; }
+        [Required(ErrorMessage = "QuotationNumber is required")]
+        public string QuotationNumber { get; set; }
+
+        [Required(ErrorMessage = "PaymentType is required")]
+        [DefaultValue(false)]
+        public bool PaymentIsAdvance { get; set; }
 
         [Required(ErrorMessage = "Amount is required")]
         public double Amount { get; set; }

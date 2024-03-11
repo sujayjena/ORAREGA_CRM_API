@@ -15,7 +15,7 @@ namespace OraRegaAV.DBEntity
     public partial class tblPayment
     {
         public int Id { get; set; }
-        public string InvoiceNumber { get; set; }
+        public string QuotationNumber { get; set; }
         public string MerchantTransactionId { get; set; }
         public string MobileNumber { get; set; }
         public Nullable<decimal> Amount { get; set; }

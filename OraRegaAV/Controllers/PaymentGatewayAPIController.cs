@@ -25,6 +25,7 @@ using System.Web.Script.Serialization;
 using System.Web.Util;
 using Newtonsoft.Json.Linq;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Data.Entity.Migrations;
 
 namespace OraRegaAV.Controllers.API
 {
@@ -85,7 +86,7 @@ namespace OraRegaAV.Controllers.API
                 var vRequestPayload = new RequestPayload()
                 {
                     merchantId = Phonepe_MerchantID,
-                    merchantTransactionId = paymentRequest.InvoiceNumber + "" + DateTime.Now.ToString("yyMMddHHmmssffff"),
+                    merchantTransactionId = paymentRequest.QuotationNumber + "" + DateTime.Now.ToString("yyMMddHHmmssffff"),
                     merchantUserId = PhonePe_MerchantUserId,
                     amount = paymentRequest.Amount,
                     redirectUrl = PhonePe_RedirectUrl,
@@ -143,7 +144,8 @@ namespace OraRegaAV.Controllers.API
                 var vCheckOutModelObj = new VerifyRequestModel()
                 {
                     //SHA256(“/pg/v1/status/{merchantId}/{merchantTransactionId}” + saltKey) + “###” + saltIndex
-                    InvoiceNumber = paymentRequest.InvoiceNumber,
+                    QuotationNumber = paymentRequest.QuotationNumber,
+                    PaymentIsAdvance = paymentRequest.PaymentIsAdvance,
                     X_VERIFY = (vSHA256EncodeObj + "###" + Phonepe_SALTKEYINDEX),
                     base64 = vBase64Encode,
                     TransactionId = vRequestPayload.merchantTransactionId,
@@ -217,8 +219,9 @@ namespace OraRegaAV.Controllers.API
                 if (vresult != null)
                 {
                     // vPaymentRequest
-                    vPaymentRequest.InvoiceNumber = phonePePayment.InvoiceNumber;
+                    vPaymentRequest.QuotationNumber = phonePePayment.QuotationNumber;
                     vPaymentRequest.MerchantTransactionId = phonePePayment.TransactionId;
+                    vPaymentRequest.PaymentIsAdvance = phonePePayment.PaymentIsAdvance;
 
                     // vPaymentResponse
                     vPaymentResponse.IsSuccess = vresult.success;
@@ -278,17 +281,19 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        [Route("api/PaymentGatewayAPI/SavePaymentDetails")]
         public void SavePaymentDetails(PaymentRequest RequestParameters, PaymentResponse ResponseParameters, string RequestJson = "", string ResponseJson = "")
         {
             tblPayment tbl;
             try
             {
-                tbl = db.tblPayments.Where(c => c.InvoiceNumber == RequestParameters.InvoiceNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId).FirstOrDefault();
+                tbl = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 if (tbl == null)
                 {
                     tbl = new tblPayment()
                     {
-                        InvoiceNumber = RequestParameters.InvoiceNumber,
+                        QuotationNumber = RequestParameters.QuotationNumber,
                         MerchantTransactionId = RequestParameters.MerchantTransactionId,
                         MobileNumber = RequestParameters.MobileNumber,
                         Amount = Convert.ToDecimal(RequestParameters.Amount),
@@ -302,18 +307,44 @@ namespace OraRegaAV.Controllers.API
                     };
 
                     db.tblPayments.Add(tbl);
-                    db.SaveChangesAsync();
+                    db.SaveChanges();
                 }
                 else
                 {
-                    tbl.IsSuccess = ResponseParameters.IsSuccess;
-                    tbl.PaymentStatus = ResponseParameters.Code;
-                    tbl.PaymentMessage = ResponseParameters.Message;
-                    tbl.ResponseJson = ResponseJson;
-                    tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
-                    tbl.ModifiedDate = DateTime.Now;
+                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                    if (tblPaymentsObj != null)
+                    {
+                        tbl.IsSuccess = ResponseParameters.IsSuccess;
+                        tbl.PaymentStatus = ResponseParameters.Code;
+                        tbl.PaymentMessage = ResponseParameters.Message;
+                        tbl.ResponseJson = ResponseJson;
+                        tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                        tbl.ModifiedDate = DateTime.Now;
 
-                    db.SaveChangesAsync();
+                        db.SaveChanges();
+
+                        #region Quotation Table Amount Update
+
+                        var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == RequestParameters.QuotationNumber).FirstOrDefault();
+                        if (vQuotationObj != null)
+                        {
+                            if (RequestParameters.PaymentIsAdvance == true)
+                            {
+                                vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
+                                vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
+
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
+
+                                db.SaveChanges();
+                            }
+                        }
+
+                        #endregion
+                    }
                 }
             }
             catch (Exception ex)

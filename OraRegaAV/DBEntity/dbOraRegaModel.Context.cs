@@ -3023,23 +3023,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceList_Result>("GetInvoiceList", companyIdParameter, branchIdParameter, invoiceNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
-        {
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
-                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
-                new ObjectParameter("EnquiryStatusId", typeof(int));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
-        }
-    
         public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, Nullable<int> statusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -3270,6 +3253,23 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", invoiceNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
+        {
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            var enquiryStatusIdParameter = enquiryStatusId.HasValue ?
+                new ObjectParameter("EnquiryStatusId", enquiryStatusId) :
+                new ObjectParameter("EnquiryStatusId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
         }
     }
 }
