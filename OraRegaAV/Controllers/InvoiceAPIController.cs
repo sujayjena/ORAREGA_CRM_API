@@ -40,6 +40,14 @@ namespace OraRegaAV.Controllers
                     return _response;
                 }
 
+                var vtblInv = db.tblInvoices.Where(x => x.WorkOrderId == vWorkOrderObj.Id).FirstOrDefault();
+                if (vtblInv != null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Invoice is already generated.";
+                    return _response;
+                }
+
                 //check Quotation status
                 var vQuotationObj = db.tblQuotations.Where(x => x.WorkOrderId == vWorkOrderObj.Id && x.StatusId == 2).FirstOrDefault();
                 if (vQuotationObj == null)
