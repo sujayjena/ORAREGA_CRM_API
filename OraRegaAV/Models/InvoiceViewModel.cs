@@ -52,10 +52,8 @@ namespace OraRegaAV.Models
         public Nullable<decimal> IGSTValue { get; set; }
         public Nullable<decimal> TotalDiscAmt { get; set; }
         public Nullable<decimal> GrossAmountIncludeTax { get; set; }
-        public Nullable<decimal> AdvanceReceived { get; set; }
-        public Nullable<decimal> AmountPaidAfter { get; set; }
-        public int StatusId { get; set; }
-
+         public Nullable<decimal> AmountPaidAfter { get; set; }
+ 
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<int> ModifyBy { get; set; }

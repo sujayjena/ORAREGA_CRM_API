@@ -366,7 +366,8 @@ namespace OraRegaAV.Controllers.API
                         QuotationNumber = parameters.paymentRequest.QuotationNumber,
                         MerchantTransactionId = parameters.paymentRequest.MerchantTransactionId,
                         MobileNumber = parameters.paymentRequest.MobileNumber,
-                        Amount = Convert.ToDecimal(parameters.paymentRequest.Amount),
+                        Amount = Convert.ToDecimal(parameters.paymentRequest.Amount / 100),
+                        AmountInPaisa = Convert.ToDecimal(parameters.paymentRequest.Amount),
                         IsSuccess = false,
                         PaymentStatus = "PAYMENT_INITIATED",
                         PaymentMessage = "Payment Iniiated",
@@ -400,14 +401,18 @@ namespace OraRegaAV.Controllers.API
                         {
                             if (parameters.paymentRequest.PaymentIsAdvance == true)
                             {
-                                 vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
+                                vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
                                 vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
+
+                                vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - tblPaymentsObj.Amount);
 
                                 db.SaveChanges();
                             }
                             else
                             {
                                 vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
+
+                                vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - (vQuotationObj.AdvanceReceived + vQuotationObj.AmountPaidAfter));
 
                                 db.SaveChanges();
                             }

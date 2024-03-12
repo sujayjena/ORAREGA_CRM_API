@@ -166,13 +166,13 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblQuotationServiceChargeDetail> tblQuotationServiceChargeDetails { get; set; }
         public virtual DbSet<tblInvoiceServiceChargeDetail> tblInvoiceServiceChargeDetails { get; set; }
         public virtual DbSet<tblInvoicePartDetail> tblInvoicePartDetails { get; set; }
-        public virtual DbSet<tblQuotation> tblQuotations { get; set; }
         public virtual DbSet<OLD_tblWorkOrderEnquiry> OLD_tblWorkOrderEnquiry { get; set; }
-        public virtual DbSet<tblQuotationLog> tblQuotationLogs { get; set; }
         public virtual DbSet<tblQuotationPartDetailsLog> tblQuotationPartDetailsLogs { get; set; }
         public virtual DbSet<tblQuotationServiceChargeDetailsLog> tblQuotationServiceChargeDetailsLogs { get; set; }
         public virtual DbSet<tblBranchMapping> tblBranchMappings { get; set; }
         public virtual DbSet<tblInvoice> tblInvoices { get; set; }
+        public virtual DbSet<tblQuotation> tblQuotations { get; set; }
+        public virtual DbSet<tblQuotationLog> tblQuotationLogs { get; set; }
         public virtual DbSet<tblPayment> tblPayments { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
@@ -3023,47 +3023,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceList_Result>("GetInvoiceList", companyIdParameter, branchIdParameter, invoiceNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, Nullable<int> statusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId != null ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(string));
-    
-            var quotationNumberParameter = quotationNumber != null ?
-                new ObjectParameter("QuotationNumber", quotationNumber) :
-                new ObjectParameter("QuotationNumber", typeof(string));
-    
-            var workOrderNumberParameter = workOrderNumber != null ?
-                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
-                new ObjectParameter("WorkOrderNumber", typeof(string));
-    
-            var statusIdParameter = statusId.HasValue ?
-                new ObjectParameter("StatusId", statusId) :
-                new ObjectParameter("StatusId", typeof(int));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, statusIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
-        }
-    
         public virtual ObjectResult<GetInvoiceReport_Result> GetInvoiceReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -3270,6 +3229,47 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("SearchValue", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
+        }
+    
+        public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, Nullable<int> statusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var quotationNumberParameter = quotationNumber != null ?
+                new ObjectParameter("QuotationNumber", quotationNumber) :
+                new ObjectParameter("QuotationNumber", typeof(string));
+    
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("StatusId", statusId) :
+                new ObjectParameter("StatusId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, statusIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     }
 }

@@ -380,6 +380,11 @@ namespace OraRegaAV.Models
                     var InvoiceNumber = obj.InvoiceNumber;
                     invoiceNo = stateShortCode + "I" + (Convert.ToInt32(InvoiceNumber.Substring(7, InvoiceNumber.Length - 7)) + 1).ToString("D7");
                 }
+                else
+                {
+                    var InvoiceNumber = invoiceNo;
+                    invoiceNo = stateShortCode + "I" + (Convert.ToInt32(InvoiceNumber.Substring(7, InvoiceNumber.Length - 7)) + 1).ToString("D7");
+                }
             }
             return invoiceNo;
         }

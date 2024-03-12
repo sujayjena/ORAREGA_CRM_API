@@ -27,10 +27,15 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> IGSTPerct { get; set; }
         public Nullable<decimal> IGSTValue { get; set; }
         public Nullable<decimal> GrossAmountIncludeTax { get; set; }
+        public Nullable<decimal> TotalDiscAmt { get; set; }
         public Nullable<decimal> AdvanceReceived { get; set; }
         public Nullable<decimal> AmountPaidAfter { get; set; }
+        public Nullable<decimal> OutstandingAmount { get; set; }
         public int StatusId { get; set; }
         public string StatusName { get; set; }
+        public string OrganizationName { get; set; }
+        public string PaymentStatus { get; set; }
+        public string Reason { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
     }

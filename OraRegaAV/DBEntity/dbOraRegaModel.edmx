@@ -688,6 +688,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
           <Property Name="StatusId" Type="int" Nullable="false" />
@@ -695,7 +696,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
-          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblInvoicePartDetails">
           <Key>
@@ -1030,6 +1030,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="MerchantTransactionId" Type="nvarchar" MaxLength="100" />
           <Property Name="MobileNumber" Type="nvarchar" MaxLength="10" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AmountInPaisa" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsSuccess" Type="bit" />
           <Property Name="PaymentStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="PaymentMessage" Type="nvarchar" MaxLength="500" />
@@ -1274,15 +1275,16 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OutstandingAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="50" />
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
-          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Reason" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblQuotationLog">
           <Key>
@@ -1299,14 +1301,16 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GrossAmountIncludeTax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AdvanceReceived" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountPaidAfter" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OutstandingAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="50" />
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
-          <Property Name="TotalDiscAmt" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tblQuotationPartDetails">
           <Key>
@@ -5197,25 +5201,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
           <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
            <EntitySet Name="tblInvoicePartDetails" EntityType="dbOraRegaModel.tblInvoicePartDetail" />
-          <EntitySet Name="tblQuotations" EntityType="dbOraRegaModel.tblQuotation" />
-          <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" />
-          <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
-          <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
+           <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" />
+           <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
           <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
           <EntitySet Name="tblBranchMappings" EntityType="dbOraRegaModel.tblBranchMapping" />
-          <FunctionImport Name="GetQuotationList" ReturnType="Collection(dbOraRegaModel.GetQuotationList_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="String" />
-            <Parameter Name="QuotationNumber" Mode="In" Type="String" />
-            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
-            <Parameter Name="StatusId" Mode="In" Type="Int32" />
-            <Parameter Name="SearchValue" Mode="In" Type="String" />
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-            <Parameter Name="PageNo" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetInvoiceReport" ReturnType="Collection(dbOraRegaModel.GetInvoiceReport_Result)">
+           <FunctionImport Name="GetInvoiceReport" ReturnType="Collection(dbOraRegaModel.GetInvoiceReport_Result)">
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -5237,8 +5227,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
-          <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
+           <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -5272,13 +5261,28 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
-           <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
-          <FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
+           <FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
             <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
           </FunctionImport>
-          </EntityContainer>
+          <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
+          <EntitySet Name="tblQuotations" EntityType="dbOraRegaModel.tblQuotation" />
+          <FunctionImport Name="GetQuotationList" ReturnType="Collection(dbOraRegaModel.GetQuotationList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
+            <Parameter Name="QuotationNumber" Mode="In" Type="String" />
+            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+            <Parameter Name="StatusId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
+          <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
+           </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Text" Nullable="true" MaxLength="154" />
@@ -8650,33 +8654,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="tblQuotation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuoteDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="QuotationNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WorkOrderId" Type="Int32" Nullable="false" />
-          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CGSTPerct" Type="Int32" />
-          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SGSTPerct" Type="Int32" />
-          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IGSTPerct" Type="Int32" />
-          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="OLD_tblWorkOrderEnquiry">
+         <EntityType Name="OLD_tblWorkOrderEnquiry">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -8720,31 +8698,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="BranchId" Type="Int32" />
           <Property Name="OrganizationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="tblQuotationLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuoteDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="QuotationId" Type="Int32" Nullable="false" />
-          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CGSTPerct" Type="Int32" />
-          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SGSTPerct" Type="Int32" />
-          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IGSTPerct" Type="Int32" />
-          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
-        <EntityType Name="tblQuotationPartDetailsLog">
+         <EntityType Name="tblQuotationPartDetailsLog">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -8793,29 +8747,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="EmployeeId" Type="Int32" Nullable="false" />
           <Property Name="BranchId" Type="Int32" Nullable="false" />
         </EntityType>
-        <ComplexType Name="GetQuotationList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="DateTime" Name="QuoteDate" Nullable="false" Precision="23" />
-          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
-          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
-          <Property Type="Decimal" Name="AmountBeforeTax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="CGSTPerct" Nullable="true" />
-          <Property Type="Decimal" Name="CGSTValue" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="SGSTPerct" Nullable="true" />
-          <Property Type="Decimal" Name="SGSTValue" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="IGSTPerct" Nullable="true" />
-          <Property Type="Decimal" Name="IGSTValue" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="GrossAmountIncludeTax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="AdvanceReceived" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="AmountPaidAfter" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="StatusId" Nullable="false" />
-          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetInvoiceReport_Result">
+         <ComplexType Name="GetInvoiceReport_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="InvoiceNumber" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="InvoiceDate" Nullable="false" Precision="23" />
@@ -8834,32 +8766,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
         </ComplexType>
-        <EntityType Name="tblInvoice">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InvoiceNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WorkOrderId" Type="Int32" Nullable="false" />
-          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CGSTPerct" Type="Int32" />
-          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SGSTPerct" Type="Int32" />
-          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IGSTPerct" Type="Int32" />
-          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <ComplexType Name="GetDashboard_WorkOrderAllocated_Result">
+         <ComplexType Name="GetDashboard_WorkOrderAllocated_Result">
           <Property Type="Int32" Name="Allocated" Nullable="false" />
           <Property Type="Int32" Name="UnAllocated" Nullable="false" />
           <Property Type="Int32" Name="Accepted" Nullable="false" />
@@ -8987,26 +8894,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="ModifyName" Nullable="true" MaxLength="50" />
         </ComplexType>
-         <EntityType Name="tblPayment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuotationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IsSuccess" Type="Boolean" />
-          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-        </EntityType>
-        <ComplexType Name="GetWOEnquiriesListForCustomer_Result">
+         <ComplexType Name="GetWOEnquiriesListForCustomer_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
@@ -9040,6 +8928,131 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="InvoiceNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="PaymentStatus" Nullable="false" MaxLength="24" />
         </ComplexType>
+        <EntityType Name="tblInvoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvoiceNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkOrderId" Type="Int32" Nullable="false" />
+          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblQuotation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QuotationNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkOrderId" Type="Int32" Nullable="false" />
+          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OutstandingAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="GetQuotationList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="DateTime" Name="QuoteDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
+          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
+          <Property Type="Decimal" Name="AmountBeforeTax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="CGSTPerct" Nullable="true" />
+          <Property Type="Decimal" Name="CGSTValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="SGSTPerct" Nullable="true" />
+          <Property Type="Decimal" Name="SGSTValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="IGSTPerct" Nullable="true" />
+          <Property Type="Decimal" Name="IGSTValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossAmountIncludeTax" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalDiscAmt" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AdvanceReceived" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AmountPaidAfter" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="OutstandingAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="StatusId" Nullable="false" />
+          <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PaymentStatus" Nullable="false" MaxLength="24" />
+          <Property Type="String" Name="Reason" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="tblQuotationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QuotationId" Type="Int32" Nullable="false" />
+          <Property Name="AmountBeforeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGSTPerct" Type="Int32" />
+          <Property Name="CGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGSTPerct" Type="Int32" />
+          <Property Name="SGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGSTPerct" Type="Int32" />
+          <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GrossAmountIncludeTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalDiscAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AdvanceReceived" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountPaidAfter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OutstandingAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsSuccess" Type="Boolean" />
+          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
   
       </Schema>
     </edmx:ConceptualModels>
@@ -13684,34 +13697,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblQuotations">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotation">
-              <MappingFragment StoreEntitySet="tblQuotation">
-                <ScalarProperty Name="Reason" ColumnName="Reason" />
-                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
-                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
-                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
-                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
-                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
-                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
-                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
-                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
-                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
-                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
-                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OLD_tblWorkOrderEnquiry">
+           <EntitySetMapping Name="OLD_tblWorkOrderEnquiry">
             <EntityTypeMapping TypeName="dbOraRegaModel.OLD_tblWorkOrderEnquiry">
               <MappingFragment StoreEntitySet="OLD_tblWorkOrderEnquiry">
                 <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
@@ -13756,32 +13742,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblQuotationLogs">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationLog">
-              <MappingFragment StoreEntitySet="tblQuotationLog">
-                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
-                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
-                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
-                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
-                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
-                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
-                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
-                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
-                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
-                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
-                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
-                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblQuotationPartDetailsLogs">
+           <EntitySetMapping Name="tblQuotationPartDetailsLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationPartDetailsLog">
               <MappingFragment StoreEntitySet="tblQuotationPartDetailsLog">
                 <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
@@ -13833,33 +13794,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetQuotationList" FunctionName="dbOraRegaModel.Store.GetQuotationList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetQuotationList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
-                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
-                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
-                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
-                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
-                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
-                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
-                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
-                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
-                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetInvoiceReport" FunctionName="dbOraRegaModel.Store.GetInvoiceReport">
+           <FunctionImportMapping FunctionImportName="GetInvoiceReport" FunctionName="dbOraRegaModel.Store.GetInvoiceReport">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetInvoiceReport_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -13886,33 +13821,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="tblInvoices">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
-              <MappingFragment StoreEntitySet="tblInvoice">
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
-                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
-                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
-                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
-                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
-                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
-                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
-                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
-                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
-                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
-                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
-                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderAllocated" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderAllocated">
+           <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderAllocated" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderAllocated">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result">
                 <ScalarProperty Name="Allocated" ColumnName="Allocated" />
@@ -14060,27 +13969,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <EntitySetMapping Name="tblPayments">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
-              <MappingFragment StoreEntitySet="tblPayment">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
-                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
-                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
-                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetWOEnquiriesListForCustomer" FunctionName="dbOraRegaModel.Store.GetWOEnquiriesListForCustomer">
+           <FunctionImportMapping FunctionImportName="GetWOEnquiriesListForCustomer" FunctionName="dbOraRegaModel.Store.GetWOEnquiriesListForCustomer">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetWOEnquiriesListForCustomer_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -14118,7 +14007,140 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          </EntityContainerMapping>
+          <EntitySetMapping Name="tblInvoices">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoice">
+              <MappingFragment StoreEntitySet="tblInvoice">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuotations">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotation">
+              <MappingFragment StoreEntitySet="tblQuotation">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="OutstandingAmount" ColumnName="OutstandingAmount" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetQuotationList" FunctionName="dbOraRegaModel.Store.GetQuotationList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetQuotationList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="OutstandingAmount" ColumnName="OutstandingAmount" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblQuotationLogs">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationLog">
+              <MappingFragment StoreEntitySet="tblQuotationLog">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="OutstandingAmount" ColumnName="OutstandingAmount" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="AdvanceReceived" ColumnName="AdvanceReceived" />
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
+                <ScalarProperty Name="QuoteDate" ColumnName="QuoteDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPayments">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
+              <MappingFragment StoreEntitySet="tblPayment">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
+                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
+                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
+                <ScalarProperty Name="AmountInPaisa" ColumnName="AmountInPaisa" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -19,6 +19,7 @@ namespace OraRegaAV.DBEntity
         public string MerchantTransactionId { get; set; }
         public string MobileNumber { get; set; }
         public Nullable<decimal> Amount { get; set; }
+        public Nullable<decimal> AmountInPaisa { get; set; }
         public Nullable<bool> IsSuccess { get; set; }
         public string PaymentStatus { get; set; }
         public string PaymentMessage { get; set; }
