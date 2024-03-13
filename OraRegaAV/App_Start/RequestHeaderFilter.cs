@@ -1950,6 +1950,23 @@ namespace OraRegaAV.App_Start
                 });
             }
             #endregion
+
+            #region stock in (part details)
+
+            if (string.Equals(operation.operationId, "PartDetailAPI_ImportPartDetails", StringComparison.OrdinalIgnoreCase))
+            {
+                operation.parameters.Add(new Parameter()
+                {
+                    name = "PartDetailsFile",
+                    @in = "formData",
+                    type = "file",
+                    required = false,
+                    pattern = ValidationConstant.ExcelFileRegExp,
+                    description = $".xls | .xlsx. Validation pattern = {ValidationConstant.ExcelFileRegExp}"
+                });
+            }
+
+            #endregion
         }
     }
 }

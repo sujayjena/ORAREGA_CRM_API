@@ -3271,5 +3271,18 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
+    
+        public virtual ObjectResult<ImportPartDetails_Result> ImportPartDetails(string xmlPartDetailsData, Nullable<long> loggedInUserId)
+        {
+            var xmlPartDetailsDataParameter = xmlPartDetailsData != null ?
+                new ObjectParameter("XmlPartDetailsData", xmlPartDetailsData) :
+                new ObjectParameter("XmlPartDetailsData", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportPartDetails_Result>("ImportPartDetails", xmlPartDetailsDataParameter, loggedInUserIdParameter);
+        }
     }
 }

@@ -848,6 +848,9 @@
     <Compile Include="DBEntity\GetWorkOrderRescheduleHistoryList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\ImportPartDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\ImportStockEntry_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1428,6 +1431,7 @@
       <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
     </Content>
     <Content Include="FormatFiles\StockEntryFormatFile.xlsx" />
+    <Content Include="FormatFiles\PartDetailsFormatFile.xlsx" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

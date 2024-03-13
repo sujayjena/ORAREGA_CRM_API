@@ -49,4 +49,26 @@ namespace OraRegaAV.DBEntity
         [JsonIgnore]
         public string PartStatus { get; set; }
     }
+
+    public class PartDetailsImportRequestModel
+    {
+        public string UniqueCode { get; set; }
+        public string PartNumber { get; set; }
+        public string PartName { get; set; }
+        public string PartDescription { get; set; }
+        public string CTSerialNo { get; set; }
+        public string PartStatus { get; set; }
+        public decimal SalePrice { get; set; }
+        public string CompanyName { get; set; }
+        public string BranchName { get; set; }
+        public string ReceiveFrom { get; set; }
+        public DateTime ReceiveDate { get; set; }
+        public string DocketNo { get; set; }
+        public string StockPartStatus { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public string VendorName { get; set; }
+        public int Quantity { get; set; }
+        public string HSNCode { get; set; }
+        public string IsActive { get; set; }
+    }
 }

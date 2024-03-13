@@ -3210,6 +3210,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="WorkOrderId" Type="int" Mode="In" />
           <Parameter Name="RescheduleReasonId" Type="int" Mode="In" />
         </Function>
+        <Function Name="ImportPartDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XmlPartDetailsData" Type="xml" Mode="In" />
+          <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="ImportStockEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StockEntryData" Type="xml" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
@@ -5281,6 +5285,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ImportPartDetails" ReturnType="Collection(dbOraRegaModel.ImportPartDetails_Result)">
+            <Parameter Name="XmlPartDetailsData" Mode="In" Type="String" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
           </FunctionImport>
            </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
@@ -9053,6 +9061,27 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CustomerSecondaryName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="IsQuotationGenerated" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ImportPartDetails_Result">
+          <Property Type="String" Name="UniqueCode" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="PartNumber" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="PartName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="PartDescription" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="CTSerialNo" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="PartStatus" Nullable="false" MaxLength="1" />
+          <Property Type="Decimal" Name="SalePrice" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="BranchName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ReceiveFrom" Nullable="false" MaxLength="1" />
+          <Property Type="DateTime" Name="ReceiveDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="DocketNo" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="StockPartStatus" Nullable="false" MaxLength="1" />
+          <Property Type="Decimal" Name="PurchasePrice" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="VendorName" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="Quantity" Nullable="true" />
+          <Property Type="String" Name="HSNCode" Nullable="false" MaxLength="1" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
   
       </Schema>
@@ -14139,6 +14168,31 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
                 <ScalarProperty Name="CustomerSecondaryName" ColumnName="CustomerSecondaryName" />
                 <ScalarProperty Name="IsQuotationGenerated" ColumnName="IsQuotationGenerated" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ImportPartDetails" FunctionName="dbOraRegaModel.Store.ImportPartDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.ImportPartDetails_Result">
+                <ScalarProperty Name="UniqueCode" ColumnName="UniqueCode" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="PartName" ColumnName="PartName" />
+                <ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
+                <ScalarProperty Name="CTSerialNo" ColumnName="CTSerialNo" />
+                <ScalarProperty Name="PartStatus" ColumnName="PartStatus" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="ReceiveFrom" ColumnName="ReceiveFrom" />
+                <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+                <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
+                <ScalarProperty Name="StockPartStatus" ColumnName="StockPartStatus" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
