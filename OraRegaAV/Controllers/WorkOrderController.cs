@@ -500,7 +500,7 @@ namespace OraRegaAV.Controllers
                 {
                     proofFile.WOEnquiryId = 0;
                     proofFile.WorkOrderId = tblWorkOrder.Id;
-                    proofFile.PhotoPath = fileManager.UploadWorkOrderPurchaseProof(proofFile.WorkOrderId ?? 0 , proofFile.ProofPhoto, HttpContext.Current);
+                    proofFile.PhotoPath = fileManager.UploadWorkOrderPurchaseProof(proofFile.WorkOrderId ?? 0, proofFile.ProofPhoto, HttpContext.Current);
                     db.tblPurchaseProofPhotos.Add(proofFile);
                 }
 
@@ -1129,13 +1129,13 @@ namespace OraRegaAV.Controllers
 
                     foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
                     {
-                        var path = host + fileManager.GetWorkOrderProductIssueFile(ip.WorkOrderId??0, ip.PhotoPath);
+                        var path = host + fileManager.GetWorkOrderProductIssueFile(ip.WorkOrderId ?? 0, ip.PhotoPath);
                         lstIssueSnaps.Add(path);
                     }
 
                     foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
                     {
-                        var path = host + fileManager.GetWorkOrderPurchaseProofFile(ip.WorkOrderId??0, ip.PhotoPath);
+                        var path = host + fileManager.GetWorkOrderPurchaseProofFile(ip.WorkOrderId ?? 0, ip.PhotoPath);
                         lstPurchaseProofPhoto.Add(path);
                     }
 
@@ -1263,6 +1263,7 @@ namespace OraRegaAV.Controllers
                     CustomerSecondaryName = detail.CustomerSecondaryName,
                     EngineerMobile = detail.PersonalNumber,
                     EngineerAllocatedDate = detail.EngineerAllocatedDate,
+                    IsQuotationGenerated = detail.IsQuotationGenerated,
                 }).ToList();
 
                 foreach (var item in workOrderListObj)
@@ -1993,7 +1994,7 @@ namespace OraRegaAV.Controllers
                             WorkSheet1.Cells[recordIndex, 1].Value = srNo;
                             WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                             WorkSheet1.Cells[recordIndex, 2].Value = dataRow["WorkOrderNumber"];
-                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["FirstName"] +  " " + dataRow["LastName"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["FirstName"] + " " + dataRow["LastName"];
                             WorkSheet1.Cells[recordIndex, 4].Value = dataRow["Mobile"];
                             WorkSheet1.Cells[recordIndex, 5].Value = dataRow["Address"];
                             WorkSheet1.Cells[recordIndex, 6].Value = dataRow["ReportedIssue"];

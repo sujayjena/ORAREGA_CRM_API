@@ -477,7 +477,13 @@ namespace OraRegaAV.Controllers
                             quotationObj.AmountPaidAfter = vQuotationObj.AmountPaidAfter;
                             quotationObj.OutstandingAmount = vQuotationObj.OutstandingAmount;
                             quotationObj.CreatedBy = vQuotationObj.CreatedBy;
-                            quotationObj.ModifyBy = vQuotationObj.ModifiedBy; ;
+                            quotationObj.ModifyBy = vQuotationObj.ModifiedBy;
+                            quotationObj.StatusId = vQuotationObj.StatusId;
+
+                            quotationObj.PaymentStatus = vQuotationObj.OutstandingAmount == 0 ? "Payment Completed" :
+                            (Convert.ToDecimal(vQuotationObj.GrossAmountIncludeTax) != Convert.ToDecimal(vQuotationObj.OutstandingAmount)) ? "Partial Payment Received" :
+                            (Convert.ToDecimal(vQuotationObj.GrossAmountIncludeTax) == Convert.ToDecimal(vQuotationObj.OutstandingAmount)) ? "Payment not initiated" : string.Empty;
+
 
                             var userCreatorObj = db.tblUsers.Where(x => x.Id == vQuotationObj.CreatedBy).FirstOrDefault();
                             if (userCreatorObj != null)
@@ -490,6 +496,13 @@ namespace OraRegaAV.Controllers
                             {
                                 quotationObj.ModifierName = db.tblEmployees.Where(x => x.Id == userModifiedObj.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
                             }
+
+                            var vtblStatusMastersObj = db.tblStatusMasters.Where(x => x.StatusId == vQuotationObj.StatusId).FirstOrDefault();
+                            if (vtblStatusMastersObj != null)
+                            {
+                                quotationObj.StatusName = vtblStatusMastersObj.StatusName;
+                            }
+
 
                             // Customer Detail
                             var vWorkOrderCustomerObj = db.tblCustomers.Where(w => w.Id == workOrderObj.CustomerId).FirstOrDefault();

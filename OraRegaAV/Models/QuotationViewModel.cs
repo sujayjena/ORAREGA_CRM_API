@@ -63,6 +63,10 @@ namespace OraRegaAV.Models
         public Nullable<decimal> AmountPaidAfter { get; set; }
         public Nullable<decimal> OutstandingAmount { get; set; }
         public int StatusId { get; set; }
+        public string StatusName { get; set; }
+
+        public string PaymentStatus { get; set; }
+
 
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }

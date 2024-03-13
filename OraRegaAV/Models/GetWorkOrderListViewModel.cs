@@ -110,7 +110,8 @@ namespace OraRegaAV.Models
         public List<WOPartList> WOPartList { get; set; }
         public List<string> IssueSnapsList { get; set; }
         public List<string> PurchaseProofPhotoList { get; set; }
-    }
+        public int IsQuotationGenerated { get; set; }
+    }   
 
     public class WORepairRemark
     {

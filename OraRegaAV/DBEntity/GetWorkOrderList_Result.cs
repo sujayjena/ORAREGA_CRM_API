@@ -89,5 +89,6 @@ namespace OraRegaAV.DBEntity
         public string ProdModelIfOther { get; set; }
         public string ProdDescriptionIfOther { get; set; }
         public string CustomerSecondaryName { get; set; }
+        public int IsQuotationGenerated { get; set; }
     }
 }

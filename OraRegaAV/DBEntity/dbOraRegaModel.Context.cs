@@ -2242,39 +2242,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderEnquiriesList_Result>("GetWorkOrderEnquiriesList", companyIdParameter, branchIdParameter, enquiryStatusIdParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, string branchId, string workOrderNumber, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId != null ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(string));
-    
-            var workOrderNumberParameter = workOrderNumber != null ?
-                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
-                new ObjectParameter("WorkOrderNumber", typeof(string));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
-        }
-    
         public virtual ObjectResult<GetWOListForEmployees_Result> GetWOListForEmployees(Nullable<int> companyId, string branchId, Nullable<int> orderStatusId, Nullable<int> engineerId, Nullable<int> userId, string filterType, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -3270,6 +3237,39 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationList_Result>("GetQuotationList", companyIdParameter, branchIdParameter, quotationNumberParameter, workOrderNumberParameter, statusIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetWorkOrderList_Result> GetWorkOrderList(Nullable<int> companyId, string branchId, string workOrderNumber, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderList_Result>("GetWorkOrderList", companyIdParameter, branchIdParameter, workOrderNumberParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }
