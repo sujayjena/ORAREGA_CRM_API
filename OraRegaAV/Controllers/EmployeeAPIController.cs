@@ -975,7 +975,7 @@ namespace OraRegaAV.Controllers.API
                         BranchId = item.BranchId,
                         BranchName = item.BranchName,
                         DepartmentId = item.DepartmentId,
-                        DepartmentName = item.PersonalNumber,
+                        DepartmentName = item.DepartmentName,
                         PersonalNumber = item.PersonalNumber,
                         OfficeNumber = item.OfficeNumber,
                         DateOfBirth = item.DateOfBirth,

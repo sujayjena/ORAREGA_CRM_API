@@ -266,38 +266,43 @@ namespace OraRegaAV.Helpers
                     foreach (SavedProductDetailsParameter prod in parameters.ProductDetails)
                     {
                         prodModelDetails = db.GetProductModelDetails(prod.ProdModelId).FirstOrDefault();
-                        if (prodModelDetails != null)
+                        //if (prodModelDetails != null)
+                        //{
+
+                        var vProductModelObj = await db.tblProductModels.Where(c => c.Id == prod.ProdModelId).FirstOrDefaultAsync();
+                        var vProductMakeObj = await db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefaultAsync();
+                        var vProductTypeObj = await db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefaultAsync();
+
+                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
+                        string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
+
+                        proofFileNames = new string[] { };
+                        snapsFileNames = new string[] { };
+                        proofFiles = new List<HttpPostedFile>();
+                        snapFiles = new List<HttpPostedFile>();
+
+                        for (int f = 0; f < postedFiles.Count; f++)
                         {
-                            proofFileNames = new string[] { };
-                            snapsFileNames = new string[] { };
-                            proofFiles = new List<HttpPostedFile>();
-                            snapFiles = new List<HttpPostedFile>();
-
-                            for (int f = 0; f < postedFiles.Count; f++)
+                            if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{productIndex}", StringComparison.OrdinalIgnoreCase))
                             {
-                                if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{productIndex}", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    proofFiles.Add(postedFiles[f]);
-                                }
-                                else if (string.Equals(postedFiles.GetKey(f), $"ProductSnaps_{productIndex}", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    snapFiles.Add(postedFiles[f]);
-                                }
+                                proofFiles.Add(postedFiles[f]);
                             }
+                            else if (string.Equals(postedFiles.GetKey(f), $"ProductSnaps_{productIndex}", StringComparison.OrdinalIgnoreCase))
+                            {
+                                snapFiles.Add(postedFiles[f]);
+                            }
+                        }
 
-                            proofFileNames = proofFiles.Select(f => f.FileName).ToArray();
-                            snapsFileNames = snapFiles.Select(f => f.FileName).ToArray();
+                        proofFileNames = proofFiles.Select(f => f.FileName).ToArray();
+                        snapsFileNames = snapFiles.Select(f => f.FileName).ToArray();
 
-
-
-
-
-                            productsListContent = $@"{productsListContent}
+                        productsListContent = $@"{productsListContent}
                             <li>
                                 <ul>
-                                    <li>Product Type: {prodModelDetails.ProductType}</li>
-                                    <li>Product Make: {prodModelDetails.ProductMake}</li>
-                                    <li>Product Model: {prodModelDetails.ProductModel}</li>
+                                    <li>Product Type: {strProductType}</li>
+                                    <li>Product Make: {strProductMake}</li>
+                                    <li>Product Model: {strProductModel}</li>
                                     <li>Product Model (If other): {prod.ProdModelIfOther}</li>
                                     <li>Product Serial Number: {prod.ProdSerialNo}</li>
                                     <li>Product Number: {prod.ProdNumber}</li>
@@ -310,7 +315,7 @@ namespace OraRegaAV.Helpers
                                 <br />
                             </li>";
 
-                        }
+                        //}
                         productIndex++;
                     }
 
@@ -444,6 +449,15 @@ namespace OraRegaAV.Helpers
                     foreach (ExtendedWarrantyProductParameters prod in parameters.Products)
                     {
                         prodModelDetails = db.GetProductModelDetails(prod.ProductModelId).FirstOrDefault();
+
+                        var vProductModelObj = await db.tblProductModels.Where(c => c.Id == prod.ProductModelId).FirstOrDefaultAsync();
+                        var vProductMakeObj = await db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefaultAsync();
+                        var vProductTypeObj = await db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefaultAsync();
+
+                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
+                        string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
+
                         proofFileNames = new string[] { };
                         proofFiles = new List<HttpPostedFile>();
 
@@ -460,9 +474,9 @@ namespace OraRegaAV.Helpers
                         productsListContent = $@"{productsListContent}
                             <li>
                                 <ul>
-                                    <li>Product Type: {prodModelDetails.ProductType}</li>
-                                    <li>Product Make: {prodModelDetails.ProductMake}</li>
-                                    <li>Product Model: {prodModelDetails.ProductModel}</li>
+                                    <li>Product Type: {strProductType}</li>
+                                    <li>Product Make: {strProductMake}</li>
+                                    <li>Product Model: {strProductModel}</li>
                                     <li>Product Model (If other): {prod.ProdModelIfOther}</li>
                                     <li>Product Serial Number: {prod.ProductSerialNo}</li>
                                     <li>Product Number: {prod.ProductNumber}</li>
