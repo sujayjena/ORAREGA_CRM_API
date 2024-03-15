@@ -202,8 +202,8 @@ namespace OraRegaAV.Controllers
 
                     tbl.TotalDiscAmt = request.TotalDiscAmt;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
-                    tbl.AdvanceReceived = request.AdvanceReceived;
-                    tbl.AmountPaidAfter = request.AmountPaidAfter;
+                    tbl.AdvanceReceived = 0;
+                    tbl.AmountPaidAfter = 0;
                     tbl.OutstandingAmount = request.OutstandingAmount;
                     tbl.StatusId = 1;
 
@@ -293,8 +293,8 @@ namespace OraRegaAV.Controllers
 
                     tbl.TotalDiscAmt = request.TotalDiscAmt;
                     tbl.GrossAmountIncludeTax = request.GrossAmountIncludeTax;
-                    tbl.AdvanceReceived = request.AdvanceReceived;
-                    tbl.AmountPaidAfter = request.AmountPaidAfter;
+                    //tbl.AdvanceReceived = request.AdvanceReceived;
+                    //tbl.AmountPaidAfter = request.AmountPaidAfter;
                     tbl.OutstandingAmount = request.OutstandingAmount;
                     tbl.StatusId = request.StatusId;
 
