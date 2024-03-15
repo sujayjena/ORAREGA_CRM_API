@@ -272,10 +272,13 @@ namespace OraRegaAV.Helpers
                         var vProductModelObj = await db.tblProductModels.Where(c => c.Id == prod.ProdModelId).FirstOrDefaultAsync();
                         var vProductMakeObj = await db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefaultAsync();
                         var vProductTypeObj = await db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefaultAsync();
+                        var vProductDesc = await db.tblProductDescriptions.Where(p => p.Id == prod.ProdDescId).FirstOrDefaultAsync();
 
-                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        //string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : "Other";
                         string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
                         string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
+                        string strProductDesc = vProductDesc != null ? vProductDesc.ProductDescription : "Other";
 
                         proofFileNames = new string[] { };
                         snapsFileNames = new string[] { };
@@ -306,7 +309,7 @@ namespace OraRegaAV.Helpers
                                     <li>Product Model (If other): {prod.ProdModelIfOther}</li>
                                     <li>Product Serial Number: {prod.ProdSerialNo}</li>
                                     <li>Product Number: {prod.ProdNumber}</li>
-                                    <li>Product Description: {db.tblProductDescriptions.Where(p => p.Id == prod.ProdDescId).Select(p => p.ProductDescription).FirstOrDefault()}</li>
+                                    <li>Product Description: {strProductDesc}</li>
                                     <li>Product Description (If other): {prod.ProdDescIfOther}</li>
                                     <li>Product Condition: {db.tblProductConditions.Where(p => p.Id == prod.ProdConditionId).Select(p => p.Condition).FirstOrDefault()}</li>
                                     <li>Prof of Purchase: {string.Join(", ", proofFileNames)} </li>
@@ -454,7 +457,8 @@ namespace OraRegaAV.Helpers
                         var vProductMakeObj = await db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefaultAsync();
                         var vProductTypeObj = await db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefaultAsync();
 
-                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        //string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : "Other";
                         string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
                         string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
 

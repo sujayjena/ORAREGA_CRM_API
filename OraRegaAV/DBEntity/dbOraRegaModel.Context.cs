@@ -3284,5 +3284,57 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportPartDetails_Result>("ImportPartDetails", xmlPartDetailsDataParameter, loggedInUserIdParameter);
         }
+    
+        public virtual ObjectResult<ImportArea_Result> ImportArea(string xmlAreaData, Nullable<long> loggedInUserId)
+        {
+            var xmlAreaDataParameter = xmlAreaData != null ?
+                new ObjectParameter("XmlAreaData", xmlAreaData) :
+                new ObjectParameter("XmlAreaData", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportArea_Result>("ImportArea", xmlAreaDataParameter, loggedInUserIdParameter);
+        }
+    
+        public virtual ObjectResult<ImportCity_Result> ImportCity(string xmlCityData, Nullable<long> loggedInUserId)
+        {
+            var xmlCityDataParameter = xmlCityData != null ?
+                new ObjectParameter("XmlCityData", xmlCityData) :
+                new ObjectParameter("XmlCityData", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportCity_Result>("ImportCity", xmlCityDataParameter, loggedInUserIdParameter);
+        }
+    
+        public virtual ObjectResult<ImportPincode_Result> ImportPincode(string xmlPincodeData, Nullable<long> loggedInUserId)
+        {
+            var xmlPincodeDataParameter = xmlPincodeData != null ?
+                new ObjectParameter("XmlPincodeData", xmlPincodeData) :
+                new ObjectParameter("XmlPincodeData", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportPincode_Result>("ImportPincode", xmlPincodeDataParameter, loggedInUserIdParameter);
+        }
+    
+        public virtual ObjectResult<ImportState_Result> ImportState(string xmlStateData, Nullable<long> loggedInUserId)
+        {
+            var xmlStateDataParameter = xmlStateData != null ?
+                new ObjectParameter("XmlStateData", xmlStateData) :
+                new ObjectParameter("XmlStateData", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportState_Result>("ImportState", xmlStateDataParameter, loggedInUserIdParameter);
+        }
     }
 }

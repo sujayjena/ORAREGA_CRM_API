@@ -3210,8 +3210,24 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="WorkOrderId" Type="int" Mode="In" />
           <Parameter Name="RescheduleReasonId" Type="int" Mode="In" />
         </Function>
+        <Function Name="ImportArea" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XmlAreaData" Type="xml" Mode="In" />
+          <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ImportCity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XmlCityData" Type="xml" Mode="In" />
+          <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="ImportPartDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="XmlPartDetailsData" Type="xml" Mode="In" />
+          <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ImportPincode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XmlPincodeData" Type="xml" Mode="In" />
+          <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ImportState" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XmlStateData" Type="xml" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="ImportStockEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5288,6 +5304,22 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <FunctionImport Name="ImportPartDetails" ReturnType="Collection(dbOraRegaModel.ImportPartDetails_Result)">
             <Parameter Name="XmlPartDetailsData" Mode="In" Type="String" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="ImportArea" ReturnType="Collection(dbOraRegaModel.ImportArea_Result)">
+            <Parameter Name="XmlAreaData" Mode="In" Type="String" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="ImportCity" ReturnType="Collection(dbOraRegaModel.ImportCity_Result)">
+            <Parameter Name="XmlCityData" Mode="In" Type="String" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="ImportPincode" ReturnType="Collection(dbOraRegaModel.ImportPincode_Result)">
+            <Parameter Name="XmlPincodeData" Mode="In" Type="String" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="ImportState" ReturnType="Collection(dbOraRegaModel.ImportState_Result)">
+            <Parameter Name="XmlStateData" Mode="In" Type="String" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
           </FunctionImport>
            </EntityContainer>
@@ -9081,6 +9113,34 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Quantity" Nullable="true" />
           <Property Type="String" Name="HSNCode" Nullable="false" MaxLength="1" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="ImportArea_Result">
+          <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AreaName" Nullable="false" MaxLength="1" />
+		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="ImportCity_Result">
+          <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
+		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="ImportPincode_Result">
+          <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AreaName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Pincode" Nullable="false" MaxLength="1" />
+		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="ImportState_Result">
+		  <Property Type="Int32" Name="StateCode" Nullable="true" />
+		  <Property Type="String" Name="StateShortCode" Nullable="false" MaxLength="1" />
+		  <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
+		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
   
@@ -14191,6 +14251,50 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ImportArea" FunctionName="dbOraRegaModel.Store.ImportArea">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.ImportArea_Result">
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ImportCity" FunctionName="dbOraRegaModel.Store.ImportCity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.ImportCity_Result">
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ImportPincode" FunctionName="dbOraRegaModel.Store.ImportPincode">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.ImportPincode_Result">
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ImportState" FunctionName="dbOraRegaModel.Store.ImportState">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.ImportState_Result">
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="StateShortCode" ColumnName="StateShortCode" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
               </ComplexTypeMapping>

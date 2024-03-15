@@ -848,7 +848,19 @@
     <Compile Include="DBEntity\GetWorkOrderRescheduleHistoryList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\ImportArea_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportCity_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\ImportPartDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportPincode_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportState_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\ImportStockEntry_Result.cs">
@@ -1432,6 +1444,7 @@
     </Content>
     <Content Include="FormatFiles\StockEntryFormatFile.xlsx" />
     <Content Include="FormatFiles\PartDetailsFormatFile.xlsx" />
+    <Content Include="FormatFiles\ManageAddressFormatFile.xlsx" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

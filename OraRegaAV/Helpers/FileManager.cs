@@ -380,6 +380,25 @@ namespace OraRegaAV.Helpers
             }
             return base64String;
         }
+        public string GetManageAddressTemplate(HttpContext context)
+        {
+            string base64String = "";
 
+            try
+            {
+                string folderPath = $"{context.Server.MapPath("~")}\\FormatFiles\\ManageAddressFormatFile.xlsx";
+
+                byte[] result = null;
+                if (File.Exists(folderPath))
+                {
+                    result = File.ReadAllBytes(folderPath);
+                }
+                base64String = Convert.ToBase64String(result);
+            }
+            catch (Exception ex)
+            {
+            }
+            return base64String;
+        }
     }
 }
