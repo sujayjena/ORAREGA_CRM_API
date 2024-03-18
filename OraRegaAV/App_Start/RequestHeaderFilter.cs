@@ -111,7 +111,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{\r\n\t\"Id\":1,\r\n\t\"EmployeeCode\": \"string\",\r\n\t\"EmployeeName\": \"string\",\r\n\t\"EmailId\": \"string\",\r\n\t\"Password\": \"1234\",\r\n\t\"PersonalNumber\": \"string\",\r\n\t\"OfficeNumber\": \"string\",\r\n\t\"UserTypeId\": 0,\r\n\t\"ReportingTo\": 0,\r\n\t\"RoleId\": 0,\r\n\t\"DepartmentId\": 0,\r\n\t\"DateOfBirth\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"DateOfJoining\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"EmergencyContactNumber\": \"string\",\r\n\t\"BloodGroup\": \"string\",\r\n\t\"BranchId\": 0,\r\n\t\"IsMobileUser\":true,\r\n\t\"IsWebUser\":true,\r\n\t\"ResignDate\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"LastWorkingDay\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"AadharNumber\": \"000000000\",\r\n\t\"PanNumber\": \"string\",\r\n\t\"IsActive\": true,\r\n\t\"IsTemporaryAddressIsSame\": false,\r\n\t\"PermanentAddress\": [{{\r\n\t\t\"Id\":0,\r\n\t\t\"NameForAddress\":\"\",\r\n\t\t\"MobileNo\":\"\",\r\n\t\t\"Address\":\"\",\r\n\t\t\"StateId\": 0,\r\n\t\t\"CityId\": 0,\r\n\t\t\"AreaId\": 0,\r\n\t\t\"PinCodeId\": 0,\r\n\t\t\"IsActive\": true,\r\n\t\t\"IsDefault\": false,\r\n\t\t\"AddressType\":1\r\n\t}}],\r\n\t\"TemporaryAddress\": [{{\r\n\t\t\"Id\":0,\r\n\t\t\"NameForAddress\":\"\",\r\n\t\t\"MobileNo\":\"\",\r\n\t\t\"Address\":\"\",\r\n\t\t\"StateId\": 0,\r\n\t\t\"CityId\": 0,\r\n\t\t\"AreaId\": 0,\r\n\t\t\"PinCodeId\": 0,\r\n\t\t\"IsActive\": true,\r\n\t\t\"AddressType\":1\r\n\t}}]\r\n}}"
+                    description = $"{{\r\n\t\"Id\":1,\r\n\t\"EmployeeCode\": \"string\",\r\n\t\"EmployeeName\": \"string\",\r\n\t\"EmailId\": \"string\",\r\n\t\"Password\": \"1234\",\r\n\t\"PersonalNumber\": \"string\",\r\n\t\"OfficeNumber\": \"string\",\r\n\t\"UserTypeId\": 0,\r\n\t\"ReportingTo\": 0,\r\n\t\"RoleId\": 0,\r\n\t\"DepartmentId\": 0,\r\n\t\"DateOfBirth\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"DateOfJoining\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"EmergencyContactNumber\": \"string\",\r\n\t\"BloodGroup\": \"string\",\r\n\t\"BranchId\": 0,\r\n\t\"IsMobileUser\":true,\r\n\t\"IsWebUser\":true,\r\n\t\"ResignDate\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"LastWorkingDay\": \"2023-07-11T15:08:10.796Z\",\r\n\t\"AadharNumber\": \"000000000\",\r\n\t\"PanNumber\": \"string\",\r\n\t\"IsActive\": true,\r\n\t\"IsTemporaryAddressIsSame\": false,\r\n\t\"PermanentAddress\": [{{\r\n\t\t\"Id\":0,\r\n\t\t\"NameForAddress\":\"\",\r\n\t\t\"MobileNo\":\"\",\r\n\t\t\"Address\":\"\",\r\n\t\t\"StateId\": 0,\r\n\t\t\"CityId\": 0,\r\n\t\t\"AreaId\": 0,\r\n\t\t\"PinCodeId\": 0,\r\n\t\t\"IsActive\": true,\r\n\t\t\"IsDefault\": false,\r\n\t\t\"AddressType\":1\r\n\t}}],\r\n\t\"TemporaryAddress\": [{{\r\n\t\t\"Id\":0,\r\n\t\t\"NameForAddress\":\"\",\r\n\t\t\"MobileNo\":\"\",\r\n\t\t\"Address\":\"\",\r\n\t\t\"StateId\": 0,\r\n\t\t\"CityId\": 0,\r\n\t\t\"AreaId\": 0,\r\n\t\t\"PinCodeId\": 0,\r\n\t\t\"IsActive\": true,\r\n\t\t\"AddressType\":1\r\n\t}}],\r\n\t\"BranchList\": [{{\r\n\t\t\"BranchId\":0\r\n\t}}]\r\n}}"
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -1975,6 +1975,23 @@ namespace OraRegaAV.App_Start
                 operation.parameters.Add(new Parameter()
                 {
                     name = "ManageAddressFile",
+                    @in = "formData",
+                    type = "file",
+                    required = false,
+                    pattern = ValidationConstant.ExcelFileRegExp,
+                    description = $".xls | .xlsx. Validation pattern = {ValidationConstant.ExcelFileRegExp}"
+                });
+            }
+
+            #endregion
+
+            #region Customer
+
+            if (string.Equals(operation.operationId, "CustomerRegistration_ImportCustomer", StringComparison.OrdinalIgnoreCase))
+            {
+                operation.parameters.Add(new Parameter()
+                {
+                    name = "CustomerFile",
                     @in = "formData",
                     type = "file",
                     required = false,

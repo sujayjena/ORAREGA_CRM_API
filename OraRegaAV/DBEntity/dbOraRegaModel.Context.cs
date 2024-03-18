@@ -3336,5 +3336,18 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportState_Result>("ImportState", xmlStateDataParameter, loggedInUserIdParameter);
         }
+    
+        public virtual ObjectResult<ImportCustomer_Result> ImportCustomer(string xmlCustomerData, Nullable<long> loggedInUserId)
+        {
+            var xmlCustomerDataParameter = xmlCustomerData != null ?
+                new ObjectParameter("XmlCustomerData", xmlCustomerData) :
+                new ObjectParameter("XmlCustomerData", typeof(string));
+    
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportCustomer_Result>("ImportCustomer", xmlCustomerDataParameter, loggedInUserIdParameter);
+        }
     }
 }

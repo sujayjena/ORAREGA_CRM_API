@@ -99,7 +99,8 @@ namespace OraRegaAV.Controllers
                     if (vWorkOrderCustomerObj != null)
                     {
                         quotationObj.customerDetails.CustomerId = workOrderObj.CustomerId;
-                        quotationObj.customerDetails.OrganizationName = workOrderObj.CompanyName;
+                        //quotationObj.customerDetails.OrganizationName = workOrderObj.CompanyName;
+                        quotationObj.customerDetails.OrganizationName = workOrderObj.OrganizationName;
                         quotationObj.customerDetails.CustomerName = vWorkOrderCustomerObj.FirstName + " " + vWorkOrderCustomerObj.LastName;
                         quotationObj.customerDetails.CustomerGstNumber = workOrderObj.GSTNumber;
                         quotationObj.customerDetails.CustomerMobile = vWorkOrderCustomerObj.Mobile;

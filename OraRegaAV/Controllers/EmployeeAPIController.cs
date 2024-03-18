@@ -653,17 +653,22 @@ namespace OraRegaAV.Controllers.API
 
                 if (postedFiles.Count > 0)
                 {
-                    parameters.ProfileImagePath = postedFiles["ProfilePicture"].FileName;
-                }
-                if (postedFiles.Count > 0)
-                {
-                    parameters.AadharCardPath = postedFiles["AdharCardPicture"].FileName;
+                    if (postedFiles["ProfilePicture"] != null)
+                    {
+                        parameters.ProfileImagePath = postedFiles["ProfilePicture"].FileName;
+                    }
+
+                    if (postedFiles["AdharCardPicture"] != null)
+                    {
+                        parameters.AadharCardPath = postedFiles["AdharCardPicture"].FileName;
+                    }
+
+                    if (postedFiles["PanCardPicture"] != null)
+                    {
+                        parameters.PanCardPath = postedFiles["PanCardPicture"].FileName;
+                    }
                 }
 
-                if (postedFiles.Count > 0)
-                {
-                    parameters.PanCardPath = postedFiles["PanCardPicture"].FileName;
-                }
                 #endregion
 
                 #region Validation Check
@@ -791,9 +796,9 @@ namespace OraRegaAV.Controllers.API
                             tbl.ProfileImagePath = fileManager.UploadEmpProfilePicture(postedFiles["ProfilePicture"], HttpContext.Current);
                         }
 
-                        if (postedFiles["AadharCardPicture"] != null)
+                        if (postedFiles["AdharCardPicture"] != null)
                         {
-                            tbl.AadharCardPath = fileManager.UploadEmpDocuments(postedFiles["AadharCardPicture"], HttpContext.Current);
+                            tbl.AadharCardPath = fileManager.UploadEmpDocuments(postedFiles["AdharCardPicture"], HttpContext.Current);
                         }
 
                         if (postedFiles["PanCardPicture"] != null)

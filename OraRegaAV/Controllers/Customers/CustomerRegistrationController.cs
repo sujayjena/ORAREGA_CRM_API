@@ -638,5 +638,248 @@ namespace OraRegaAV.Controllers.Customers
             }
             return _response;
         }
+
+        #region Customer Import / Download Template
+
+        [HttpPost]
+        [Route("api/CustomerRegistration/DownloadImportCustomerTemplate")]
+        public Response DownloadImportCustomerTemplate()
+        {
+            FileManager fileManager = new FileManager();
+
+            try
+            {
+                var vTempalteFileinBase64 = fileManager.GetCustomerTemplate(HttpContext.Current);
+                _response.Data = vTempalteFileinBase64;
+
+                _response.IsSuccess = true;
+
+                if (vTempalteFileinBase64.Length > 0)
+                    _response.Message = "File template downloaded sucessfully";
+                else
+                    _response.Message = "File template missing";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                throw ex;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/CustomerRegistration/ImportCustomer")]
+        public Response ImportCustomer()
+        {
+            string XmlCustomerData;
+            string uniqueFileId;
+            int noOfCol;
+            int noOfRow;
+
+            bool tableHasNull = false;
+            InvalidFileResponseModel objInvalidFileResponseModel = null;
+            List<CustomerImportRequestModel> lstCustomerImportRequestModel;
+            HttpPostedFile manageAddressUploadedFile;
+            ExcelWorksheets currentSheet;
+            ExcelWorksheet workSheet;
+            DataTable dtTable;
+            List<ImportCustomer_Result> objImportCustomer_Result;
+            DataTable dtInvalidRecords;
+
+            try
+            {
+                manageAddressUploadedFile = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files["CustomerFile"] : null;
+                objImportCustomer_Result = new List<ImportCustomer_Result>();
+
+                if (manageAddressUploadedFile == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid Excel file";
+                    return _response;
+                }
+
+                uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+                lstCustomerImportRequestModel = new List<CustomerImportRequestModel>();
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+                using (ExcelPackage package = new ExcelPackage(manageAddressUploadedFile.InputStream))
+                {
+                    currentSheet = package.Workbook.Worksheets;
+                    workSheet = currentSheet[0];
+                    noOfCol = workSheet.Dimension.End.Column;
+                    noOfRow = workSheet.Dimension.End.Row;
+
+                    string customerPassword = string.Empty;
+
+                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                    {
+                        CustomerImportRequestModel record = new CustomerImportRequestModel();
+                        record.FirstName = workSheet.Cells[rowIterator, 1].Value.ToString();
+                        record.LastName = workSheet.Cells[rowIterator, 2].Value.ToString();
+                        record.MobileNumber = workSheet.Cells[rowIterator, 3].Value.ToString();
+                        record.Email = workSheet.Cells[rowIterator, 4].Value.ToString();
+
+                        customerPassword = Utilities.CreateRandomPassword();
+                        record.Passwords = Utilities.EncryptString(customerPassword);
+                        record.AddressName = workSheet.Cells[rowIterator, 5].Value.ToString();
+                        record.StateName = workSheet.Cells[rowIterator, 6].Value.ToString();
+                        record.CityName = workSheet.Cells[rowIterator, 7].Value.ToString();
+                        record.AreaName = workSheet.Cells[rowIterator, 8].Value.ToString();
+                        record.Pincode = workSheet.Cells[rowIterator, 9].Value.ToString();
+                        record.AddressType = workSheet.Cells[rowIterator, 10].Value.ToString();
+                        record.IsActive = workSheet.Cells[rowIterator, 11].Value.ToString();
+                        record.TermsConditionsAccepted = workSheet.Cells[rowIterator, 12].Value.ToString();
+
+                        lstCustomerImportRequestModel.Add(record);
+                    }
+                }
+
+                if (lstCustomerImportRequestModel.Count == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Uploaded Customer data file does not contains any record";
+                    return _response;
+                };
+
+                dtTable = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(lstCustomerImportRequestModel), typeof(DataTable));
+             
+                //Excel Column Mismatch check. If column name has been changed then it's value will be null;
+                foreach (DataRow row in dtTable.Rows)
+                {
+                    foreach (DataColumn col in dtTable.Columns)
+                    {
+                        if (row[col] == DBNull.Value)
+                        {
+                            tableHasNull = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (tableHasNull)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Please upload a valid excel file. Please Download Format file for reference.";
+                    return _response;
+                }
+
+                dtTable.TableName = "Customer";
+                dtTable.AcceptChanges();
+
+                using (StringWriter sw = new StringWriter())
+                {
+                    dtTable.WriteXml(sw);
+                    XmlCustomerData = sw.ToString();
+                }
+
+                objImportCustomer_Result = db.ImportCustomer(XmlCustomerData, 0).ToList();
+              
+                if (objImportCustomer_Result.Count > 0)
+                {
+                    #region Generate Excel file for Invalid Data
+                    dtInvalidRecords = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(objImportCustomer_Result), typeof(DataTable));
+                   
+                    ExcelPackage excel = new ExcelPackage();
+
+                    if (dtInvalidRecords.Rows.Count > 0)
+                    {
+                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        int recordIndex;
+                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Invalid_Customer_Records");
+                        WorkSheet1.TabColor = System.Drawing.Color.Black;
+                        WorkSheet1.DefaultRowHeight = 12;
+
+                        //Header of table
+                        WorkSheet1.Row(1).Height = 20;
+                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                        WorkSheet1.Cells[1, 1].Value = "FirstName";
+                        WorkSheet1.Cells[1, 2].Value = "LastName";
+                        WorkSheet1.Cells[1, 3].Value = "MobileNumber";
+                        WorkSheet1.Cells[1, 4].Value = "Email";
+                        WorkSheet1.Cells[1, 5].Value = "AddressName";
+                        WorkSheet1.Cells[1, 6].Value = "StateName";
+                        WorkSheet1.Cells[1, 7].Value = "CityName";
+                        WorkSheet1.Cells[1, 8].Value = "AreaName";
+                        WorkSheet1.Cells[1, 9].Value = "Pincode";
+                        WorkSheet1.Cells[1, 10].Value = "AddressType";
+                        WorkSheet1.Cells[1, 11].Value = "IsActive";
+                        WorkSheet1.Cells[1, 12].Value = "TermsConditionsAccepted";
+                        WorkSheet1.Cells[1, 13].Value = "ValidationMessage";
+
+                        recordIndex = 2;
+
+                        foreach (DataRow dataRow in dtInvalidRecords.Rows)
+                        {
+                            WorkSheet1.Cells[recordIndex, 1].Value = dataRow["FirstName"];
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["LastName"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["MobileNumber"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["Email"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["AddressName"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["StateName"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["CityName"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["AreaName"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["Pincode"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["AddressType"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["IsActive"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["TermsConditionsAccepted"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["ValidationMessage"];
+
+                            recordIndex += 1;
+                        }
+
+                        WorkSheet1.Column(1).AutoFit();
+                        WorkSheet1.Column(2).AutoFit();
+                        WorkSheet1.Column(3).AutoFit();
+                        WorkSheet1.Column(4).AutoFit();
+                        WorkSheet1.Column(5).AutoFit();
+                        WorkSheet1.Column(6).AutoFit();
+                        WorkSheet1.Column(7).AutoFit();
+                        WorkSheet1.Column(8).AutoFit();
+                        WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+                        WorkSheet1.Column(13).AutoFit();
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        excel.SaveAs(memoryStream);
+                        memoryStream.Position = 0;
+                        objInvalidFileResponseModel = new InvalidFileResponseModel()
+                        {
+                            FileMemoryStream = memoryStream.ToArray(),
+                            FileName = "InvalidCustomer" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                            //FileUniqueId = uniqueFileId
+                        };
+                    }
+
+                    _response.IsSuccess = false;
+                    _response.Message = "Validation failed for some or all records, please check downloaded file with name starts from InvalidCustomer...";
+                    _response.Data = objInvalidFileResponseModel;
+
+                    return _response;
+                    #endregion
+                }
+                else
+                {
+                    _response.Message = "Customer records has been imported successfully.";
+                    _response.IsSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        #endregion
     }
 }

@@ -3218,6 +3218,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="XmlCityData" Type="xml" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="ImportCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XmlCustomerData" Type="xml" Mode="In" />
+          <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="ImportPartDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="XmlPartDetailsData" Type="xml" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
@@ -5320,6 +5324,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <FunctionImport Name="ImportState" ReturnType="Collection(dbOraRegaModel.ImportState_Result)">
             <Parameter Name="XmlStateData" Mode="In" Type="String" />
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="ImportCustomer" ReturnType="Collection(dbOraRegaModel.ImportCustomer_Result)">
+            <Parameter Name="XmlCustomerData" Mode="In" Type="String" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
           </FunctionImport>
            </EntityContainer>
@@ -9141,6 +9149,21 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
 		  <Property Type="String" Name="StateShortCode" Nullable="false" MaxLength="1" />
 		  <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
 		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="ImportCustomer_Result">
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="MobileNumber" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AddressName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AreaName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Pincode" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AddressType" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="TermsConditionsAccepted" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
   
@@ -14296,6 +14319,25 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="StateShortCode" ColumnName="StateShortCode" />
                 <ScalarProperty Name="StateName" ColumnName="StateName" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ImportCustomer" FunctionName="dbOraRegaModel.Store.ImportCustomer">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.ImportCustomer_Result">
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AddressName" ColumnName="AddressName" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="AddressType" ColumnName="AddressType" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TermsConditionsAccepted" ColumnName="TermsConditionsAccepted" />
                 <ScalarProperty Name="ValidationMessage" ColumnName="ValidationMessage" />
               </ComplexTypeMapping>
             </ResultMapping>

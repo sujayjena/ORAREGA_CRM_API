@@ -29,4 +29,20 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int PageNo { get; set; }
     }
+    public class CustomerImportRequestModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MobileNumber { get; set; }
+        public string Email { get; set; }
+        public string Passwords { get; set; }
+        public string AddressName { get; set; }
+        public string StateName { get; set; }
+        public string CityName { get; set; }
+        public string AreaName { get; set; }
+        public string Pincode { get; set; }
+        public string AddressType { get; set; }
+        public string IsActive { get; set; }
+        public string TermsConditionsAccepted { get; set; }
+    }
 }
