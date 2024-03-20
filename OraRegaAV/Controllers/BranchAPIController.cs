@@ -32,6 +32,34 @@ namespace OraRegaAV.Controllers.API
         {
             try
             {
+                #region Branch Restriction 
+
+                int iBranchCanAdd = 0;
+                var tblCompanies = db.tblCompanies.Where(x => x.Id == objtblBranch.CompanyId).FirstOrDefault();
+                if (tblCompanies != null)
+                {
+                    iBranchCanAdd = tblCompanies.BranchAdd;
+                }
+
+                var tblBranchesList = db.tblBranches.Where(x => x.CompanyId == objtblBranch.CompanyId).ToList();
+                if (tblBranchesList.Count > 0)
+                {
+                    if (iBranchCanAdd == tblBranchesList.Count)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "You are not allowed to create a branch more then " + iBranchCanAdd + ", Please contact your administrator to access this feature!";
+                        return _response;
+                    }
+                    else if (tblBranchesList.Count > iBranchCanAdd)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "You are not allowed to create a branch more then " + iBranchCanAdd + ", Please contact your administrator to access this feature!";
+                        return _response;
+                    }
+                }
+
+                #endregion
+
                 //duplicate checking
                 if (db.tblBranches.Where(d => d.BranchName == objtblBranch.BranchName && d.Id != objtblBranch.Id).Any())
                 {
@@ -46,6 +74,8 @@ namespace OraRegaAV.Controllers.API
                     _response.Message = "AddressLine 1 is already exists";
                     return _response;
                 }
+
+
 
                 var tbl = db.tblBranches.Where(x => x.Id == objtblBranch.Id).FirstOrDefault();
                 if (tbl == null)
@@ -113,7 +143,7 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                objtblBranch = await Task.Run(() => db.GetBranchList(0, "", "",0,0,vTotal,0).ToList().Where(x => x.Id == Id).FirstOrDefault());
+                objtblBranch = await Task.Run(() => db.GetBranchList(0, "", "", 0, 0, vTotal, 0).ToList().Where(x => x.Id == Id).FirstOrDefault());
                 _response.Data = objtblBranch;
             }
             catch (Exception ex)
@@ -135,7 +165,7 @@ namespace OraRegaAV.Controllers.API
             {
                 var userId = Utilities.GetUserID(ActionContext.Request);
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                branchList = await Task.Run(() => db.GetBranchList(parameters.CompanyId, parameters.BranchId, parameters.SearchValue, parameters.PageSize, parameters.PageNo,vTotal,userId).ToList());
+                branchList = await Task.Run(() => db.GetBranchList(parameters.CompanyId, parameters.BranchId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = branchList;

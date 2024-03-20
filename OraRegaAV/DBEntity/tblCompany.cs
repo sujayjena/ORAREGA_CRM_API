@@ -37,5 +37,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> AreaId { get; set; }
         public string GSTNumber { get; set; }
         public string PANNumber { get; set; }
+        public int BranchAdd { get; set; }
     }
 }

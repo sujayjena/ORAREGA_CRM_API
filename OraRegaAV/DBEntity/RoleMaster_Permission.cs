@@ -26,5 +26,8 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public Nullable<int> View_IsPermanentdDeactive { get; set; }
+        public Nullable<int> Add_IsPermanentdDeactive { get; set; }
+        public Nullable<int> Edit_IsPermanentdDeactive { get; set; }
     }
 }

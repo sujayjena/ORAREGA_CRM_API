@@ -33,6 +33,7 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsPermanentdDeactive" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -113,6 +114,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="View_IsPermanentdDeactive" Type="int" />
+          <Property Name="Add_IsPermanentdDeactive" Type="int" />
+          <Property Name="Edit_IsPermanentdDeactive" Type="int" />
         </EntityType>
         <EntityType Name="tblAccessories">
           <Key>
@@ -363,6 +367,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="AreaId" Type="int" />
           <Property Name="GSTNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="PANNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="BranchAdd" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tblCompanyType">
           <Key>
@@ -3580,35 +3585,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tblCompany">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyTypeId" Type="Int32" />
-          <Property Name="RegistrationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyLogo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TaxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="StateId" Type="Int32" />
-          <Property Name="CityId" Type="Int32" />
-          <Property Name="PincodeId" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="CompanyLogoPath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="AreaId" Type="Int32" />
-          <Property Name="GSTNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblCompanyType">
+         <EntityType Name="tblCompanyType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -4216,8 +4193,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblBranchQueues" EntityType="Self.tblBranchQueue" />
           <EntitySet Name="tblCategories" EntityType="Self.tblCategory" />
           <EntitySet Name="tblCities" EntityType="Self.tblCity" />
-          <EntitySet Name="tblCompanies" EntityType="Self.tblCompany" />
-          <EntitySet Name="tblCompanyTypes" EntityType="Self.tblCompanyType" />
+           <EntitySet Name="tblCompanyTypes" EntityType="Self.tblCompanyType" />
           <EntitySet Name="tblCountries" EntityType="Self.tblCountry" />
           <EntitySet Name="tblDepartments" EntityType="Self.tblDepartment" />
           <EntitySet Name="tblEmpDocuments" EntityType="Self.tblEmpDocument" />
@@ -5359,6 +5335,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
           <EntitySet Name="tblPaymentPartDetails" EntityType="dbOraRegaModel.tblPaymentPartDetail" />
+          <EntitySet Name="tblCompanies" EntityType="dbOraRegaModel.tblCompany" />
            </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
@@ -5921,6 +5898,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsPermanentdDeactive" Type="Boolean" />
         </EntityType>
         <EntityType Name="RoleMaster_Employee_Permission">
           <Key>
@@ -5955,6 +5933,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="View_IsPermanentdDeactive" Type="Int32" />
+          <Property Name="Add_IsPermanentdDeactive" Type="Int32" />
+          <Property Name="Edit_IsPermanentdDeactive" Type="Int32" />
         </EntityType>
         <ComplexType Name="GetModuleMasterList_Result">
           <Property Type="Int64" Name="ModuleId" Nullable="false" />
@@ -9206,6 +9187,35 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="PaymentId" Type="Int64" />
           <Property Name="PartId" Type="Int64" />
         </EntityType>
+        <EntityType Name="tblCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyTypeId" Type="Int32" />
+          <Property Name="RegistrationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyLogo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="PincodeId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CompanyLogoPath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="GSTNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BranchAdd" Type="Int32" Nullable="false" />
+        </EntityType>
   
       </Schema>
     </edmx:ConceptualModels>
@@ -9300,36 +9310,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblCompanies">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblCompany">
-              <MappingFragment StoreEntitySet="tblCompany">
-                <ScalarProperty Name="PANNumber" ColumnName="PANNumber" />
-                <ScalarProperty Name="GSTNumber" ColumnName="GSTNumber" />
-                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CompanyLogoPath" ColumnName="CompanyLogoPath" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
-                <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
-                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
-                <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="PincodeId" ColumnName="PincodeId" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblCompanyTypes">
+           <EntitySetMapping Name="tblCompanyTypes">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblCompanyType">
               <MappingFragment StoreEntitySet="tblCompanyType">
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -10555,6 +10536,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="ModuleMasters">
             <EntityTypeMapping TypeName="dbOraRegaModel.ModuleMaster">
               <MappingFragment StoreEntitySet="ModuleMaster">
+                <ScalarProperty Name="IsPermanentdDeactive" ColumnName="IsPermanentdDeactive" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
@@ -10587,6 +10569,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="RoleMaster_Permission">
             <EntityTypeMapping TypeName="dbOraRegaModel.RoleMaster_Permission">
               <MappingFragment StoreEntitySet="RoleMaster_Permission">
+                <ScalarProperty Name="Edit_IsPermanentdDeactive" ColumnName="Edit_IsPermanentdDeactive" />
+                <ScalarProperty Name="Add_IsPermanentdDeactive" ColumnName="Add_IsPermanentdDeactive" />
+                <ScalarProperty Name="View_IsPermanentdDeactive" ColumnName="View_IsPermanentdDeactive" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
@@ -14390,6 +14375,36 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               <MappingFragment StoreEntitySet="tblPaymentPartDetail">
                 <ScalarProperty Name="PartId" ColumnName="PartId" />
                 <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCompanies">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblCompany">
+              <MappingFragment StoreEntitySet="tblCompany">
+                <ScalarProperty Name="BranchAdd" ColumnName="BranchAdd" />
+                <ScalarProperty Name="PANNumber" ColumnName="PANNumber" />
+                <ScalarProperty Name="GSTNumber" ColumnName="GSTNumber" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CompanyLogoPath" ColumnName="CompanyLogoPath" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PincodeId" ColumnName="PincodeId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
