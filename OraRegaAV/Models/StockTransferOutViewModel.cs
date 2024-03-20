@@ -27,7 +27,7 @@ namespace OraRegaAV.Models
         [DefaultValue("DOA")]
         public Nullable<int> ComapnyId { get; set; }
         public Nullable<int> BranchFromId { get; set; }
-        public Nullable<int> BranchToId { get; set; }
+        public Nullable<int> VendorToId { get; set; }
         public Nullable<System.DateTime> TransferDate { get; set; }
         public string NewDocketNo { get; set; }
         public Nullable<System.DateTime> StockTransferOutDate { get; set; }
@@ -92,7 +92,7 @@ namespace OraRegaAV.Models
         {
             PartDetail = new List<StockOutPartDetailResponse>();
             BranchFrom = new StockOut_BranchList_Response();
-            BranchTo = new StockOut_BranchList_Response();
+            VendorTo = new StockOut_VendorToList_Response();
         }
 
         public int Id { get; set; }
@@ -107,7 +107,7 @@ namespace OraRegaAV.Models
         public Nullable<System.DateTime> CreatedDate { get; set; }
 
         public StockOut_BranchList_Response BranchFrom { get; set; }
-        public StockOut_BranchList_Response BranchTo { get; set; }
+        public StockOut_VendorToList_Response VendorTo { get; set; }
         public List<StockOutPartDetailResponse> PartDetail { get; set; }
     }
 

@@ -1042,9 +1042,25 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPriorityList_Result>("GetPriorityList", searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetSalesOrderStatusList_Result> GetSalesOrderStatusList()
+        public virtual ObjectResult<GetSalesOrderStatusList_Result> GetSalesOrderStatusList(Nullable<bool> isActive, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrderStatusList_Result>("GetSalesOrderStatusList");
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesOrderStatusList_Result>("GetSalesOrderStatusList", isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
         public virtual ObjectResult<GetSupportTypeList_Result> GetSupportTypeList(string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
@@ -3160,27 +3176,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_InvoiceSummary_Result>("GetDashboard_InvoiceSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetPaymentList_Result> GetPaymentList(string invoiceNumber, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
-        {
-            var invoiceNumberParameter = invoiceNumber != null ?
-                new ObjectParameter("InvoiceNumber", invoiceNumber) :
-                new ObjectParameter("InvoiceNumber", typeof(string));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", invoiceNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
-        }
-    
         public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
         {
             var loggedInUserIdParameter = loggedInUserId.HasValue ?
@@ -3348,6 +3343,31 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("LoggedInUserId", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportCustomer_Result>("ImportCustomer", xmlCustomerDataParameter, loggedInUserIdParameter);
+        }
+    
+        public virtual ObjectResult<GetPaymentList_Result> GetPaymentList(string quotationNumber, string transactionId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var quotationNumberParameter = quotationNumber != null ?
+                new ObjectParameter("QuotationNumber", quotationNumber) :
+                new ObjectParameter("QuotationNumber", typeof(string));
+    
+            var transactionIdParameter = transactionId != null ?
+                new ObjectParameter("TransactionId", transactionId) :
+                new ObjectParameter("TransactionId", typeof(string));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", quotationNumberParameter, transactionIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OraRegaAV.Models.Constants;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace OraRegaAV.DBEntity
@@ -13,5 +14,17 @@ namespace OraRegaAV.DBEntity
     [MetadataType(typeof(TblSalesOrderStatusMetadata))]
     public partial class tblSalesOrderStatu
     {
+    }
+
+    public class SalesOrderStatusSerachParameter
+    {
+        public bool? IsActive { get; set; }
+        public string SearchValue { get; set; }
+
+        [DefaultValue(0)]
+        public int PageSize { get; set; }
+
+        [DefaultValue(0)]
+        public int PageNo { get; set; }
     }
 }

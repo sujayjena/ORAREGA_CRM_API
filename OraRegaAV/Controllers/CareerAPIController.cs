@@ -34,6 +34,7 @@ namespace OraRegaAV.Controllers
         public async Task<Response> SaveCareerDetails()
         {
             string jsonParameter;
+            bool isEmailSent;
             tblCareer parameters, tblCareer;
             HttpFileCollection postedFiles;
             FileManager fileManager;
@@ -112,6 +113,17 @@ namespace OraRegaAV.Controllers
                 await db.SaveChangesAsync();
 
                 #endregion
+
+                #region Email Sending
+                isEmailSent = await new AlertsSender().SendEmailCareer(parameters, postedFiles);
+
+                tblCareer.IsEmailSent = isEmailSent;
+
+                if (isEmailSent)
+                    tblCareer.EmailSentOn = DateTime.Now;
+                #endregion
+
+                await db.SaveChangesAsync();
 
                 _response.IsSuccess = true;
                 _response.Message = "Career details saved successfully.";

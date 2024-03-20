@@ -442,7 +442,6 @@ namespace OraRegaAV.Controllers.API
         public async Task<Response> GetPaymentList(PaymentListParameters parameters)
         {
             List<GetPaymentList_Result> lstResult;
-            int loggedInUserId = 0;
 
             try
             {
@@ -450,7 +449,7 @@ namespace OraRegaAV.Controllers.API
 
                 await Task.Run(() =>
                 {
-                    lstResult = db.GetPaymentList(parameters.InvoiceNumber.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                    lstResult = db.GetPaymentList(parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
                     _response.TotalCount = Convert.ToInt32(vTotal.Value);
                     _response.Data = lstResult;

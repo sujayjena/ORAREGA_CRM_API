@@ -309,7 +309,7 @@ namespace OraRegaAV.App_Start
                     name = "CustomerId",
                     @in = "formData",
                     type = "number",
-                    required = true,
+                    required = false,
                     description = "ID of currently logged-in customer"
                 });
 
@@ -318,7 +318,7 @@ namespace OraRegaAV.App_Start
                     name = "ServiceAddressId",
                     @in = "formData",
                     type = "number",
-                    required = true,
+                    required = false,
                     @default = "1"
                 });
 
@@ -376,7 +376,7 @@ namespace OraRegaAV.App_Start
                     name = "ProductModelId",
                     @in = "formData",
                     type = "number",
-                    required = true,
+                    required = false,
                     @default = "1"
                 });
 
@@ -394,7 +394,7 @@ namespace OraRegaAV.App_Start
                     name = "ProductNumber",
                     @in = "formData",
                     type = "string",
-                    required = true,
+                    required = false,
                     @default = "P0001"
                 });
 
@@ -403,7 +403,7 @@ namespace OraRegaAV.App_Start
                     name = "ProductSerialNo",
                     @in = "formData",
                     type = "string",
-                    required = true,
+                    required = false,
                     @default = "PSN0001"
                 });
 
@@ -420,7 +420,7 @@ namespace OraRegaAV.App_Start
                     name = "Comment",
                     @in = "formData",
                     type = "string",
-                    required = true,
+                    required = false,
                     @default = "Test Comment",
                     maxLength = ValidationConstant.Comment_MaxLength,
                     description = $"Max allowed length = {ValidationConstant.Comment_MaxLength}"
@@ -493,7 +493,7 @@ namespace OraRegaAV.App_Start
                     name = "MobileNo",
                     @in = "formData",
                     type = "string",
-                    required = true,
+                    required = false,
                     maxLength = ValidationConstant.MobileNumber_MaxLength,
                     pattern = ValidationConstant.MobileNumberRegExp,
                     description = $@"Customer Mobile Number <br /> In UI, if customer is exists with provided mobile no. <br />
@@ -508,7 +508,7 @@ namespace OraRegaAV.App_Start
                     name = "CustomerName",
                     @in = "formData",
                     type = "string",
-                    //required = true,
+                    required = false,
                     pattern = ValidationConstant.NameRegExp,
                     maxLength = ValidationConstant.Name_MaxLength,
                     description = $@"Format = FirstName LastName <br />
@@ -522,7 +522,7 @@ namespace OraRegaAV.App_Start
                     name = "EmailAddress",
                     @in = "formData",
                     type = "string",
-                    //required = true,
+                    required = false,
                     pattern = ValidationConstant.EmailRegExp,
                     maxLength = ValidationConstant.Email_MaxLength,
                     description = $@"If exists then automatically filled based on Mobile No. else <br /> new customer will be created <br />

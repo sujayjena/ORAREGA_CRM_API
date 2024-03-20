@@ -41,7 +41,7 @@ namespace OraRegaAV.DBEntity
         [Required(ErrorMessage = ValidationConstant.ProductModelRequired_Msg)]
         public int ProductModelId { get; set; }
 
-        [Required(ErrorMessage = ValidationConstant.ProdNumberRequired_Msg)]
+        //[Required(ErrorMessage = ValidationConstant.ProdNumberRequired_Msg)]
         [RegularExpression(ValidationConstant.ProdNumberRegExp, ErrorMessage = ValidationConstant.ProdNumberRegExp_Msg)]
         [MaxLength(ValidationConstant.ProdNumber_MaxLength, ErrorMessage = ValidationConstant.ProdNumber_MaxLength_Msg)]
         public string ProductNumber { get; set; }
@@ -49,7 +49,7 @@ namespace OraRegaAV.DBEntity
         [MaxLength(ValidationConstant.Comment_MaxLength, ErrorMessage = "More than 10 characters are not allowed for Issue Description")]
         public string IssueDesc { get; set; }
 
-        [Required(ErrorMessage = ValidationConstant.ProdSerialNoRequired_Msg)]
+        //[Required(ErrorMessage = ValidationConstant.ProdSerialNoRequired_Msg)]
         //[RegularExpression(ValidationConstant.ProdSerialNoRegExp, ErrorMessage = ValidationConstant.ProdSerialNoRegExp_Msg)]
         [MaxLength(ValidationConstant.ProdSerialNo_MaxLength, ErrorMessage = ValidationConstant.ProdSerialNo_MaxLength_Msg)]
         public string ProductSerialNo { get; set; }
@@ -104,7 +104,7 @@ namespace OraRegaAV.DBEntity
         [Required(ErrorMessage = ValidationConstant.CustomerNameRequired_Msg)]
         public int CustomerId { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = ValidationConstant.ServiceAddress_Required_Msg)]
+        //[Range(1, int.MaxValue, ErrorMessage = ValidationConstant.ServiceAddress_Required_Msg)]
         public int ServiceAddressId { get; set; }
 
         //[Required(ErrorMessage = ValidationConstant.AddressRequied_Msg)]
@@ -123,20 +123,20 @@ namespace OraRegaAV.DBEntity
         //[Required(ErrorMessage = ValidationConstant.PincodeRequied_Msg)]
         //public int ServicePincodeId { get; set; }
 
-        [Required(ErrorMessage = ValidationConstant.ProductModelRequired_Msg)]
+        //[Required(ErrorMessage = ValidationConstant.ProductModelRequired_Msg)]
         public int ProductModelId { get; set; }
 
-        [Required(ErrorMessage = ValidationConstant.ProdNumberRequired_Msg)]
+        //[Required(ErrorMessage = ValidationConstant.ProdNumberRequired_Msg)]
         [RegularExpression(ValidationConstant.ProdNumberRegExp, ErrorMessage = ValidationConstant.ProdNumberRegExp_Msg)]
         [MaxLength(ValidationConstant.ProdNumber_MaxLength, ErrorMessage = ValidationConstant.ProdNumber_MaxLength_Msg)]
         public string ProductNumber { get; set; }
 
-        [Required(ErrorMessage = ValidationConstant.ProdSerialNoRequired_Msg)]
+        //[Required(ErrorMessage = ValidationConstant.ProdSerialNoRequired_Msg)]
         [RegularExpression(ValidationConstant.ProdSerialNoRegExp, ErrorMessage = ValidationConstant.ProdSerialNoRegExp_Msg)]
         [MaxLength(ValidationConstant.ProdSerialNo_MaxLength, ErrorMessage = ValidationConstant.ProdSerialNo_MaxLength_Msg)]
         public string ProductSerialNo { get; set; }
 
-        [Required(ErrorMessage = ValidationConstant.IssueDescRequired_Msg)]
+        //[Required(ErrorMessage = ValidationConstant.IssueDescRequired_Msg)]
         public int IssueDescId { get; set; }
 
         [MaxLength(ValidationConstant.Comment_MaxLength, ErrorMessage = ValidationConstant.Comment_MaxLength_Msg)]

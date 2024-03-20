@@ -27,5 +27,7 @@ namespace OraRegaAV.DBEntity
         public string NoticePeriod { get; set; }
         public string ResumeFilePath { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<bool> IsEmailSent { get; set; }
+        public Nullable<System.DateTime> EmailSentOn { get; set; }
     }
 }

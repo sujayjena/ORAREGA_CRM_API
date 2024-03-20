@@ -4,6 +4,7 @@ using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -81,7 +82,8 @@ namespace OraRegaAV.Controllers.API
             GetSalesOrderStatusList_Result salesOrderStatusList_Result;
             try
             {
-                salesOrderStatusList_Result = await Task.Run(() => db.GetSalesOrderStatusList().ToList().Where(x => x.Id == Id).FirstOrDefault());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                salesOrderStatusList_Result = await Task.Run(() => db.GetSalesOrderStatusList(null, "", 0, 0, vTotal).ToList().Where(x => x.Id == Id).FirstOrDefault());
 
                 _response.Data = salesOrderStatusList_Result;
             }
@@ -98,14 +100,16 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/SalesOrderStatusAPI/GetSalesOrderStatusList")]
-        public async Task<Response> GetSalesOrderStatusList()
+        public async Task<Response> GetSalesOrderStatusList(SalesOrderStatusSerachParameter parameter)
         {
             List<GetSalesOrderStatusList_Result> salesOrderStatusList;
             try
             {
-                salesOrderStatusList = await Task.Run(() => db.GetSalesOrderStatusList().ToList());
+                var vTotal = new ObjectParameter("Total", typeof(int));
+                salesOrderStatusList = await Task.Run(() => db.GetSalesOrderStatusList(parameter.IsActive, parameter.SearchValue, parameter.PageSize, parameter.PageNo, vTotal).ToList());
 
                 _response.Data = salesOrderStatusList;
+                _response.TotalCount = Convert.ToInt32(vTotal.Value);
             }
             catch (Exception ex)
             {

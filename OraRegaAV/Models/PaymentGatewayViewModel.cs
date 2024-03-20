@@ -87,7 +87,8 @@ namespace OraRegaAV.Models
 
     public class PaymentListParameters
     {
-        public string InvoiceNumber { get; set; }
+        public string QuotationNumber { get; set; }
+        public string TransactionId { get; set; }
 
         public string SearchValue { get; set; }
 

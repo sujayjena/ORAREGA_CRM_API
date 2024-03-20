@@ -347,6 +347,7 @@
     <Content Include="DB_Changes\017_P.sql" />
     <Content Include="DB_Changes\018_P.sql" />
     <Content Include="DB_Changes\019_P.sql" />
+    <Content Include="EmailTemplates\CareerTemplate.html" />
     <Content Include="EmailTemplates\CustomerSignUpTemplate.html" />
     <Content Include="EmailTemplates\InitialCredentialTemplate.html" />
     <Content Include="EmailTemplates\ExtendWarrantyEnquiryReceived.html" />
@@ -1494,7 +1495,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53248</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53248/</IISUrl>
+          <IISUrl>http://localhost:63248/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

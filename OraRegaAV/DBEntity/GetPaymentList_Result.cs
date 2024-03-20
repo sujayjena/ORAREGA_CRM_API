@@ -15,8 +15,8 @@ namespace OraRegaAV.DBEntity
     {
         public int PaymentId { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
-        public string MerchantTransactionId { get; set; }
-        public string InvoiceNumber { get; set; }
+        public string TransactionId { get; set; }
+        public string QuotationNumber { get; set; }
         public string MobileNumber { get; set; }
         public Nullable<decimal> Amount { get; set; }
         public Nullable<bool> IsSuccess { get; set; }

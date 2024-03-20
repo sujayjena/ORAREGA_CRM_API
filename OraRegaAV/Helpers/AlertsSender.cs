@@ -275,10 +275,28 @@ namespace OraRegaAV.Helpers
                         var vProductDesc = await db.tblProductDescriptions.Where(p => p.Id == prod.ProdDescId).FirstOrDefaultAsync();
 
                         //string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
-                        string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : "Other";
+                        string strProductDesc = "";
+                        if (prod.ProdDescId == 0)
+                        {
+                            strProductDesc = "Other";
+                        }
+                        else
+                        {
+                            strProductDesc = vProductDesc != null ? vProductDesc.ProductDescription : string.Empty;
+                        }
+
+                        string strProductModel = "";
+                        if (prod.ProdModelId == 0)
+                        {
+                            strProductModel = "Other";
+                        }
+                        else
+                        {
+                            strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                        }
+
                         string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
                         string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
-                        string strProductDesc = vProductDesc != null ? vProductDesc.ProductDescription : "Other";
 
                         proofFileNames = new string[] { };
                         snapsFileNames = new string[] { };
@@ -657,6 +675,105 @@ namespace OraRegaAV.Helpers
                 }
 
                 result = await SendEmail("Welcome to Quikserv India - Your Registration is Complete!", emailTemplateContent, receiverEmail);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailCareer(tblCareer parameters, HttpFileCollection postedFiles)
+        {
+            bool result = false;
+            string templateFilePath, emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<string> attachedFileNames;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\CareerTemplate.html";
+                emailTemplateContent = File.ReadAllText(templateFilePath);
+                receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.CareersRelatedEnquiryEmail).FirstOrDefault().ConfigValue;
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                if (emailTemplateContent.IndexOf("[FirstName]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[FirstName]", $"{parameters.FirstName}");
+                }
+
+                if (emailTemplateContent.IndexOf("[LastName]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[LastName]", $"{parameters.LastName}");
+                }
+
+                if (emailTemplateContent.IndexOf("[Address]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Address]", parameters.Address);
+                }
+
+                if (emailTemplateContent.IndexOf("[Email]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Email]", parameters.EmailAddress);
+                }
+
+                if (emailTemplateContent.IndexOf("[Contact]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Contact]", parameters.MobileNo);
+                }
+
+                if (emailTemplateContent.IndexOf("[Position]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Position]", parameters.Position);
+                }
+
+                if (emailTemplateContent.IndexOf("[TotalExperience]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[TotalExperience]", parameters.TotalExperience);
+                }
+
+                if (emailTemplateContent.IndexOf("[Gender]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Gender]", parameters.Gender);
+                }
+
+                if (emailTemplateContent.IndexOf("[Branch]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Branch]", db.tblBranches.Where(s => s.Id == parameters.BranchId).Select(a => a.BranchName).FirstOrDefault());
+                }
+
+                if (emailTemplateContent.IndexOf("[NoticePeriod]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[NoticePeriod]", parameters.NoticePeriod);
+                }
+
+                if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                }
+
+                attachedFileNames = new List<string>();
+
+                foreach (string key in postedFiles.AllKeys)
+                {
+                    attachedFileNames.Add(postedFiles[key].FileName);
+                }
+
+                if (emailTemplateContent.IndexOf("[Resume]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[Resume]", string.Join(", ", attachedFileNames));
+                }
+
+                result = await SendEmail("New Job Application - " + parameters.Position, emailTemplateContent, receiverEmail, files: postedFiles);
             }
             catch (Exception ex)
             {
