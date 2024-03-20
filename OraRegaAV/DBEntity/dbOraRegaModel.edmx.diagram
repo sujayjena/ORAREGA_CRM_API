@@ -159,6 +159,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblBranchMapping" Width="1.5" PointX="37.375" PointY="11.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblInvoice" Width="1.5" PointX="37.375" PointY="14.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblPayment" Width="1.5" PointX="19.375" PointY="37.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPaymentPartDetail" Width="1.5" PointX="37.375" PointY="20.75" />
        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

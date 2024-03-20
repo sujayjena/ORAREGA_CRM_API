@@ -174,6 +174,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblQuotation> tblQuotations { get; set; }
         public virtual DbSet<tblQuotationLog> tblQuotationLogs { get; set; }
         public virtual DbSet<tblPayment> tblPayments { get; set; }
+        public virtual DbSet<tblPaymentPartDetail> tblPaymentPartDetails { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {

@@ -366,6 +366,7 @@ namespace OraRegaAV.Controllers.API
                         QuotationNumber = parameters.paymentRequest.QuotationNumber,
                         MerchantTransactionId = parameters.paymentRequest.MerchantTransactionId,
                         MobileNumber = parameters.paymentRequest.MobileNumber,
+                        IsAdvance = false,
                         Amount = Convert.ToDecimal(parameters.paymentRequest.Amount / 100),
                         AmountInPaisa = Convert.ToDecimal(parameters.paymentRequest.Amount),
                         IsSuccess = false,
@@ -377,8 +378,26 @@ namespace OraRegaAV.Controllers.API
                         CreatedBy = Utilities.GetUserID(ActionContext.Request)
                     };
 
+                    if (parameters.paymentRequest.PaymentIsAdvance == true)
+                    {
+                        tbl.IsAdvance = true;
+                    }
+
                     db.tblPayments.Add(tbl);
                     db.SaveChanges();
+
+                    // Save Part List
+                    foreach (var item in parameters.paymentRequest.PartList)
+                    {
+                        var vtblPaymentPartDetail = new tblPaymentPartDetail()
+                        {
+                            PaymentId = tbl.Id,
+                            PartId = item.PartId
+                        };
+
+                        db.tblPaymentPartDetails.Add(vtblPaymentPartDetail);
+                        db.SaveChanges();
+                    }
                 }
                 else
                 {
@@ -441,7 +460,7 @@ namespace OraRegaAV.Controllers.API
         [Route("api/PaymentGatewayAPI/GetPaymentList")]
         public async Task<Response> GetPaymentList(PaymentListParameters parameters)
         {
-            List<GetPaymentList_Result> lstResult;
+            List<GetPaymentList_Response> lstResult = new List<GetPaymentList_Response>();
 
             try
             {
@@ -449,7 +468,47 @@ namespace OraRegaAV.Controllers.API
 
                 await Task.Run(() =>
                 {
-                    lstResult = db.GetPaymentList(parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                    var vResultList = db.GetPaymentList(parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+                    foreach (var item in vResultList)
+                    {
+                        var vGetPaymentList_Response = new GetPaymentList_Response();
+
+                        vGetPaymentList_Response.PaymentId = item.PaymentId;
+                        vGetPaymentList_Response.PaymentDate = item.PaymentDate;
+                        vGetPaymentList_Response.TransactionId = item.TransactionId;
+                        vGetPaymentList_Response.QuotationNumber = item.QuotationNumber;
+                        vGetPaymentList_Response.MobileNumber = item.MobileNumber;
+                        vGetPaymentList_Response.Amount = item.Amount;
+                        vGetPaymentList_Response.IsSuccess = item.IsSuccess;
+                        vGetPaymentList_Response.PaymentStatus = item.PaymentStatus;
+                        vGetPaymentList_Response.PaymentMessage = item.PaymentMessage;
+                        vGetPaymentList_Response.RequestJson = item.RequestJson;
+                        vGetPaymentList_Response.ResponseJson = item.ResponseJson;
+                        vGetPaymentList_Response.CreatedBy = item.CreatedBy;
+                        vGetPaymentList_Response.CreatorName = item.CreatorName;
+                        vGetPaymentList_Response.ModifiedDate = item.ModifiedDate;
+                        vGetPaymentList_Response.ModifyName = item.ModifyName;
+
+
+                        var vtblPaymentPartDetail = db.tblPaymentPartDetails.Where(record => record.PaymentId == item.PaymentId).ToList();
+                        foreach (var itemPartDetail in vtblPaymentPartDetail)
+                        {
+                            var vtblPartDetail = db.tblPartDetails.Where(record => record.Id == itemPartDetail.PartId).FirstOrDefault();
+                            if (vtblPartDetail != null)
+                            {
+                                var vPaymentPartList_Response = new PaymentPartList_Response()
+                                {
+                                    PartId = itemPartDetail.PartId,
+                                    UniqueCode = vtblPartDetail.UniqueCode
+                                };
+
+                                vGetPaymentList_Response.PartList.Add(vPaymentPartList_Response);
+                            }
+                        }
+
+                        lstResult.Add(vGetPaymentList_Response);
+                    };
 
                     _response.TotalCount = Convert.ToInt32(vTotal.Value);
                     _response.Data = lstResult;

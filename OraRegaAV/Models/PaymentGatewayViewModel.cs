@@ -37,6 +37,11 @@ namespace OraRegaAV.Models
 
     public class PaymentRequest
     {
+        public PaymentRequest()
+        {
+            PartList = new List<PaymentPartList_Request>();
+        }
+
         [Required(ErrorMessage = "QuotationNumber is required")]
         public string QuotationNumber { get; set; }
 
@@ -52,6 +57,8 @@ namespace OraRegaAV.Models
         public string MobileNumber { get; set; }
 
         public string MerchantTransactionId { get; set; }
+
+        public List<PaymentPartList_Request> PartList { get; set; }
     }
 
     public class RequestPayload
@@ -115,5 +122,42 @@ namespace OraRegaAV.Models
         public string RequestJson { get; set; }
 
         public string ResponseJson { get; set; }
+    }
+
+    public class PaymentPartList_Request
+    {
+        public int? PartId { get; set; }
+    }
+
+    public class GetPaymentList_Response
+    {
+        public GetPaymentList_Response()
+        {
+            PartList = new List<PaymentPartList_Response>();
+        }
+
+        public int PaymentId { get; set; }
+        public Nullable<System.DateTime> PaymentDate { get; set; }
+        public string TransactionId { get; set; }
+        public string QuotationNumber { get; set; }
+        public string MobileNumber { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public Nullable<bool> IsSuccess { get; set; }
+        public string PaymentStatus { get; set; }
+        public string PaymentMessage { get; set; }
+        public string RequestJson { get; set; }
+        public string ResponseJson { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public string CreatorName { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string ModifyName { get; set; }
+
+        public List<PaymentPartList_Response> PartList { get; set; }
+    }
+
+    public class PaymentPartList_Response
+    {
+        public long? PartId { get; set; }
+        public string UniqueCode { get; set; }
     }
 }

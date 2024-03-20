@@ -1031,6 +1031,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="QuotationNumber" Type="nvarchar" MaxLength="100" />
           <Property Name="MerchantTransactionId" Type="nvarchar" MaxLength="100" />
           <Property Name="MobileNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="IsAdvance" Type="bit" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AmountInPaisa" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsSuccess" Type="bit" />
@@ -1042,6 +1043,14 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblPaymentPartDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentId" Type="bigint" />
+          <Property Name="PartId" Type="bigint" />
         </EntityType>
         <EntityType Name="tblPaymentPolicy">
           <Key>
@@ -3336,6 +3345,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblPartsAllocatedToReturn" EntityType="Self.tblPartsAllocatedToReturn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPartsAllocatedToWorkOrder" EntityType="Self.tblPartsAllocatedToWorkOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPayment" EntityType="Self.tblPayment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPaymentPartDetail" EntityType="Self.tblPaymentPartDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPaymentPolicy" EntityType="Self.tblPaymentPolicy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPaymentTerm" EntityType="Self.tblPaymentTerm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPermanentAddress" EntityType="Self.tblPermanentAddress" Schema="dbo" store:Type="Tables" />
@@ -5303,8 +5313,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
-          <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
-          <FunctionImport Name="GetWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderList_Result)">
+           <FunctionImport Name="GetWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
@@ -5346,6 +5355,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
+          <EntitySet Name="tblPaymentPartDetails" EntityType="dbOraRegaModel.tblPaymentPartDetail" />
            </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
@@ -9004,27 +9015,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
         </EntityType>
-        <EntityType Name="tblPayment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuotationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IsSuccess" Type="Boolean" />
-          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-        </EntityType>
-        <ComplexType Name="GetWorkOrderList_Result">
+         <ComplexType Name="GetWorkOrderList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="SupportTypeId" Nullable="true" />
@@ -9184,6 +9175,35 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="ModifyName" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdvance" Type="Boolean" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsSuccess" Type="Boolean" />
+          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblPaymentPartDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentId" Type="Int64" />
+          <Property Name="PartId" Type="Int64" />
+        </EntityType>
   
       </Schema>
     </edmx:ConceptualModels>
@@ -14149,28 +14169,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblPayments">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
-              <MappingFragment StoreEntitySet="tblPayment">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
-                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
-                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
-                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
-                <ScalarProperty Name="AmountInPaisa" ColumnName="AmountInPaisa" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetWorkOrderList" FunctionName="dbOraRegaModel.Store.GetWorkOrderList">
+           <FunctionImportMapping FunctionImportName="GetWorkOrderList" FunctionName="dbOraRegaModel.Store.GetWorkOrderList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -14362,6 +14361,37 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tblPayments">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
+              <MappingFragment StoreEntitySet="tblPayment">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
+                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
+                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
+                <ScalarProperty Name="AmountInPaisa" ColumnName="AmountInPaisa" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IsAdvance" ColumnName="IsAdvance" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPaymentPartDetails">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblPaymentPartDetail">
+              <MappingFragment StoreEntitySet="tblPaymentPartDetail">
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
            </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
