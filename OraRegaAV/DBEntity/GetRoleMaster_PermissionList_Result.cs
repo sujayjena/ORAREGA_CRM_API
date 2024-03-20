@@ -13,12 +13,13 @@ namespace OraRegaAV.DBEntity
     
     public partial class GetRoleMaster_PermissionList_Result
     {
+        public long RoleId { get; set; }
         public long ModuleId { get; set; }
         public string ModuleName { get; set; }
         public string AppType { get; set; }
-        public Nullable<bool> View { get; set; }
-        public Nullable<bool> Add { get; set; }
-        public Nullable<bool> Edit { get; set; }
+        public int viewData { get; set; }
+        public int AddData { get; set; }
+        public int Edit { get; set; }
         public Nullable<bool> IsActive { get; set; }
     }
 }

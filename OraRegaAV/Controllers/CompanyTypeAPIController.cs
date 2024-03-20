@@ -193,6 +193,7 @@ namespace OraRegaAV.Controllers.API
                     tbl.AreaId = parameters.AreaId;
                     tbl.GSTNumber = parameters.GSTNumber;
                     tbl.PANNumber = parameters.PANNumber;
+                    tbl.BranchAdd = parameters.BranchAdd;
                     tbl.IsActive = parameters.IsActive;
                     tbl.CompanyLogo = parameters.CompanyLogo;
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
@@ -307,6 +308,7 @@ namespace OraRegaAV.Controllers.API
                     tbl.AreaId = parameters.AreaId;
                     tbl.GSTNumber = parameters.GSTNumber;
                     tbl.PANNumber = parameters.PANNumber;
+                    tbl.BranchAdd = parameters.BranchAdd;
                     tbl.IsActive = parameters.IsActive;
                     tbl.CompanyLogo = parameters.CompanyLogo;
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);

@@ -4362,11 +4362,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <FunctionImport Name="GetRoleDetailsById" ReturnType="Collection(dbOraRegaModel.GetRoleDetailsById_Result)">
           <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="GetRoleMaster_PermissionList" ReturnType="Collection(dbOraRegaModel.GetRoleMaster_PermissionList_Result)">
-            <Parameter Name="RoleId" Mode="In" Type="Int32" />
-            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetRoles" ReturnType="Collection(dbOraRegaModel.GetRoles_Result)">
+           <FunctionImport Name="GetRoles" ReturnType="Collection(dbOraRegaModel.GetRoles_Result)">
           <Parameter Name="RoleName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SaveRoleDetails" ReturnType="Collection(Int64)">
@@ -5336,6 +5332,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
           <EntitySet Name="tblPaymentPartDetails" EntityType="dbOraRegaModel.tblPaymentPartDetail" />
           <EntitySet Name="tblCompanies" EntityType="dbOraRegaModel.tblCompany" />
+          <FunctionImport Name="GetRoleMaster_PermissionList" ReturnType="Collection(dbOraRegaModel.GetRoleMaster_PermissionList_Result)">
+            <Parameter Name="RoleId" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        
            </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
@@ -5952,16 +5953,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="RoleName" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="GetRoleMaster_PermissionList_Result">
-          <Property Type="Int64" Name="ModuleId" Nullable="false" />
-          <Property Type="String" Name="ModuleName" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="AppType" Nullable="false" MaxLength="1" />
-          <Property Type="Boolean" Name="View" Nullable="true" />
-          <Property Type="Boolean" Name="Add" Nullable="true" />
-          <Property Type="Boolean" Name="Edit" Nullable="true" />
-          <Property Type="Boolean" Name="IsActive" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="GetRoles_Result">
+         <ComplexType Name="GetRoles_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="RoleName" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
@@ -9216,6 +9208,17 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="PANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BranchAdd" Type="Int32" Nullable="false" />
         </EntityType>
+        <ComplexType Name="GetRoleMaster_PermissionList_Result">
+          <Property Type="Int64" Name="RoleId" Nullable="false" />
+          <Property Type="Int64" Name="ModuleId" Nullable="false" />
+          <Property Type="String" Name="ModuleName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AppType" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="viewData" Nullable="false" />
+          <Property Type="Int32" Name="AddData" Nullable="false" />
+          <Property Type="Int32" Name="Edit" Nullable="false" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+        </ComplexType>
+         
   
       </Schema>
     </edmx:ConceptualModels>
@@ -10610,20 +10613,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetRoleMaster_PermissionList" FunctionName="dbOraRegaModel.Store.GetRoleMaster_PermissionList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetRoleMaster_PermissionList_Result">
-                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
-                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
-                <ScalarProperty Name="AppType" ColumnName="AppType" />
-                <ScalarProperty Name="View" ColumnName="View" />
-                <ScalarProperty Name="Add" ColumnName="Add" />
-                <ScalarProperty Name="Edit" ColumnName="Edit" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetRoles" FunctionName="dbOraRegaModel.Store.GetRoles">
+           <FunctionImportMapping FunctionImportName="GetRoles" FunctionName="dbOraRegaModel.Store.GetRoles">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetRoles_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -14409,6 +14399,21 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetRoleMaster_PermissionList" FunctionName="dbOraRegaModel.Store.GetRoleMaster_PermissionList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetRoleMaster_PermissionList_Result">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="AppType" ColumnName="AppType" />
+                <ScalarProperty Name="viewData" ColumnName="viewData" />
+                <ScalarProperty Name="AddData" ColumnName="AddData" />
+                <ScalarProperty Name="Edit" ColumnName="Edit" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+       
            </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

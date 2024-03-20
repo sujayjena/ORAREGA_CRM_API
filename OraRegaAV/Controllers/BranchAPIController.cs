@@ -47,13 +47,13 @@ namespace OraRegaAV.Controllers.API
                     if (iBranchCanAdd == tblBranchesList.Count)
                     {
                         _response.IsSuccess = false;
-                        _response.Message = "You are not allowed to create a branch more then " + iBranchCanAdd + ", Please contact your administrator to access this feature!";
+                        _response.Message = "You are not allowed to create more then " + iBranchCanAdd + " branch, Please contact your administrator to access this feature!";
                         return _response;
                     }
                     else if (tblBranchesList.Count > iBranchCanAdd)
                     {
                         _response.IsSuccess = false;
-                        _response.Message = "You are not allowed to create a branch more then " + iBranchCanAdd + ", Please contact your administrator to access this feature!";
+                        _response.Message = "You are not allowed to create more then " + iBranchCanAdd + " branch, Please contact your administrator to access this feature!";
                         return _response;
                     }
                 }

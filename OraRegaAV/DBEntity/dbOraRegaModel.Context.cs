@@ -470,19 +470,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleDetailsById_Result>("GetRoleDetailsById", idParameter);
         }
     
-        public virtual ObjectResult<GetRoleMaster_PermissionList_Result> GetRoleMaster_PermissionList(Nullable<int> roleId, Nullable<int> employeeId)
-        {
-            var roleIdParameter = roleId.HasValue ?
-                new ObjectParameter("RoleId", roleId) :
-                new ObjectParameter("RoleId", typeof(int));
-    
-            var employeeIdParameter = employeeId.HasValue ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleMaster_PermissionList_Result>("GetRoleMaster_PermissionList", roleIdParameter, employeeIdParameter);
-        }
-    
         public virtual ObjectResult<GetRoles_Result> GetRoles(string roleName)
         {
             var roleNameParameter = roleName != null ?
@@ -3373,6 +3360,19 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", workOrderNumberParameter, quotationNumberParameter, transactionIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetRoleMaster_PermissionList_Result> GetRoleMaster_PermissionList(Nullable<int> roleId, Nullable<int> employeeId)
+        {
+            var roleIdParameter = roleId.HasValue ?
+                new ObjectParameter("RoleId", roleId) :
+                new ObjectParameter("RoleId", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRoleMaster_PermissionList_Result>("GetRoleMaster_PermissionList", roleIdParameter, employeeIdParameter);
         }
     }
 }
