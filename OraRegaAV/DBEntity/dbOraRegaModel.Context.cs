@@ -3346,8 +3346,12 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ImportCustomer_Result>("ImportCustomer", xmlCustomerDataParameter, loggedInUserIdParameter);
         }
     
-        public virtual ObjectResult<GetPaymentList_Result> GetPaymentList(string quotationNumber, string transactionId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetPaymentList_Result> GetPaymentList(string workOrderNumber, string quotationNumber, string transactionId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
+            var workOrderNumberParameter = workOrderNumber != null ?
+                new ObjectParameter("WorkOrderNumber", workOrderNumber) :
+                new ObjectParameter("WorkOrderNumber", typeof(string));
+    
             var quotationNumberParameter = quotationNumber != null ?
                 new ObjectParameter("QuotationNumber", quotationNumber) :
                 new ObjectParameter("QuotationNumber", typeof(string));
@@ -3368,7 +3372,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", pageNo) :
                 new ObjectParameter("PageNo", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", quotationNumberParameter, transactionIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", workOrderNumberParameter, quotationNumberParameter, transactionIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }

@@ -2711,6 +2711,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="Total" Type="int" Mode="InOut" />
         </Function>
         <Function Name="GetPaymentList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="WorkOrderNumber" Type="varchar" Mode="In" />
           <Parameter Name="QuotationNumber" Type="varchar" Mode="In" />
           <Parameter Name="TransactionId" Type="varchar" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
@@ -5348,6 +5349,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="GetPaymentList" ReturnType="Collection(dbOraRegaModel.GetPaymentList_Result)">
+            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
             <Parameter Name="QuotationNumber" Mode="In" Type="String" />
             <Parameter Name="TransactionId" Mode="In" Type="String" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />

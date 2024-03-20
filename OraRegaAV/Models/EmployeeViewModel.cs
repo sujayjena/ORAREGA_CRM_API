@@ -52,9 +52,13 @@ public class Employee_Response
     public int CompanyId { get; set; }
     public bool IsTemporaryAddressIsSame { get; set; }
 
-    public byte[] ProfileImage { get; set; }
-    public byte[] AadharCard { get; set; }
-    public byte[] PanCard { get; set; }
+    //public byte[] ProfileImage { get; set; }
+    //public byte[] AadharCard { get; set; }
+    //public byte[] PanCard { get; set; }
+
+    public string ProfilePicture { get; set; }
+    public string AadharCardPicture { get; set; }
+    public string PanCardPicture { get; set; }
 
     public List<EmployeeBranch> BranchList { get; set; }
     public List<tblPermanentAddress> PermanentAddress { get; set; }

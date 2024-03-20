@@ -30,26 +30,55 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/VendorAPI/SaveVendorDetail")]
-        public async Task<Response> SaveVendorDetail(tblVendor objTblVendor)
+        public async Task<Response> SaveVendorDetail(VendorRequest objTblVendor)
         {
-            tblVendor tblVendorDetail;
-
             try
             {
-                tblVendorDetail = db.tblVendors.Where(record => record.Id == objTblVendor.Id).FirstOrDefault();
+                var tblVendorDetail = db.tblVendors.Where(record => record.Id == objTblVendor.Id).FirstOrDefault();
 
                 if (tblVendorDetail == null)
                 {
                     tblVendorDetail = new tblVendor();
-                    tblVendorDetail = objTblVendor;
+                    tblVendorDetail.Name = objTblVendor.Name;
+                    tblVendorDetail.ContactPerson = objTblVendor.ContactPerson;
+                    tblVendorDetail.Address = objTblVendor.Address;
+                    tblVendorDetail.MobileNo = objTblVendor.MobileNo;
+                    tblVendorDetail.EmailId = objTblVendor.EmailId;
+                    tblVendorDetail.CountryId = objTblVendor.CountryId;
+                    tblVendorDetail.StateId = objTblVendor.StateId;
+                    tblVendorDetail.CityId = objTblVendor.CityId;
+                    tblVendorDetail.AreaId = objTblVendor.AreaId;
+                    tblVendorDetail.PinCodeId = objTblVendor.PinCodeId;
+                    tblVendorDetail.BillingName = objTblVendor.BillingName;
+                    tblVendorDetail.BillingAddress = objTblVendor.BillingAddress;
+                    tblVendorDetail.GSTNo = objTblVendor.GSTNo;
+                    tblVendorDetail.AccountNo = objTblVendor.AccountNo;
+                    tblVendorDetail.IFSCCode = objTblVendor.IFSCCode;
+                    tblVendorDetail.IsActive = objTblVendor.IsActive;
+
                     tblVendorDetail.CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0); 
                     tblVendorDetail.CreatedDate = DateTime.Now;
                     _response.Message = "Vendor details saved successfully";
                 }
                 else
                 {
-                    tblVendorDetail = new tblVendor();
-                    tblVendorDetail = objTblVendor;
+                    tblVendorDetail.Name = objTblVendor.Name;
+                    tblVendorDetail.ContactPerson = objTblVendor.ContactPerson;
+                    tblVendorDetail.Address = objTblVendor.Address;
+                    tblVendorDetail.MobileNo = objTblVendor.MobileNo;
+                    tblVendorDetail.EmailId = objTblVendor.EmailId;
+                    tblVendorDetail.CountryId = objTblVendor.CountryId;
+                    tblVendorDetail.StateId = objTblVendor.StateId;
+                    tblVendorDetail.CityId = objTblVendor.CityId;
+                    tblVendorDetail.AreaId = objTblVendor.AreaId;
+                    tblVendorDetail.PinCodeId = objTblVendor.PinCodeId;
+                    tblVendorDetail.BillingName = objTblVendor.BillingName;
+                    tblVendorDetail.BillingAddress = objTblVendor.BillingAddress;
+                    tblVendorDetail.GSTNo = objTblVendor.GSTNo;
+                    tblVendorDetail.AccountNo = objTblVendor.AccountNo;
+                    tblVendorDetail.IFSCCode = objTblVendor.IFSCCode;
+                    tblVendorDetail.IsActive = objTblVendor.IsActive;
+
                     tblVendorDetail.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                     tblVendorDetail.ModifiedDate = DateTime.Now;
                     _response.Message = "Vendor details updated successfully";

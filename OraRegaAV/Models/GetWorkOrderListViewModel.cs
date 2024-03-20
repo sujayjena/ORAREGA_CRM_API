@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OraRegaAV.DBEntity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -111,6 +112,7 @@ namespace OraRegaAV.Models
         public List<string> IssueSnapsList { get; set; }
         public List<string> PurchaseProofPhotoList { get; set; }
         public int IsQuotationGenerated { get; set; }
+        public List<GetPaymentList_Result> PaymentDetails { get; set; }
     }   
 
     public class WORepairRemark

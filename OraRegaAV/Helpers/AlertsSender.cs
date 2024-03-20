@@ -282,7 +282,7 @@ namespace OraRegaAV.Helpers
                         }
                         else
                         {
-                            strProductDesc = vProductDesc != null ? vProductDesc.ProductDescription : string.Empty;
+                            strProductDesc = vProductDesc != null ? vProductDesc.ProductDescription : "Other";
                         }
 
                         string strProductModel = "";
@@ -292,7 +292,7 @@ namespace OraRegaAV.Helpers
                         }
                         else
                         {
-                            strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
+                            strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : "Other";
                         }
 
                         string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;

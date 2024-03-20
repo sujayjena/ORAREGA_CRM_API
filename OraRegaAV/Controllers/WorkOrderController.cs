@@ -1142,6 +1142,11 @@ namespace OraRegaAV.Controllers
                     workOrderListObj.IssueSnapsList = lstIssueSnaps;
                     workOrderListObj.PurchaseProofPhotoList = lstPurchaseProofPhoto;
 
+                    //get payment details
+                    var vTotal = new ObjectParameter("Total", typeof(int));
+                    var paymentList = db.GetPaymentList(workOrderObj.WorkOrderNumber, "", "", "", 0, 0, vTotal).ToList();
+                    workOrderListObj.PaymentDetails = paymentList;
+
                     _response.Data = workOrderListObj;
                 }
             }

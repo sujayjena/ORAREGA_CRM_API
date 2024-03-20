@@ -6,7 +6,7 @@ namespace OraRegaAV.DBEntity
 {
     public class TblPurchaseProofPhotosMetadata
     {
-        [RegularExpression(ValidationConstant.ImageFileRegExp, ErrorMessage = ValidationConstant.ImageFileRegExp_Msg)]
+        //[RegularExpression(ValidationConstant.ImageFileRegExp, ErrorMessage = ValidationConstant.ImageFileRegExp_Msg)]
         public string PhotoPath { get; set; }
     }
 

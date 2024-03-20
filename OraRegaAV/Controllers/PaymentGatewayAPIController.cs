@@ -468,7 +468,7 @@ namespace OraRegaAV.Controllers.API
 
                 await Task.Run(() =>
                 {
-                    var vResultList = db.GetPaymentList(parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                    var vResultList = db.GetPaymentList(parameters.WorkOrderNumber,parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
                     foreach (var item in vResultList)
                     {

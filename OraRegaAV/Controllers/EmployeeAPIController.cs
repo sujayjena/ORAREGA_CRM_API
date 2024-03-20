@@ -1077,6 +1077,7 @@ namespace OraRegaAV.Controllers.API
 
             FileManager fileManager = new FileManager();
             tblEmployee employee;
+            var host = Url.Content("~/");
 
             var employeeReponse = new Employee_Response();
 
@@ -1132,19 +1133,25 @@ namespace OraRegaAV.Controllers.API
                     if (!string.IsNullOrEmpty(employee.ProfileImagePath))
                     {
                         employeeReponse.ProfileImagePath = employee.ProfileImagePath;
-                        employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
+                        var path = host + "Uploads/ProfilePicture/" + employee.ProfileImagePath;
+                        employeeReponse.ProfilePicture = path;
+                        //employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
                     }
 
                     if (!string.IsNullOrEmpty(employee.AadharCardPath))
                     {
                         employeeReponse.AadharCardPath = employee.AadharCardPath;
-                        employeeReponse.AadharCard = fileManager.GetEmpDocuments(employee.AadharCardPath, HttpContext.Current);
+                        var path = host + "Uploads/Documents/" + employee.AadharCardPath;
+                        employeeReponse.AadharCardPicture = path;
+                        //employeeReponse.AadharCard = fileManager.GetEmpDocuments(employee.AadharCardPath, HttpContext.Current);
                     }
 
                     if (!string.IsNullOrEmpty(employee.PanCardPath))
                     {
                         employeeReponse.PanCardPath = employee.PanCardPath;
-                        employeeReponse.PanCard = fileManager.GetEmpDocuments(employee.PanCardPath, HttpContext.Current);
+                        var path = host + "Uploads/Documents/" + employee.PanCardPath;
+                        employeeReponse.PanCardPicture = path;
+                        //employeeReponse.PanCard = fileManager.GetEmpDocuments(employee.PanCardPath, HttpContext.Current);
                     }
 
                     if (userDetail != null)
@@ -1197,6 +1204,7 @@ namespace OraRegaAV.Controllers.API
         {
             FileManager fileManager = new FileManager();
             tblEmployee employee;
+            var host = Url.Content("~/");
 
             var employeeReponse = new Employee_Response();
             try
@@ -1226,7 +1234,9 @@ namespace OraRegaAV.Controllers.API
                     if (!string.IsNullOrEmpty(employee.ProfileImagePath))
                     {
                         employeeReponse.ProfileImagePath = employee.ProfileImagePath;
-                        employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
+                        var path = host + "Uploads/ProfilePicture/" + employee.ProfileImagePath;
+                        employeeReponse.ProfilePicture = path;
+                        //employeeReponse.ProfileImage = fileManager.GetEmpProfilePicture(employee.ProfileImagePath, HttpContext.Current);
                     }
 
                     var vBranckObjList = await db.tblBranchMappings.Where(x => x.EmployeeId == employee.Id).ToListAsync();
