@@ -57,6 +57,7 @@ namespace OraRegaAV.Controllers
             List<HttpPostedFile> postedFilesProductIssuePhotos;
             List<HttpPostedFile> postedFilesPurchaseProofPhotos;
             FileManager fileManager = new FileManager();
+            SmsSender smsSender = new SmsSender();
 
             bool isAllTheIssuePhotoValid = true;
             bool isAllTheProofPhotoValid = true;
@@ -663,6 +664,13 @@ namespace OraRegaAV.Controllers
                             tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
 
                             db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+
+
+                            #region Send SMS
+
+                            smsSender.SMSSend_WorkOrderAllocateToEngineer(parameters.WorkOrderNumber);
+
+                            #endregion
                         }
 
                     }
@@ -674,6 +682,12 @@ namespace OraRegaAV.Controllers
                         tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
 
                         db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+
+                        #region Send SMS
+
+                        smsSender.SMSSend_WorkOrderAllocateToEngineer(parameters.WorkOrderNumber);
+
+                        #endregion
                     }
 
                     await db.SaveChangesAsync();
@@ -695,6 +709,7 @@ namespace OraRegaAV.Controllers
         public async Task<Response> UpdateWorkOrder(string workOrderNumber, int OrderStatusId, int EngineerId)
         {
             tblWorkOrder tblWorkOrder;
+            SmsSender smsSender = new SmsSender();
 
             try
             {
@@ -723,6 +738,12 @@ namespace OraRegaAV.Controllers
                                 tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
 
                                 db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+
+                                #region Send SMS
+
+                                smsSender.SMSSend_WorkOrderAllocateToEngineer(workOrderNumber);
+
+                                #endregion
                             }
 
                         }
@@ -734,6 +755,12 @@ namespace OraRegaAV.Controllers
                             tblWorkOrderEngineerAllocatedHistory.CreatedDate = DateTime.Now;
 
                             db.tblWorkOrderEngineerAllocatedHistories.Add(tblWorkOrderEngineerAllocatedHistory);
+
+                            #region Send SMS
+
+                            smsSender.SMSSend_WorkOrderAllocateToEngineer(workOrderNumber);
+
+                            #endregion
                         }
 
                         await db.SaveChangesAsync();
@@ -774,6 +801,8 @@ namespace OraRegaAV.Controllers
         {
             try
             {
+                SmsSender smsSender = new SmsSender();
+
                 if (ActionContext.Request.Properties.ContainsKey("UserId"))
                 {
                     var vWorkOrderEngineerObj = await db.tblWorkOrders.Where(w => w.WorkOrderNumber == parameters.WorkOrderNumber).FirstOrDefaultAsync();
@@ -808,6 +837,19 @@ namespace OraRegaAV.Controllers
                             await db.SaveChangesAsync();
 
                             _response.Message = $"updated";
+
+                            #region Send SMS
+
+                            if (parameters.OrderStatusId == 2) // Accepted
+                            {
+                                smsSender.SMSSend_EngineerAcceptWorkOrder(parameters.WorkOrderNumber);
+                            }
+                            else if (parameters.OrderStatusId == 3) // Rejected
+                            {
+                                smsSender.SMSSend_EngineerRejectWorkOrder(parameters.WorkOrderNumber);
+                            }
+
+                            #endregion
                         }
                     }
                     if (_response.Message != null && _response.Message.Length > 0)
@@ -1540,6 +1582,8 @@ namespace OraRegaAV.Controllers
         {
             try
             {
+                SmsSender smsSender = new SmsSender();
+
                 //var vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM <= parameters.Distance).FirstOrDefault();
                 var vRatePerKMsObj = new tblRatePerKM();
                 var vRatePerKMs = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId && x.KM >= parameters.Distance).OrderBy(x => x.KM).FirstOrDefault();
@@ -1612,6 +1656,12 @@ namespace OraRegaAV.Controllers
 
                         await db.SaveChangesAsync();
                     }
+
+                    #endregion
+
+                    #region Send SMS
+
+                    smsSender.SMSSend_EngineerStartTravel(parameters.WorkOrderNumber);
 
                     #endregion
 

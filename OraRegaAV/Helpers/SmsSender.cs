@@ -18,6 +18,9 @@ using Newtonsoft.Json.Linq;
 using Swashbuckle.Swagger;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Math;
 
 namespace OraRegaAV.Helpers
 {
@@ -125,27 +128,290 @@ namespace OraRegaAV.Helpers
 
         public string SMSSend_SteviaDigital(string MobileNumber, string Message)
         {
-            //Your authentication key  
-            string authKey = "D!~9573TbvMxRzLq4";
+            string strResponse = "";
 
-            //Multiple mobiles numbers separated by comma  
-            string mobileNumber = MobileNumber;
+            try
+            {
+                //Your authentication key  
+                string authKey = "D!~9573TbvMxRzLq4";
 
-            //Sender ID,While using route4 sender id should be 6 characters long.  
-            string senderId = "QSERVO";
+                //Multiple mobiles numbers separated by comma  
+                string mobileNumber = MobileNumber;
 
-            //Your message to send, Add URL encoding here.  
-            string message = HttpUtility.UrlEncode(Message);
+                //Sender ID,While using route4 sender id should be 6 characters long.  
+                string senderId = "QSERVO";
 
-            WebClient client = new WebClient();
-            string baseurl = "https://sms.steviadigital.com/API/sms-api.php?auth=" + authKey + "&senderid=" + senderId + "&msisdn=" + mobileNumber + "&message=" + message;
-            Stream data = client.OpenRead(baseurl);
-            StreamReader reader = new StreamReader(data);
-            string s = reader.ReadToEnd();
-            data.Close();
-            reader.Close();
+                //Your message to send, Add URL encoding here.  
+                string message = HttpUtility.UrlEncode(Message);
 
-            return s;
+                WebClient client = new WebClient();
+                string baseurl = "https://sms.steviadigital.com/API/sms-api.php?auth=" + authKey + "&senderid=" + senderId + "&msisdn=" + mobileNumber + "&message=" + message;
+                Stream data = client.OpenRead(baseurl);
+                StreamReader reader = new StreamReader(data);
+                strResponse = reader.ReadToEnd();
+                data.Close();
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return strResponse;
+        }
+
+
+        public string SMSSend_WorkOrderConvert(string WorkOrderNumber)
+        {
+            string strResponse = "";
+
+            try
+            {
+                string MobileNumber = string.Empty;
+
+                //Your authentication key  
+                string Message = @"Dear Customer,
+                                   Greeting…! 
+                                   We received Work order <WONo>. An engineer will be deployed soon.
+                                   Thanks…      
+                                   For any queries, please contact:
+                                   Email: support@quikservindia.com
+                                   Phone: +917030087300";
+
+                //Replace parameter 
+                Message = Message.Replace("[WONo]", WorkOrderNumber);
+
+                var vtblObj = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj != null)
+                {
+                    var vCustomerObj = db.tblCustomers.Where(wo => wo.Id == vtblObj.CustomerId).FirstOrDefault();
+                    if (vCustomerObj != null)
+                    {
+                        MobileNumber = vCustomerObj.Mobile;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber))
+                {
+                    SMSSend_SteviaDigital(MobileNumber, Message);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return strResponse;
+        }
+
+        public string SMSSend_WorkOrderAllocateToEngineer(string WorkOrderNumber)
+        {
+            string strResponse = "";
+
+            try
+            {
+                string MobileNumber = string.Empty;
+
+                //Your authentication key  
+                string Message = @"Greeting…!
+                                   Work Order has been  Allocated to you 
+                                   [WorkOrderNo]";
+
+                //Replace parameter 
+                Message = Message.Replace("[WorkOrderNo]", WorkOrderNumber);
+
+                var vtblObj = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj != null)
+                {
+                    var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj.EngineerId).FirstOrDefault();
+                    if (vEmployeeObj != null)
+                    {
+                        MobileNumber = vEmployeeObj.PersonalNumber;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber))
+                {
+                    SMSSend_SteviaDigital(MobileNumber, Message);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return strResponse;
+        }
+
+        public string SMSSend_EngineerAcceptWorkOrder(string WorkOrderNumber)
+        {
+            string strResponse = "";
+
+            try
+            {
+                string MobileNumber_Customer = string.Empty;
+
+                #region Notification for Customer
+
+                string Message = @"Dear Customer,
+                                   
+                                   Greetings!
+
+                                   We're pleased to inform you that your work order <no> has been accepted by the engineer.
+
+                                   Thanks for choosing our services.
+
+                                   For any queries, please contact:
+                                   Email: support@quikservindia.com
+                                   Phone: +91 7030087300";
+
+                //Replace parameter 
+                Message = Message.Replace("<no>", WorkOrderNumber);
+
+
+                var vtblObj = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj != null)
+                {
+                    var vCustomerObj = db.tblCustomers.Where(wo => wo.Id == vtblObj.CustomerId).FirstOrDefault();
+                    if (vCustomerObj != null)
+                    {
+                        MobileNumber_Customer = vCustomerObj.Mobile;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber_Customer))
+                {
+                    SMSSend_SteviaDigital(MobileNumber_Customer, Message);
+                }
+
+                #endregion
+
+                #region Notification for Employee
+
+                string MobileNumber_Employee = string.Empty;
+
+                string Message_Employee = @"Hi Team,
+                                            Greeting…!
+                                            Subjected work order <no> accepted by Engineer
+                                            Thanks…";
+
+                //Replace parameter 
+                Message_Employee = Message.Replace("<no>", WorkOrderNumber);
+
+                var vtblObj_Employee = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj_Employee != null)
+                {
+                    var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj.EngineerId).FirstOrDefault();
+                    if (vEmployeeObj != null)
+                    {
+                        MobileNumber_Employee = vEmployeeObj.PersonalNumber;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber_Employee))
+                {
+                    SMSSend_SteviaDigital(MobileNumber_Employee, Message_Employee);
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return strResponse;
+        }
+
+        public string SMSSend_EngineerRejectWorkOrder(string WorkOrderNumber)
+        {
+            string strResponse = "";
+
+            try
+            {
+                string MobileNumber = string.Empty;
+
+                //Your authentication key  
+                string Message = @"Hi Team,
+                                   Greeting…!
+                                   Subjected work order <no> rejected by Engineer
+                                   Thanks…";
+
+                //Replace parameter 
+                Message = Message.Replace("<no>", WorkOrderNumber);
+
+                var vtblObj = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj != null)
+                {
+                    var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj.EngineerId).FirstOrDefault();
+                    if (vEmployeeObj != null)
+                    {
+                        MobileNumber = vEmployeeObj.PersonalNumber;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber))
+                {
+                    SMSSend_SteviaDigital(MobileNumber, Message);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return strResponse;
+        }
+
+        public string SMSSend_EngineerStartTravel(string WorkOrderNumber)
+        {
+            string strResponse = "";
+
+            try
+            {
+                string MobileNumber = string.Empty;
+
+                //Your authentication key  
+                string Message = @"Dear Customer,
+                                   Greetings!
+
+                                   We're excited to inform you that our engineer has begun their journey. The engineer will be reached Shortly. 
+                                   Engineer Name-[EngineerName]
+                                   Mobile No-[MobileNo]
+  
+                                   Thanks for your patience and cooperation.
+
+                                   For any queries, please contact:
+                                   Email: support@quikservindia.com
+                                   Phone: +91 7030087300";
+
+                //Replace parameter 
+                // Engineer Detail
+                var vtblObj_Engineer = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj_Engineer != null)
+                {
+                    var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj_Engineer.EngineerId).FirstOrDefault();
+                    if (vEmployeeObj != null)
+                    {
+                        Message = Message.Replace("[EngineerName]", vEmployeeObj.EmployeeName);
+                        Message = Message.Replace("[MobileNo]", vEmployeeObj.PersonalNumber);
+                    }
+                }
+
+                // Customer Detail
+                var vtblObj = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj != null)
+                {
+                    var vCustomerObj = db.tblCustomers.Where(wo => wo.Id == vtblObj.CustomerId).FirstOrDefault();
+                    if (vCustomerObj != null)
+                    {
+                        MobileNumber = vCustomerObj.Mobile;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber))
+                {
+                    SMSSend_SteviaDigital(MobileNumber, Message);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return strResponse;
         }
     }
 }

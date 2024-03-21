@@ -599,6 +599,7 @@ namespace OraRegaAV.Controllers
         [HttpPost]
         public async Task<Response> ConvertWOEnquiryToWorkOrder(WOEnquiryToWorkOrderParams parameters)
         {
+            SmsSender smsSender = new SmsSender();
             tblWorkOrderEnquiry workOrderEnquiry;
             tblWorkOrder workOrder;
             int workOrderId;
@@ -687,7 +688,14 @@ namespace OraRegaAV.Controllers
 
                     await db.SaveChangesAsync();
 
+                    #region Send SMS
+
+                    smsSender.SMSSend_WorkOrderConvert(workOrder.WorkOrderNumber);
+
+                    #endregion
+
                     _response.Message = "Work Order Enquiry converted to Work Order successfully";
+
                 }
                 else
                 {
