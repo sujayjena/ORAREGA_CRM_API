@@ -431,7 +431,7 @@ namespace OraRegaAV.Controllers.API
                             {
                                 vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
 
-                                vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - (vQuotationObj.AdvanceReceived + vQuotationObj.AmountPaidAfter));
+                                vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - vQuotationObj.AmountPaidAfter);
 
                                 db.SaveChanges();
                             }
@@ -468,7 +468,7 @@ namespace OraRegaAV.Controllers.API
 
                 await Task.Run(() =>
                 {
-                    var vResultList = db.GetPaymentList(parameters.WorkOrderNumber,parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                    var vResultList = db.GetPaymentList(parameters.WorkOrderNumber, parameters.QuotationNumber, parameters.TransactionId.SanitizeValue(), parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
                     foreach (var item in vResultList)
                     {
@@ -490,7 +490,6 @@ namespace OraRegaAV.Controllers.API
                         vGetPaymentList_Response.ModifiedDate = item.ModifiedDate;
                         vGetPaymentList_Response.ModifyName = item.ModifyName;
 
-
                         var vtblPaymentPartDetail = db.tblPaymentPartDetails.Where(record => record.PaymentId == item.PaymentId).ToList();
                         foreach (var itemPartDetail in vtblPaymentPartDetail)
                         {
@@ -500,7 +499,9 @@ namespace OraRegaAV.Controllers.API
                                 var vPaymentPartList_Response = new PaymentPartList_Response()
                                 {
                                     PartId = itemPartDetail.PartId,
-                                    UniqueCode = vtblPartDetail.UniqueCode
+                                    UniqueCode = vtblPartDetail.UniqueCode,
+                                    PartNumber = vtblPartDetail.PartNumber,
+                                    CTSerialNo = vtblPartDetail.CTSerialNo
                                 };
 
                                 vGetPaymentList_Response.PartList.Add(vPaymentPartList_Response);
@@ -513,6 +514,48 @@ namespace OraRegaAV.Controllers.API
                     _response.TotalCount = Convert.ToInt32(vTotal.Value);
                     _response.Data = lstResult;
                 });
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("api/PaymentGatewayAPI/GetPaymentPartList")]
+        public async Task<Response> GetPaymentPartList(string QuotationNumber)
+        {
+            List<PaymentPartList_Response> lstResult = new List<PaymentPartList_Response>();
+
+            try
+            {
+                var tblPaymentList = db.tblPayments.Where(c => c.QuotationNumber == QuotationNumber && c.IsSuccess == true).OrderByDescending(x => x.CreatedDate).ToList();
+                foreach (var item in tblPaymentList)
+                {
+                    var vtblPaymentPartDetail = db.tblPaymentPartDetails.Where(record => record.PaymentId == item.Id).ToList();
+                    foreach (var itemPartDetail in vtblPaymentPartDetail)
+                    {
+                        var vtblPartDetail = db.tblPartDetails.Where(record => record.Id == itemPartDetail.PartId).FirstOrDefault();
+                        if (vtblPartDetail != null)
+                        {
+                            var vPaymentPartList_Response = new PaymentPartList_Response()
+                            {
+                                PartId = itemPartDetail.PartId,
+                                UniqueCode = vtblPartDetail.UniqueCode,
+                                PartNumber = vtblPartDetail.PartNumber,
+                                CTSerialNo = vtblPartDetail.CTSerialNo
+                            };
+
+                            lstResult.Add(vPaymentPartList_Response);
+                        }
+                    }
+                }
+
+                _response.Data = lstResult;
             }
             catch (Exception ex)
             {

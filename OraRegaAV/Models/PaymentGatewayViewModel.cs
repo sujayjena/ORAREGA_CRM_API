@@ -160,5 +160,7 @@ namespace OraRegaAV.Models
     {
         public long? PartId { get; set; }
         public string UniqueCode { get; set; }
+        public string PartNumber { get; set; }
+        public string CTSerialNo { get; set; }
     }
 }
