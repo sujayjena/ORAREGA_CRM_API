@@ -268,4 +268,18 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int PageNo { get; set; }
     }
+
+    public class WOPartRequest
+    {
+        [Required]
+        [DefaultValue(0)]
+        public int WorkOrderId { get; set; }
+
+        public string PartNo { get; set; }
+        public string PartName { get; set; }
+        public string PartDesc { get; set; }
+
+        [DefaultValue(0)]
+        public int Quantity { get; set; }
+    }
 }

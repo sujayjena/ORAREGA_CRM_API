@@ -2139,6 +2139,19 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tblWOPartRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkOrderId" Type="int" />
+          <Property Name="PartNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="PartName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PartDesc" Type="nvarchar" MaxLength="100" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tblWOParts">
           <Key>
             <PropertyRef Name="Id" />
@@ -3424,6 +3437,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblWOAccessory" EntityType="Self.tblWOAccessory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWOEnquiryCustomerFeedback" EntityType="Self.tblWOEnquiryCustomerFeedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWOOTPVerify" EntityType="Self.tblWOOTPVerify" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblWOPartRequest" EntityType="Self.tblWOPartRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWOParts" EntityType="Self.tblWOParts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWOProofOfPurchase" EntityType="Self.tblWOProofOfPurchase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWORepairRemark" EntityType="Self.tblWORepairRemark" Schema="dbo" store:Type="Tables" />
@@ -5336,6 +5350,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
             <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="tblWOPartRequests" EntityType="dbOraRegaModel.tblWOPartRequest" />
         
            </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
@@ -9070,7 +9085,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="IsQuotationGenerated" Nullable="false" />
         </ComplexType>
         <ComplexType Name="ImportPartDetails_Result">
-          <Property Type="String" Name="UniqueCode" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="PartNumber" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="PartName" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="PartDescription" Nullable="false" MaxLength="1" />
@@ -9218,6 +9232,19 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Edit" Nullable="false" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
         </ComplexType>
+        <EntityType Name="tblWOPartRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkOrderId" Type="Int32" />
+          <Property Name="PartNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
          
   
       </Schema>
@@ -14232,7 +14259,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <FunctionImportMapping FunctionImportName="ImportPartDetails" FunctionName="dbOraRegaModel.Store.ImportPartDetails">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.ImportPartDetails_Result">
-                <ScalarProperty Name="UniqueCode" ColumnName="UniqueCode" />
                 <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
                 <ScalarProperty Name="PartName" ColumnName="PartName" />
                 <ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
@@ -14413,6 +14439,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tblWOPartRequests">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblWOPartRequest">
+              <MappingFragment StoreEntitySet="tblWOPartRequest">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="PartDesc" ColumnName="PartDesc" />
+                <ScalarProperty Name="PartName" ColumnName="PartName" />
+                <ScalarProperty Name="PartNo" ColumnName="PartNo" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
        
            </EntityContainerMapping>
       </Mapping>

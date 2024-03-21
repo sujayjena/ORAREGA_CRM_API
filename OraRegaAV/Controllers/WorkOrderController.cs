@@ -1147,6 +1147,10 @@ namespace OraRegaAV.Controllers
                     var paymentList = db.GetPaymentList(workOrderObj.WorkOrderNumber, "", "", "", 0, 0, vTotal).ToList();
                     workOrderListObj.PaymentDetails = paymentList;
 
+                    //Part request details
+                    var partRequest = db.tblWOPartRequests.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
+                    workOrderListObj.PartRequestList = partRequest;
+
                     _response.Data = workOrderListObj;
                 }
             }
@@ -1837,6 +1841,47 @@ namespace OraRegaAV.Controllers
                 LogWriter.WriteLog(ex);
             }
 
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<Response> WorkOrderPartRequest(WOPartRequest parameter)
+        {
+            try
+            {
+                var tbl = db.tblWorkOrders.Where(x => x.Id == parameter.WorkOrderId).FirstOrDefault();
+                if (tbl != null)
+                {
+                    var vWOPartRequest = new tblWOPartRequest()
+                    {
+                        WorkOrderId = parameter.WorkOrderId,
+                        PartNo = parameter.PartNo,
+                        PartName = parameter.PartName,
+                        PartDesc = parameter.PartDesc,
+                        Quantity = parameter.Quantity,
+                        CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                        CreatedDate = DateTime.Now
+                    };
+
+                    db.tblWOPartRequests.Add(vWOPartRequest);
+
+                    await db.SaveChangesAsync();
+                    _response.IsSuccess = true;
+
+                    _response.Message = "Work Order Part Request saved successfully";
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Work Order does not exist.";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
             return _response;
         }
 

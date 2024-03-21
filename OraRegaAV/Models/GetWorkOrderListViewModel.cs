@@ -113,6 +113,7 @@ namespace OraRegaAV.Models
         public List<string> PurchaseProofPhotoList { get; set; }
         public int IsQuotationGenerated { get; set; }
         public List<GetPaymentList_Result> PaymentDetails { get; set; }
+        public List<tblWOPartRequest> PartRequestList { get; set; }
     }   
 
     public class WORepairRemark

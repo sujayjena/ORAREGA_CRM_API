@@ -13,7 +13,6 @@ namespace OraRegaAV.DBEntity
     
     public partial class ImportPartDetails_Result
     {
-        public string UniqueCode { get; set; }
         public string PartNumber { get; set; }
         public string PartName { get; set; }
         public string PartDescription { get; set; }

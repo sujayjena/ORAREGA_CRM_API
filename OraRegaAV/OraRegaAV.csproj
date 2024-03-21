@@ -1293,6 +1293,9 @@
     <Compile Include="DBEntity\tblWOPart.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblWOPartRequest.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblWOProofOfPurchase.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
