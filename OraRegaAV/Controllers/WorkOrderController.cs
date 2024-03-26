@@ -553,6 +553,13 @@ namespace OraRegaAV.Controllers
                     trackingModuleLog.TrackOrderLog("WO", tblWorkOrder.Id, Convert.ToInt32(WorkOrderTrackingStatus.WorkOrderCaseStatus), Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0));
 
                     #endregion
+
+                    #region Email Sending
+                    //if (parameters.CaseStatusId == 3)
+                    //{
+                    //    await new AlertsSender().SendEmailPendingForPart(tblWorkOrder);
+                    //}
+                    #endregion
                 }
 
 
@@ -710,6 +717,7 @@ namespace OraRegaAV.Controllers
         {
             tblWorkOrder tblWorkOrder;
             SmsSender smsSender = new SmsSender();
+            bool isEmailSent;
 
             try
             {
@@ -766,6 +774,13 @@ namespace OraRegaAV.Controllers
                         await db.SaveChangesAsync();
                     }
 
+                    #endregion
+
+                    #region Email Sending
+                    if (OrderStatusId == 5)
+                    {
+                        isEmailSent = await new AlertsSender().SendEmailCloseWorkOrder(tblWorkOrder);
+                    }
                     #endregion
 
                     _response.Message = $"Work Order details updated successfully";
@@ -1899,6 +1914,8 @@ namespace OraRegaAV.Controllers
         {
             try
             {
+                bool isEmailSent;
+
                 var tbl = db.tblWorkOrders.Where(x => x.Id == parameter.WorkOrderId).FirstOrDefault();
                 if (tbl != null)
                 {
@@ -1914,8 +1931,14 @@ namespace OraRegaAV.Controllers
                     };
 
                     db.tblWOPartRequests.Add(vWOPartRequest);
-
                     await db.SaveChangesAsync();
+
+                    #region Email Sending
+
+                    isEmailSent = await new AlertsSender().SendEmailPartRequest(vWOPartRequest);
+
+                    #endregion
+
                     _response.IsSuccess = true;
 
                     _response.Message = "Work Order Part Request saved successfully";

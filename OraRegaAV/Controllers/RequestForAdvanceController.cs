@@ -114,6 +114,13 @@ namespace OraRegaAV.Controllers.API
 
                 db.tblRequestForAdvances.AddOrUpdate(tblRequestForAdvance);
                 await db.SaveChangesAsync();
+
+                #region Email Sending
+                if (parameters.Id == 0)
+                {
+                    await new AlertsSender().SendEmailAdvanceClaimRequest(parameters);
+                }
+                #endregion
             }
             catch (Exception ex)
             {

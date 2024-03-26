@@ -273,6 +273,13 @@ namespace OraRegaAV.Controllers
                     }
                 }
 
+                #region Email Sending
+                if (objModel.Id == 0)
+                {
+                    await new AlertsSender().SendEmailClaimSettlementApply(objModel);
+                }
+                #endregion
+
                 _response.IsSuccess = true;
             }
             catch (Exception ex)

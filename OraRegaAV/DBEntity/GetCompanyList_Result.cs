@@ -28,5 +28,6 @@ namespace OraRegaAV.DBEntity
         public string CityName { get; set; }
         public Nullable<int> PincodeId { get; set; }
         public string Pincode { get; set; }
+        public Nullable<int> BranchAdd { get; set; }
     }
 }

@@ -74,6 +74,14 @@ namespace OraRegaAV.Controllers
 
                 await db.SaveChangesAsync();
 
+
+                #region Email Sending
+                if (objtblLeaveMaster.LeaveId == 0)
+                {
+                    await new AlertsSender().SendEmailLeaveApply(objtblLeaveMaster);
+                }
+                #endregion
+
                 _response.IsSuccess = true;
 
             }

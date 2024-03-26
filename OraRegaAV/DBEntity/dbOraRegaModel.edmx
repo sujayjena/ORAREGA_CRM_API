@@ -6878,6 +6878,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="PincodeId" Nullable="true" />
           <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+		  <Property Type="Int32" Name="BranchAdd" Nullable="true" />
         </ComplexType>
         <EntityType Name="tblEmployee">
           <Key>
@@ -11733,6 +11734,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CityName" ColumnName="CityName" />
                 <ScalarProperty Name="PincodeId" ColumnName="PincodeId" />
                 <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+				<ScalarProperty Name="BranchAdd" ColumnName="BranchAdd" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

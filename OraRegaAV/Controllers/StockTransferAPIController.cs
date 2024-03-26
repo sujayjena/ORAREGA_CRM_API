@@ -391,12 +391,12 @@ namespace OraRegaAV.Controllers
                 var vClaimIdList = new List<string>();
                 if (branchId == "")
                 {
-                    vClaimIdList = db.tblStockTransferOuts.Select(x => x.ChallanNo).ToList();
+                    vClaimIdList = db.tblStockTransferOuts.Where(x=> db.tblStockTransferPartDetails.Where(y=>y.StockTransferOutId == x.Id && y.StockTransferStatusId == 1).ToList().Count >= 1).Select(x => x.ChallanNo).ToList();
                 }
                 else
                 {
                     string[] splitBranch = branchId.Split(',');
-                    vClaimIdList = db.tblStockTransferOuts.Where(x => splitBranch.Contains(x.BranchToId.ToString())).Select(x => x.ChallanNo).ToList();
+                    vClaimIdList = db.tblStockTransferOuts.Where(x => splitBranch.Contains(x.BranchToId.ToString()) && db.tblStockTransferPartDetails.Where(y => y.StockTransferOutId == x.Id && y.StockTransferStatusId == 1).ToList().Count >= 1).Select(x => x.ChallanNo).ToList();
                 }
 
                 foreach (var item in vClaimIdList)

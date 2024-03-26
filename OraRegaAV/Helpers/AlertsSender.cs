@@ -85,6 +85,74 @@ namespace OraRegaAV.Helpers
             return result;
         }
 
+        public async Task<bool> SendEmail_Other(string emailSubject, string emailContent, string receiverEmail, HttpFileCollection files = null)
+        {
+            bool result = false;
+
+            try
+            {
+                List<GetConfigurationsList_Result> configList;
+
+                configList = db.GetConfigurationsList(
+                    $"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.ContactUsEmail},{ConfigConstants.SMTPAddress},{ConfigConstants.SMTPPort}," +
+                    $"{ConfigConstants.SMTPPassword},{ConfigConstants.SMTPEnableSSL}").ToList();
+
+                bool enableEmailAlerts = configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "true" ? true : false;
+                string emailFromEmail = configList.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue.SanitizeValue();
+                string smtpAddress = configList.Where(c => c.ConfigKey == ConfigConstants.SMTPAddress).FirstOrDefault().ConfigValue.SanitizeValue();
+                int portNumber = Convert.ToInt32(configList.Where(c => c.ConfigKey == ConfigConstants.SMTPPort).FirstOrDefault().ConfigValue.SanitizeValue());
+                string password = configList.Where(c => c.ConfigKey == ConfigConstants.SMTPPassword).FirstOrDefault().ConfigValue.SanitizeValue();
+                bool enableSSL = configList.Where(c => c.ConfigKey == ConfigConstants.SMTPEnableSSL).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "true" ? true : false;
+
+                if (!enableEmailAlerts)
+                    return false;
+
+                password = EncryptDecryptHelper.DecryptString(password);
+
+                await Task.Run(() =>
+                {
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.From = new MailAddress(emailFromEmail);
+                        mail.To.Add(receiverEmail);
+                        mail.Subject = emailSubject;
+                        mail.Body = emailContent;
+                        mail.IsBodyHtml = true;
+
+                        if (files != null)
+                        {
+                            for (int f = 0; f < files.Count; f++)
+                            {
+                                mail.Attachments.Add(new Attachment(files[f].InputStream, files[f].FileName));
+                            }
+                        }
+
+                        using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
+                        {
+                            smtp.Credentials = new NetworkCredential(emailFromEmail, password);
+                            smtp.EnableSsl = enableSSL;
+
+                            //smtp.SendAsync(mail, "EmailAlert");
+                            try
+                            {
+                                smtp.Send(mail);
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                        }
+                    }
+                });
+
+                result = true;
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return result;
+        }
+
         private static string ImageToBase64(string imgPath)
         {
             byte[] imageBytes;
@@ -756,6 +824,11 @@ namespace OraRegaAV.Helpers
                     emailTemplateContent = emailTemplateContent.Replace("[NoticePeriod]", parameters.NoticePeriod);
                 }
 
+                if (emailTemplateContent.IndexOf("[SenderName]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderName]", db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue);
+                }
+
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
@@ -774,6 +847,270 @@ namespace OraRegaAV.Helpers
                 }
 
                 result = await SendEmail("New Job Application - " + parameters.Position, emailTemplateContent, receiverEmail, files: postedFiles);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailCloseWorkOrder(tblWorkOrder parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var roleId = "9,11"; //Backend Executive / IDM
+                var empList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+                var repairClassType = db.tblRepairClassTypes.Where(x => x.Id == parameters.RepairClassTypeId).Select(x => x.RepairClassType).FirstOrDefault();
+                var delayCode = db.tblDelayTypes.Where(x => x.Id == parameters.DelayTypeId).Select(x => x.DelayType).FirstOrDefault();
+                var caseStatus = db.tblCaseStatus.Where(x => x.Id == parameters.CaseStatusId).Select(x => x.CaseStatusName).FirstOrDefault();
+                var closerSummary = repairClassType + ", " + delayCode + ", " + parameters.ResolutionSummary + ", " + caseStatus;
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>I'm pleased to inform you that the work order has been successfully closed.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src="+ ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Close Work Order", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailPartRequest(tblWOPartRequest parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
+
+                var roleId = "12"; //Logistics Executive
+                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == vWorkOrder.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Spare has been recommended by the Engineer.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + vWorkOrder.WorkOrderNumber + "<br/>Part Number - " + parameters.PartNo + "<br/>Part Name - " + parameters.PartName + "<br/>Part description - " + parameters.PartDesc + "<br/>Qty - " + parameters.Quantity + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Request Part", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailPendingForPart(tblWorkOrder parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var roleId = "11"; //IDM
+                var empList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+                var repairClassType = db.tblRepairClassTypes.Where(x => x.Id == parameters.RepairClassTypeId).Select(x => x.RepairClassType).FirstOrDefault();
+                var delayCode = db.tblDelayTypes.Where(x => x.Id == parameters.DelayTypeId).Select(x => x.DelayType).FirstOrDefault();
+                var caseStatus = db.tblCaseStatus.Where(x => x.Id == parameters.CaseStatusId).Select(x => x.CaseStatusName).FirstOrDefault();
+                var closerSummary = repairClassType + ", " + delayCode + ", " + parameters.ResolutionSummary + ", " + caseStatus;
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Part Status has been changed by the backend executive to a <q>Pending for Part</q>.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Pending for Part", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+
+        public async Task<bool> SendEmailLeaveApply(tblLeaveMaster parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var vEmployee = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).FirstOrDefault();
+                receiverEmail = db.tblEmployees.Where(x => x.Id == vEmployee.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+                var leaveType = db.tblLeaveTypes.Where(x => x.Id == parameters.LeaveTypeId).Select(x => x.LeaveType).FirstOrDefault();
+               
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Leave Application Request received.</p><p>Engineer Name - " + engName + "<br/>Leave Type - " + leaveType + "<br/>From Date - " + parameters.StartDate.ToShortDateString() + "<br/>To Date - " + parameters.EndDate.ToShortDateString() + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Leave Application", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailAdvanceClaimRequest(RequestForAdvanceViewModel parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var vEmployee = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).FirstOrDefault();
+                receiverEmail = db.tblEmployees.Where(x => x.Id == vEmployee.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Claim Application Request received.</p><p>Claim Id - " + parameters.ClaimId + "<br/>Engineer Name - " + engName + "<br/>Date - " + parameters.Date + "<br/>Total Amount - " + parameters.Amount + "<br/>Claim Reason - " + parameters.ClaimReason + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Advance Claim Application", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailClaimSettlementApply(ClaimSettlementViewModel parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+            string[] claimFileNames;
+            List<HttpPostedFile> claimFiles;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var vEmployee = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).FirstOrDefault();
+                receiverEmail = db.tblEmployees.Where(x => x.Id == vEmployee.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                string claimSettlementItemListContent = string.Empty;
+                foreach(var itm in parameters.claimSettlementItem)
+                {
+                    claimSettlementItemListContent = $@"{claimSettlementItemListContent}
+                            <li>
+                                <ul>
+                                    <li>Engineer name - {engName}</li>
+                                    <li>Claim Id - {parameters.ClaimId}</li>
+                                    <li>Claim Type - {db.tblClaimTypes.Where(x=>x.Id == itm.ClaimTypeId).Select(y=>y.Type).FirstOrDefault()}</li>
+                                    <li>From date - {itm.FromDate}</li>
+                                    <li>To Date  - {itm.ToDate}</li>
+                                    <li>Amount - {itm.Amount}</li>
+                                    <li>Remark - {itm.Remark}</li>
+                                    <li>Attachment - {""}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>"+ claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Expense Application", emailTemplateContent, receiverEmail, files: null);
             }
             catch (Exception ex)
             {
