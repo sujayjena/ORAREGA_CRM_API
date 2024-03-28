@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Math;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Web.UI.WebControls.WebParts;
 
 namespace OraRegaAV.Helpers
 {
@@ -413,5 +415,44 @@ namespace OraRegaAV.Helpers
 
             return strResponse;
         }
+
+        public string SMSSend_WorkOrderPartrecommended_RequestPart(string WorkOrderNumber)
+        {
+            string strResponse = "";
+
+            try
+            {
+                string MobileNumber = string.Empty;
+
+                //Your authentication key  
+                string Message = @"Hi Team,
+                                   Greeting…!
+                                   Subjected work order <no> Spare has been recommended by Engineer.
+                                   Thanks...";
+
+                //Replace parameter 
+                Message = Message.Replace("[WorkOrderNo]", WorkOrderNumber);
+
+                var vtblObj = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == WorkOrderNumber).FirstOrDefault();
+                if (vtblObj != null)
+                {
+                    var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj.EngineerId).FirstOrDefault();
+                    if (vEmployeeObj != null)
+                    {
+                        MobileNumber = vEmployeeObj.PersonalNumber;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MobileNumber))
+                {
+                    SMSSend_SteviaDigital(MobileNumber, Message);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return strResponse;
+        }
+
     }
 }

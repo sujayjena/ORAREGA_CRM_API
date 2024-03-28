@@ -1914,8 +1914,6 @@ namespace OraRegaAV.Controllers
         {
             try
             {
-                bool isEmailSent;
-
                 var tbl = db.tblWorkOrders.Where(x => x.Id == parameter.WorkOrderId).FirstOrDefault();
                 if (tbl != null)
                 {
@@ -1942,6 +1940,12 @@ namespace OraRegaAV.Controllers
                     _response.IsSuccess = true;
 
                     _response.Message = "Work Order Part Request saved successfully";
+
+                    #region Send SMS
+
+                    smsSender.SMSSend_WorkOrderAllocateToEngineer(tbl.WorkOrderNumber);
+
+                    #endregion
                 }
                 else
                 {
