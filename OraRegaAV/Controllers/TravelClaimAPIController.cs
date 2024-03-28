@@ -173,6 +173,10 @@ namespace OraRegaAV.Controllers
                     db.tblTravelClaims.Add(tbl);
                     await db.SaveChangesAsync();
 
+                    #region Email Sending
+                    await new AlertsSender().SendEmailTravelClaim(tbl);
+                    #endregion
+
                     _response.IsSuccess = true;
                     _response.Message = "Travel Claim details saved successfully";
                 }

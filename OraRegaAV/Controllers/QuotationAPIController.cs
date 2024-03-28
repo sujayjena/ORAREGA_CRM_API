@@ -645,6 +645,13 @@ namespace OraRegaAV.Controllers
 
                         await db.SaveChangesAsync();
 
+                        #region Email Sending
+                        if (parameters.StatusId > 1)
+                        {
+                            await new AlertsSender().SendEmailCustomerQuotationAcceptReject(parameters);
+                        }
+                        #endregion
+
                         _response.Message = $"updated";
                     }
                 }

@@ -365,6 +365,10 @@ namespace OraRegaAV.Controllers
 
                     await db.SaveChangesAsync();
 
+                    #region Email Sending
+                    await new AlertsSender().SendEmailStockTransferOut(parameters);
+                    #endregion
+
                     _response.Message = "Stock transfer successfully";
                 }
                 else
@@ -391,7 +395,7 @@ namespace OraRegaAV.Controllers
                 var vClaimIdList = new List<string>();
                 if (branchId == "")
                 {
-                    vClaimIdList = db.tblStockTransferOuts.Where(x=> db.tblStockTransferPartDetails.Where(y=>y.StockTransferOutId == x.Id && y.StockTransferStatusId == 1).ToList().Count >= 1).Select(x => x.ChallanNo).ToList();
+                    vClaimIdList = db.tblStockTransferOuts.Where(x => db.tblStockTransferPartDetails.Where(y => y.StockTransferOutId == x.Id && y.StockTransferStatusId == 1).ToList().Count >= 1).Select(x => x.ChallanNo).ToList();
                 }
                 else
                 {
@@ -486,6 +490,11 @@ namespace OraRegaAV.Controllers
                                 }
                             }
                         }
+
+                        #region Email Sending
+                        await new AlertsSender().SendEmailStockTransferAccept(parameters);
+                        #endregion
+
                         _response.Message = "Stock transfer approve successfully";
                     }
                 }
@@ -531,6 +540,11 @@ namespace OraRegaAV.Controllers
                                 await db.SaveChangesAsync();
                             }
                         }
+
+                        #region Email Sending
+                        await new AlertsSender().SendEmailStockTransferReject(parameters);
+                        #endregion
+
                         _response.Message = "Stock transfer rejected successfully";
                     }
                 }

@@ -555,10 +555,10 @@ namespace OraRegaAV.Controllers
                     #endregion
 
                     #region Email Sending
-                    //if (parameters.CaseStatusId == 3)
-                    //{
-                    //    await new AlertsSender().SendEmailPendingForPart(tblWorkOrder);
-                    //}
+                    if (parameters.CaseStatusId == 3)
+                    {
+                        await new AlertsSender().SendEmailPendingForPart(tblWorkOrder);
+                    }
                     #endregion
                 }
 

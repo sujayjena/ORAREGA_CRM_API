@@ -874,7 +874,7 @@ namespace OraRegaAV.Helpers
 
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
-                var roleId = "9,11"; //Backend Executive / IDM
+                var roleId = "22,23"; //IDM / Backend Executive
                 var empList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
@@ -919,7 +919,7 @@ namespace OraRegaAV.Helpers
 
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
 
-                var roleId = "12"; //Logistics Executive
+                var roleId = "24"; //Logistics Executive
                 var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
@@ -958,7 +958,7 @@ namespace OraRegaAV.Helpers
 
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
-                var roleId = "11"; //IDM
+                var roleId = "22"; //IDM
                 var empList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
@@ -966,12 +966,27 @@ namespace OraRegaAV.Helpers
 
                 var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
-                var repairClassType = db.tblRepairClassTypes.Where(x => x.Id == parameters.RepairClassTypeId).Select(x => x.RepairClassType).FirstOrDefault();
-                var delayCode = db.tblDelayTypes.Where(x => x.Id == parameters.DelayTypeId).Select(x => x.DelayType).FirstOrDefault();
-                var caseStatus = db.tblCaseStatus.Where(x => x.Id == parameters.CaseStatusId).Select(x => x.CaseStatusName).FirstOrDefault();
-                var closerSummary = repairClassType + ", " + delayCode + ", " + parameters.ResolutionSummary + ", " + caseStatus;
+                var vRequestPart = db.tblWOPartRequests.Where(x => x.WorkOrderId == parameters.Id).ToList();
+                
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Part Status has been changed by the backend executive to a <q>Pending for Part</q>.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                string partDetailsListContent = string.Empty;
+                foreach (var itm in vRequestPart)
+                {
+                    partDetailsListContent = $@"{partDetailsListContent}
+                            <li>
+                                <ul>
+                                    <li>Engineer name - {engName}</li>
+                                    <li>Work order no - {parameters.WorkOrderNumber}</li>
+                                    <li>Part Number - {itm.PartNo}</li>
+                                    <li>Part Name - {itm.PartName}</li>
+                                    <li>Part Description  - {itm.PartDesc}</li>
+                                    <li>Qty  - {itm.Quantity}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Part Status has been changed by the backend executive to a <q>Pending for Part</q>.</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Pending for Part", emailTemplateContent, receiverEmail, files: null);
             }
@@ -983,7 +998,6 @@ namespace OraRegaAV.Helpers
 
             return result;
         }
-
 
         public async Task<bool> SendEmailLeaveApply(tblLeaveMaster parameters)
         {
@@ -1092,6 +1106,8 @@ namespace OraRegaAV.Helpers
                 string claimSettlementItemListContent = string.Empty;
                 foreach(var itm in parameters.claimSettlementItem)
                 {
+                    var fileName = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).Select(x => x.FilePath).FirstOrDefault();
+
                     claimSettlementItemListContent = $@"{claimSettlementItemListContent}
                             <li>
                                 <ul>
@@ -1102,7 +1118,7 @@ namespace OraRegaAV.Helpers
                                     <li>To Date  - {itm.ToDate}</li>
                                     <li>Amount - {itm.Amount}</li>
                                     <li>Remark - {itm.Remark}</li>
-                                    <li>Attachment - {""}</li>
+                                    <li>Attachment - {fileName}</li>
                                 </ul>
                                 <br />
                             </li>";
@@ -1111,6 +1127,408 @@ namespace OraRegaAV.Helpers
                 emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>"+ claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Expense Application", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailTravelClaim(tblTravelClaim parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var vEmployee = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).FirstOrDefault();
+                receiverEmail = db.tblEmployees.Where(x => x.Id == vEmployee.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                //var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Travel Claim has been Submitted.</p><p>Expense No - " + parameters.ExpenseId + "<br/>Expense Date - " + parameters.ExpenseDate + "<br/>Work order No - " + parameters.WorkOrderNumber + "<br/>Total Kms run - " + parameters.Distance + "<br/>Amount - " + parameters.TotalAmount + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Travel Claim Application", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailCustomerQuotationAcceptReject(QuotationAcceptNReject parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                //var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                var vQuotationWorkOrderId = db.tblQuotations.Where(x => x.QuotationNumber == parameters.QuotationNumber).Select(x => x.WorkOrderId).FirstOrDefault();
+                var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vQuotationWorkOrderId).FirstOrDefault();
+
+                var roleId = "23"; //Backend Executive
+                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                var emailList = new List<string>(empList);
+
+                receiverEmail = string.Empty;
+
+                string subjectName = string.Empty;
+                string headingMsg = string.Empty;
+                if (parameters.StatusId == 2)
+                {
+                    subjectName = "Acceptance of Quotation";
+                    headingMsg = "The Quotation has been accepted by the Customer.";
+                    emailList.AddRange(new string[] { "accounts@orarega.com" });
+                    receiverEmail = string.Join(",", emailList.ToArray());
+                }
+                else if(parameters.StatusId == 3)
+                {
+                    subjectName = "Rejection of Quotation";
+                    headingMsg = "The Quotation has been Rejected by the Customer.";
+                    receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>"+ headingMsg + "</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other(subjectName, emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailPaymentReceive(tblPayment parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                //var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                var vQuotationWorkOrderId = db.tblQuotations.Where(x => x.QuotationNumber == parameters.QuotationNumber).Select(x => x.WorkOrderId).FirstOrDefault();
+                var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vQuotationWorkOrderId).FirstOrDefault();
+
+                var roleId = "23"; //Backend Executive
+                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Payment Received successfully.</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Payment Received Confirmation", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailEngineerPartReturn(StockAllocation_PartsAllocatedToWorkOrderNReturn parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
+
+                var roleId = "24"; //Logistics Executive
+                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                string partDetailsListContent = string.Empty;
+                foreach (var itm in parameters.PartsDetail)
+                {
+                    partDetailsListContent = $@"{partDetailsListContent}
+                            <li>
+                                <ul>
+                                    <li>Work order no - {vWorkOrder.WorkOrderNumber}</li>
+                                    <li>Engineer name - {engName}</li>
+                                    <li>STN - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.UniqueCode).FirstOrDefault()}</li>
+                                    <li>Part No - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartNumber).FirstOrDefault()}</li>
+                                    <li>Part Description - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartDescription).FirstOrDefault()}</li>
+                                    <li>Part Name  - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartName).FirstOrDefault()}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Engineer return spare request has been raised.</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Return of Assigned Part to Logistics", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailStockTransferOut(StockTransferRequest parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var fromBranchRoleId = "22"; // IDM
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                var toBranchRoleId = "22,24"; // IDM / Logistics Executive
+                var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                var emailList = new List<string>(fromBranchEmpList);
+                emailList.AddRange(new List<string>(toBranchEmpList));
+
+                receiverEmail = string.Join(",", emailList.ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                //var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                var vFromBranch = db.tblBranches.Where(x => x.Id == parameters.BranchFromId).Select(x => x.BranchName).FirstOrDefault();
+                var vToBranch = db.tblBranches.Where(x => x.Id == parameters.BranchToId).Select(x => x.BranchName).FirstOrDefault();
+
+                string partDetailsListContent = string.Empty;
+                foreach (var itm in parameters.PartsDetail)
+                {
+                    var vPartDetails = db.tblPartDetails.Where(y => y.Id == itm.PartId).FirstOrDefault();
+
+                    partDetailsListContent = $@"{partDetailsListContent}
+                            <li>
+                                <ul>
+                                    <li>STN - {vPartDetails.UniqueCode}</li>
+                                    <li>Part No - {vPartDetails.PartNumber}</li>
+                                    <li>Part Name  - {vPartDetails.PartName}</li>
+                                    <li>Part Description - {vPartDetails.PartDescription}</li>
+                                    <li>HSN Code - {db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartDetails.HSNCodeId).Select(y=>y.HSNCode).FirstOrDefault()}</li>
+                                    <li>Oty - {vPartDetails.Quantity}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare has been Dispatched.</p><p>Docket no - "+parameters.NewDocketNo+ "<br/>From Branch name - " + vFromBranch + "<br/>To Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Stock Transfer Out", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailStockTransferAccept(StockTransferIn_ApproveNRejest parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var stockTransferOutObj = db.tblStockTransferOuts.Where(x => x.ChallanNo == parameters.ChallanNo).FirstOrDefault();
+
+                var fromBranchRoleId = "22"; // IDM
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                var toBranchRoleId = "22,24"; // IDM / Logistics Executive
+                var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                var emailList = new List<string>(fromBranchEmpList);
+                emailList.AddRange(new List<string>(toBranchEmpList));
+
+                receiverEmail = string.Join(",", emailList.ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                //var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                //var vFromBranch = db.tblBranches.Where(x => x.Id == parameters.BranchFromId).Select(x => x.BranchName).FirstOrDefault();
+                var vToBranch = db.tblBranches.Where(x => x.Id == stockTransferOutObj.BranchToId).Select(x => x.BranchName).FirstOrDefault();
+
+                string partDetailsListContent = string.Empty;
+                foreach (var itm in parameters.Parts)
+                {
+                    var vPartDetails = db.tblPartDetails.Where(y => y.Id == itm.PartId).FirstOrDefault();
+
+                    partDetailsListContent = $@"{partDetailsListContent}
+                            <li>
+                                <ul>
+                                    <li>STN - {vPartDetails.UniqueCode}</li>
+                                    <li>Part No - {vPartDetails.PartNumber}</li>
+                                    <li>Part Name  - {vPartDetails.PartName}</li>
+                                    <li>Part Description - {vPartDetails.PartDescription}</li>
+                                    <li>HSN Code - {db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartDetails.HSNCodeId).Select(y => y.HSNCode).FirstOrDefault()}</li>
+                                    <li>Oty - {vPartDetails.Quantity}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare Has been Accepted by Logistics.</p><p>Docket no - " + stockTransferOutObj.NewDocketNo + "<br/>Accepted By Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Acceptance of Stock Transfer In", emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> SendEmailStockTransferReject(StockTransferIn_ApproveNRejest parameters)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var stockTransferOutObj = db.tblStockTransferOuts.Where(x => x.ChallanNo == parameters.ChallanNo).FirstOrDefault();
+
+                var fromBranchRoleId = "22,24"; // IDM / Logistics Executive
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                var emailList = new List<string>(fromBranchEmpList);
+
+                receiverEmail = string.Join(",", emailList.ToArray());
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                //var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                //var vFromBranch = db.tblBranches.Where(x => x.Id == parameters.BranchFromId).Select(x => x.BranchName).FirstOrDefault();
+                var vToBranch = db.tblBranches.Where(x => x.Id == stockTransferOutObj.BranchToId).Select(x => x.BranchName).FirstOrDefault();
+
+                string partDetailsListContent = string.Empty;
+                foreach (var itm in parameters.Parts)
+                {
+                    var vPartDetails = db.tblPartDetails.Where(y => y.Id == itm.PartId).FirstOrDefault();
+
+                    partDetailsListContent = $@"{partDetailsListContent}
+                            <li>
+                                <ul>
+                                    <li>STN - {vPartDetails.UniqueCode}</li>
+                                    <li>Part No - {vPartDetails.PartNumber}</li>
+                                    <li>Part Name  - {vPartDetails.PartName}</li>
+                                    <li>Part Description - {vPartDetails.PartDescription}</li>
+                                    <li>HSN Code - {db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartDetails.HSNCodeId).Select(y => y.HSNCode).FirstOrDefault()}</li>
+                                    <li>Oty - {vPartDetails.Quantity}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Dispatched Spare Has been Rejected.</p><p>Docket no - " + stockTransferOutObj.NewDocketNo + "<br/>Rejected Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other("Rejection of Stock Transfer In", emailTemplateContent, receiverEmail, files: null);
             }
             catch (Exception ex)
             {

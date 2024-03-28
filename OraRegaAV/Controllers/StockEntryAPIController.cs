@@ -1000,6 +1000,13 @@ namespace OraRegaAV.Controllers.API
 
                     await db.SaveChangesAsync();
 
+                    #region Email Sending
+                    if (parameters.PartsDetail.Count > 0)
+                    {
+                        await new AlertsSender().SendEmailEngineerPartReturn(parameters);
+                    }
+                    #endregion
+
                     _response.Message = "Part returned successfully";
                 }
                 else

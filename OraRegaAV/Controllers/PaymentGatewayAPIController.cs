@@ -439,6 +439,12 @@ namespace OraRegaAV.Controllers.API
 
                         #endregion
 
+                        #region Email Sending
+                        if (tbl.PaymentStatus == "PAYMENT_SUCCESS")
+                        {
+                            await new AlertsSender().SendEmailPaymentReceive(tbl);
+                        }
+                        #endregion
                     }
                 }
 
