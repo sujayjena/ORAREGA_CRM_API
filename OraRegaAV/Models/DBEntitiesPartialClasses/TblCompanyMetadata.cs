@@ -15,7 +15,7 @@ namespace OraRegaAV.DBEntity
         [Required(ErrorMessage = ValidationConstant.CompanyTypeRequied_Msg)]
         public string CompanyTypeId { get; set; }
 
-        [RegularExpression(ValidationConstant.ImageFileRegExp, ErrorMessage = ValidationConstant.ImageFileRegExp_Msg)]
+        //[RegularExpression(ValidationConstant.ImageFileRegExp, ErrorMessage = ValidationConstant.ImageFileRegExp_Msg)]
         public string CompanyLogo { get; set; }
 
         [Required(ErrorMessage = ValidationConstant.RegistrationNumberRequied_Msg)]

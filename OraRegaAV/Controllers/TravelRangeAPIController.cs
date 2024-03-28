@@ -33,6 +33,7 @@ namespace OraRegaAV.Controllers.API
                 {
                     tbl = new tblTravelRange();
                     tbl.TravelRange = travelRange_Request.TravelRange;
+                    tbl.Price = travelRange_Request.Price;
                     tbl.IsActive = travelRange_Request.IsActive;
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.CreatedDate = DateTime.Now;
@@ -43,6 +44,7 @@ namespace OraRegaAV.Controllers.API
                 else
                 {
                     tbl.TravelRange = travelRange_Request.TravelRange;
+                    tbl.Price = travelRange_Request.Price;
                     tbl.IsActive = travelRange_Request.IsActive;
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.ModifiedDate = DateTime.Now;

@@ -1709,7 +1709,7 @@ namespace OraRegaAV.App_Start
                     @in = "formData",
                     type = "file",
                     required = false,
-                    pattern = ValidationConstant.ImageFileRegExp,
+                    //pattern = ValidationConstant.ImageFileRegExp,
                     description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
                 });
             }
@@ -1732,7 +1732,7 @@ namespace OraRegaAV.App_Start
                     @in = "formData",
                     type = "file",
                     required = false,
-                    pattern = ValidationConstant.ImageFileRegExp,
+                    //pattern = ValidationConstant.ImageFileRegExp,
                     description = $"png | jpg | jpeg. Validation pattern = {ValidationConstant.ImageFileRegExp}"
                 });
             }

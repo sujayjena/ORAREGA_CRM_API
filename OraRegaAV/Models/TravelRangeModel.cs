@@ -11,6 +11,7 @@ public class TravelRange_Request
 
     [Required(ErrorMessage = ValidationConstant.TravelRangeRequied_Msg)]
     public string TravelRange { get; set; }
+    public decimal Price { get; set; }
 
     public bool IsActive { get; set; }
 }

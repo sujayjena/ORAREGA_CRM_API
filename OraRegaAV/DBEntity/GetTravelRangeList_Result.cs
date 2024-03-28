@@ -15,6 +15,7 @@ namespace OraRegaAV.DBEntity
     {
         public int Id { get; set; }
         public string TravelRange { get; set; }
+        public decimal Price { get; set; }
         public bool IsActive { get; set; }
         public string CreatorName { get; set; }
         public Nullable<int> CreatedBy { get; set; }

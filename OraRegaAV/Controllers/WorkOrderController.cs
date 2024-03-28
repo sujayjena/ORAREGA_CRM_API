@@ -1914,6 +1914,9 @@ namespace OraRegaAV.Controllers
         {
             try
             {
+                SmsSender smsSender = new SmsSender();
+                bool isEmailSent;
+
                 var tbl = db.tblWorkOrders.Where(x => x.Id == parameter.WorkOrderId).FirstOrDefault();
                 if (tbl != null)
                 {
