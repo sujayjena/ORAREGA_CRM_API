@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a68eff7d134d472a8469c2e10b42962d" Name="Diagram1" ZoomLevel="84">
+        <EntityTypeShape EntityType="dbOraRegaModel.tblAccessory" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblArea" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblBranch" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblBranchQueue" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCategory" Width="1.5" PointX="14" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCity" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCompany" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCompanyType" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCountry" Width="1.5" PointX="4.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblDepartment" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblEmpDocument" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblEmployee" Width="1.5" PointX="9.875" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblEnquiryStatusMaster" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblHSNCodeGSTMapping" Width="1.5" PointX="2.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblIssueDescription" Width="1.5" PointX="11.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblLeaveType" Width="1.5" PointX="11.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblMenuMaster" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblMenuRoleMapping" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOnlineCustomer" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOperatingSystem" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOrderTypeMaster" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPartDescription" Width="1.5" PointX="28.375" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPaymentTerm" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPincode" Width="1.5" PointX="12.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPriority" Width="1.5" PointX="14.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProduct" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductCondition" Width="1.5" PointX="15.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductMake" Width="1.5" PointX="15.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductModel" Width="1.5" PointX="2.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductType" Width="1.5" PointX="4.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQueue" Width="1.5" PointX="16.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRole" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRoleHierarchy" Width="1.5" PointX="16.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSalesOrderStatu" Width="1.5" PointX="8.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSOPOAttachment" Width="1.5" PointX="12.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSOProductsMaster" Width="1.5" PointX="18.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblState" Width="1.5" PointX="14.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStock" Width="1.5" PointX="18.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockAndPartMapping" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockEntry" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockEntryHistory" Width="1.5" PointX="2.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSupportType" Width="1.5" PointX="19.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblUser" Width="1.5" PointX="19.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblVendor" Width="1.5" PointX="8.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWareHouseTransaction" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWarrantyType" Width="1.5" PointX="20.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOAccessory" Width="1.5" PointX="20.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOProofOfPurchase" Width="1.5" PointX="20.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWORepairRemark" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOSnap" Width="1.5" PointX="21.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockEntryBulkData" Width="1.5" PointX="20.75" PointY="21.75" IsExpanded="true" />
+        <AssociationConnector Association="dbOraRegaModel.FK__tblMenuRo__MenuI__69C6B1F5" ManuallyRouted="false" />
+        <AssociationConnector Association="dbOraRegaModel.FK__tblMenuRo__RoleI__6ABAD62E" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblLoggedInUser" Width="1.5" PointX="22.375" PointY="7.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPermanentAddress" Width="1.5" PointX="0.75" PointY="23.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTemporaryAddress" Width="1.5" PointX="2.75" PointY="23.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblUserType" Width="1.5" PointX="23.75" PointY="11.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblConfigurationMaster" Width="1.5" PointX="23.375" PointY="14.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCustomer" Width="1.5" PointX="23.375" PointY="18.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductIssuesPhoto" Width="1.5" PointX="23.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPurchaseProofPhoto" Width="1.5" PointX="24.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrderEnquiry" Width="1.5" PointX="24.375" PointY="3.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSOEnquiryProduct" Width="1.5" PointX="15.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSalesOrderEnquiry" Width="1.5" PointX="5.375" PointY="19.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOrderStatusMaster" Width="1.5" PointX="5.375" PointY="25.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblExtendedWarranty" Width="1.5" PointX="25.375" PointY="14.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblServiceAddresss" Width="1.5" PointX="25.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblServiceType" Width="1.5" PointX="13.375" PointY="21.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOEnquiryCustomerFeedback" Width="1.5" PointX="26.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCustomerSellProductsMapping" Width="1.5" PointX="26.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCustomersSellDetail" Width="1.5" PointX="7.375" PointY="26.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductDetailsPurchaseProof" Width="1.5" PointX="26.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductDetailsSnap" Width="1.5" PointX="19.375" PointY="26.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSavedProductDetail" Width="1.5" PointX="21.375" PointY="26.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblConfigContactU" Width="1.5" PointX="0.75" PointY="27.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblExtendWarrantyPurchaseProof" Width="1.5" PointX="27.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblExtendedWarrantyProduct" Width="1.5" PointX="25.375" PointY="19.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblContactUsEnquiry" Width="1.5" PointX="27.375" PointY="16.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblContactUsEnquiryPhoto" Width="1.5" PointX="27.375" PointY="21.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSalesOrder" Width="1.5" PointX="23.375" PointY="27.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSalesOrderProduct" Width="1.5" PointX="27.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblAddressTypesMaster" Width="1.5" PointX="28.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.ModuleMaster" Width="1.5" PointX="3.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.RoleMaster_Employee_Permission" Width="1.5" PointX="28.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.RoleMaster_Permission" Width="1.5" PointX="25.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.AttendanceHistory" Width="1.5" PointX="27.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.AttendanceHistory1" Width="1.5" PointX="29.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblLeaveMaster" Width="1.5" PointX="29.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStatusMaster" Width="1.5" PointX="13.375" PointY="29.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCareer" Width="1.5" PointX="15.375" PointY="29.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCareer1" Width="1.5" PointX="29.375" PointY="16.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockPartStatu" Width="1.5" PointX="29.375" PointY="16.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblDelayType" Width="1.5" PointX="29.375" PointY="20.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRepairClassType" Width="1.5" PointX="29.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRescheduleReason" Width="1.5" PointX="29.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTravelRange" Width="1.5" PointX="30.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblGSTMapping" Width="1.5" PointX="30.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRatePerKM" Width="1.5" PointX="17.375" PointY="30.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblProductDescription" Width="1.5" PointX="0.75" PointY="31.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCaseStatu" Width="1.5" PointX="5.375" PointY="31.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrder" Width="1.5" PointX="9.375" PointY="26.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblBusinessType" Width="1.5" PointX="11.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPartDetail" Width="1.5" PointX="31.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOPart1" Width="1.5" PointX="31.375" PointY="14.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOPart" Width="1.5" PointX="17.375" PointY="20.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOOTPVerify" Width="1.5" PointX="31.375" PointY="14.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRequestForAdvance" Width="1.5" PointX="31.375" PointY="18.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPartsAllocatedToEngineer" Width="1.5" PointX="9.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPartsAllocatedToWorkOrder" Width="1.5" PointX="12.375" PointY="10.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPartsAllocatedToReturn" Width="1.5" PointX="19.375" PointY="31.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblClaimSettlementAttachment" Width="1.5" PointX="31.375" PointY="27.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblClaimSettlementType" Width="1.5" PointX="16.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblClaimSettlement" Width="1.5" PointX="31.375" PointY="22.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblClaimType" Width="1.5" PointX="16.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblClaimSettlementItemAttachment" Width="1.5" PointX="31.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblClaimSettlementItem" Width="1.5" PointX="31.375" PointY="31.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockTransferOut" Width="1.5" PointX="32.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockTransferStatu" Width="1.5" PointX="32.375" PointY="5.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockTransferPartDetail" Width="1.5" PointX="11.375" PointY="32.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblBanner" Width="1.5" PointX="27.375" PointY="32.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOfferAd" Width="1.5" PointX="33.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOurProduct" Width="1.5" PointX="33.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOurService" Width="1.5" PointX="33.375" PointY="16.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPaymentPolicy" Width="1.5" PointX="33.375" PointY="20.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPrivacyAndPolicy" Width="1.5" PointX="21.375" PointY="33.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblRefundAndCancellationPolicy" Width="1.5" PointX="23.375" PointY="33.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTermsAndCondition" Width="1.5" PointX="33.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTestimonial" Width="1.5" PointX="33.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblEngineerVisitHistory" Width="1.5" PointX="11.375" PointY="32.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblVehicleType" Width="1.5" PointX="34.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTravelClaim" Width="1.5" PointX="13.375" PointY="34.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblCareerPost" Width="1.5" PointX="33.375" PointY="32.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_DAO" Width="1.5" PointX="34.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_DAO_PartDetails" Width="1.5" PointX="15.375" PointY="34.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_Defective" Width="1.5" PointX="3.375" PointY="35.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblStockOut_Defective_PartDetails" Width="1.5" PointX="5.375" PointY="35.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTackingOrder" Width="1.5" PointX="35.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblTrackingOrder" Width="1.5" PointX="35.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrderRescheduleHistory" Width="1.5" PointX="35.375" PointY="12.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWorkOrderEngineerAllocatedHistory" Width="1.5" PointX="35.375" PointY="15.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblOTP" Width="1.5" PointX="35.375" PointY="18.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblSMSLogHistory" Width="1.5" PointX="35.375" PointY="22.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotation" Width="1.5" PointX="35.375" PointY="27.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetail" Width="1.5" PointX="29.375" PointY="35.75" />
+         <EntityTypeShape EntityType="dbOraRegaModel.tblInvoicePartDetail" Width="1.5" PointX="36.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" Width="1.5" PointX="0.75" PointY="36.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" Width="1.5" PointX="17.375" PointY="36.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" Width="1.5" PointX="35.375" PointY="27.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationLog" Width="1.5" PointX="25.375" PointY="36.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" Width="1.5" PointX="31.375" PointY="36.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" Width="1.5" PointX="37.375" PointY="5.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblBranchMapping" Width="1.5" PointX="37.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblInvoice" Width="1.5" PointX="37.375" PointY="14.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPayment" Width="1.5" PointX="19.375" PointY="37.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblPaymentPartDetail" Width="1.5" PointX="37.375" PointY="20.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblWOPartRequest" Width="1.5" PointX="21.375" PointY="37.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblNotification" Width="1.5" PointX="37.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblLogDetail" Width="1.5" PointX="37.375" PointY="27.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

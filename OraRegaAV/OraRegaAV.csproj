@@ -1,0 +1,1558 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D0E058AE-EC9E-48AF-9C2F-9265C963EB97}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OraRegaAV</RootNamespace>
+    <AssemblyName>OraRegaAV</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.20.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.20.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=6.2.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.6.2.4\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="iTextSharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqToExcel, Version=1.11.0.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\LinqToExcel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Core.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authorization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authorization.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authorization.Policy, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authorization.Policy.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.Policy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Server.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Extensions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Extensions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.ApiExplorer, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.ApiExplorer.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.ApiExplorer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Core.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.DataAnnotations, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.DataAnnotations.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.DataAnnotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.ResponseCaching.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.ResponseCaching.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.ResponseCaching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.DotNet.PlatformAbstractions.2.1.0\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.1.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyModel.2.1.0\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Localization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Localization.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Localization.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Localization.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Localization.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.ObjectPool, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.ObjectPool.2.1.0\lib\netstandard2.0\Microsoft.Extensions.ObjectPool.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.Headers.2.1.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OpenApi, Version=1.2.3.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OpenApi.1.2.3\lib\net46\Microsoft.OpenApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OfficeOpenXml.Extends, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OfficeOpenXml.Extends.1.0.6.0\lib\net40\OfficeOpenXml.Extends.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.AspNetCore.Swagger, Version=6.5.0.0, Culture=neutral, PublicKeyToken=62657d7474907593, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.AspNetCore.Swagger.6.5.0\lib\netstandard2.0\Swashbuckle.AspNetCore.Swagger.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.AspNetCore.SwaggerGen, Version=6.5.0.0, Culture=neutral, PublicKeyToken=d84d99fb0135530a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.AspNetCore.SwaggerGen.6.5.0\lib\netstandard2.0\Swashbuckle.AspNetCore.SwaggerGen.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.7.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.9\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.9\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.9\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Site.css" />
+    <Content Include="DBEntity\dbOraRegaModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>dbOraRegaModel.Context.cs</LastGenOutput>
+      <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="DBEntity\dbOraRegaModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
+      <LastGenOutput>dbOraRegaModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="DB_Changes\001_R.sql" />
+    <Content Include="DB_Changes\002_P.sql" />
+    <Content Include="DB_Changes\003_P.sql" />
+    <Content Include="DB_Changes\004_P.sql" />
+    <Content Include="DB_Changes\005_P.sql" />
+    <Content Include="DB_Changes\006_P.sql" />
+    <Content Include="DB_Changes\007_P.sql" />
+    <Content Include="DB_Changes\008_P.sql" />
+    <Content Include="DB_Changes\009_P.sql" />
+    <Content Include="DB_Changes\010_P.sql" />
+    <Content Include="DB_Changes\011_P.sql" />
+    <Content Include="DB_Changes\012_P.sql" />
+    <Content Include="DB_Changes\013_P.sql" />
+    <Content Include="DB_Changes\014_P.sql" />
+    <Content Include="DB_Changes\015_P.sql" />
+    <Content Include="DB_Changes\016_P.sql" />
+    <Content Include="DB_Changes\017_P.sql" />
+    <Content Include="DB_Changes\018_P.sql" />
+    <Content Include="DB_Changes\019_P.sql" />
+    <Content Include="EmailTemplates\CareerTemplate.html" />
+    <Content Include="EmailTemplates\CustomerSignUpTemplate.html" />
+    <Content Include="EmailTemplates\InitialCredentialTemplate.html" />
+    <Content Include="EmailTemplates\ExtendWarrantyEnquiryReceived.html" />
+    <Content Include="EmailTemplates\NewCustomerEnquiry.html" />
+    <Content Include="EmailTemplates\NewSellEnquiryReceived.html" />
+    <Content Include="Global.asax" />
+    <Content Include="img\quikserv-logo.png" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\CustomAuthenticationFilter.cs" />
+    <Compile Include="App_Start\RequestHeaderFilter.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\ValidateModelAttribute.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccessoriesAPIController.cs" />
+    <Compile Include="Controllers\AddressAPIController.cs" />
+    <Compile Include="Controllers\ApiCustomBaseController.cs" />
+    <Compile Include="Controllers\AttendanceAPIController.cs" />
+    <Compile Include="Controllers\BranchAPIController.cs" />
+    <Compile Include="Controllers\BusinessTypeAPIController.cs" />
+    <Compile Include="Controllers\CaseStatusAPIController.cs" />
+    <Compile Include="Controllers\ClaimSettlementController.cs" />
+    <Compile Include="Controllers\CompanyTypeAPIController.cs" />
+    <Compile Include="Controllers\ConfigurationController.cs" />
+    <Compile Include="Controllers\CareerAPIController.cs" />
+    <Compile Include="Controllers\Customers\ContactUsController.cs" />
+    <Compile Include="Controllers\Customers\CustomerAddressController.cs" />
+    <Compile Include="Controllers\Customers\CustomerRegistrationController.cs" />
+    <Compile Include="Controllers\Customers\CustomerSellModuleController.cs" />
+    <Compile Include="Controllers\Customers\CustomerSOEnquiryController.cs" />
+    <Compile Include="Controllers\Customers\CustomerWOEnquiryController.cs" />
+    <Compile Include="Controllers\DashboardAPIController.cs" />
+    <Compile Include="Controllers\DelayTypeAPIController.cs" />
+    <Compile Include="Controllers\DepartmentAPIController.cs" />
+    <Compile Include="Controllers\DesignationAPIController.cs" />
+    <Compile Include="Controllers\EmployeeAPIController.cs" />
+    <Compile Include="Controllers\GSTMappingAPIController.cs" />
+    <Compile Include="Controllers\HSNCodeGSTMappingAPIController.cs" />
+    <Compile Include="Controllers\InvoiceAPIController.cs" />
+    <Compile Include="Controllers\IssueDescriptionAPIController.cs" />
+    <Compile Include="Controllers\LeaveTypeAPIController.cs" />
+    <Compile Include="Controllers\LoginAPIController.cs" />
+    <Compile Include="Controllers\ManageLeaveAPIController.cs" />
+    <Compile Include="Controllers\OperatingSystemAPIController.cs" />
+    <Compile Include="Controllers\PartDescriptionAPIController.cs" />
+    <Compile Include="Controllers\PartDetailAPIController.cs" />
+    <Compile Include="Controllers\PaymentGatewayAPIController.cs" />
+    <Compile Include="Controllers\QuotationAPIController.cs" />
+    <Compile Include="Controllers\RatePerKMAPIController.cs" />
+    <Compile Include="Controllers\RepairClassTypeAPIController.cs" />
+    <Compile Include="Controllers\RequestForAdvanceController.cs" />
+    <Compile Include="Controllers\RescheduleReasonAPIController.cs" />
+    <Compile Include="Controllers\StockPartStatusAPIController.cs" />
+    <Compile Include="Controllers\PaymentTermsAPIController.cs" />
+    <Compile Include="Controllers\PriorityAPIController.cs" />
+    <Compile Include="Controllers\ProductAPIController.cs" />
+    <Compile Include="Controllers\ProductDescriptionAPIController.cs" />
+    <Compile Include="Controllers\ProductMakeAPIController.cs" />
+    <Compile Include="Controllers\ProductModelsAPIController.cs" />
+    <Compile Include="Controllers\ExtendedWarrantyController.cs" />
+    <Compile Include="Controllers\ProductTypeAPIController.cs" />
+    <Compile Include="Controllers\QueueAPIController.cs" />
+    <Compile Include="Controllers\ReportsAPIController.cs" />
+    <Compile Include="Controllers\RoleAPIController.cs" />
+    <Compile Include="Controllers\SalesOrderController.cs" />
+    <Compile Include="Controllers\SalesOrderEnquiryController.cs" />
+    <Compile Include="Controllers\SalesOrderStatusAPIController.cs" />
+    <Compile Include="Controllers\SOEnquiryAPIController.cs" />
+    <Compile Include="Controllers\StockEntryAPIController.cs" />
+    <Compile Include="Controllers\StockInOutAPIController.cs" />
+    <Compile Include="Controllers\StockTransferAPIController.cs" />
+    <Compile Include="Controllers\StockOutAPIController.cs" />
+    <Compile Include="Controllers\SupportTypeAPIController.cs" />
+    <Compile Include="Controllers\MasterDataAPIController.cs" />
+    <Compile Include="Controllers\TravelClaimAPIController.cs" />
+    <Compile Include="Controllers\TravelRangeAPIController.cs" />
+    <Compile Include="Controllers\VendorAPIController.cs" />
+    <Compile Include="Controllers\WarrantyTypeAPIController.cs" />
+    <Compile Include="Controllers\WebsiteAPIController.cs" />
+    <Compile Include="Controllers\WorkOrderController.cs" />
+    <Compile Include="Controllers\WorkOrderEnquiryController.cs" />
+    <Compile Include="DBEntity\AttendanceHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\dbOraRegaModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbOraRegaModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\dbOraRegaModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\dbOraRegaModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\dbOraRegaModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetAccessoriesList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetAreaList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetAttendanceHistoryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetBannerList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetBranchListByCompany_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetBranchListByState_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetBranchList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetBusinessType_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCareerPostList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCaseStatusList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCityList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetClaimSettlementItemAttachmentById_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetClaimSettlementItemById_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetClaimSettlementList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCompanyList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCompanyTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetConfigurationsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCountryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCSOOffSiteDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCSOOnSiteDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCustomerDetailsByMobile_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetCustomerList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_CloseSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_Customer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_InvoiceSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_QuotationSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_SalesOrderEnquirySummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_SalesOrderSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_StockSummary_Inventory_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_StockSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_WorkOrderAllocated_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDashboard_WorkOrderSummary_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDelayTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetDepartmentList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetEmployeeListForDropDown_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetEmployeesListByReportingTo_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetEmployeesListByRole_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetEmployeesList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetEngineerList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetEngineerVisitHistoryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetGSTMappingList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetGST_N_StateCode_ByCompanyNState_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetHSNCodeGSTMappingList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetInventoryReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetInvoiceList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetInvoiceReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetIssueDescriptionList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetLeaveDetailsById_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetLeaves_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetLeaveTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetLoggedInUserDetailsByToken_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetMenuList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetModuleMasterList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetNotificationList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetOfferAdsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetOperatingSystemList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetOrderTypesListForSelectList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetOurProductList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetOurServiceList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPartDescriptionList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPartDetailList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPartDetailTransferHistoryLogList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPartsListForAllocation_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPaymentList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPaymentPolicyList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPaymentTermsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPincodeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPriorityList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetPrivacyAndPolicyList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetProductDescriptionList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetProductMakesList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetProductModelDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetProductModelsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetProductTypesList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetQuotationList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetQuotationReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRatePerKMList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRefundAndCancellationPolicyList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRepairClassTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetReportingToEmployeeForSelectList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRequestForAdvanceList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRescheduleReasonList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRoleDetailsById_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRoleHierarchy_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRoleMaster_EmployeePermissionList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRoleMaster_PermissionList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRolesList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetRoles_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSalesOrderDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSalesOrderProductsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSalesOrdersList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSalesOrderStatusList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSalesReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSOCustomerCommentsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSOEnquiriesListForCustomer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSOEnquiryDetailsForCustomer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSOEnquiryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSOEnquiryProductsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStateList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockAllocationToEngineerList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockAllocationToReturnList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockAllocationToWorkOrderList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockEntryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOutDefectiveByChallanNumber_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOutDOAByChallanNumber_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOut_DAO_ChallanList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockOut_Defective_ChallanList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockPartStatusList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockTransferInChallanList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockTransferInList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockTransferInOutByChallanNumber_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockTransferList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetStockTransferOutChallanList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetSupportTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetTermsAndConditionList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetTestimonialList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetTrackingOrderLog_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetTravelClaimList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetTravelRangeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetUsersAddresses_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetUsersTemporaryAddresses_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetVehicleTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetVendorsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWarrantyTypeList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOCustomerFeedbackList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOEnquiriesListForCustomer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOEnquiryDetailsForCustomer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOEnquiryLogDetailsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOListForDropDown_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWOListForEmployees_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderCloserReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderCreationReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderEnquiriesList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderEnquiryReport_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderLogDetailsList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetWorkOrderRescheduleHistoryList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportArea_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportCity_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportCustomer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportPartDetails_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportPincode_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportState_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ImportStockEntry_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ListWOForServiceEngineer_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\ModuleMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\OLD_tblWorkOrderEnquiry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\RoleMaster_Employee_Permission.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\RoleMaster_Permission.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblAccessory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblAddressTypesMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblArea.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblBanner.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblBranch.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblBranchMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblBranchQueue.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblBusinessType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCareer.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCareerPost.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCaseStatu.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCategory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCity.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblClaimSettlement.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblClaimSettlementItem.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblClaimSettlementItemAttachment.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblClaimType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCompany.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCompanyType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblConfigContactU.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblConfigurationMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblContactUsEnquiry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblContactUsEnquiryPhoto.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCountry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCustomer.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCustomerSellProductsMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblCustomersSellDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblDelayType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblDepartment.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblEmpDocument.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblEmployee.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblEngineerVisitHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblEnquiryStatusMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblExtendedWarranty.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblExtendedWarrantyProduct.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblExtendWarrantyPurchaseProof.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblGSTMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblHSNCodeGSTMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblInvoice.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblInvoicePartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblInvoiceServiceChargeDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblIssueDescription.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblLeaveMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblLeaveType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblLogDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblLoggedInUser.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblMenuMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblMenuRoleMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblNotification.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOfferAd.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOnlineCustomer.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOperatingSystem.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOrderStatusMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOrderTypeMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOTP.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOurProduct.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblOurService.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPartDescription.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPartsAllocatedToEngineer.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPartsAllocatedToReturn.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPartsAllocatedToWorkOrder.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPayment.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPaymentPartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPaymentPolicy.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPaymentTerm.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPermanentAddress.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPincode.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPriority.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPrivacyAndPolicy.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProduct.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductCondition.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductDescription.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductDetailsPurchaseProof.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductDetailsSnap.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductIssuesPhoto.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductMake.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductModel.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblProductType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblPurchaseProofPhoto.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQueue.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotation.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotationLog.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotationPartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotationPartDetailsLog.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotationServiceChargeDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblQuotationServiceChargeDetailsLog.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRatePerKM.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRefundAndCancellationPolicy.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRepairClassType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRequestForAdvance.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRescheduleReason.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRole.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblRoleHierarchy.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSalesOrder.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSalesOrderEnquiry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSalesOrderProduct.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSalesOrderStatu.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSavedProductDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblServiceAddresss.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblServiceType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSMSLogHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSOCustomerComment.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSOEnquiryProduct.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSOPOAttachment.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSOProductsMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblState.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStatusMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStock.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockAndPartMapping.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockEntry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockEntryBulkData.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockEntryHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_DAO.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_DAO_PartDetails.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_Defective.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockOut_Defective_PartDetails.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockPartStatu.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockTransferOut.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockTransferPartDetail.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblStockTransferStatu.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblSupportType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTemporaryAddress.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTermsAndCondition.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTestimonial.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTrackingOrder.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTravelClaim.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblTravelRange.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblUser.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblUserType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblVehicleType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblVendor.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWareHouseTransaction.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWarrantyType.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOAccessory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOEnquiryCustomerFeedback.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOOTPVerify.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOPart.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOPartRequest.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOProofOfPurchase.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWORepairRemark.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWorkOrder.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWorkOrderEngineerAllocatedHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWorkOrderEnquiry.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWorkOrderRescheduleHistory.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblWOSnap.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\AlertsSender.cs" />
+    <Compile Include="Helpers\EncryptDecryptHelper.cs" />
+    <Compile Include="Helpers\FileManager.cs" />
+    <Compile Include="Helpers\LogWriter.cs" />
+    <Compile Include="Helpers\SmsSender.cs" />
+    <Compile Include="Helpers\TrackingModuleLog.cs" />
+    <Compile Include="Helpers\ValueSanitizerHelper.cs" />
+    <Compile Include="Models\AddressViewModel.cs" />
+    <Compile Include="Models\AdminCommonViewModel.cs" />
+    <Compile Include="Models\CareerPostViewModel.cs" />
+    <Compile Include="Models\DashboardModel.cs" />
+    <Compile Include="Models\DepartmentModels.cs" />
+    <Compile Include="Models\InvoiceViewModel.cs" />
+    <Compile Include="Models\ManageWebsiteViewModel.cs" />
+    <Compile Include="Models\BranchModel.cs" />
+    <Compile Include="Models\BranchQueueSaveModel.cs" />
+    <Compile Include="Models\BusinessType_Request.cs" />
+    <Compile Include="Models\CaseStatusModels.cs" />
+    <Compile Include="Models\ClaimSettlementViewModel.cs" />
+    <Compile Include="Models\CompanyModel.cs" />
+    <Compile Include="Models\Constants\AppSettings.cs" />
+    <Compile Include="Models\Constants\ConfigConstants.cs" />
+    <Compile Include="Models\Constants\Enums.cs" />
+    <Compile Include="Models\Constants\OrderTypeCodes.cs" />
+    <Compile Include="Models\Constants\TableNameConstants.cs" />
+    <Compile Include="Models\Constants\ValidationConstant.cs" />
+    <Compile Include="Models\CustomerInitialRegistrationModel.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\AttendanceHistoryMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\ExtendedWarrantyParameters.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\GetLoggedInUserDetailsByToken_Result_Metadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\ServiceAddressParameters.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblAccessoryMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblAreaMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblBannerMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblBranchMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblBranchQueueMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCareerMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCityMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCompanyMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCompanyTypeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblConfigContactUsMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblContactUsEnquiryMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCountryMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCustomerMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblCustomersSellDetailMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblDepartmentMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblDesignationMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblEmployeeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblHSNCodeGSTMappingMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblIssueDescriptionMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblLeaveMasterMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblLeaveTypeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblOfferAdsMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblOperatingSystemMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPartDescriptionMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPartDetailMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPaymentTermMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPermanentAddressMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPincodeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPriorityMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblProductDescriptionMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\ProductDetailsParameters.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblPurchaseProofPhotosMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblProductIssuesPhotosMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblProductMakeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblProductMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblProductModelMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblProductTypeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblQueueMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblRoleMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSalesOrder.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSalesOrderProductMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSavedProductDetailMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSOEnquiryProductsMetaData.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSalesOrderEnquiryMetaData.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSalesOrderStatusMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblStateMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblStockEntryMetaData.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblSupportTypeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblTemporaryAddressMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblUsersMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblVendorMetaData.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblWarrantyTypeMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblWOEnquiryCustomerFeedbackMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblWORepairRemarkMetadata.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblWorkOrderEnquiryMetaData.cs" />
+    <Compile Include="Models\DBEntitiesPartialClasses\TblWorkOrderMetaData.cs" />
+    <Compile Include="Models\DelayTypeModel.cs" />
+    <Compile Include="Models\EmployeeViewModel.cs" />
+    <Compile Include="Models\Enums\CommonEnums.cs" />
+    <Compile Include="Models\ExcelGenerator.cs" />
+    <Compile Include="Models\GetWorkOrderListViewModel.cs" />
+    <Compile Include="Models\GSTMappingModel.cs" />
+    <Compile Include="Models\ImportWorkOrder.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PaginationParameters.cs" />
+    <Compile Include="Models\PartDetailsModels.cs" />
+    <Compile Include="Models\PaymentGatewayViewModel.cs" />
+    <Compile Include="Models\ProductDescriptionViewModel.cs" />
+    <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\QuotationViewModel.cs" />
+    <Compile Include="Models\RatePerKMModel.cs" />
+    <Compile Include="Models\RepairClassTypeModel.cs" />
+    <Compile Include="Models\ReportSearchModel.cs" />
+    <Compile Include="Models\RequestForAdvanceViewModel.cs" />
+    <Compile Include="Models\RescheduleReasonModel.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\RoleHierarchyModel.cs" />
+    <Compile Include="Models\SalesOrderDetailsResult.cs" />
+    <Compile Include="Models\SelectListItem.cs" />
+    <Compile Include="Models\SmsModel.cs" />
+    <Compile Include="Models\SMTPConfigurationModel.cs" />
+    <Compile Include="Models\StockAllocationModels.cs" />
+    <Compile Include="Models\StockPartStatusModel.cs" />
+    <Compile Include="Models\StockTransferModel.cs" />
+    <Compile Include="Models\StockTransferOutViewModel.cs" />
+    <Compile Include="Models\TravelClaimViewModel.cs" />
+    <Compile Include="Models\TravelRangeModel.cs" />
+    <Compile Include="Models\Utilities.cs" />
+    <Compile Include="Models\SOEnquiryListParameters.cs" />
+    <Compile Include="Models\WebAPIViewModel.cs" />
+    <Compile Include="Models\WOListParameters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DBEntity\dbOraRegaModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbOraRegaModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="DBEntity\dbOraRegaModel.edmx.diagram">
+      <DependentUpon>dbOraRegaModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="FormatFiles\StockEntryFormatFile.xlsx" />
+    <Content Include="FormatFiles\PartDetailsFormatFile.xlsx" />
+    <Content Include="FormatFiles\ManageAddressFormatFile.xlsx" />
+    <Content Include="FormatFiles\CustomerFormatFile.xlsx" />
+    <None Include="packages.config" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Data\" />
+    <Folder Include="ErrorLogs\" />
+    <Folder Include="Uploads\ClaimSattlement\" />
+    <Folder Include="Uploads\CustomerPicture\" />
+    <Folder Include="Uploads\Documents\" />
+    <Folder Include="Uploads\Invoice\" />
+    <Folder Include="Uploads\OurProduct\" />
+    <Folder Include="Uploads\ProfilePicture\" />
+    <Folder Include="Uploads\WOEnquiries\ProductProofs\" />
+    <Folder Include="Views\BusinessTypeAPI\" />
+    <Folder Include="Views\ContactUsAPI\" />
+    <Folder Include="Views\QuotationAPI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>53248</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63248/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+    <ItemGroup>
+      <RoslynFiles Include="$(CscToolPath)\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
+    <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
