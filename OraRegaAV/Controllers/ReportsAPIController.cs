@@ -60,7 +60,7 @@ namespace OraRegaAV.Controllers.API
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo,vTotal).ToList();
+                var WorkOrderEnquiryList = db.GetWorkOrderEnquiryReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, objReportSearchModel.PageSize, objReportSearchModel.PageNo, vTotal).ToList();
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = WorkOrderEnquiryList;
@@ -927,7 +927,7 @@ namespace OraRegaAV.Controllers.API
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var salesList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId,0,0,vTotal).ToList();
+                var salesList = db.GetSalesReport(objReportSearchModel.FromDate, objReportSearchModel.ToDate, objReportSearchModel.CompanyId, objReportSearchModel.BranchId, objReportSearchModel.StateId, userId, 0, 0, vTotal).ToList();
 
                 if (salesList.Count == 0)
                 {
@@ -1227,7 +1227,8 @@ namespace OraRegaAV.Controllers.API
 
                 if (quotationList.Count == 0)
                 {
-                    _response.IsSuccess = false;
+                    _response.Data = quotationList;
+                    _response.IsSuccess = true;
                     _response.Message = "No records found.";
                     return _response;
                 }
