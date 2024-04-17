@@ -1064,7 +1064,9 @@ namespace OraRegaAV.Controllers.API
                         var vRoleObj_Logistics = await db.tblRoles.Where(w => w.RoleName == "Logistics Executive").FirstOrDefaultAsync();
                         if (vRoleObj_Logistics != null)
                         {
-                            var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id).ToListAsync();
+                            var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                            var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                             foreach (var itemEmployee in vEmployeeList)
                             {
                                 var vNotifyObj_Employee = new tblNotification()
@@ -1087,7 +1089,9 @@ namespace OraRegaAV.Controllers.API
                         var vRoleObj_Backend = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
                         if (vRoleObj_Backend != null)
                         {
-                            var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id).ToListAsync();
+                            var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                            var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                             foreach (var itemEmployee in vEmployeeList)
                             {
                                 var vNotifyObj_Employee = new tblNotification()
@@ -1152,8 +1156,13 @@ namespace OraRegaAV.Controllers.API
                         var vReturnPartObj = await Task.Run(() => db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId && x.ReturnStatusId == 1).FirstOrDefaultAsync());
                         if (vReturnPartObj != null)
                         {
+                            var vWorkOrderObj = await db.tblWorkOrders.Where(w => w.Id == vReturnPartObj.WorkOrderId).FirstOrDefaultAsync();
+                            var vEmployeesObj = await db.tblEmployees.Where(w => w.Id == vReturnPartObj.EngineerId).FirstOrDefaultAsync();
+                            var vPartDetailsObj = await db.tblPartDetails.Where(w => w.Id == item.PartId).FirstOrDefaultAsync();
+
                             if (item.StatusId != 3)
                             {
+                                // Return from Work order
                                 if (vReturnPartObj.WorkOrderId != null && vReturnPartObj.WorkOrderId > 0)
                                 {
                                     var vWorkOrderPartObj = await Task.Run(() => db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == vReturnPartObj.WorkOrderId && x.PartId == item.PartId).FirstOrDefaultAsync());
@@ -1165,6 +1174,7 @@ namespace OraRegaAV.Controllers.API
                                     }
                                 }
 
+                                // Return from Engineer
                                 var vEngineerPartObj = await Task.Run(() => db.tblPartsAllocatedToEngineers.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId).FirstOrDefaultAsync());
                                 if (vEngineerPartObj != null)
                                 {
@@ -1174,9 +1184,81 @@ namespace OraRegaAV.Controllers.API
                                 }
                             }
 
+                            // Return Status Update
                             vReturnPartObj.ReturnStatusId = item.StatusId;
-
                             await db.SaveChangesAsync();
+
+                            // Send Accept/Reject Notification
+                            #region Save Notification
+
+                            if (item.StatusId == 2) // Accept
+                            {
+                                string NotifyMessag = String.Format(@"Hi Team,
+                                                                      Greeting...
+                                                                      Return spare request has been Accepted by logistics
+                                                                      Work Order No-{0}
+                                                                      Engineer Name-{1}
+                                                                      STN-{2}
+                                                                      Part No-{3} 
+                                                                      Part Name-{4}
+                                                                      Part Discription-{5} ", vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : string.Empty,
+                                                                                             vEmployeesObj != null ? vEmployeesObj.EmployeeName : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.UniqueCode : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.PartNumber : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.PartName : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.PartDescription : string.Empty);
+
+                                var vNotifyObj = new tblNotification()
+                                {
+                                    Subject = "Logistics Accept Retun Part Request",
+                                    SendTo = "Return requested To",
+                                    //CustomerId = vWorkOrderStatusObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage_Customer,
+                                    EmployeeId = vReturnPartObj.EngineerId,
+                                    EmployeeMessage = NotifyMessag,
+                                    CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                    CreatedOn = DateTime.Now,
+                                };
+
+                                db.tblNotifications.AddOrUpdate(vNotifyObj);
+
+                                await db.SaveChangesAsync();
+                            }
+                            else if (item.StatusId == 3) // Reject
+                            {
+
+                                string NotifyMessag = String.Format(@"Hi Team,
+                                                                      Greeting...
+                                                                      Return spare request has been Rejected by logistics
+                                                                      Work Order No-{0}
+                                                                      Engineer Name-{1}
+                                                                      STN-{2}
+                                                                      Part No-{3} 
+                                                                      Part Name-{4}
+                                                                      Part Discription-{5} ", vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : string.Empty,
+                                                                                             vEmployeesObj != null ? vEmployeesObj.EmployeeName : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.UniqueCode : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.PartNumber : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.PartName : string.Empty,
+                                                                                             vPartDetailsObj != null ? vPartDetailsObj.PartDescription : string.Empty);
+
+                                var vNotifyObj = new tblNotification()
+                                {
+                                    Subject = "Logistics Reject Retun Part Request",
+                                    SendTo = "Return requested To",
+                                    //CustomerId = vWorkOrderStatusObj.CustomerId,
+                                    //CustomerMessage = NotifyMessage_Customer,
+                                    EmployeeId = vReturnPartObj.EngineerId,
+                                    EmployeeMessage = NotifyMessag,
+                                    CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                    CreatedOn = DateTime.Now,
+                                };
+
+                                db.tblNotifications.AddOrUpdate(vNotifyObj);
+
+                                await db.SaveChangesAsync();
+                            }
+                            #endregion
                         }
                     }
 

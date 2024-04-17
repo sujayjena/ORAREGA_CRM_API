@@ -1070,7 +1070,9 @@ namespace OraRegaAV.Controllers
                                 var vRoleObj = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
                                 if (vRoleObj != null)
                                 {
-                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id).ToListAsync();
+                                    var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderStatusObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id && w.CompanyId == vWorkOrderStatusObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                                     foreach (var itemEmployee in vEmployeeList)
                                     {
                                         var vNotifyObj_Employee = new tblNotification()
@@ -1106,7 +1108,9 @@ namespace OraRegaAV.Controllers
                                 var vRoleObj = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
                                 if (vRoleObj != null)
                                 {
-                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id).ToListAsync();
+                                    var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderStatusObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id && w.CompanyId == vWorkOrderStatusObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                                     foreach (var itemEmployee in vEmployeeList)
                                     {
                                         var vNotifyObj_Employee = new tblNotification()
@@ -2343,7 +2347,9 @@ namespace OraRegaAV.Controllers
                     var vRoleObj_Logistics = await db.tblRoles.Where(w => w.RoleName == "Logistics Executive").FirstOrDefaultAsync();
                     if (vRoleObj_Logistics != null)
                     {
-                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id).ToListAsync();
+                        var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == tbl.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == tbl.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                         foreach (var itemEmployee in vEmployeeList)
                         {
                             var vNotifyObj_Employee = new tblNotification()
@@ -2366,7 +2372,9 @@ namespace OraRegaAV.Controllers
                     var vRoleObj_Backend = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
                     if (vRoleObj_Backend != null)
                     {
-                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id).ToListAsync();
+                        var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == tbl.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id && w.CompanyId == tbl.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                         foreach (var itemEmployee in vEmployeeList)
                         {
                             var vNotifyObj_Employee = new tblNotification()

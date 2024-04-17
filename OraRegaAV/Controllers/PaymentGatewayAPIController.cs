@@ -289,7 +289,9 @@ namespace OraRegaAV.Controllers.API
                             var vRoleObj_Logistics = await db.tblRoles.Where(w => w.RoleName == "Accountant").FirstOrDefaultAsync();
                             if (vRoleObj_Logistics != null)
                             {
-                                var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id).ToListAsync();
+                                var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                                var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
                                 foreach (var itemEmployee in vEmployeeList)
                                 {
                                     var vNotifyObj_Employee = new tblNotification()
