@@ -1262,6 +1262,13 @@ namespace OraRegaAV.Controllers.API
                         }
                     }
 
+                    #region Email Sending
+                    if (vObjList.Count > 0)
+                    {
+                        await new AlertsSender().SendEmail_LogisticPartReturnAccept_Reject(vObjList);
+                    }
+                    #endregion
+
                     _response.Message = "Part approved successfully";
                 }
                 else

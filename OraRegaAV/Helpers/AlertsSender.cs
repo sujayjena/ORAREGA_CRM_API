@@ -877,8 +877,13 @@ namespace OraRegaAV.Helpers
 
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
-                var roleId = "22,23"; //IDM / Backend Executive
-                var empList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var roleId = "22,23"; //IDM / Backend Executive
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == parameters.CompanyId && x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                //IDM / Backend Executive
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Backend Executive").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchId).Select(x=>x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == parameters.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -890,7 +895,7 @@ namespace OraRegaAV.Helpers
                 var caseStatus = db.tblCaseStatus.Where(x => x.Id == parameters.CaseStatusId).Select(x => x.CaseStatusName).FirstOrDefault();
                 var closerSummary = repairClassType + ", " + delayCode + ", " + parameters.ResolutionSummary + ", " + caseStatus;
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>I'm pleased to inform you that the work order has been successfully closed.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src="+ ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>I'm pleased to inform you that the work order has been successfully closed.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Close Work Order", emailTemplateContent, receiverEmail, files: null);
             }
@@ -922,8 +927,13 @@ namespace OraRegaAV.Helpers
 
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
 
-                var roleId = "24"; //Logistics Executive
-                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var roleId = "24"; //Logistics Executive
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                //Logistics Executive
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -961,8 +971,13 @@ namespace OraRegaAV.Helpers
 
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
-                var roleId = "22"; //IDM
-                var empList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var roleId = "22"; //IDM
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == parameters.CompanyId && x.BranchId == parameters.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                //IDM
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchId).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == parameters.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -970,7 +985,7 @@ namespace OraRegaAV.Helpers
                 var engName = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
                 var vRequestPart = db.tblWOPartRequests.Where(x => x.WorkOrderId == parameters.Id).ToList();
-                
+
 
                 string partDetailsListContent = string.Empty;
                 foreach (var itm in vRequestPart)
@@ -1027,7 +1042,7 @@ namespace OraRegaAV.Helpers
                 var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
                 var leaveType = db.tblLeaveTypes.Where(x => x.Id == parameters.LeaveTypeId).Select(x => x.LeaveType).FirstOrDefault();
-               
+
                 emailTemplateContent = "<html><body><p>Hi Team,</p>Leave Application Request received.</p><p>Engineer Name - " + engName + "<br/>Leave Type - " + leaveType + "<br/>From Date - " + parameters.StartDate.ToShortDateString() + "<br/>To Date - " + parameters.EndDate.ToShortDateString() + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Leave Application", emailTemplateContent, receiverEmail, files: null);
@@ -1107,7 +1122,7 @@ namespace OraRegaAV.Helpers
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
 
                 string claimSettlementItemListContent = string.Empty;
-                foreach(var itm in parameters.claimSettlementItem)
+                foreach (var itm in parameters.claimSettlementItem)
                 {
                     var fileName = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).Select(x => x.FilePath).FirstOrDefault();
 
@@ -1116,7 +1131,7 @@ namespace OraRegaAV.Helpers
                                 <ul>
                                     <li>Engineer name - {engName}</li>
                                     <li>Claim Id - {parameters.ClaimId}</li>
-                                    <li>Claim Type - {db.tblClaimTypes.Where(x=>x.Id == itm.ClaimTypeId).Select(y=>y.Type).FirstOrDefault()}</li>
+                                    <li>Claim Type - {db.tblClaimTypes.Where(x => x.Id == itm.ClaimTypeId).Select(y => y.Type).FirstOrDefault()}</li>
                                     <li>From date - {itm.FromDate}</li>
                                     <li>To Date  - {itm.ToDate}</li>
                                     <li>Amount - {itm.Amount}</li>
@@ -1127,7 +1142,7 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>"+ claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>" + claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Expense Application", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1203,8 +1218,13 @@ namespace OraRegaAV.Helpers
                 var vQuotationWorkOrderId = db.tblQuotations.Where(x => x.QuotationNumber == parameters.QuotationNumber).Select(x => x.WorkOrderId).FirstOrDefault();
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vQuotationWorkOrderId).FirstOrDefault();
 
-                var roleId = "23"; //Backend Executive
-                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var roleId = "23"; //Backend Executive
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                //Backend Executive
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Backend Executive").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 var emailList = new List<string>(empList);
 
                 receiverEmail = string.Empty;
@@ -1218,14 +1238,14 @@ namespace OraRegaAV.Helpers
                     emailList.AddRange(new string[] { "accounts@orarega.com" });
                     receiverEmail = string.Join(",", emailList.ToArray());
                 }
-                else if(parameters.StatusId == 3)
+                else if (parameters.StatusId == 3)
                 {
                     subjectName = "Rejection of Quotation";
                     headingMsg = "The Quotation has been Rejected by the Customer.";
                     receiverEmail = string.Join(",", new List<string>(empList).ToArray());
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>"+ headingMsg + "</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>" + headingMsg + "</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other(subjectName, emailTemplateContent, receiverEmail, files: null);
             }
@@ -1263,8 +1283,13 @@ namespace OraRegaAV.Helpers
                 var vQuotationWorkOrderId = db.tblQuotations.Where(x => x.QuotationNumber == parameters.QuotationNumber).Select(x => x.WorkOrderId).FirstOrDefault();
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vQuotationWorkOrderId).FirstOrDefault();
 
-                var roleId = "23"; //Backend Executive
-                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var roleId = "23"; //Backend Executive
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                //Backend Executive
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Backend Executive").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 emailTemplateContent = "<html><body><p>Hi Team,</p><p>Payment Received successfully.</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
@@ -1299,8 +1324,13 @@ namespace OraRegaAV.Helpers
 
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
 
-                var roleId = "24"; //Logistics Executive
-                var empList = db.tblEmployees.Where(x => x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var roleId = "24"; //Logistics Executive
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                //Logistics Executive
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -1337,6 +1367,83 @@ namespace OraRegaAV.Helpers
 
             return result;
         }
+        public async Task<bool> SendEmail_LogisticPartReturnAccept_Reject(List<StockAllocation_PartsAllocatedToWorkOrderNReturnApproveNReject> vObjList)
+        {
+            bool result = false;
+            string emailTemplateContent, receiverEmail;
+            string senderCompanyLogo;
+            List<GetConfigurationsList_Result> configList;
+
+            try
+            {
+                configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
+                    $",{ConfigConstants.EmailSenderName},{ConfigConstants.NewUserEmailSubject},{ConfigConstants.SenderCompanyLogo}").ToList();
+
+                if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
+                    return result;
+
+                //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
+
+                var objjj = vObjList.FirstOrDefault();
+                var vReturnPartObj = db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == objjj.EngineerId && x.PartId == objjj.PartId).FirstOrDefault();
+                var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vReturnPartObj.WorkOrderId).FirstOrDefault();
+
+                //var roleId = "24";//Logistics Executive
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).FirstOrDefault();
+
+                //Logistics Executive
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x=>x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId??0)).FirstOrDefault();
+                receiverEmail = db.tblEmployees.Where(x => x.Id == empList.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+
+                senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
+
+                var engName = db.tblEmployees.Where(x => x.Id == vWorkOrder.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
+
+                string partDetailsListContent = string.Empty;
+                foreach (var itm in vObjList)
+                {
+                    partDetailsListContent = $@"{partDetailsListContent}
+                            <li>
+                                <ul>
+                                    <li>Work order no - {vWorkOrder.WorkOrderNumber}</li>
+                                    <li>Engineer name - {engName}</li>
+                                    <li>STN - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.UniqueCode).FirstOrDefault()}</li>
+                                    <li>Part No - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartNumber).FirstOrDefault()}</li>
+                                    <li>Part Name  - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartName).FirstOrDefault()}</li>
+                                    <li>Part Description - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartDescription).FirstOrDefault()}</li>
+                                </ul>
+                                <br />
+                            </li>";
+                }
+
+                string subjectName = string.Empty;
+                string headingMsg = string.Empty;
+                if (vObjList.FirstOrDefault().StatusId == 2)
+                {
+                    subjectName = "Return Part Request Accepted";
+                    headingMsg = "The Return spare request has been Accepted by logistics.";
+                }
+                else if (vObjList.FirstOrDefault().StatusId == 3)
+                {
+                    subjectName = "Rejection of Return Part Request";
+                    headingMsg = "Return spare request has been rejected by logistics.";
+                }
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>" + headingMsg + "</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                result = await SendEmail_Other(subjectName, emailTemplateContent, receiverEmail, files: null);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            return result;
+        }
 
         public async Task<bool> SendEmailStockTransferOut(StockTransferRequest parameters)
         {
@@ -1355,11 +1462,21 @@ namespace OraRegaAV.Helpers
 
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
-                var fromBranchRoleId = "22"; // IDM
-                var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var fromBranchRoleId = "22"; // IDM
+                //var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
-                var toBranchRoleId = "22,24"; // IDM / Logistics Executive
-                var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                // IDM
+                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x=>x.Id).ToList();
+                var vFBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchFromId).Select(x => x.EmployeeId).ToList();
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == parameters.ComapnyId && vFBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+
+                //var toBranchRoleId = "22,24"; // IDM / Logistics Executive
+                //var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                // IDM / Logistics Executive
+                var toBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x=>x.Id).ToList();
+                var vToBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchToId).Select(x => x.EmployeeId).ToList();
+                var toBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == parameters.ComapnyId && vToBranchWiseEmpList.Contains(x.Id) && toBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
 
                 var emailList = new List<string>(fromBranchEmpList);
                 emailList.AddRange(new List<string>(toBranchEmpList));
@@ -1386,14 +1503,14 @@ namespace OraRegaAV.Helpers
                                     <li>Part No - {vPartDetails.PartNumber}</li>
                                     <li>Part Name  - {vPartDetails.PartName}</li>
                                     <li>Part Description - {vPartDetails.PartDescription}</li>
-                                    <li>HSN Code - {db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartDetails.HSNCodeId).Select(y=>y.HSNCode).FirstOrDefault()}</li>
+                                    <li>HSN Code - {db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartDetails.HSNCodeId).Select(y => y.HSNCode).FirstOrDefault()}</li>
                                     <li>Oty - {vPartDetails.Quantity}</li>
                                 </ul>
                                 <br />
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare has been Dispatched.</p><p>Docket no - "+parameters.NewDocketNo+ "<br/>From Branch name - " + vFromBranch + "<br/>To Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare has been Dispatched.</p><p>Docket no - " + parameters.NewDocketNo + "<br/>From Branch name - " + vFromBranch + "<br/>To Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Stock Transfer Out", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1425,11 +1542,22 @@ namespace OraRegaAV.Helpers
 
                 var stockTransferOutObj = db.tblStockTransferOuts.Where(x => x.ChallanNo == parameters.ChallanNo).FirstOrDefault();
 
-                var fromBranchRoleId = "22"; // IDM
-                var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
-                var toBranchRoleId = "22,24"; // IDM / Logistics Executive
-                var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var fromBranchRoleId = "22"; // IDM
+                //var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                // IDM
+                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x=>x.Id).ToList();
+                var vFBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == stockTransferOutObj.BranchFromId).Select(x => x.EmployeeId).ToList();
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vFBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+
+                //var toBranchRoleId = "22,24"; // IDM / Logistics Executive
+                //var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                // IDM / Logistics Executive
+                var toBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
+                var vToBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == stockTransferOutObj.BranchToId).Select(x => x.EmployeeId).ToList();
+                var toBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vToBranchWiseEmpList.Contains(x.Id) && toBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
 
                 var emailList = new List<string>(fromBranchEmpList);
                 emailList.AddRange(new List<string>(toBranchEmpList));
@@ -1495,8 +1623,13 @@ namespace OraRegaAV.Helpers
 
                 var stockTransferOutObj = db.tblStockTransferOuts.Where(x => x.ChallanNo == parameters.ChallanNo).FirstOrDefault();
 
-                var fromBranchRoleId = "22,24"; // IDM / Logistics Executive
-                var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+                //var fromBranchRoleId = "22,24"; // IDM / Logistics Executive
+                //var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
+
+                // IDM / Logistics Executive
+                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == stockTransferOutObj.BranchFromId).Select(x => x.EmployeeId).ToList();
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
 
                 var emailList = new List<string>(fromBranchEmpList);
 
