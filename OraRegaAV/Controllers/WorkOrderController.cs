@@ -1997,28 +1997,30 @@ namespace OraRegaAV.Controllers
 
                     #region Save Notification
 
-                    // Engineer Detail
-                    string WorkOrder_EngineerName = string.Empty;
-                    string WorkOrder_EngineerMobileNumber = string.Empty;
-                    int WorkOrder_CustomerId = 0;
-
-                    var vtblObj_Engineer = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == parameters.WorkOrderNumber).FirstOrDefault();
-                    if (vtblObj_Engineer != null)
+                    if (parameters.IsStartStop == 0)
                     {
-                        WorkOrder_CustomerId = vtblObj_Engineer.CustomerId;
+                        // Engineer Detail
+                        string WorkOrder_EngineerName = string.Empty;
+                        string WorkOrder_EngineerMobileNumber = string.Empty;
+                        int WorkOrder_CustomerId = 0;
 
-                        var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj_Engineer.EngineerId).FirstOrDefault();
-                        if (vEmployeeObj != null)
+                        var vtblObj_Engineer = db.tblWorkOrders.Where(wo => wo.WorkOrderNumber == parameters.WorkOrderNumber).FirstOrDefault();
+                        if (vtblObj_Engineer != null)
                         {
-                            WorkOrder_EngineerName = vEmployeeObj.EmployeeName;
-                            WorkOrder_EngineerMobileNumber = vEmployeeObj.PersonalNumber;
-                        }
-                    }
+                            WorkOrder_CustomerId = vtblObj_Engineer.CustomerId;
 
-                    // Customer Detail
-                    if (WorkOrder_CustomerId > 0)
-                    {
-                        string NotifyMessage = String.Format(@"Dear Customer,
+                            var vEmployeeObj = db.tblEmployees.Where(wo => wo.Id == vtblObj_Engineer.EngineerId).FirstOrDefault();
+                            if (vEmployeeObj != null)
+                            {
+                                WorkOrder_EngineerName = vEmployeeObj.EmployeeName;
+                                WorkOrder_EngineerMobileNumber = vEmployeeObj.PersonalNumber;
+                            }
+                        }
+
+                        // Customer Detail
+                        if (WorkOrder_CustomerId > 0)
+                        {
+                            string NotifyMessage = String.Format(@"Dear Customer,
                                                Greetings!
 
                                                We're excited to inform you that our engineer has begun their journey. The engineer will be reached Shortly. 
@@ -2031,21 +2033,22 @@ namespace OraRegaAV.Controllers
                                                Email: support@quikservindia.com
                                                Phone: +91 7030087300", WorkOrder_EngineerName, WorkOrder_EngineerMobileNumber);
 
-                        var vNotifyObj = new tblNotification()
-                        {
-                            Subject = "Engineer Start Travel",
-                            SendTo = "Customer",
-                            CustomerId = WorkOrder_CustomerId,
-                            CustomerMessage = NotifyMessage,
-                            //EmployeeId = null,
-                            //EmployeeMessage = null,
-                            CreatedBy = Utilities.GetUserID(ActionContext.Request),
-                            CreatedOn = DateTime.Now,
-                        };
+                            var vNotifyObj = new tblNotification()
+                            {
+                                Subject = "Engineer Start Travel",
+                                SendTo = "Customer",
+                                CustomerId = WorkOrder_CustomerId,
+                                CustomerMessage = NotifyMessage,
+                                //EmployeeId = null,
+                                //EmployeeMessage = null,
+                                CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                CreatedOn = DateTime.Now,
+                            };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                            db.tblNotifications.AddOrUpdate(vNotifyObj);
 
-                        await db.SaveChangesAsync();
+                            await db.SaveChangesAsync();
+                        }
                     }
 
                     #endregion

@@ -261,92 +261,7 @@ namespace OraRegaAV.Controllers.API
                 _response.IsSuccess = true;
                 _response.Data = vresult;
 
-                //return Json(new { Success = true, Message = "Verification successful", phonepeResponse = responseContent });
-
-                #region Save Notification
-
-                // Accept
-                if (vPaymentResponse.IsSuccess)
-                {
-                    var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == phonePePayment.QuotationNumber).FirstOrDefault();
-                    if (vQuotationObj != null)
-                    {
-                        var vWorkOrderObj = db.tblWorkOrders.Where(x => x.Id == vQuotationObj.WorkOrderId).FirstOrDefault();
-                        if (vWorkOrderObj != null)
-                        {
-                            #region Payment Done
-
-
-                            // Send to Employee
-                            string NotifyMessage = String.Format(@"Hi Team,
-                                                           Greeting...                                                    
-                                                           Payment has been received
-                                                           Work order No - {0}
-                                                           Quotation No - {1}
-                                                           Transaction id - {2}", vWorkOrderObj.WorkOrderNumber, vQuotationObj.QuotationNumber, vPaymentRequest.MerchantTransactionId);
-
-                            // Accountant
-                            var vRoleObj_Logistics = await db.tblRoles.Where(w => w.RoleName == "Accountant").FirstOrDefaultAsync();
-                            if (vRoleObj_Logistics != null)
-                            {
-                                var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                                var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
-
-                                foreach (var itemEmployee in vEmployeeList)
-                                {
-                                    var vNotifyObj_Employee = new tblNotification()
-                                    {
-                                        Subject = "Payment Done",
-                                        SendTo = "Accountant",
-                                        //CustomerId = vWorkOrderStatusObj.CustomerId,
-                                        //CustomerMessage = NotifyMessage_Customer,
-                                        EmployeeId = itemEmployee.Id,
-                                        EmployeeMessage = NotifyMessage,
-                                        CreatedBy = Utilities.GetUserID(ActionContext.Request),
-                                        CreatedOn = DateTime.Now,
-                                    };
-
-                                    db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
-                                }
-                            }
-
-                            await db.SaveChangesAsync();
-
-                            #endregion
-
-                            #region Payment Received Confirmation
-
-                            // Send to Customer
-                            string NotifyMessage_Customer = String.Format(@"Dear Customer,
-                                                                   Greeting...
-                                                                   Your payment at Orarega Technology Pvt. Ltd. has been Received successfully.
-                                                                   Thank you...
-                                                                   For any queries, please contact:
-                                                                   Email: support@quikservindia.com
-                                                                   Phone: +91 7030087300");
-
-                            var vNotifyObj_Customer = new tblNotification()
-                            {
-                                Subject = "Payment Received Confirmation",
-                                SendTo = "Customer",
-                                CustomerId = vWorkOrderObj.CustomerId,
-                                CustomerMessage = NotifyMessage_Customer,
-                                //EmployeeId = null,
-                                //EmployeeMessage = NotifyMessage,
-                                CreatedBy = Utilities.GetUserID(ActionContext.Request),
-                                CreatedOn = DateTime.Now,
-                            };
-
-                            db.tblNotifications.AddOrUpdate(vNotifyObj_Customer);
-
-                            await db.SaveChangesAsync();
-
-                            #endregion
-                        }
-                    }
-                }
-
-                #endregion
+                //return Json(new { Success = true, Message = "Verification successful", phonepeResponse = responseContent });               
             }
             catch (Exception ex)
             {
@@ -481,7 +396,7 @@ namespace OraRegaAV.Controllers.API
                         {
                             PaymentId = tbl.Id,
                             PartId = item.PartId,
-                            PartNumber =string.IsNullOrWhiteSpace(item.PartNumber) ? null : item.PartNumber,
+                            PartNumber = string.IsNullOrWhiteSpace(item.PartNumber) ? null : item.PartNumber,
                             PartDescription = string.IsNullOrWhiteSpace(item.PartDescription) ? null : item.PartDescription
                         };
 
@@ -532,6 +447,83 @@ namespace OraRegaAV.Controllers.API
 
                         if (tbl.PaymentStatus == "PAYMENT_SUCCESS")
                         {
+                            #region Save Notification
+
+                            var vQuotationNotifyObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
+                            if (vQuotationNotifyObj != null)
+                            {
+                                var vWorkOrderObj = db.tblWorkOrders.Where(x => x.Id == vQuotationNotifyObj.WorkOrderId).FirstOrDefault();
+                                if (vWorkOrderObj != null)
+                                {
+                                    #region Payment Done
+
+                                    // Send to Employee
+                                    string NotifyMessage = String.Format(@"Hi Team,
+                                                           Greeting...                                                    
+                                                           Payment has been received
+                                                           Work order No - {0}
+                                                           Quotation No - {1}
+                                                           Transaction id - {2}", vWorkOrderObj.WorkOrderNumber, vQuotationNotifyObj.QuotationNumber, parameters.paymentRequest.MerchantTransactionId);
+
+                                    var vRoleObj_Logistics = db.tblRoles.Where(w => w.RoleName == "Accountant").FirstOrDefault();
+                                    if (vRoleObj_Logistics != null)
+                                    {
+                                        var vBranchWiseEmployeeList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToList();
+                                        var vEmployeeList = db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToList();
+
+                                        foreach (var itemEmployee in vEmployeeList)
+                                        {
+                                            var vNotifyObj_Employee = new tblNotification()
+                                            {
+                                                Subject = "Payment Done",
+                                                SendTo = "Accountant",
+                                                //CustomerId = vWorkOrderStatusObj.CustomerId,
+                                                //CustomerMessage = NotifyMessage_Customer,
+                                                EmployeeId = itemEmployee.Id,
+                                                EmployeeMessage = NotifyMessage,
+                                                CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                                CreatedOn = DateTime.Now,
+                                            };
+
+                                            db.tblNotifications.Add(vNotifyObj_Employee);
+                                        }
+                                        db.SaveChanges();
+                                    }
+
+                                    #endregion
+
+                                    #region Payment Received Confirmation
+
+                                    // Send to Customer
+                                    string NotifyMessage_Customer = String.Format(@"Dear Customer,
+                                                                   Greeting...
+                                                                   Your payment at Orarega Technology Pvt. Ltd. has been Received successfully.
+                                                                   Thank you...
+                                                                   For any queries, please contact:
+                                                                   Email: support@quikservindia.com
+                                                                   Phone: +91 7030087300");
+
+                                    var vNotifyObj_Customer = new tblNotification()
+                                    {
+                                        Subject = "Payment Received Confirmation",
+                                        SendTo = "Customer",
+                                        CustomerId = vWorkOrderObj.CustomerId,
+                                        CustomerMessage = NotifyMessage_Customer,
+                                        //EmployeeId = null,
+                                        //EmployeeMessage = NotifyMessage,
+                                        CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                        CreatedOn = DateTime.Now,
+                                    };
+
+                                    db.tblNotifications.Add(vNotifyObj_Customer);
+                                    db.SaveChanges();
+
+                                    #endregion
+                                }
+                            }
+
+                            #endregion
+
                             #region Track Order Log
 
                             var vQuotation = db.tblQuotations.Where(x => x.QuotationNumber == tbl.QuotationNumber).FirstOrDefault();
@@ -557,7 +549,6 @@ namespace OraRegaAV.Controllers.API
 
                             #endregion
                         }
-
                     }
                 }
 
