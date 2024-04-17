@@ -1111,7 +1111,7 @@ namespace OraRegaAV.Controllers
                                     {
                                         var vNotifyObj_Employee = new tblNotification()
                                         {
-                                            Subject = "Engineer Accept Work Order",
+                                            Subject = "Engineer Reject Work Order",
                                             SendTo = "Backend Executive",
                                             //CustomerId = vWorkOrderStatusObj.CustomerId,
                                             //CustomerMessage = NotifyMessage_Customer,
@@ -1541,6 +1541,7 @@ namespace OraRegaAV.Controllers
         public async Task<Response> GetWorkOrderList(WorkOrderSearchParameters parameters)
         {
             List<GetWorkOrderListViewModel> workOrderListObj = new List<GetWorkOrderListViewModel>();
+
             try
             {
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
@@ -1758,6 +1759,25 @@ namespace OraRegaAV.Controllers
                     //}
 
                     item.WOPartList = woPart;
+
+
+                    //WO > Allocated date and time for respective engineer
+                    var vtblWorkOrderEngineerAllocatedHistoriesObj = db.tblWorkOrderEngineerAllocatedHistories.Where(x => x.WorkOrderId == item.Id).OrderByDescending(x => x.CreatedDate).ToList();
+                    foreach (var itemAllocatedHistories in vtblWorkOrderEngineerAllocatedHistoriesObj)
+                    {
+                        var vEmployeeObj = db.tblEmployees.Where(x => x.Id == itemAllocatedHistories.EngineerId).FirstOrDefault();
+                        if (vEmployeeObj != null)
+                        {
+                            var vAllocatedHistObj = new WOEngineerAllocatedHistory()
+                            {
+                                Id = itemAllocatedHistories.Id,
+                                EngineerId = Convert.ToInt32(itemAllocatedHistories.EngineerId),
+                                EngineerName = vEmployeeObj.EmployeeName,
+                                CreatedDate = itemAllocatedHistories.CreatedDate,
+                            };
+                            item.WOEngineerAllocatedHistoryList.Add(vAllocatedHistObj);
+                        }
+                    }
                 }
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
@@ -2638,7 +2658,7 @@ namespace OraRegaAV.Controllers
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var listObj = db.GetWorkOrderList(parameters.CompanyId, parameters.BranchId, parameters.WorkOrderNumber,"", userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+                var listObj = db.GetWorkOrderList(parameters.CompanyId, parameters.BranchId, parameters.WorkOrderNumber, "", userId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
 
                 if (listObj.Count == 0)
                 {

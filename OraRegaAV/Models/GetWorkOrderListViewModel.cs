@@ -9,6 +9,11 @@ namespace OraRegaAV.Models
 {
     public class GetWorkOrderListViewModel
     {
+        public GetWorkOrderListViewModel()
+        {
+            WOEngineerAllocatedHistoryList = new List<WOEngineerAllocatedHistory>();
+        }
+
         public int Id { get; set; }
         public string WorkOrderNumber { get; set; }
         public string FirstName { get; set; }
@@ -115,6 +120,16 @@ namespace OraRegaAV.Models
         public int IsQuotationGenerated { get; set; }
         public List<GetPaymentList_Result> PaymentDetails { get; set; }
         public List<tblWOPartRequest> PartRequestList { get; set; }
+        public List<WOEngineerAllocatedHistory> WOEngineerAllocatedHistoryList { get; set; }
+    }
+
+    public class WOEngineerAllocatedHistory
+    {
+        public int Id { get; set; }
+        public int EngineerId { get; set; }
+        public string EngineerName { get; set; }
+
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     }
 
     public class WORepairRemark
