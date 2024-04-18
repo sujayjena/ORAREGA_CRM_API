@@ -8424,7 +8424,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="DateTime" Name="TicketLogDate" Nullable="false" Precision="23" />
           <Property Type="Int32" Name="BranchId" Nullable="true" />
           <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="GstNumber" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
           <Property Type="String" Name="Mobile" Nullable="true" MaxLength="20" />
@@ -8443,7 +8442,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="DateTime" Name="CloserDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="QuotationNo" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="1" />
           <Property Type="DateTime" Name="WorkOrderLogDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="EngineerName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="SupportType" Nullable="true" MaxLength="50" />
@@ -8454,7 +8453,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="CustomerGStNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="PriorityName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="ProductDescription" Nullable="true" />
@@ -8507,7 +8506,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="CountryOfPurchase" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="OperatingSystemName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="PermanentAddress" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="TemporaryAddress" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="VisitingAddress" Nullable="true" MaxLength="1000" />
           <Property Type="String" Name="IssueDescriptionName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CustomerReportedIssue" Nullable="false" MaxLength="4000" />
           <Property Type="String" Name="SourceChannel" Nullable="false" MaxLength="1" />
@@ -13653,7 +13652,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="TicketLogDate" ColumnName="TicketLogDate" />
                 <ScalarProperty Name="BranchId" ColumnName="BranchId" />
                 <ScalarProperty Name="BranchName" ColumnName="BranchName" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="GstNumber" ColumnName="GstNumber" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="Mobile" ColumnName="Mobile" />
@@ -13676,7 +13674,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CloserDate" ColumnName="CloserDate" />
                 <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="QuotationNo" ColumnName="QuotationNo" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
                 <ScalarProperty Name="WorkOrderLogDate" ColumnName="WorkOrderLogDate" />
                 <ScalarProperty Name="EngineerName" ColumnName="EngineerName" />
                 <ScalarProperty Name="SupportType" ColumnName="SupportType" />
@@ -13687,7 +13685,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="CustomerGStNumber" ColumnName="CustomerGStNumber" />
                 <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
                 <ScalarProperty Name="ProductType" ColumnName="ProductType" />
                 <ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
                 <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
@@ -13744,7 +13742,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CountryOfPurchase" ColumnName="CountryOfPurchase" />
                 <ScalarProperty Name="OperatingSystemName" ColumnName="OperatingSystemName" />
                 <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
-                <ScalarProperty Name="TemporaryAddress" ColumnName="TemporaryAddress" />
+                <ScalarProperty Name="VisitingAddress" ColumnName="VisitingAddress" />
                 <ScalarProperty Name="IssueDescriptionName" ColumnName="IssueDescriptionName" />
                 <ScalarProperty Name="CustomerReportedIssue" ColumnName="CustomerReportedIssue" />
                 <ScalarProperty Name="SourceChannel" ColumnName="SourceChannel" />

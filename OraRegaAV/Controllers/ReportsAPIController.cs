@@ -167,7 +167,7 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 18].Value = dataRow["CountryOfPurchase"];
                             WorkSheet1.Cells[recordIndex, 19].Value = dataRow["OperatingSystemName"];
                             WorkSheet1.Cells[recordIndex, 20].Value = dataRow["PermanentAddress"];
-                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["TemporaryAddress"];
+                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["VisitingAddress"];
                             WorkSheet1.Cells[recordIndex, 22].Value = dataRow["IssueDescriptionName"];
                             WorkSheet1.Cells[recordIndex, 23].Value = dataRow["CustomerReportedIssue"];
                             WorkSheet1.Cells[recordIndex, 24].Value = dataRow["SourceChannel"];
@@ -550,14 +550,14 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 2].Value = dataRow["CloserDate"];
 
                             WorkSheet1.Cells[recordIndex, 3].Value = dataRow["WorkOrderNumber"];
-                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["QuotationNo"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["QuotationNumber"];
 
                             WorkSheet1.Cells[recordIndex, 5].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
                             WorkSheet1.Cells[recordIndex, 5].Value = dataRow["WorkOrderLogDate"];
 
                             WorkSheet1.Cells[recordIndex, 6].Value = dataRow["EngineerName"];
                             WorkSheet1.Cells[recordIndex, 7].Value = dataRow["BranchName"];
-                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["CompanyName"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["OrganizationName"];
                             WorkSheet1.Cells[recordIndex, 9].Value = dataRow["CustomerName"];
                             WorkSheet1.Cells[recordIndex, 10].Value = dataRow["MobileNumber"];
                             WorkSheet1.Cells[recordIndex, 11].Value = dataRow["EmailAddress"];
@@ -954,22 +954,21 @@ namespace OraRegaAV.Controllers.API
 
                         WorkSheet1.Cells[1, 1].Value = "Sr.No";
                         WorkSheet1.Cells[1, 2].Value = "Sales Order Number";
-                        WorkSheet1.Cells[1, 3].Value = "Sales Order Number";
+                        WorkSheet1.Cells[1, 3].Value = "Ticket Log Date";
                         WorkSheet1.Cells[1, 4].Value = "Branch Name";
-                        WorkSheet1.Cells[1, 5].Value = "Organization Name";
-                        WorkSheet1.Cells[1, 6].Value = "Customer GST Number";
-                        WorkSheet1.Cells[1, 7].Value = "Customer Name";
-                        WorkSheet1.Cells[1, 8].Value = "Mobile Number";
-                        WorkSheet1.Cells[1, 9].Value = "Email Address";
-                        WorkSheet1.Cells[1, 10].Value = "Alternate Number";
-                        WorkSheet1.Cells[1, 11].Value = "Address";
-                        WorkSheet1.Cells[1, 12].Value = "Product Type";
-                        WorkSheet1.Cells[1, 13].Value = "Status";
-                        WorkSheet1.Cells[1, 14].Value = "Product Make";
-                        WorkSheet1.Cells[1, 15].Value = "Product Model";
-                        WorkSheet1.Cells[1, 16].Value = "Product Description";
-                        WorkSheet1.Cells[1, 17].Value = "Price";
-                        WorkSheet1.Cells[1, 18].Value = "Customer Comments";
+                        WorkSheet1.Cells[1, 5].Value = "Customer GST Number";
+                        WorkSheet1.Cells[1, 6].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 7].Value = "Mobile Number";
+                        WorkSheet1.Cells[1, 8].Value = "Email Address";
+                        WorkSheet1.Cells[1, 9].Value = "Alternate Number";
+                        WorkSheet1.Cells[1, 10].Value = "Address";
+                        WorkSheet1.Cells[1, 11].Value = "Product Type";
+                        WorkSheet1.Cells[1, 12].Value = "Status";
+                        WorkSheet1.Cells[1, 13].Value = "Product Make";
+                        WorkSheet1.Cells[1, 14].Value = "Product Model";
+                        WorkSheet1.Cells[1, 15].Value = "Product Description";
+                        WorkSheet1.Cells[1, 16].Value = "Price";
+                        WorkSheet1.Cells[1, 17].Value = "Customer Comments";
 
                         recordIndex = 2;
                         foreach (DataRow dataRow in dtWOEReport.Rows)
@@ -981,20 +980,19 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 3].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
                             WorkSheet1.Cells[recordIndex, 3].Value = dataRow["TicketLogDate"];
                             WorkSheet1.Cells[recordIndex, 4].Value = dataRow["BranchName"];
-                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["CompanyName"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["GstNumber"];
-                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["CustomerName"];
-                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["Mobile"];
-                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["Email"];
-                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["AlternateNumber"];
-                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["Address"];
-                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ProductType"];
-                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["StatusName"];
-                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["ProductMake"];
-                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["ProductModel"];
-                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["ProductDescription"];
-                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["Price"];
-                            WorkSheet1.Cells[recordIndex, 18].Value = dataRow["CustomerComment"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["GstNumber"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["CustomerName"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["Mobile"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["Email"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["AlternateNumber"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["Address"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["ProductType"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["StatusName"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["ProductMake"];
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["ProductModel"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["ProductDescription"];
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["Price"];
+                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["CustomerComment"];
 
                             recordIndex += 1;
                         }
@@ -1016,7 +1014,6 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Column(15).AutoFit();
                         WorkSheet1.Column(16).AutoFit();
                         WorkSheet1.Column(17).AutoFit();
-                        WorkSheet1.Column(18).AutoFit();
 
                         using (MemoryStream memoryStream = new MemoryStream())
                         {

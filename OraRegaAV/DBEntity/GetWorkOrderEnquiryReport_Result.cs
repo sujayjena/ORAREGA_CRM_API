@@ -33,7 +33,7 @@ namespace OraRegaAV.DBEntity
         public string CountryOfPurchase { get; set; }
         public string OperatingSystemName { get; set; }
         public string PermanentAddress { get; set; }
-        public string TemporaryAddress { get; set; }
+        public string VisitingAddress { get; set; }
         public string IssueDescriptionName { get; set; }
         public string CustomerReportedIssue { get; set; }
         public string SourceChannel { get; set; }

@@ -18,7 +18,6 @@ namespace OraRegaAV.DBEntity
         public System.DateTime TicketLogDate { get; set; }
         public Nullable<int> BranchId { get; set; }
         public string BranchName { get; set; }
-        public string CompanyName { get; set; }
         public string GstNumber { get; set; }
         public string CustomerName { get; set; }
         public string Mobile { get; set; }
