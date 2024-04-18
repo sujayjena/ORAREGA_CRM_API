@@ -8384,7 +8384,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Agging" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="DocketNo" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="UniqueCode" Nullable="false" MaxLength="10" />
           <Property Type="String" Name="PartNumber" Nullable="false" MaxLength="50" />
@@ -8496,7 +8495,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="MobileNo" Nullable="false" MaxLength="20" />
           <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="AlternateMobileNo" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CustomerGSTNo" Nullable="true" MaxLength="30" />
           <Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
@@ -8525,7 +8524,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="CustomerGStNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="PriorityName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductType" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductMake" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="ProductDescription" Nullable="true" />
@@ -13610,7 +13609,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="BranchName" ColumnName="BranchName" />
-                <ScalarProperty Name="Agging" ColumnName="Agging" />
                 <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
                 <ScalarProperty Name="UniqueCode" ColumnName="UniqueCode" />
                 <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
@@ -13734,7 +13732,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
                 <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="AlternateMobileNo" ColumnName="AlternateMobileNo" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
                 <ScalarProperty Name="CustomerGSTNo" ColumnName="CustomerGSTNo" />
                 <ScalarProperty Name="ProductType" ColumnName="ProductType" />
                 <ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
@@ -13767,7 +13765,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="CustomerGStNumber" ColumnName="CustomerGStNumber" />
                 <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
                 <ScalarProperty Name="ProductType" ColumnName="ProductType" />
                 <ScalarProperty Name="ProductMake" ColumnName="ProductMake" />
                 <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />

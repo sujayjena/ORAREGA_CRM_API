@@ -121,9 +121,9 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Cells[1, 4].Value = "Branch Name";
                         WorkSheet1.Cells[1, 5].Value = "Customer Name";
                         WorkSheet1.Cells[1, 6].Value = "Mobile Number";
-                        WorkSheet1.Cells[1, 8].Value = "Alternate Number";
-                        WorkSheet1.Cells[1, 7].Value = "Email Address";
-                        WorkSheet1.Cells[1, 9].Value = "Company Name";
+                        WorkSheet1.Cells[1, 7].Value = "Alternate Number";
+                        WorkSheet1.Cells[1, 8].Value = "Email Address";
+                        WorkSheet1.Cells[1, 9].Value = "Organization Name";
                         WorkSheet1.Cells[1, 10].Value = "Customer GST Number";
                         WorkSheet1.Cells[1, 11].Value = "Product Type";
                         WorkSheet1.Cells[1, 12].Value = "Product Make";
@@ -155,7 +155,7 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 6].Value = dataRow["MobileNo"];
                             WorkSheet1.Cells[recordIndex, 7].Value = dataRow["AlternateMobileNo"];
                             WorkSheet1.Cells[recordIndex, 8].Value = dataRow["EmailAddress"];
-                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["CompanyName"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["OrganizationName"];
                             WorkSheet1.Cells[recordIndex, 10].Value = dataRow["CustomerGSTNo"];
                             WorkSheet1.Cells[recordIndex, 11].Value = dataRow["ProductType"];
                             WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ProductMake"];
@@ -236,7 +236,6 @@ namespace OraRegaAV.Controllers.API
         }
 
         #endregion
-
 
         #region Work Order Creation Report
 
@@ -344,7 +343,7 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 4].Value = dataRow["WorkOrderLogDate"];
 
                             WorkSheet1.Cells[recordIndex, 5].Value = dataRow["BranchName"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["CompanyName"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["OrganizationName"];
                             WorkSheet1.Cells[recordIndex, 7].Value = dataRow["CustomerName"];
                             WorkSheet1.Cells[recordIndex, 8].Value = dataRow["MobileNumber"];
                             WorkSheet1.Cells[recordIndex, 9].Value = dataRow["EmailAddress"];
@@ -419,9 +418,6 @@ namespace OraRegaAV.Controllers.API
 
                     #endregion
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -747,32 +743,32 @@ namespace OraRegaAV.Controllers.API
 
                         WorkSheet1.Cells[1, 1].Value = "Sr.No";
                         WorkSheet1.Cells[1, 2].Value = "Branch Name";
-                        WorkSheet1.Cells[1, 3].Value = "Aging";
-                        WorkSheet1.Cells[1, 4].Value = "Docket Number";
-                        WorkSheet1.Cells[1, 5].Value = "Part Unique Code";
-                        WorkSheet1.Cells[1, 6].Value = "HSN Code";
-                        WorkSheet1.Cells[1, 7].Value = "Part Discription";
-                        WorkSheet1.Cells[1, 8].Value = "Part Number";
-                        WorkSheet1.Cells[1, 9].Value = "Part Status";
-                        WorkSheet1.Cells[1, 10].Value = "CT / Serial Number";
-                        WorkSheet1.Cells[1, 11].Value = "Quantity";
-                        WorkSheet1.Cells[1, 12].Value = "Receive From (Vendor Name)";
-                        WorkSheet1.Cells[1, 13].Value = "Receive Date";
-                        WorkSheet1.Cells[1, 14].Value = "Receive Time";
-                        WorkSheet1.Cells[1, 15].Value = "Amount";
+                        //WorkSheet1.Cells[1, 3].Value = "Aging";
+                        WorkSheet1.Cells[1, 3].Value = "Docket Number";
+                        WorkSheet1.Cells[1, 4].Value = "Part Unique Code";
+                        WorkSheet1.Cells[1, 5].Value = "HSN Code";
+                        WorkSheet1.Cells[1, 6].Value = "Part Discription";
+                        WorkSheet1.Cells[1, 7].Value = "Part Number";
+                        WorkSheet1.Cells[1, 8].Value = "Part Status";
+                        WorkSheet1.Cells[1, 9].Value = "CT / Serial Number";
+                        WorkSheet1.Cells[1, 10].Value = "Quantity";
+                        WorkSheet1.Cells[1, 11].Value = "Receive From (Vendor Name)";
+                        WorkSheet1.Cells[1, 12].Value = "Receive Date";
+                        WorkSheet1.Cells[1, 13].Value = "Receive Time";
+                        WorkSheet1.Cells[1, 14].Value = "Amount";
 
-                        WorkSheet1.Cells[1, 16].Value = "Work order Number";
-                        WorkSheet1.Cells[1, 17].Value = "Allocate Date";
-                        WorkSheet1.Cells[1, 18].Value = "Engineer Name";
-                        WorkSheet1.Cells[1, 19].Value = "Retun to logistics Date";
-                        WorkSheet1.Cells[1, 20].Value = "Engineer Name retun to Logistics";
-                        WorkSheet1.Cells[1, 21].Value = "Status";
-                        WorkSheet1.Cells[1, 22].Value = "Dispatch Date";
-                        WorkSheet1.Cells[1, 23].Value = "Dispatch Docket Number";
-                        WorkSheet1.Cells[1, 24].Value = "Challan Date";
-                        WorkSheet1.Cells[1, 25].Value = "Challan Number";
-                        WorkSheet1.Cells[1, 26].Value = "Branch From (Branch name)";
-                        WorkSheet1.Cells[1, 27].Value = "Branch To (Branch name)";
+                        WorkSheet1.Cells[1, 15].Value = "Work order Number";
+                        WorkSheet1.Cells[1, 16].Value = "Allocate Date";
+                        WorkSheet1.Cells[1, 17].Value = "Engineer Name";
+                        WorkSheet1.Cells[1, 18].Value = "Retun to logistics Date";
+                        WorkSheet1.Cells[1, 19].Value = "Engineer Name retun to Logistics";
+                        WorkSheet1.Cells[1, 20].Value = "Status";
+                        WorkSheet1.Cells[1, 21].Value = "Dispatch Date";
+                        WorkSheet1.Cells[1, 22].Value = "Dispatch Docket Number";
+                        WorkSheet1.Cells[1, 23].Value = "Challan Date";
+                        WorkSheet1.Cells[1, 24].Value = "Challan Number";
+                        WorkSheet1.Cells[1, 25].Value = "Branch From (Branch name)";
+                        WorkSheet1.Cells[1, 26].Value = "Branch To (Branch name)";
 
                         recordIndex = 2;
                         foreach (DataRow dataRow in dtWOEReport.Rows)
@@ -781,49 +777,49 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 1].Value = srNo;
 
                             WorkSheet1.Cells[recordIndex, 2].Value = dataRow["BranchName"];
-                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["Agging"];
-                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["DocketNo"];
-                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["UniqueCode"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["HSNCode"];
-                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PartDescription"];
-                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["PartNumber"];
-                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["PartStatus"];
-                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["CTSerialNo"];
-                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["Quantity"];
+                            //WorkSheet1.Cells[recordIndex, 3].Value = dataRow["Agging"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["DocketNo"];
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["UniqueCode"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["HSNCode"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["PartDescription"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["PartNumber"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["PartStatus"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["CTSerialNo"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["Quantity"];
 
-                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["VendorName"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["VendorName"];
 
-                            WorkSheet1.Cells[recordIndex, 13].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["ReceiveDate"];
+                            WorkSheet1.Cells[recordIndex, 12].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ReceiveDate"];
 
-                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["ReceiveTime"];
-                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["PurchasePrice"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["ReceiveTime"];
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["PurchasePrice"];
 
 
-                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["WorkOrderNumber"];
 
-                            WorkSheet1.Cells[recordIndex, 17].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["AllocateDate"];
+                            WorkSheet1.Cells[recordIndex, 16].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["AllocateDate"];
 
-                            WorkSheet1.Cells[recordIndex, 18].Value = dataRow["EngineerName"];
+                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["EngineerName"];
 
-                            WorkSheet1.Cells[recordIndex, 19].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 19].Value = dataRow["RetunToLogisticsDate"];
+                            WorkSheet1.Cells[recordIndex, 18].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 18].Value = dataRow["RetunToLogisticsDate"];
 
-                            WorkSheet1.Cells[recordIndex, 20].Value = dataRow["EngineerNameRetunToLogistics"];
-                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["ReturnStatus"];
+                            WorkSheet1.Cells[recordIndex, 19].Value = dataRow["EngineerNameRetunToLogistics"];
+                            WorkSheet1.Cells[recordIndex, 20].Value = dataRow["ReturnStatus"];
 
-                            WorkSheet1.Cells[recordIndex, 22].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 22].Value = dataRow["DispatchDate"];
+                            WorkSheet1.Cells[recordIndex, 21].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["DispatchDate"];
 
-                            WorkSheet1.Cells[recordIndex, 23].Value = dataRow["DispatchDocketNumber"];
+                            WorkSheet1.Cells[recordIndex, 22].Value = dataRow["DispatchDocketNumber"];
 
-                            WorkSheet1.Cells[recordIndex, 24].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 24].Value = dataRow["ChallanDate"];
+                            WorkSheet1.Cells[recordIndex, 23].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 23].Value = dataRow["ChallanDate"];
 
-                            WorkSheet1.Cells[recordIndex, 25].Value = dataRow["ChallanNumber"];
-                            WorkSheet1.Cells[recordIndex, 26].Value = dataRow["BranchFrom"];
-                            WorkSheet1.Cells[recordIndex, 27].Value = dataRow["BranchTo"];
+                            WorkSheet1.Cells[recordIndex, 24].Value = dataRow["ChallanNumber"];
+                            WorkSheet1.Cells[recordIndex, 25].Value = dataRow["BranchFrom"];
+                            WorkSheet1.Cells[recordIndex, 26].Value = dataRow["BranchTo"];
 
                             recordIndex += 1;
                         }
@@ -854,7 +850,7 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Column(24).AutoFit();
                         WorkSheet1.Column(25).AutoFit();
                         WorkSheet1.Column(26).AutoFit();
-                        WorkSheet1.Column(27).AutoFit();
+                        //WorkSheet1.Column(27).AutoFit();
 
                         using (MemoryStream memoryStream = new MemoryStream())
                         {

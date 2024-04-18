@@ -21,7 +21,7 @@ namespace OraRegaAV.DBEntity
         public string MobileNo { get; set; }
         public string EmailAddress { get; set; }
         public string AlternateMobileNo { get; set; }
-        public string CompanyName { get; set; }
+        public string OrganizationName { get; set; }
         public string CustomerGSTNo { get; set; }
         public string ProductType { get; set; }
         public string ProductMake { get; set; }

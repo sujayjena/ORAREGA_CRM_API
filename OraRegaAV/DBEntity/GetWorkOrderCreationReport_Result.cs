@@ -24,7 +24,7 @@ namespace OraRegaAV.DBEntity
         public string EmailAddress { get; set; }
         public string CustomerGStNumber { get; set; }
         public string PriorityName { get; set; }
-        public string CompanyName { get; set; }
+        public string OrganizationName { get; set; }
         public string ProductType { get; set; }
         public string ProductMake { get; set; }
         public string ProductDescription { get; set; }

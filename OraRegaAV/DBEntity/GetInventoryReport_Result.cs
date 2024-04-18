@@ -16,7 +16,6 @@ namespace OraRegaAV.DBEntity
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public string BranchName { get; set; }
-        public string Agging { get; set; }
         public string DocketNo { get; set; }
         public string UniqueCode { get; set; }
         public string PartNumber { get; set; }
