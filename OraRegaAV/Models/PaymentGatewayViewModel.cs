@@ -87,15 +87,17 @@ namespace OraRegaAV.Models
 
     public class PaymentResponse
     {
+        public string TransactionId { get; set; }
         public bool IsSuccess { get; set; }
         public string Code { get; set; }
         public string Message { get; set; }
     }
-
+    
     public class PaymentListParameters
     {
         public string WorkOrderNumber { get; set; }
         public string QuotationNumber { get; set; }
+        public string MerchantTransactionId { get; set; }
         public string TransactionId { get; set; }
 
         public string SearchValue { get; set; }
@@ -125,6 +127,31 @@ namespace OraRegaAV.Models
         public string ResponseJson { get; set; }
     }
 
+    public class RefundRequestPayload
+    {
+        public string merchantId { get; set; }
+        public string merchantUserId { get; set; }
+        public string originalTransactionId { get; set; }
+        public string merchantTransactionId { get; set; }
+        public double amount { get; set; }
+        public string callbackUrl { get; set; }
+    }
+
+    public class RefundRequest_SaveParam
+    {
+        public string MerchantTransactionId { get; set; }
+
+        public string TransactionId { get; set; }
+
+        public string RequestJson { get; set; }
+
+        public string ResponseJson { get; set; }
+
+        public bool IsSuccess { get; set; }
+        public string Code { get; set; }
+        public string Message { get; set; }
+    }
+
     public class PaymentPartList_Request
     {
         public int? PartId { get; set; }
@@ -141,6 +168,7 @@ namespace OraRegaAV.Models
 
         public int PaymentId { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
+        public string MerchantTransactionId { get; set; }
         public string TransactionId { get; set; }
         public string QuotationNumber { get; set; }
         public string MobileNumber { get; set; }
@@ -150,6 +178,9 @@ namespace OraRegaAV.Models
         public string PaymentMessage { get; set; }
         public string RequestJson { get; set; }
         public string ResponseJson { get; set; }
+        public Nullable<bool> IsRefund { get; set; }
+        public Nullable<bool> Refund_IsRefundSuccess { get; set; }
+        public string Refund_PaymentStatus { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

@@ -1502,7 +1502,7 @@ namespace OraRegaAV.Controllers
 
                     //get payment details
                     var vTotal = new ObjectParameter("Total", typeof(int));
-                    var paymentList = db.GetPaymentList(workOrderObj.WorkOrderNumber, "", "", "", 0, 0, vTotal).ToList();
+                    var paymentList = db.GetPaymentList(workOrderObj.WorkOrderNumber, "", "", "", "", 0, 0, vTotal).ToList();
                     workOrderListObj.PaymentDetails = paymentList;
 
                     //Part request details

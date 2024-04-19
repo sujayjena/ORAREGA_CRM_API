@@ -11,7 +11,7 @@ namespace OraRegaAV.DBEntity
 {
     using System;
     
-    public partial class GetPaymentList_Result
+    public partial class GetPaymentDetails_Result
     {
         public int PaymentId { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
@@ -20,6 +20,7 @@ namespace OraRegaAV.DBEntity
         public string QuotationNumber { get; set; }
         public string MobileNumber { get; set; }
         public Nullable<decimal> Amount { get; set; }
+        public Nullable<decimal> AmountInPaisa { get; set; }
         public Nullable<bool> IsSuccess { get; set; }
         public string PaymentStatus { get; set; }
         public string PaymentMessage { get; set; }
