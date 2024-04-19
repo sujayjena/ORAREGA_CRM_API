@@ -621,8 +621,11 @@ namespace OraRegaAV.Controllers.API
                         vGetPaymentList_Response.RequestJson = item.RequestJson;
                         vGetPaymentList_Response.ResponseJson = item.ResponseJson;
                         vGetPaymentList_Response.IsRefund = item.IsRefund;
+                        vGetPaymentList_Response.Refund_MerchantTransactionId = item.Refund_MerchantTransactionId;
+                        vGetPaymentList_Response.Refund_TransactionId = item.Refund_TransactionId;
                         vGetPaymentList_Response.Refund_IsRefundSuccess = item.Refund_IsRefundSuccess;
                         vGetPaymentList_Response.Refund_PaymentStatus = item.Refund_PaymentStatus;
+                        vGetPaymentList_Response.Refund_Refund_Error = item.Refund_Error;
                         vGetPaymentList_Response.CreatedBy = item.CreatedBy;
                         vGetPaymentList_Response.CreatorName = item.CreatorName;
                         vGetPaymentList_Response.ModifiedDate = item.ModifiedDate;
@@ -705,8 +708,11 @@ namespace OraRegaAV.Controllers.API
                         lstResult.RequestJson = vResultObj.RequestJson;
                         lstResult.ResponseJson = vResultObj.ResponseJson;
                         lstResult.IsRefund = vResultObj.IsRefund;
+                        lstResult.Refund_MerchantTransactionId = vResultObj.Refund_MerchantTransactionId;
+                        lstResult.Refund_TransactionId = vResultObj.Refund_TransactionId;
                         lstResult.Refund_IsRefundSuccess = vResultObj.Refund_IsRefundSuccess;
                         lstResult.Refund_PaymentStatus = vResultObj.Refund_PaymentStatus;
+                        lstResult.Refund_Refund_Error = vResultObj.Refund_Error;
                         lstResult.CreatedBy = vResultObj.CreatedBy;
                         lstResult.CreatorName = vResultObj.CreatorName;
                         lstResult.ModifiedDate = vResultObj.ModifiedDate;
