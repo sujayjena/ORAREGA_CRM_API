@@ -1082,6 +1082,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="IsRefund" Type="bit" />
+          <Property Name="Refund_MerchantTransactionId" Type="nvarchar" MaxLength="100" />
           <Property Name="Refund_TransactionId" Type="nvarchar" MaxLength="100" />
           <Property Name="Refund_Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Refund_AmountInPaisa" Type="decimal" Precision="18" Scale="2" />
@@ -1090,6 +1091,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="Refund_PaymentMessage" Type="nvarchar" MaxLength="500" />
           <Property Name="Refund_RequestJson" Type="nvarchar(max)" />
           <Property Name="Refund_ResponseJson" Type="nvarchar(max)" />
+          <Property Name="Refund_Error" Type="nvarchar(max)" />
           <Property Name="Refund_CreatedDate" Type="datetime" />
           <Property Name="Refund_CreatedBy" Type="int" />
           <Property Name="Refund_ModifiedDate" Type="datetime" />
@@ -5418,8 +5420,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="XmlCustomerData" Mode="In" Type="String" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
           </FunctionImport>
-           <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
-           <EntitySet Name="tblCompanies" EntityType="dbOraRegaModel.tblCompany" />
+            <EntitySet Name="tblCompanies" EntityType="dbOraRegaModel.tblCompany" />
            <EntitySet Name="tblWOPartRequests" EntityType="dbOraRegaModel.tblWOPartRequest" />
           <FunctionImport Name="GetRoleMaster_PermissionList" ReturnType="Collection(dbOraRegaModel.GetRoleMaster_PermissionList_Result)">
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
@@ -5479,6 +5480,12 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblQuotationPartDetails" EntityType="dbOraRegaModel.tblQuotationPartDetail" />
           <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
           <EntitySet Name="tblPaymentPartDetails" EntityType="dbOraRegaModel.tblPaymentPartDetail" />
+           
+           <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
+          <FunctionImport Name="GetPaymentDetails" ReturnType="Collection(dbOraRegaModel.GetPaymentDetails_Result)">
+            <Parameter Name="MerchantTransactionId" Mode="In" Type="String" />
+            <Parameter Name="TransactionId" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="GetPaymentList" ReturnType="Collection(dbOraRegaModel.GetPaymentList_Result)">
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
             <Parameter Name="QuotationNumber" Mode="In" Type="String" />
@@ -5489,10 +5496,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetPaymentDetails" ReturnType="Collection(dbOraRegaModel.GetPaymentDetails_Result)">
-            <Parameter Name="MerchantTransactionId" Mode="In" Type="String" />
-            <Parameter Name="TransactionId" Mode="In" Type="String" />
-          </FunctionImport>
+           
                </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
@@ -9206,42 +9210,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="TermsConditionsAccepted" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
-         <EntityType Name="tblPayment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuotationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="IsAdvance" Type="Boolean" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IsSuccess" Type="Boolean" />
-          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="IsRefund" Type="Boolean" />
-          <Property Name="Refund_Amount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Refund_AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Refund_IsRefundSuccess" Type="Boolean" />
-          <Property Name="Refund_PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Refund_PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Refund_RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Refund_ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Refund_CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="Refund_CreatedBy" Type="Int32" />
-          <Property Name="Refund_ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Refund_ModifiedBy" Type="Int32" />
-          <Property Name="TransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Refund_TransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-         <EntityType Name="tblCompany">
+          <EntityType Name="tblCompany">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -9530,27 +9499,44 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="PartNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="PartDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-        <ComplexType Name="GetPaymentList_Result">
-          <Property Type="Int32" Name="PaymentId" Nullable="false" />
-          <Property Type="DateTime" Name="PaymentDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="MerchantTransactionId" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="TransactionId" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="MobileNumber" Nullable="true" MaxLength="10" />
-          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Boolean" Name="IsSuccess" Nullable="true" />
-          <Property Type="String" Name="PaymentStatus" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="PaymentMessage" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="RequestJson" Nullable="true" />
-          <Property Type="String" Name="ResponseJson" Nullable="true" />
-          <Property Type="Boolean" Name="IsRefund" Nullable="true" />
-          <Property Type="Boolean" Name="Refund_IsRefundSuccess" Nullable="true" />
-          <Property Type="String" Name="Refund_PaymentStatus" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ModifyName" Nullable="true" MaxLength="50" />
-        </ComplexType>
+        
+         <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuotationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdvance" Type="Boolean" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsSuccess" Type="Boolean" />
+          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="IsRefund" Type="Boolean" />
+          <Property Name="Refund_MerchantTransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_TransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Refund_AmountInPaisa" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Refund_IsRefundSuccess" Type="Boolean" />
+          <Property Name="Refund_PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_PaymentMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_RequestJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_ResponseJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Refund_CreatedBy" Type="Int32" />
+          <Property Name="Refund_ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Refund_ModifiedBy" Type="Int32" />
+        </EntityType>
         <ComplexType Name="GetPaymentDetails_Result">
           <Property Type="Int32" Name="PaymentId" Nullable="false" />
           <Property Type="DateTime" Name="PaymentDate" Nullable="true" Precision="23" />
@@ -9566,14 +9552,41 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="RequestJson" Nullable="true" />
           <Property Type="String" Name="ResponseJson" Nullable="true" />
           <Property Type="Boolean" Name="IsRefund" Nullable="true" />
+          <Property Type="String" Name="Refund_MerchantTransactionId" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Refund_TransactionId" Nullable="true" MaxLength="100" />
           <Property Type="Boolean" Name="Refund_IsRefundSuccess" Nullable="true" />
           <Property Type="String" Name="Refund_PaymentStatus" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Refund_Error" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="ModifyName" Nullable="true" MaxLength="50" />
         </ComplexType>
-            
+        <ComplexType Name="GetPaymentList_Result">
+          <Property Type="Int32" Name="PaymentId" Nullable="false" />
+          <Property Type="DateTime" Name="PaymentDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="MerchantTransactionId" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TransactionId" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="QuotationNumber" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MobileNumber" Nullable="true" MaxLength="10" />
+          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Boolean" Name="IsSuccess" Nullable="true" />
+          <Property Type="String" Name="PaymentStatus" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PaymentMessage" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="RequestJson" Nullable="true" />
+          <Property Type="String" Name="ResponseJson" Nullable="true" />
+          <Property Type="Boolean" Name="IsRefund" Nullable="true" />
+          <Property Type="String" Name="Refund_MerchantTransactionId" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Refund_TransactionId" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Refund_IsRefundSuccess" Nullable="true" />
+          <Property Type="String" Name="Refund_PaymentStatus" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Refund_Error" Nullable="true" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ModifyName" Nullable="true" MaxLength="50" />
+        </ComplexType>
+             
   
       </Schema>
     </edmx:ConceptualModels>
@@ -14582,43 +14595,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <EntitySetMapping Name="tblPayments">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
-              <MappingFragment StoreEntitySet="tblPayment">
-                <ScalarProperty Name="Refund_TransactionId" ColumnName="Refund_TransactionId" />
-                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
-                <ScalarProperty Name="Refund_ModifiedBy" ColumnName="Refund_ModifiedBy" />
-                <ScalarProperty Name="Refund_ModifiedDate" ColumnName="Refund_ModifiedDate" />
-                <ScalarProperty Name="Refund_CreatedBy" ColumnName="Refund_CreatedBy" />
-                <ScalarProperty Name="Refund_CreatedDate" ColumnName="Refund_CreatedDate" />
-                <ScalarProperty Name="Refund_ResponseJson" ColumnName="Refund_ResponseJson" />
-                <ScalarProperty Name="Refund_RequestJson" ColumnName="Refund_RequestJson" />
-                <ScalarProperty Name="Refund_PaymentMessage" ColumnName="Refund_PaymentMessage" />
-                <ScalarProperty Name="Refund_PaymentStatus" ColumnName="Refund_PaymentStatus" />
-                <ScalarProperty Name="Refund_IsRefundSuccess" ColumnName="Refund_IsRefundSuccess" />
-                <ScalarProperty Name="Refund_AmountInPaisa" ColumnName="Refund_AmountInPaisa" />
-                <ScalarProperty Name="Refund_Amount" ColumnName="Refund_Amount" />
-                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
-                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
-                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
-                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
-                <ScalarProperty Name="AmountInPaisa" ColumnName="AmountInPaisa" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="IsAdvance" ColumnName="IsAdvance" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-           <EntitySetMapping Name="tblCompanies">
+            <EntitySetMapping Name="tblCompanies">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblCompany">
               <MappingFragment StoreEntitySet="tblCompany">
                 <ScalarProperty Name="BranchAdd" ColumnName="BranchAdd" />
@@ -14948,31 +14925,44 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetPaymentList" FunctionName="dbOraRegaModel.Store.GetPaymentList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetPaymentList_Result">
-                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
-                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
-                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
-                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
-                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
-                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
-                <ScalarProperty Name="Refund_IsRefundSuccess" ColumnName="Refund_IsRefundSuccess" />
+            <EntitySetMapping Name="tblPayments">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
+              <MappingFragment StoreEntitySet="tblPayment">
+                <ScalarProperty Name="Refund_ModifiedBy" ColumnName="Refund_ModifiedBy" />
+                <ScalarProperty Name="Refund_ModifiedDate" ColumnName="Refund_ModifiedDate" />
+                <ScalarProperty Name="Refund_CreatedBy" ColumnName="Refund_CreatedBy" />
+                <ScalarProperty Name="Refund_CreatedDate" ColumnName="Refund_CreatedDate" />
+                <ScalarProperty Name="Refund_Error" ColumnName="Refund_Error" />
+                <ScalarProperty Name="Refund_ResponseJson" ColumnName="Refund_ResponseJson" />
+                <ScalarProperty Name="Refund_RequestJson" ColumnName="Refund_RequestJson" />
+                <ScalarProperty Name="Refund_PaymentMessage" ColumnName="Refund_PaymentMessage" />
                 <ScalarProperty Name="Refund_PaymentStatus" ColumnName="Refund_PaymentStatus" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="Refund_IsRefundSuccess" ColumnName="Refund_IsRefundSuccess" />
+                <ScalarProperty Name="Refund_AmountInPaisa" ColumnName="Refund_AmountInPaisa" />
+                <ScalarProperty Name="Refund_Amount" ColumnName="Refund_Amount" />
+                <ScalarProperty Name="Refund_TransactionId" ColumnName="Refund_TransactionId" />
+                <ScalarProperty Name="Refund_MerchantTransactionId" ColumnName="Refund_MerchantTransactionId" />
+                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifyName" ColumnName="ModifyName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
+                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
+                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
+                <ScalarProperty Name="AmountInPaisa" ColumnName="AmountInPaisa" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IsAdvance" ColumnName="IsAdvance" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetPaymentDetails" FunctionName="dbOraRegaModel.Store.GetPaymentDetails">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetPaymentDetails_Result">
@@ -14990,8 +14980,11 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
                 <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
                 <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
+                <ScalarProperty Name="Refund_MerchantTransactionId" ColumnName="Refund_MerchantTransactionId" />
+                <ScalarProperty Name="Refund_TransactionId" ColumnName="Refund_TransactionId" />
                 <ScalarProperty Name="Refund_IsRefundSuccess" ColumnName="Refund_IsRefundSuccess" />
                 <ScalarProperty Name="Refund_PaymentStatus" ColumnName="Refund_PaymentStatus" />
+                <ScalarProperty Name="Refund_Error" ColumnName="Refund_Error" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -14999,7 +14992,35 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-               </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetPaymentList" FunctionName="dbOraRegaModel.Store.GetPaymentList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetPaymentList_Result">
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="MerchantTransactionId" ColumnName="MerchantTransactionId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="PaymentMessage" ColumnName="PaymentMessage" />
+                <ScalarProperty Name="RequestJson" ColumnName="RequestJson" />
+                <ScalarProperty Name="ResponseJson" ColumnName="ResponseJson" />
+                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
+                <ScalarProperty Name="Refund_MerchantTransactionId" ColumnName="Refund_MerchantTransactionId" />
+                <ScalarProperty Name="Refund_TransactionId" ColumnName="Refund_TransactionId" />
+                <ScalarProperty Name="Refund_IsRefundSuccess" ColumnName="Refund_IsRefundSuccess" />
+                <ScalarProperty Name="Refund_PaymentStatus" ColumnName="Refund_PaymentStatus" />
+                <ScalarProperty Name="Refund_Error" ColumnName="Refund_Error" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifyName" ColumnName="ModifyName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+                </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

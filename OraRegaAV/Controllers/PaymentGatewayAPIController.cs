@@ -232,7 +232,6 @@ namespace OraRegaAV.Controllers.API
 
                 // Read and deserialize the response content
                 var responseContent = await response.Content.ReadAsStringAsync();
-
                 var vresult = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
                 #region Save Payment Detail
@@ -840,14 +839,14 @@ namespace OraRegaAV.Controllers.API
 
                     if (!string.IsNullOrWhiteSpace(vResultObj.TransactionId) && sIsRefund == false && sRefund_IsRefundSuccess == false)
                     {
-                        string ReturnRequestSample = @"{
-                                                        ""merchantId"": ""PGTESTPAYUAT"",
-                                                        ""merchantUserId"": ""User123"",
-                                                        ""originalTransactionId"": ""OD620471739210623"",
-                                                        ""merchantTransactionId"": ""ROD620471739210623"",
-                                                        ""amount"": 1000,
-                                                        ""callbackUrl"": ""https://webhook.site/callback-url""
-                                                        }";
+                        //string ReturnRequestSample = @"{
+                        //                                ""merchantId"": ""PGTESTPAYUAT"",
+                        //                                ""merchantUserId"": ""User123"",
+                        //                                ""originalTransactionId"": ""OD620471739210623"",
+                        //                                ""merchantTransactionId"": ""ROD620471739210623"",
+                        //                                ""amount"": 1000,
+                        //                                ""callbackUrl"": ""https://webhook.site/callback-url""
+                        //                                }";
 
                         #region Environment
 
@@ -868,8 +867,8 @@ namespace OraRegaAV.Controllers.API
                         {
                             merchantId = Phonepe_MerchantID,
                             merchantUserId = PhonePe_MerchantUserId,
-                            originalTransactionId = sTransactionId,
-                            merchantTransactionId = sMerchantTransactionId,
+                            originalTransactionId = sMerchantTransactionId,
+                            merchantTransactionId = vResultObj.QuotationNumber + "" + DateTime.Now.ToString("yyMMddHHmmssffff"),
                             amount = sAmountInPaisa,
                             callbackUrl = PhonePe_RefundCallbackUrl,
                         };
@@ -903,62 +902,73 @@ namespace OraRegaAV.Controllers.API
                         var jsonBody = $"{{\"request\":\"{vVerifyRequestModel.base64}\"}}";
                         var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
-                        // Save Refund Request Detail Before Call the API
-                        #region Save Refund Response Detail
-
-                        var vPaymentResponse_Initiated = new RefundRequest_SaveParam()
-                        {
-                            MerchantTransactionId = sMerchantTransactionId,
-                            TransactionId = sTransactionId,
-                            RequestJson = new JavaScriptSerializer().Serialize(vRefundRequestPayload),
-                            ResponseJson = string.Empty,
-                        };
-
-                        SaveRefundPaymentDetails(vPaymentResponse_Initiated);
-
-                        #endregion
-
                         // Send POST request
                         var response = await httpClient.PostAsync(uri, content);
-                        response.EnsureSuccessStatusCode();
+                        //response.EnsureSuccessStatusCode();
 
-                        // Read and deserialize the response content
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        var vPhonePeResponseResult = JsonConvert.DeserializeObject<dynamic>(responseContent);
-
-                        #endregion
-
-                        #region Save Refund Response Detail
-
-                        var vPaymentResponse = new RefundRequest_SaveParam();
-                        if (vPhonePeResponseResult != null)
+                        if (response != null)
                         {
-                            vPaymentResponse.IsSuccess = vPhonePeResponseResult.success;
-                            vPaymentResponse.Code = vPhonePeResponseResult.code;
-                            vPaymentResponse.Message = vPhonePeResponseResult.message;
-
-                            // Pick the Original TransactionId
-                            if (vPhonePeResponseResult.ContainsKey("data"))
+                            if (response.StatusCode == HttpStatusCode.OK)
                             {
-                                if (vPhonePeResponseResult.data.ContainsKey("transactionId"))
+                                response.EnsureSuccessStatusCode();
+
+                                // Read and deserialize the response content
+                                var responseContent = await response.Content.ReadAsStringAsync();
+                                var vPhonePeResponseResult = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+                                #region Save Refund Response Detail
+
+                                var vPaymentResponse = new RefundRequest_SaveParam();
+                                if (vPhonePeResponseResult != null)
                                 {
-                                    vPaymentResponse.TransactionId = vPhonePeResponseResult.data.transactionId;
-                                }
+                                    vPaymentResponse.RefundMerchantTransactionId = vRefundRequestPayload.merchantTransactionId;
+
+                                    vPaymentResponse.IsSuccess = vPhonePeResponseResult.success;
+                                    vPaymentResponse.Code = vPhonePeResponseResult.code;
+                                    vPaymentResponse.Message = vPhonePeResponseResult.message;
+
+                                    // Pick the Original TransactionId
+                                    if (vPhonePeResponseResult.ContainsKey("data"))
+                                    {
+                                        if (vPhonePeResponseResult.data.ContainsKey("transactionId"))
+                                        {
+                                            vPaymentResponse.RefundTransactionId = vPhonePeResponseResult.data.transactionId;
+                                        }
+                                    }
+
+                                    vPaymentResponse.MerchantTransactionId = sMerchantTransactionId;
+                                    vPaymentResponse.TransactionId = sTransactionId;
+                                    vPaymentResponse.RequestJson = new JavaScriptSerializer().Serialize(vRefundRequestPayload);
+                                    vPaymentResponse.ResponseJson = responseContent;
+                                };
+
+                                SaveRefundPaymentDetails(vPaymentResponse);
+
+                                #endregion
+
+                                // Return a response
+                                _response.Message = "Your request has been initiated";
+                                _response.IsSuccess = true;
+                                _response.Data = vPhonePeResponseResult;
                             }
+                            else
+                            {
+                                var vPaymentResultObj = db.tblPayments.Where(x => x.MerchantTransactionId == sMerchantTransactionId && x.TransactionId == sTransactionId).FirstOrDefault();
+                                if (vPaymentResultObj != null)
+                                {
+                                    vPaymentResultObj.Refund_Error = response.ReasonPhrase;
 
-                            vPaymentResponse.MerchantTransactionId = sMerchantTransactionId;
-                            vPaymentResponse.RequestJson = string.Empty;
-                            vPaymentResponse.ResponseJson = responseContent;
-                        };
+                                    db.tblPayments.AddOrUpdate(vPaymentResultObj);
+                                    db.SaveChanges();
+                                }
 
-                        SaveRefundPaymentDetails(vPaymentResponse);
+                                _response.IsSuccess = false;
+                                _response.Message = "Something went wrong!";
+                                return _response;
+                            }
+                        }
 
                         #endregion
-
-                        // Return a response
-                        _response.Message = "Your request has been initiated";
-                        _response.IsSuccess = true;
-                        _response.Data = vPhonePeResponseResult;
                     }
                     else if (sIsRefund && sRefund_IsRefundSuccess)
                     {
@@ -968,7 +978,7 @@ namespace OraRegaAV.Controllers.API
                     else if (sIsRefund && !sRefund_IsRefundSuccess)
                     {
                         _response.IsSuccess = false;
-                        _response.Message = "Payment already initiated!";
+                        _response.Message = "Your refund already initiated!";
                     }
                     else
                     {
@@ -994,37 +1004,43 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 // If refund Intitiated then Refund check and update status
-                var vtblPayment = db.tblPayments.Where(c => c.MerchantTransactionId == parameters.MerchantTransactionId && c.TransactionId == parameters.TransactionId && c.IsRefund == true && c.Refund_IsRefundSuccess == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                var vtblPayment = db.tblPayments.Where(c => c.MerchantTransactionId == parameters.MerchantTransactionId && c.TransactionId == parameters.TransactionId && c.IsRefund == false && c.Refund_IsRefundSuccess == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 if (vtblPayment != null)
                 {
-                    vtblPayment.Refund_TransactionId = parameters.TransactionId;
-                    vtblPayment.Refund_IsRefundSuccess = parameters.IsSuccess;
+                    vtblPayment.IsRefund = true;
+                    vtblPayment.Refund_MerchantTransactionId = parameters.RefundMerchantTransactionId;
+                    vtblPayment.Refund_TransactionId = parameters.RefundTransactionId;
+                    vtblPayment.Refund_Amount = vtblPayment.Amount;
+                    vtblPayment.Refund_AmountInPaisa = vtblPayment.AmountInPaisa;
+                    vtblPayment.Refund_IsRefundSuccess = parameters.Code == "PAYMENT_SUCCESS" ? true : false;
                     vtblPayment.Refund_PaymentStatus = parameters.Code;
                     vtblPayment.Refund_PaymentMessage = parameters.Message;
+                    vtblPayment.Refund_RequestJson = parameters.RequestJson;
                     vtblPayment.Refund_ResponseJson = parameters.ResponseJson;
-                    vtblPayment.Refund_ModifiedDate = DateTime.Now;
-                    vtblPayment.Refund_ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                    vtblPayment.Refund_CreatedDate = DateTime.Now;
+                    vtblPayment.Refund_CreatedBy = Utilities.GetUserID(ActionContext.Request);
 
                     db.tblPayments.AddOrUpdate(vtblPayment);
                     db.SaveChanges();
                 }
 
-                // Refund PAYMENT_INITIATED > First time
-                var tbl = db.tblPayments.Where(c => c.MerchantTransactionId == parameters.MerchantTransactionId && c.TransactionId == parameters.TransactionId && c.IsRefund == false && c.Refund_IsRefundSuccess == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-                if (tbl != null)
-                {
-                    tbl.IsRefund = true;
-                    tbl.Refund_Amount = tbl.Amount;
-                    tbl.Refund_AmountInPaisa = tbl.AmountInPaisa;
-                    tbl.Refund_PaymentStatus = "PAYMENT_INITIATED";
-                    tbl.Refund_PaymentMessage = "Payment Iniiated";
-                    tbl.Refund_RequestJson = parameters.RequestJson;
-                    tbl.Refund_CreatedDate = DateTime.Now;
-                    tbl.Refund_CreatedBy = Utilities.GetUserID(ActionContext.Request);
+                //// Refund PAYMENT_INITIATED > First time
+                //var tbl = db.tblPayments.Where(c => c.MerchantTransactionId == parameters.MerchantTransactionId && c.TransactionId == parameters.TransactionId && c.IsRefund == false && c.Refund_IsRefundSuccess == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                //if (tbl != null)
+                //{
+                //    tbl.IsRefund = true;
+                //    tbl.Refund_MerchantTransactionId = parameters.RefundMerchantTransactionId;
+                //    tbl.Refund_Amount = tbl.Amount;
+                //    tbl.Refund_AmountInPaisa = tbl.AmountInPaisa;
+                //    tbl.Refund_PaymentStatus = "PAYMENT_INITIATED";
+                //    tbl.Refund_PaymentMessage = "Payment Iniiated";
+                //    tbl.Refund_RequestJson = parameters.RequestJson;
+                //    tbl.Refund_CreatedDate = DateTime.Now;
+                //    tbl.Refund_CreatedBy = Utilities.GetUserID(ActionContext.Request);
 
-                    db.tblPayments.AddOrUpdate(tbl);
-                    db.SaveChanges();
-                }
+                //    db.tblPayments.AddOrUpdate(tbl);
+                //    db.SaveChanges();
+                //}
 
                 _response.Message = "Payment saved successfully";
                 _response.IsSuccess = true;

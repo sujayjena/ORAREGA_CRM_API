@@ -27,8 +27,11 @@ namespace OraRegaAV.DBEntity
         public string RequestJson { get; set; }
         public string ResponseJson { get; set; }
         public Nullable<bool> IsRefund { get; set; }
+        public string Refund_MerchantTransactionId { get; set; }
+        public string Refund_TransactionId { get; set; }
         public Nullable<bool> Refund_IsRefundSuccess { get; set; }
         public string Refund_PaymentStatus { get; set; }
+        public string Refund_Error { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

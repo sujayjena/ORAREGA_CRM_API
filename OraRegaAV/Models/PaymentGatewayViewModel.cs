@@ -143,6 +143,10 @@ namespace OraRegaAV.Models
 
         public string TransactionId { get; set; }
 
+        public string RefundMerchantTransactionId { get; set; }
+
+        public string RefundTransactionId { get; set; }
+
         public string RequestJson { get; set; }
 
         public string ResponseJson { get; set; }

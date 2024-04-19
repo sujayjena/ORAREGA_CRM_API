@@ -169,7 +169,6 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblInvoice> tblInvoices { get; set; }
         public virtual DbSet<tblQuotation> tblQuotations { get; set; }
         public virtual DbSet<tblQuotationLog> tblQuotationLogs { get; set; }
-        public virtual DbSet<tblPayment> tblPayments { get; set; }
         public virtual DbSet<tblCompany> tblCompanies { get; set; }
         public virtual DbSet<tblWOPartRequest> tblWOPartRequests { get; set; }
         public virtual DbSet<tblNotification> tblNotifications { get; set; }
@@ -178,6 +177,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblQuotationPartDetail> tblQuotationPartDetails { get; set; }
         public virtual DbSet<tblQuotationPartDetailsLog> tblQuotationPartDetailsLogs { get; set; }
         public virtual DbSet<tblPaymentPartDetail> tblPaymentPartDetails { get; set; }
+        public virtual DbSet<tblPayment> tblPayments { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -3472,6 +3472,19 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetNotificationList_Result>("GetNotificationList", loggedInUserIdParameter, notifyDateParameter, pageSizeParameter, pageNoParameter, total);
         }
     
+        public virtual ObjectResult<GetPaymentDetails_Result> GetPaymentDetails(string merchantTransactionId, string transactionId)
+        {
+            var merchantTransactionIdParameter = merchantTransactionId != null ?
+                new ObjectParameter("MerchantTransactionId", merchantTransactionId) :
+                new ObjectParameter("MerchantTransactionId", typeof(string));
+    
+            var transactionIdParameter = transactionId != null ?
+                new ObjectParameter("TransactionId", transactionId) :
+                new ObjectParameter("TransactionId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentDetails_Result>("GetPaymentDetails", merchantTransactionIdParameter, transactionIdParameter);
+        }
+    
         public virtual ObjectResult<GetPaymentList_Result> GetPaymentList(string workOrderNumber, string quotationNumber, string merchantTransactionId, string transactionId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var workOrderNumberParameter = workOrderNumber != null ?
@@ -3503,19 +3516,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", workOrderNumberParameter, quotationNumberParameter, merchantTransactionIdParameter, transactionIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
-        }
-    
-        public virtual ObjectResult<GetPaymentDetails_Result> GetPaymentDetails(string merchantTransactionId, string transactionId)
-        {
-            var merchantTransactionIdParameter = merchantTransactionId != null ?
-                new ObjectParameter("MerchantTransactionId", merchantTransactionId) :
-                new ObjectParameter("MerchantTransactionId", typeof(string));
-    
-            var transactionIdParameter = transactionId != null ?
-                new ObjectParameter("TransactionId", transactionId) :
-                new ObjectParameter("TransactionId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentDetails_Result>("GetPaymentDetails", merchantTransactionIdParameter, transactionIdParameter);
         }
     }
 }

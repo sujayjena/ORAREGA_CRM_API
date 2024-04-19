@@ -17,6 +17,7 @@ namespace OraRegaAV.DBEntity
         public int Id { get; set; }
         public string QuotationNumber { get; set; }
         public string MerchantTransactionId { get; set; }
+        public string TransactionId { get; set; }
         public string MobileNumber { get; set; }
         public Nullable<bool> IsAdvance { get; set; }
         public Nullable<decimal> Amount { get; set; }
@@ -31,6 +32,8 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<bool> IsRefund { get; set; }
+        public string Refund_MerchantTransactionId { get; set; }
+        public string Refund_TransactionId { get; set; }
         public Nullable<decimal> Refund_Amount { get; set; }
         public Nullable<decimal> Refund_AmountInPaisa { get; set; }
         public Nullable<bool> Refund_IsRefundSuccess { get; set; }
@@ -38,11 +41,10 @@ namespace OraRegaAV.DBEntity
         public string Refund_PaymentMessage { get; set; }
         public string Refund_RequestJson { get; set; }
         public string Refund_ResponseJson { get; set; }
+        public string Refund_Error { get; set; }
         public Nullable<System.DateTime> Refund_CreatedDate { get; set; }
         public Nullable<int> Refund_CreatedBy { get; set; }
         public Nullable<System.DateTime> Refund_ModifiedDate { get; set; }
         public Nullable<int> Refund_ModifiedBy { get; set; }
-        public string TransactionId { get; set; }
-        public string Refund_TransactionId { get; set; }
     }
 }
