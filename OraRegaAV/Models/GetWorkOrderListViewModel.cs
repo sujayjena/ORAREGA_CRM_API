@@ -159,6 +159,7 @@ namespace OraRegaAV.Models
         public string SerialNumber { get; set; }
         public Nullable<int> PartStatusId { get; set; }
         public string PartStatus { get; set; }
+        public bool IsReturnStatus { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

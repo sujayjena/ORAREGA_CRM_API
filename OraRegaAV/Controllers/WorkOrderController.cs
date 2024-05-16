@@ -1431,6 +1431,13 @@ namespace OraRegaAV.Controllers
                         string sPartDescription = "";
                         string sSerialNumber = "";
                         string sPartStatus = "";
+                        bool isReturnStatus = false;
+
+                        var vPartReturnObj = db.tblPartsAllocatedToReturns.Where(x => x.WorkOrderId == item.WorkOrderId && x.PartId == item.PartId && x.ReturnStatusId == 2).FirstOrDefault();
+                        if (vPartReturnObj != null)
+                        {
+                            isReturnStatus = true;
+                        }
 
                         var vPartObj = db.tblPartDetails.Where(x => x.Id == item.PartId).FirstOrDefault();
                         if (vPartObj != null)
@@ -1459,6 +1466,7 @@ namespace OraRegaAV.Controllers
                             SerialNumber = sSerialNumber,
                             PartStatusId = item.PartStatusId,
                             PartStatus = sPartStatus,
+                            IsReturnStatus = isReturnStatus,
                             Quantity = item.Quantity,
                             CreatedBy = item.CreatedBy,
                             CreatedDate = item.CreatedDate
