@@ -302,7 +302,8 @@ namespace OraRegaAV.Controllers
                     //tbl.AdvanceReceived = request.AdvanceReceived;
                     //tbl.AmountPaidAfter = request.AmountPaidAfter;
                     tbl.OutstandingAmount = request.OutstandingAmount;
-                    tbl.StatusId = request.StatusId;
+                    //tbl.StatusId = request.StatusId;
+                    tbl.StatusId = 1;
 
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.ModifiedDate = DateTime.Now;

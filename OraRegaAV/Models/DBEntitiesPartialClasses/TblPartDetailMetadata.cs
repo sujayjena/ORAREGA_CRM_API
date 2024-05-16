@@ -65,7 +65,7 @@ namespace OraRegaAV.DBEntity
         public string DocketNo { get; set; }
         public string StockPartStatus { get; set; }
         public decimal PurchasePrice { get; set; }
-        public string VendorName { get; set; }
+        //public string VendorName { get; set; }
         public int Quantity { get; set; }
         public string HSNCode { get; set; }
         public string IsActive { get; set; }
