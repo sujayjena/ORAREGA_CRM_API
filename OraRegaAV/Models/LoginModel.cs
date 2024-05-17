@@ -33,6 +33,8 @@ namespace OraRegaAV.Models
         [Required(ErrorMessage = ValidationConstant.MobileNumberRequied_Msg)]
         [RegularExpression(ValidationConstant.MobileNumberRegExp, ErrorMessage = ValidationConstant.MobileNumberRegExp_Msg)]
         public string MobileNo { get; set; }
+
+        public bool IsMobileValidate { get; set; }
     }
     
     public class OTPLoginModel

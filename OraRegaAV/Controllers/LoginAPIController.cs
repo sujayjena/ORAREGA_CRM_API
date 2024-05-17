@@ -41,12 +41,15 @@ namespace OraRegaAV.Controllers.API
             try
             {
                 //user checking
-                var vUser = db.tblUsers.Where(x => x.MobileNo == parametrs.MobileNo).FirstOrDefault();
-                if (vUser == null)
+                if (parametrs.IsMobileValidate)
                 {
-                    _response.IsSuccess = false;
-                    _response.Message = "Invalid Mobile Number provided, please try again with correct Mobile Number.";
-                    return _response;
+                    var vUser = db.tblUsers.Where(x => x.MobileNo == parametrs.MobileNo).FirstOrDefault();
+                    if (vUser == null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Invalid Mobile Number provided, please try again with correct Mobile Number.";
+                        return _response;
+                    }
                 }
 
                 var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.IsVerified == false && x.IsExpired == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
