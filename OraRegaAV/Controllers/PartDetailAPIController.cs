@@ -424,12 +424,10 @@ namespace OraRegaAV.Controllers.API
                         record.ReceiveFrom = workSheet.Cells[rowIterator, 9].Value.ToString();
                         record.ReceiveDate = Convert.ToDateTime(workSheet.Cells[rowIterator, 10].Value.ToString());
                         record.DocketNo = workSheet.Cells[rowIterator, 11].Value.ToString();
-                        record.StockPartStatus = workSheet.Cells[rowIterator, 12].Value.ToString();
-                        record.PurchasePrice = Convert.ToDecimal(workSheet.Cells[rowIterator, 13].Value.ToString());
-                        //record.VendorName = workSheet.Cells[rowIterator, 14].Value.ToString();
-                        record.Quantity = Convert.ToInt32(workSheet.Cells[rowIterator, 14].Value.ToString());
-                        record.HSNCode = workSheet.Cells[rowIterator, 15].Value.ToString();
-                        record.IsActive = workSheet.Cells[rowIterator, 16].Value.ToString();
+                        record.PurchasePrice = Convert.ToDecimal(workSheet.Cells[rowIterator, 12].Value.ToString());
+                        record.Quantity = Convert.ToInt32(workSheet.Cells[rowIterator, 13].Value.ToString());
+                        record.HSNCode = workSheet.Cells[rowIterator, 14].Value.ToString();
+                        record.IsActive = workSheet.Cells[rowIterator, 15].Value.ToString();
 
                         lstPartDetailsImportRequestModel.Add(record);
                     }
@@ -505,13 +503,11 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Cells[1, 9].Value = "ReceiveFrom";
                         WorkSheet1.Cells[1, 10].Value = "ReceiveDate";
                         WorkSheet1.Cells[1, 11].Value = "DocketNo";
-                        WorkSheet1.Cells[1, 12].Value = "StockPartStatus";
-                        WorkSheet1.Cells[1, 13].Value = "PurchasePrice";
-                        //WorkSheet1.Cells[1, 14].Value = "VendorName";
-                        WorkSheet1.Cells[1, 14].Value = "Quantity";
-                        WorkSheet1.Cells[1, 15].Value = "HSNCode";
-                        WorkSheet1.Cells[1, 16].Value = "IsActive";
-                        WorkSheet1.Cells[1, 17].Value = "ValidationMessage";
+                        WorkSheet1.Cells[1, 12].Value = "PurchasePrice";
+                        WorkSheet1.Cells[1, 13].Value = "Quantity";
+                        WorkSheet1.Cells[1, 14].Value = "HSNCode";
+                        WorkSheet1.Cells[1, 15].Value = "IsActive";
+                        WorkSheet1.Cells[1, 16].Value = "ValidationMessage";
 
                         recordIndex = 2;
 
@@ -528,13 +524,11 @@ namespace OraRegaAV.Controllers.API
                             WorkSheet1.Cells[recordIndex, 9].Value = dataRow["ReceiveFrom"];
                             WorkSheet1.Cells[recordIndex, 10].Value = dataRow["ReceiveDate"];
                             WorkSheet1.Cells[recordIndex, 11].Value = dataRow["DocketNo"];
-                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["StockPartStatus"];
-                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["PurchasePrice"];
-                            //WorkSheet1.Cells[recordIndex, 14].Value = dataRow["VendorName"];
-                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["Quantity"];
-                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["HSNCode"];
-                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["IsActive"];
-                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["ValidationMessage"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["PurchasePrice"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["Quantity"];
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["HSNCode"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["IsActive"];
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["ValidationMessage"];
 
                             recordIndex += 1;
                         }
@@ -555,8 +549,6 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Column(14).AutoFit();
                         WorkSheet1.Column(15).AutoFit();
                         WorkSheet1.Column(16).AutoFit();
-                        WorkSheet1.Column(17).AutoFit();
-                        //WorkSheet1.Column(18).AutoFit();
 
                         using (MemoryStream memoryStream = new MemoryStream())
                         {

@@ -9159,7 +9159,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="ReceiveFrom" Nullable="false" MaxLength="1" />
           <Property Type="DateTime" Name="ReceiveDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="DocketNo" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="StockPartStatus" Nullable="false" MaxLength="1" />
           <Property Type="Decimal" Name="PurchasePrice" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="Quantity" Nullable="true" />
           <Property Type="String" Name="HSNCode" Nullable="false" MaxLength="1" />
@@ -14521,7 +14520,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="ReceiveFrom" ColumnName="ReceiveFrom" />
                 <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
                 <ScalarProperty Name="DocketNo" ColumnName="DocketNo" />
-                <ScalarProperty Name="StockPartStatus" ColumnName="StockPartStatus" />
                 <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />

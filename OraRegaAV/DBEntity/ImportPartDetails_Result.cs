@@ -24,7 +24,6 @@ namespace OraRegaAV.DBEntity
         public string ReceiveFrom { get; set; }
         public Nullable<System.DateTime> ReceiveDate { get; set; }
         public string DocketNo { get; set; }
-        public string StockPartStatus { get; set; }
         public Nullable<decimal> PurchasePrice { get; set; }
         public Nullable<int> Quantity { get; set; }
         public string HSNCode { get; set; }
