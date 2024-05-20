@@ -1464,7 +1464,7 @@ namespace OraRegaAV.App_Start
 
                 operation.parameters.Add(new Parameter()
                 {
-                    name = "PurchaseProofFile_0",
+                    name = "PurchaseProofFile_1",
                     @in = "formData",
                     type = "file",
                     required = false,
@@ -1474,7 +1474,7 @@ namespace OraRegaAV.App_Start
 
                 operation.parameters.Add(new Parameter()
                 {
-                    name = "PurchaseProofFile_1",
+                    name = "PurchaseProofFile_2",
                     @in = "formData",
                     type = "file",
                     required = false,
@@ -1505,7 +1505,7 @@ namespace OraRegaAV.App_Start
 
                 operation.parameters.Add(new Parameter()
                 {
-                    name = "ProductSnaps_1",
+                    name = "ProductSnaps_2",
                     @in = "formData",
                     type = "file",
                     required = false,
@@ -1542,7 +1542,7 @@ namespace OraRegaAV.App_Start
 
                 operation.parameters.Add(new Parameter()
                 {
-                    name = "PurchaseProofFile_0",
+                    name = "PurchaseProofFile_1",
                     @in = "formData",
                     type = "file",
                     required = false,
@@ -1552,7 +1552,7 @@ namespace OraRegaAV.App_Start
 
                 operation.parameters.Add(new Parameter()
                 {
-                    name = "PurchaseProofFile_1",
+                    name = "PurchaseProofFile_2",
                     @in = "formData",
                     type = "file",
                     required = false,

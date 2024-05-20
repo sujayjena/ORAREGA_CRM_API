@@ -28,7 +28,8 @@ namespace OraRegaAV.Controllers.Customers
         {
             string jsonParameter;
             int loggedInUserId = 0;
-            int productIndex;
+            int purchaseProf_ProductIndex;
+            int snap_ProductIndex;
             bool isEmailSent;
             CustomersSellDetailSaveParameters parameters;
             HttpFileCollection postedFiles;
@@ -133,7 +134,8 @@ namespace OraRegaAV.Controllers.Customers
                     m.ModifiedOn = DateTime.Now;
                 });
 
-                productIndex = 0;
+                purchaseProf_ProductIndex = 0;
+                snap_ProductIndex = 0;
 
                 foreach (SavedProductDetailsParameter product in parameters.ProductDetails)
                 {
@@ -168,7 +170,7 @@ namespace OraRegaAV.Controllers.Customers
                     //To save Product Proof Document(s) and Product Snap(s)
                     for (int f = 0; f < postedFiles.Count; f++)
                     {
-                        if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{productIndex}", StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{purchaseProf_ProductIndex}", StringComparison.OrdinalIgnoreCase))
                         {
                             proofPhotos = new tblProductDetailsPurchaseProof();
                             proofPhotos.SavedProductDetailId = (int)productDetail.Id;
@@ -179,8 +181,11 @@ namespace OraRegaAV.Controllers.Customers
                             proofPhotos.CreatedOn = DateTime.Now;
 
                             db.tblProductDetailsPurchaseProofs.Add(proofPhotos);
+
+                            purchaseProf_ProductIndex++;
                         }
-                        else if (string.Equals(postedFiles.GetKey(f), $"ProductSnaps_{productIndex}", StringComparison.OrdinalIgnoreCase))
+
+                        if (string.Equals(postedFiles.GetKey(f), $"ProductSnaps_{snap_ProductIndex}", StringComparison.OrdinalIgnoreCase))
                         {
                             prodSnaps = new tblProductDetailsSnap();
                             prodSnaps.SavedProductDetailId = (int)productDetail.Id;
@@ -191,10 +196,10 @@ namespace OraRegaAV.Controllers.Customers
                             prodSnaps.CreatedOn = DateTime.Now;
 
                             db.tblProductDetailsSnaps.Add(prodSnaps);
+
+                            snap_ProductIndex++;
                         }
                     }
-
-                    productIndex++;
                 }
                 #endregion
 

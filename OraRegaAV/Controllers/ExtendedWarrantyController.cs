@@ -144,9 +144,9 @@ namespace OraRegaAV.Controllers.API
 
                             db.tblExtendWarrantyPurchaseProofs.Add(proofPhotos);
                         }
-                    }
 
-                    productIndex++;
+                        productIndex++;
+                    }
                 }
                 #endregion
 

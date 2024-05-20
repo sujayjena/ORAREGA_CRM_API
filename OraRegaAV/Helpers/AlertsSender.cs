@@ -243,7 +243,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             string[] proofFileNames, snapsFileNames;
             List<HttpPostedFile> proofFiles, snapFiles;
-            int productIndex;
+            int purchaseProf_ProductIndex;
+            int snap_ProductIndex;
             tblCustomer customer;
             //ServiceAddressParameters defaultAddress;
             tblPermanentAddress defaultAddress;
@@ -289,10 +290,10 @@ namespace OraRegaAV.Helpers
                     emailTemplateContent = emailTemplateContent.Replace("[CustomerGstNumber]", parameters.CustomerGstNo);
                 }
 
-                if (emailTemplateContent.IndexOf("[PaymentTerm]", StringComparison.OrdinalIgnoreCase) > 0)
-                {
-                    emailTemplateContent = emailTemplateContent.Replace("[PaymentTerm]", db.tblPaymentTerms.Where(p => p.Id == parameters.PaymentTermId).Select(p => p.PaymentTerms).FirstOrDefault());
-                }
+                //if (emailTemplateContent.IndexOf("[PaymentTerm]", StringComparison.OrdinalIgnoreCase) > 0)
+                //{
+                //    emailTemplateContent = emailTemplateContent.Replace("[PaymentTerm]", db.tblPaymentTerms.Where(p => p.Id == parameters.PaymentTermId).Select(p => p.PaymentTerms).FirstOrDefault());
+                //}
 
                 if (emailTemplateContent.IndexOf("[AddressFullName]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
@@ -332,7 +333,6 @@ namespace OraRegaAV.Helpers
                 if (emailTemplateContent.IndexOf("[InquiryProductsList]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     productsListContent = string.Empty;
-                    productIndex = 0;
 
                     foreach (SavedProductDetailsParameter prod in parameters.ProductDetails)
                     {
@@ -369,26 +369,6 @@ namespace OraRegaAV.Helpers
                         string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
                         string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
 
-                        proofFileNames = new string[] { };
-                        snapsFileNames = new string[] { };
-                        proofFiles = new List<HttpPostedFile>();
-                        snapFiles = new List<HttpPostedFile>();
-
-                        for (int f = 0; f < postedFiles.Count; f++)
-                        {
-                            if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{productIndex}", StringComparison.OrdinalIgnoreCase))
-                            {
-                                proofFiles.Add(postedFiles[f]);
-                            }
-                            else if (string.Equals(postedFiles.GetKey(f), $"ProductSnaps_{productIndex}", StringComparison.OrdinalIgnoreCase))
-                            {
-                                snapFiles.Add(postedFiles[f]);
-                            }
-                        }
-
-                        proofFileNames = proofFiles.Select(f => f.FileName).ToArray();
-                        snapsFileNames = snapFiles.Select(f => f.FileName).ToArray();
-
                         productsListContent = $@"{productsListContent}
                             <li>
                                 <ul>
@@ -401,17 +381,51 @@ namespace OraRegaAV.Helpers
                                     <li>Product Description: {strProductDesc}</li>
                                     <li>Product Description (If other): {prod.ProdDescIfOther}</li>
                                     <li>Product Condition: {db.tblProductConditions.Where(p => p.Id == prod.ProdConditionId).Select(p => p.Condition).FirstOrDefault()}</li>
-                                    <li>Prof of Purchase: {string.Join(", ", proofFileNames)} </li>
-                                    <li>Issue Snaps: {string.Join(", ", snapsFileNames)}</li>
                                 </ul>
                                 <br />
                             </li>";
 
                         //}
-                        productIndex++;
                     }
 
                     emailTemplateContent = emailTemplateContent.Replace("[InquiryProductsList]", productsListContent);
+                }
+
+                purchaseProf_ProductIndex = 0;
+                snap_ProductIndex = 0;
+
+                //attachment details
+                proofFileNames = new string[] { };
+                snapsFileNames = new string[] { };
+                proofFiles = new List<HttpPostedFile>();
+                snapFiles = new List<HttpPostedFile>();
+
+                for (int f = 0; f < postedFiles.Count; f++)
+                {
+                    if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{purchaseProf_ProductIndex}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        proofFiles.Add(postedFiles[f]);
+                        purchaseProf_ProductIndex++;
+                    }
+
+                    if (string.Equals(postedFiles.GetKey(f), $"ProductSnaps_{snap_ProductIndex}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        snapFiles.Add(postedFiles[f]);
+                        snap_ProductIndex++;
+                    }
+                }
+
+                proofFileNames = proofFiles.Select(f => f.FileName).ToArray();
+                snapsFileNames = snapFiles.Select(f => f.FileName).ToArray();
+
+                if (emailTemplateContent.IndexOf("[ProfofPurchase]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[ProfofPurchase]", string.Join(", ", proofFileNames));
+                }
+
+                if (emailTemplateContent.IndexOf("[IssueSnaps]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    emailTemplateContent = emailTemplateContent.Replace("[IssueSnaps]", string.Join(", ", snapsFileNames));
                 }
 
                 if (emailTemplateContent.IndexOf("[SenderName]", StringComparison.OrdinalIgnoreCase) > 0)
@@ -488,10 +502,10 @@ namespace OraRegaAV.Helpers
                     emailTemplateContent = emailTemplateContent.Replace("[CustomerGstNumber]", parameters.CustomerGSTINNo);
                 }
 
-                if (emailTemplateContent.IndexOf("[PaymentTerm]", StringComparison.OrdinalIgnoreCase) > 0)
-                {
-                    emailTemplateContent = emailTemplateContent.Replace("[PaymentTerm]", db.tblPaymentTerms.Where(p => p.Id == parameters.PaymentTermId).Select(p => p.PaymentTerms).FirstOrDefault());
-                }
+                //if (emailTemplateContent.IndexOf("[PaymentTerm]", StringComparison.OrdinalIgnoreCase) > 0)
+                //{
+                //    emailTemplateContent = emailTemplateContent.Replace("[PaymentTerm]", db.tblPaymentTerms.Where(p => p.Id == parameters.PaymentTermId).Select(p => p.PaymentTerms).FirstOrDefault());
+                //}
 
                 if (emailTemplateContent.IndexOf("[AddressFullName]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
@@ -536,8 +550,7 @@ namespace OraRegaAV.Helpers
                 if (emailTemplateContent.IndexOf("[InquiryProductsList]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     productsListContent = string.Empty;
-                    productIndex = 0;
-
+                   
                     foreach (ExtendedWarrantyProductParameters prod in parameters.Products)
                     {
                         prodModelDetails = db.GetProductModelDetails(prod.ProductModelId).FirstOrDefault();
@@ -551,19 +564,6 @@ namespace OraRegaAV.Helpers
                         string strProductMake = vProductMakeObj != null ? vProductMakeObj.ProductMake : string.Empty;
                         string strProductType = vProductTypeObj != null ? vProductTypeObj.ProductType : string.Empty;
 
-                        proofFileNames = new string[] { };
-                        proofFiles = new List<HttpPostedFile>();
-
-                        for (int f = 0; f < postedFiles.Count; f++)
-                        {
-                            if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{productIndex}", StringComparison.OrdinalIgnoreCase))
-                            {
-                                proofFiles.Add(postedFiles[f]);
-                            }
-                        }
-
-                        proofFileNames = proofFiles.Select(f => f.FileName).ToArray();
-
                         productsListContent = $@"{productsListContent}
                             <li>
                                 <ul>
@@ -575,15 +575,35 @@ namespace OraRegaAV.Helpers
                                     <li>Product Number: {prod.ProductNumber}</li>
                                     <li>Warranty Type: {db.tblWarrantyTypes.Where(p => p.Id == prod.WarrantyTypeId).Select(p => p.WarrantyType).FirstOrDefault()}</li>
                                     <li>Product Condition: {db.tblProductConditions.Where(p => p.Id == prod.ProductConditionId).Select(p => p.Condition).FirstOrDefault()}</li>
-                                    <li>Prof of Purchase: {string.Join(", ", proofFileNames)} </li>
                                 </ul>
                                 <br />
                             </li>";
+                    }
+
+                    emailTemplateContent = emailTemplateContent.Replace("[InquiryProductsList]", productsListContent);
+                }
+
+                //attachment details
+                if (emailTemplateContent.IndexOf("[ProfofPurchase]", StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    productIndex = 0;
+
+                    proofFileNames = new string[] { };
+                    proofFiles = new List<HttpPostedFile>();
+
+                    for (int f = 0; f < postedFiles.Count; f++)
+                    {
+                        if (string.Equals(postedFiles.GetKey(f), $"PurchaseProofFile_{productIndex}", StringComparison.OrdinalIgnoreCase))
+                        {
+                            proofFiles.Add(postedFiles[f]);
+                        }
 
                         productIndex++;
                     }
 
-                    emailTemplateContent = emailTemplateContent.Replace("[InquiryProductsList]", productsListContent);
+                    proofFileNames = proofFiles.Select(f => f.FileName).ToArray();
+
+                    emailTemplateContent = emailTemplateContent.Replace("[ProfofPurchase]", string.Join(", ", proofFileNames));
                 }
 
                 if (emailTemplateContent.IndexOf("[SenderName]", StringComparison.OrdinalIgnoreCase) > 0)
