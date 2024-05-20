@@ -1,11 +1,14 @@
 ﻿using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Newtonsoft.Json.Linq;
+using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OraRegaAV.App_Start;
 using OraRegaAV.CustomFilter;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
+using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -159,13 +162,23 @@ namespace OraRegaAV.Controllers.API
                 var tbl = db.tblOTPs.Where(x => x.Mobile == parametrs.MobileNo && x.OTP.ToString() == parametrs.OTP && x.IsVerified == false && x.IsExpired == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 if (tbl != null)
                 {
-                    tbl.IsVerified = true;
+                    DateTime nowTime = DateTime.Now;
+                    TimeSpan difference = nowTime.Subtract(Convert.ToDateTime(tbl.CreatedDate));
+                    if (difference.TotalSeconds <= 30)
+                    {
+                        tbl.IsVerified = true;
 
-                    //db.tblOTPs.AddOrUpdate(tbl);
-                    db.SaveChanges();
+                        //db.tblOTPs.AddOrUpdate(tbl);
+                        db.SaveChanges();
 
-                    _response.IsSuccess = true;
-                    _response.Message = "OTP verified successfully";
+                        _response.IsSuccess = true;
+                        _response.Message = "OTP verified successfully";
+                    }
+                    else
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "OTP Timedout";
+                    }
                 }
                 else
                 {
@@ -266,6 +279,9 @@ namespace OraRegaAV.Controllers.API
 
                 if (objLogin != null)
                 {
+                    // Exipre User's Previous Token
+                    ExpirePreviousToken(objLogin.Id);
+
                     var vEmployeeObj = db.tblEmployees.Where(x => x.Id == objLogin.EmployeeId).FirstOrDefault();
                     if (objLogin.IsActive == true)
                     {
@@ -462,6 +478,13 @@ namespace OraRegaAV.Controllers.API
                 }
                 else
                 {
+                    //var user = await db.tblUsers.Where(u => u.EmployeeId == employee.Id && u.MobileNo == mobNo).FirstOrDefaultAsync();
+                    //if (user != null)
+                    //{
+                    //    // Exipre User's Previous Token
+                    //    ExpirePreviousToken(user.Id);
+                    //}
+
                     //OTP Generation Login will be here.
 
                     _response.IsSuccess = true;
@@ -574,6 +597,9 @@ namespace OraRegaAV.Controllers.API
 
                 if (user != null)
                 {
+                    // Exipre User's Previous Token
+                    ExpirePreviousToken(user.Id);
+
                     var vEmployeeObj = db.tblEmployees.Where(x => x.Id == user.EmployeeId).FirstOrDefault();
                     if (user.IsActive == true)
                     {
@@ -749,13 +775,18 @@ namespace OraRegaAV.Controllers.API
                     //tbl update
                     var decryptedString = EncryptDecryptHelper.DecryptString(token);
                     var validData = JsonSerializer.Deserialize<tblUser>(decryptedString);
-                    var tblLoggedInUser = new tblLoggedInUser();
-                    tblLoggedInUser = db.tblLoggedInUsers.Where(x => x.UserId == validData.Id).FirstOrDefault();
+
+                    //var tblLoggedInUser = new tblLoggedInUser();
+                    //tblLoggedInUser = db.tblLoggedInUsers.Where(x => x.UserId == validData.Id).FirstOrDefault();
+
+                    tblLoggedInUser tblLoggedInUser;
+                    tblLoggedInUser = db.tblLoggedInUsers.Where(lu => lu.UserToken == token && lu.UserId == validData.Id && lu.IsLoggedIn == true && lu.LoggedOutOn == null).FirstOrDefault();
 
                     tblLoggedInUser.IsLoggedIn = false;
-                    tblLoggedInUser.LastAccessOn = DateTime.Now;
+                    //tblLoggedInUser.LastAccessOn = DateTime.Now;
                     tblLoggedInUser.LoggedOutOn = DateTime.Now;
                     tblLoggedInUser.IsAutoLogout = false;
+
                     db.SaveChanges();
                     _response.Message = "User logged-out successfully";
                 }
@@ -770,6 +801,24 @@ namespace OraRegaAV.Controllers.API
             }
 
             return _response;
+        }
+
+        public void ExpirePreviousToken(int userId = 0)
+        {
+            var tblLoggedInUser = db.tblLoggedInUsers.Where(lu => lu.UserId == userId && lu.IsLoggedIn == true && lu.LoggedOutOn == null).ToList();
+            foreach (var item in tblLoggedInUser)
+            {
+                var tblLoggedInUserObj = db.tblLoggedInUsers.Where(lu => lu.Id == item.Id).FirstOrDefault();
+                if (tblLoggedInUserObj != null)
+                {
+                    tblLoggedInUserObj.IsLoggedIn = false;
+                    //tblLoggedInUserObj.LastAccessOn = DateTime.Now;
+                    tblLoggedInUserObj.LoggedOutOn = DateTime.Now;
+                    tblLoggedInUserObj.IsAutoLogout = false;
+
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }
