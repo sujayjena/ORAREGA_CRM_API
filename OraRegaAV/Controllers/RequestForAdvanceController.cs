@@ -180,6 +180,13 @@ namespace OraRegaAV.Controllers.API
                 #region Email Sending
                 if (parameters.Id == 0)
                 {
+                    var vtblRequestForAdvanceObj = db.tblRequestForAdvances.Where(x => x.Id == tblRequestForAdvance.Id).FirstOrDefault();
+                    if(vtblRequestForAdvanceObj != null)
+                    {
+                        parameters.ClaimId= vtblRequestForAdvanceObj.ClaimId;
+                        parameters.Date = vtblRequestForAdvanceObj.CreatedDate;
+                    }
+
                     await new AlertsSender().SendEmailAdvanceClaimRequest(parameters);
                 }
                 #endregion

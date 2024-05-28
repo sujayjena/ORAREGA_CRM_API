@@ -1,6 +1,9 @@
-﻿using OraRegaAV.DBEntity;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Spreadsheet;
+using OraRegaAV.DBEntity;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -162,10 +165,16 @@ namespace OraRegaAV.Helpers
             string base64String = string.Empty;
             string fileFullPath = $"{HttpContext.Current.Server.MapPath("~")}\\{imgPath}";
 
+            //if (!string.IsNullOrEmpty(imgPath) && File.Exists(fileFullPath))
+            //{
+            //    imageBytes = File.ReadAllBytes(fileFullPath);
+            //    base64String = $"data:image/{new FileInfo(fileFullPath).Extension.Replace(".", "")};base64,{Convert.ToBase64String(imageBytes)}";
+            //}
+
             if (!string.IsNullOrEmpty(imgPath) && File.Exists(fileFullPath))
             {
                 imageBytes = File.ReadAllBytes(fileFullPath);
-                base64String = $"data:image/{new FileInfo(fileFullPath).Extension.Replace(".", "")};base64,{Convert.ToBase64String(imageBytes)}";
+                base64String = Convert.ToBase64String(imageBytes);
             }
 
             return base64String;
@@ -178,6 +187,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -219,7 +230,8 @@ namespace OraRegaAV.Helpers
 
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
+                    //emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", senderCompanyLogo);
                 }
 
                 result = await SendEmail(
@@ -249,6 +261,8 @@ namespace OraRegaAV.Helpers
             //ServiceAddressParameters defaultAddress;
             tblPermanentAddress defaultAddress;
             GetProductModelDetails_Result prodModelDetails;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -435,7 +449,9 @@ namespace OraRegaAV.Helpers
 
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
+
+                    //emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
                 }
 
                 result = await SendEmail("New Sell Inquiry Received", emailTemplateContent, receiverEmail, files: postedFiles);
@@ -461,6 +477,8 @@ namespace OraRegaAV.Helpers
             //ServiceAddressParameters defaultAddress;
             tblPermanentAddress defaultAddress;
             GetProductModelDetails_Result prodModelDetails;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -550,7 +568,7 @@ namespace OraRegaAV.Helpers
                 if (emailTemplateContent.IndexOf("[InquiryProductsList]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     productsListContent = string.Empty;
-                   
+
                     foreach (ExtendedWarrantyProductParameters prod in parameters.Products)
                     {
                         prodModelDetails = db.GetProductModelDetails(prod.ProductModelId).FirstOrDefault();
@@ -613,7 +631,8 @@ namespace OraRegaAV.Helpers
 
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    //emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
                 }
 
                 result = await SendEmail("New Extended Warranty Inquiry Received", emailTemplateContent, receiverEmail, files: postedFiles);
@@ -634,6 +653,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<string> attachedFileNames;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -705,7 +726,8 @@ namespace OraRegaAV.Helpers
 
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    //emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
                 }
 
                 attachedFileNames = new List<string>();
@@ -738,6 +760,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList(string.Empty).ToList();
@@ -762,7 +786,8 @@ namespace OraRegaAV.Helpers
 
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    //emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
                 }
 
                 result = await SendEmail("Welcome to Quikserv India - Your Registration is Complete!", emailTemplateContent, receiverEmail);
@@ -783,6 +808,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<string> attachedFileNames;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -854,7 +881,8 @@ namespace OraRegaAV.Helpers
 
                 if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    //emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", ImageToBase64(senderCompanyLogo));
+                    emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
                 }
 
                 attachedFileNames = new List<string>();
@@ -887,6 +915,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -902,7 +932,7 @@ namespace OraRegaAV.Helpers
 
                 //IDM / Backend Executive
                 var vRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Backend Executive").Select(x => x.Id).ToList();
-                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchId).Select(x=>x.EmployeeId).ToList();
+                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchId).Select(x => x.EmployeeId).ToList();
                 var empList = db.tblEmployees.Where(x => x.CompanyId == parameters.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
@@ -915,7 +945,7 @@ namespace OraRegaAV.Helpers
                 var caseStatus = db.tblCaseStatus.Where(x => x.Id == parameters.CaseStatusId).Select(x => x.CaseStatusName).FirstOrDefault();
                 var closerSummary = repairClassType + ", " + delayCode + ", " + parameters.ResolutionSummary + ", " + caseStatus;
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>I'm pleased to inform you that the work order has been successfully closed.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>I'm pleased to inform you that the work order has been successfully closed.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + parameters.WorkOrderNumber + "<br/>Closure Summary - " + closerSummary + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Close Work Order", emailTemplateContent, receiverEmail, files: null);
             }
@@ -934,6 +964,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent, receiverEmail;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -961,7 +993,7 @@ namespace OraRegaAV.Helpers
                 var engName = db.tblEmployees.Where(x => x.Id == vWorkOrder.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Spare has been recommended by the Engineer.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + vWorkOrder.WorkOrderNumber + "<br/>Part Number - " + parameters.PartNo + "<br/>Part Name - " + parameters.PartName + "<br/>Part description - " + parameters.PartDesc + "<br/>Qty - " + parameters.Quantity + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Spare has been recommended by the Engineer.</p><p>Engineer Name - " + engName + "<br/>Work Order Number - " + vWorkOrder.WorkOrderNumber + "<br/>Part Number - " + parameters.PartNo + "<br/>Part Name - " + parameters.PartName + "<br/>Part description - " + parameters.PartDesc + "<br/>Qty - " + parameters.Quantity + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Request Part", emailTemplateContent, receiverEmail, files: null);
             }
@@ -980,6 +1012,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent, receiverEmail;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -1024,7 +1058,7 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Part Status has been changed by the backend executive to a <q>Pending for Part</q>.</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Part Status has been changed by the backend executive to a <q>Pending for Part</q>.</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Pending for Part", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1043,6 +1077,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent, receiverEmail;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -1063,7 +1099,7 @@ namespace OraRegaAV.Helpers
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
                 var leaveType = db.tblLeaveTypes.Where(x => x.Id == parameters.LeaveTypeId).Select(x => x.LeaveType).FirstOrDefault();
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Leave Application Request received.</p><p>Engineer Name - " + engName + "<br/>Leave Type - " + leaveType + "<br/>From Date - " + parameters.StartDate.ToShortDateString() + "<br/>To Date - " + parameters.EndDate.ToShortDateString() + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Leave Application Request received.</p><p>Engineer Name - " + engName + "<br/>Leave Type - " + leaveType + "<br/>From Date - " + parameters.StartDate.ToShortDateString() + "<br/>To Date - " + parameters.EndDate.ToShortDateString() + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Leave Application", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1083,6 +1119,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -1101,9 +1139,9 @@ namespace OraRegaAV.Helpers
                 var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Claim Application Request received.</p><p>Claim Id - " + parameters.ClaimId + "<br/>Engineer Name - " + engName + "<br/>Date - " + parameters.Date + "<br/>Total Amount - " + parameters.Amount + "<br/>Claim Reason - " + parameters.ClaimReason + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Claim Application Request received.</p><p>Claim Id - " + parameters.ClaimId + "<br/>Engineer Name - " + engName + "<br/>Date - " + parameters.Date + "<br/>Total Amount - " + parameters.Amount + "<br/>Claim Reason - " + parameters.ClaimReason + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
-                result = await SendEmail_Other("Advance Claim Application", emailTemplateContent, receiverEmail, files: null);
+                result = await SendEmail_Other("Advance Claim Application", emailTemplateContent, "sujay930@gmail.com", files: null);
             }
             catch (Exception ex)
             {
@@ -1121,7 +1159,9 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
             string[] claimFileNames;
-            List<HttpPostedFile> claimFiles;
+            List<HttpFileCollection> claimFiles=new List<HttpFileCollection>();
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -1144,7 +1184,7 @@ namespace OraRegaAV.Helpers
                 string claimSettlementItemListContent = string.Empty;
                 foreach (var itm in parameters.claimSettlementItem)
                 {
-                    var fileName = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).Select(x => x.FilePath).FirstOrDefault();
+                    var vtblClaimSettlementItemAttachments = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).FirstOrDefault();
 
                     claimSettlementItemListContent = $@"{claimSettlementItemListContent}
                             <li>
@@ -1156,13 +1196,21 @@ namespace OraRegaAV.Helpers
                                     <li>To Date  - {itm.ToDate}</li>
                                     <li>Amount - {itm.Amount}</li>
                                     <li>Remark - {itm.Remark}</li>
-                                    <li>Attachment - {fileName}</li>
+                                    <li>Attachment - {vtblClaimSettlementItemAttachments.FilePath}</li>
                                 </ul>
                                 <br />
                             </li>";
+
+                    //HttpFileCollection httpFileCollection= new HttpFileCollection()
+                    //{
+                    //    Keys=
+                    //}
+
+                    //claimFiles.Add(claimFiles)
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>" + claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>" + claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Expense Application", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1182,6 +1230,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -1200,7 +1250,7 @@ namespace OraRegaAV.Helpers
                 //var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Travel Claim has been Submitted.</p><p>Expense No - " + parameters.ExpenseId + "<br/>Expense Date - " + parameters.ExpenseDate + "<br/>Work order No - " + parameters.WorkOrderNumber + "<br/>Total Kms run - " + parameters.Distance + "<br/>Amount - " + parameters.TotalAmount + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Travel Claim has been Submitted.</p><p>Expense No - " + parameters.ExpenseId + "<br/>Expense Date - " + parameters.ExpenseDate + "<br/>Work order No - " + parameters.WorkOrderNumber + "<br/>Total Kms run - " + parameters.Distance + "<br/>Amount - " + parameters.TotalAmount + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Travel Claim Application", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1219,6 +1269,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent, receiverEmail;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -1265,7 +1317,7 @@ namespace OraRegaAV.Helpers
                     receiverEmail = string.Join(",", new List<string>(empList).ToArray());
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>" + headingMsg + "</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>" + headingMsg + "</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other(subjectName, emailTemplateContent, receiverEmail, files: null);
             }
@@ -1284,6 +1336,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent, receiverEmail;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -1312,7 +1366,7 @@ namespace OraRegaAV.Helpers
                 var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Payment Received successfully.</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>Payment Received successfully.</p><p>Quotation No - " + parameters.QuotationNumber + "<br/>Work order No - " + vWorkOrder.WorkOrderNumber + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Payment Received Confirmation", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1332,6 +1386,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -1350,7 +1406,7 @@ namespace OraRegaAV.Helpers
                 //Logistics Executive
                 var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
                 var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
-                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -1375,7 +1431,7 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Engineer return spare request has been raised.</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Engineer return spare request has been raised.</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Return of Assigned Part to Logistics", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1393,6 +1449,8 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent, receiverEmail;
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
             try
             {
@@ -1412,9 +1470,9 @@ namespace OraRegaAV.Helpers
                 //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).FirstOrDefault();
 
                 //Logistics Executive
-                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x=>x.Id).ToList();
+                var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
                 var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
-                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId??0)).FirstOrDefault();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).FirstOrDefault();
                 receiverEmail = db.tblEmployees.Where(x => x.Id == empList.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -1452,7 +1510,7 @@ namespace OraRegaAV.Helpers
                     headingMsg = "Return spare request has been rejected by logistics.";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p><p>" + headingMsg + "</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p><p>" + headingMsg + "</p><p><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other(subjectName, emailTemplateContent, receiverEmail, files: null);
             }
@@ -1472,6 +1530,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -1486,17 +1546,17 @@ namespace OraRegaAV.Helpers
                 //var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
                 // IDM
-                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x=>x.Id).ToList();
+                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x => x.Id).ToList();
                 var vFBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchFromId).Select(x => x.EmployeeId).ToList();
-                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == parameters.ComapnyId && vFBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == parameters.ComapnyId && vFBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
 
                 //var toBranchRoleId = "22,24"; // IDM / Logistics Executive
                 //var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == parameters.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
                 // IDM / Logistics Executive
-                var toBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x=>x.Id).ToList();
+                var toBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
                 var vToBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == parameters.BranchToId).Select(x => x.EmployeeId).ToList();
-                var toBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == parameters.ComapnyId && vToBranchWiseEmpList.Contains(x.Id) && toBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+                var toBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == parameters.ComapnyId && vToBranchWiseEmpList.Contains(x.Id) && toBranchRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
 
                 var emailList = new List<string>(fromBranchEmpList);
                 emailList.AddRange(new List<string>(toBranchEmpList));
@@ -1530,7 +1590,7 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare has been Dispatched.</p><p>Docket no - " + parameters.NewDocketNo + "<br/>From Branch name - " + vFromBranch + "<br/>To Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare has been Dispatched.</p><p>Docket no - " + parameters.NewDocketNo + "<br/>From Branch name - " + vFromBranch + "<br/>To Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Stock Transfer Out", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1550,6 +1610,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -1567,9 +1629,9 @@ namespace OraRegaAV.Helpers
                 //var fromBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchFromId && fromBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
                 // IDM
-                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x=>x.Id).ToList();
+                var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM").Select(x => x.Id).ToList();
                 var vFBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == stockTransferOutObj.BranchFromId).Select(x => x.EmployeeId).ToList();
-                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vFBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vFBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
 
                 //var toBranchRoleId = "22,24"; // IDM / Logistics Executive
                 //var toBranchEmpList = db.tblEmployees.Where(x => x.BranchId == stockTransferOutObj.BranchToId && toBranchRoleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
@@ -1577,7 +1639,7 @@ namespace OraRegaAV.Helpers
                 // IDM / Logistics Executive
                 var toBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
                 var vToBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == stockTransferOutObj.BranchToId).Select(x => x.EmployeeId).ToList();
-                var toBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vToBranchWiseEmpList.Contains(x.Id) && toBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+                var toBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vToBranchWiseEmpList.Contains(x.Id) && toBranchRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
 
                 var emailList = new List<string>(fromBranchEmpList);
                 emailList.AddRange(new List<string>(toBranchEmpList));
@@ -1611,7 +1673,7 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare Has been Accepted by Logistics.</p><p>Docket no - " + stockTransferOutObj.NewDocketNo + "<br/>Accepted By Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Spare Has been Accepted by Logistics.</p><p>Docket no - " + stockTransferOutObj.NewDocketNo + "<br/>Accepted By Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Acceptance of Stock Transfer In", emailTemplateContent, receiverEmail, files: null);
             }
@@ -1631,6 +1693,8 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+
             try
             {
                 configList = db.GetConfigurationsList($"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.LoginURL}" +
@@ -1649,7 +1713,7 @@ namespace OraRegaAV.Helpers
                 // IDM / Logistics Executive
                 var fromBranchRoleObj = db.tblRoles.Where(x => x.RoleName == "IDM" || x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
                 var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == stockTransferOutObj.BranchFromId).Select(x => x.EmployeeId).ToList();
-                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId??0)).Select(x => x.EmailId).ToList();
+                var fromBranchEmpList = db.tblEmployees.Where(x => x.CompanyId == stockTransferOutObj.ComapnyId && vBranchWiseEmpList.Contains(x.Id) && fromBranchRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
 
                 var emailList = new List<string>(fromBranchEmpList);
 
@@ -1682,7 +1746,7 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                emailTemplateContent = "<html><body><p>Hi Team,</p>Dispatched Spare Has been Rejected.</p><p>Docket no - " + stockTransferOutObj.NewDocketNo + "<br/>Rejected Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src=" + ImageToBase64(senderCompanyLogo) + " alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
+                emailTemplateContent = "<html><body><p>Hi Team,</p>Dispatched Spare Has been Rejected.</p><p>Docket no - " + stockTransferOutObj.NewDocketNo + "<br/>Rejected Branch name - " + vToBranch + "</p><p><b>Part Details:</b><br/><ol>" + partDetailsListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
                 result = await SendEmail_Other("Rejection of Stock Transfer In", emailTemplateContent, receiverEmail, files: null);
             }

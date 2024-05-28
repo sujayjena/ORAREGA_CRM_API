@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Spreadsheet;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using OraRegaAV.Controllers.API;
@@ -486,10 +488,19 @@ namespace OraRegaAV.Controllers
                             var vBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
                             if (vBranchObj != null)
                             {
+                                // Branch Address
+                                var vTotal = new ObjectParameter("Total", typeof(int));
+                                var objtblBranch = Task.Run(() => db.GetBranchList(0, vBranchObj.Id.ToString(), "", 0, 0, vTotal, 0).ToList().FirstOrDefault());
+
+
                                 var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vBranchObj.CompanyId && w.StateId == vBranchObj.StateId).FirstOrDefault();
                                 if (vGSTMappingObj != null)
                                 {
-                                    quotationObj.BranchAddress = vBranchObj.AddressLine1;
+                                    if (objtblBranch != null)
+                                    {
+                                        quotationObj.BranchAddress = objtblBranch.Result.AddressLine1 + ", " + objtblBranch.Result.StateName + ", " + objtblBranch.Result.CityName + ", " + objtblBranch.Result.AreaName + ", " + objtblBranch.Result.Pincode;
+                                    }
+
                                     quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
                                 }
 
@@ -545,18 +556,31 @@ namespace OraRegaAV.Controllers
                             if (vWorkOrderCustomerObj != null)
                             {
                                 quotationObj.customerDetails.CustomerId = workOrderObj.CustomerId;
-                                quotationObj.customerDetails.OrganizationName = workOrderObj.CompanyName;
+                                quotationObj.customerDetails.OrganizationName = workOrderObj.OrganizationName;
                                 quotationObj.customerDetails.CustomerName = vWorkOrderCustomerObj.FirstName + " " + vWorkOrderCustomerObj.LastName;
                                 quotationObj.customerDetails.CustomerGstNumber = workOrderObj.GSTNumber;
                                 quotationObj.customerDetails.CustomerMobile = vWorkOrderCustomerObj.Mobile;
                                 quotationObj.customerDetails.CustomerEmail = vWorkOrderCustomerObj.Email;
 
-                                var vWorkOrderCustomerAddressObj = db.tblPermanentAddresses.Where(w => w.Id == workOrderObj.ServiceAddressId).FirstOrDefault();
-                                if (vWorkOrderCustomerAddressObj != null)
+                                var vUserObj = db.tblUsers.Where(u => u.CustomerId == workOrderObj.CustomerId).FirstOrDefaultAsync();
+                                var vBillToAddresses = db.GetUsersAddresses(vUserObj.Id).ToList().Where(x => x.IsDefault == true).FirstOrDefault();
+                                if (vBillToAddresses != null)
                                 {
-                                    quotationObj.customerDetails.BillToAddress = vWorkOrderCustomerAddressObj.Address;
-                                    quotationObj.customerDetails.DeliverToAddress = vWorkOrderCustomerAddressObj.Address;
+                                    quotationObj.customerDetails.BillToAddress = vBillToAddresses.Address + ", " + vBillToAddresses.StateName + ", " + vBillToAddresses.CityName + ", " + vBillToAddresses.AreaName + ", " + vBillToAddresses.Pincode;
                                 }
+
+                                var vDeliverToAddress = db.GetUsersAddresses(vUserObj.Id).ToList().Where(x => x.Id == workOrderObj.ServiceAddressId).FirstOrDefault();
+                                if (vDeliverToAddress != null)
+                                {
+                                    quotationObj.customerDetails.DeliverToAddress = vDeliverToAddress.Address + ", " + vDeliverToAddress.StateName + ", " + vDeliverToAddress.CityName + ", " + vDeliverToAddress.AreaName + ", " + vDeliverToAddress.Pincode;
+                                }
+
+                                //var vWorkOrderCustomerAddressObj = db.tblPermanentAddresses.Where(w => w.Id == workOrderObj.ServiceAddressId).FirstOrDefault();
+                                //if (vWorkOrderCustomerAddressObj != null)
+                                //{
+                                //    quotationObj.customerDetails.BillToAddress = vWorkOrderCustomerAddressObj.Address;
+                                //    quotationObj.customerDetails.DeliverToAddress = vWorkOrderCustomerAddressObj.Address;
+                                //}
 
                                 var vWorkOrderBranchObj = db.tblBranches.Where(w => w.Id == workOrderObj.BranchId).FirstOrDefault();
                                 if (vWorkOrderBranchObj != null)

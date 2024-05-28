@@ -140,7 +140,7 @@ namespace OraRegaAV.Controllers
                 //    vRatePerKMsObj = db.tblRatePerKMs.Where(x => x.VehicleTypeId == parameters.VehicleTypeId).OrderByDescending(x => x.KM).FirstOrDefault();
                 //}
 
-                tbl = await db.tblTravelClaims.Where(c => c.Id == parameters.Id).FirstOrDefaultAsync();
+                tbl =  db.tblTravelClaims.Where(c => c.Id == parameters.Id).FirstOrDefault();
                 if (tbl == null)
                 {
                     tbl = new tblTravelClaim();
@@ -172,10 +172,10 @@ namespace OraRegaAV.Controllers
                     }
 
                     db.tblTravelClaims.Add(tbl);
-                    await db.SaveChangesAsync();
+                     db.SaveChanges();
 
                     #region Email Sending
-                    await new AlertsSender().SendEmailTravelClaim(tbl);
+                     new AlertsSender().SendEmailTravelClaim(tbl);
                     #endregion
 
                     _response.IsSuccess = true;
@@ -218,7 +218,7 @@ namespace OraRegaAV.Controllers
                         }
                     }
 
-                    await db.SaveChangesAsync();
+                     db.SaveChanges();
 
                     _response.IsSuccess = true;
                     _response.Message = "Travel Claim details updated successfully";
@@ -244,9 +244,9 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
-                        await db.SaveChangesAsync();
+                         db.SaveChanges();
                     }
 
                     // Rejected
@@ -268,9 +268,9 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
-                        await db.SaveChangesAsync();
+                         db.SaveChanges();
                     }
 
                     #endregion

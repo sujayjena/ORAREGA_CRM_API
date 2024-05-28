@@ -840,7 +840,7 @@ namespace OraRegaAV.Controllers
                     {
                         tblWorkOrderEngineerAllocatedHistory tblWorkOrderEngineerAllocatedHistory = new tblWorkOrderEngineerAllocatedHistory();
 
-                        var vtblWorkOrderEngineerAllocatedHistories = await db.tblWorkOrderEngineerAllocatedHistories.Where(w => w.WorkOrderId == tblWorkOrder.Id).OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync();
+                        var vtblWorkOrderEngineerAllocatedHistories = db.tblWorkOrderEngineerAllocatedHistories.Where(w => w.WorkOrderId == tblWorkOrder.Id).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                         if (vtblWorkOrderEngineerAllocatedHistories != null)
                         {
                             if (vtblWorkOrderEngineerAllocatedHistories.EngineerId != EngineerId)
@@ -870,9 +870,9 @@ namespace OraRegaAV.Controllers
                                     CreatedOn = DateTime.Now,
                                 };
 
-                                db.tblNotifications.AddOrUpdate(vNotifyObj);
+                                db.tblNotifications.Add(vNotifyObj);
 
-                                await db.SaveChangesAsync();
+                                db.SaveChanges();
 
                                 #endregion
                             }
@@ -905,17 +905,17 @@ namespace OraRegaAV.Controllers
                                 CreatedOn = DateTime.Now,
                             };
 
-                            db.tblNotifications.AddOrUpdate(vNotifyObj);
+                            db.tblNotifications.Add(vNotifyObj);
 
-                            await db.SaveChangesAsync();
+                            db.SaveChanges();
 
                             #endregion
                         }
 
-                        await db.SaveChangesAsync();
-
                         #region Log Details
+
                         await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, "Allocated Work order", "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+
                         #endregion
                     }
 
@@ -965,7 +965,7 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
                         await db.SaveChangesAsync();
                     }
