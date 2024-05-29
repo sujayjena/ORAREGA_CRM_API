@@ -18,6 +18,62 @@ namespace OraRegaAV.DBEntity
         public string QuotationNumber { get; set; }
         public string WorkOrderNumber { get; set; }
         public string OrganizationName { get; set; }
+        public int CustomerId { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerMobileNo { get; set; }
+        public string CustomerEmailId { get; set; }
+        public string CustomerGSTNumber { get; set; }
+        public Nullable<int> ProductMakeId { get; set; }
+        public string ProductMake { get; set; }
+        public Nullable<int> ProductModelId { get; set; }
+        public string ProductModel { get; set; }
+        public string ProductSerialNumber { get; set; }
+        public string ProductNumber { get; set; }
+        public Nullable<int> ProductDescriptionId { get; set; }
+        public string ProductDescription { get; set; }
+        public string BranchGSTNumber { get; set; }
+        public Nullable<int> BranchId { get; set; }
+        public string BranchName { get; set; }
+        public Nullable<int> ProductTypeId { get; set; }
+        public string ServiceProductType { get; set; }
+        public Nullable<int> ServiceHSNCodeId { get; set; }
+        public string ServiceHSNCode { get; set; }
+        public Nullable<int> TravelRangeId { get; set; }
+        public string TravelZone { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> DiscPerct { get; set; }
+        public Nullable<decimal> PriceAfterDisc { get; set; }
+        public Nullable<int> CGSTPerct { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<int> SGSTPerct { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<int> IGSTPerct { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<int> PartId { get; set; }
+        public string PartNumber { get; set; }
+        public string STNNumber { get; set; }
+        public string PartDescription { get; set; }
+        public Nullable<int> PartHSNCodeId { get; set; }
+        public string PartHSNCode { get; set; }
+        public Nullable<decimal> SalePrice { get; set; }
+        public Nullable<int> PartDiscPerct { get; set; }
+        public Nullable<decimal> PartPriceAfterDisc { get; set; }
+        public Nullable<int> PartCGSTPerct { get; set; }
+        public Nullable<decimal> PartCGSTValue { get; set; }
+        public Nullable<int> PartSGSTPerct { get; set; }
+        public Nullable<decimal> PartSGSTValue { get; set; }
+        public Nullable<int> PartIGSTPerct { get; set; }
+        public Nullable<decimal> PartIGSTValue { get; set; }
+        public Nullable<decimal> AmountBeforeTax { get; set; }
+        public Nullable<decimal> TotalDiscAmt { get; set; }
+        public Nullable<decimal> TotalCGSTValue { get; set; }
+        public Nullable<decimal> TotalSGSTValue { get; set; }
+        public Nullable<decimal> TotalIGSTValue { get; set; }
+        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
+        public Nullable<decimal> AdvanceReceived { get; set; }
+        public Nullable<decimal> AmountPaidAfter { get; set; }
+        public Nullable<decimal> OutstandingAmount { get; set; }
+        public string PaymentStatus { get; set; }
     }
 }
