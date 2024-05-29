@@ -73,19 +73,20 @@ namespace OraRegaAV.Helpers
                             try
                             {
                                 smtp.Send(mail);
+
+                                result = true;
                             }
                             catch (Exception ex)
                             {
+                                result = false;
                             }
                         }
                     }
                 });
-
-                result = true;
-
             }
             catch (Exception ex)
             {
+                result = false;
             }
             return result;
         }
@@ -143,20 +144,21 @@ namespace OraRegaAV.Helpers
                                 try
                                 {
                                     smtp.Send(mail);
+
+                                    result = true;
                                 }
                                 catch (Exception ex)
                                 {
+                                    result = false;
                                 }
                             }
                         }
                     }
                 });
-
-                result = true;
-
             }
             catch (Exception ex)
             {
+                result = false;
             }
             return result;
         }
@@ -186,7 +188,7 @@ namespace OraRegaAV.Helpers
         {
             bool result = false;
             string templateFilePath;
-            string emailTemplateContent="";
+            string emailTemplateContent = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -272,7 +274,7 @@ namespace OraRegaAV.Helpers
         public async Task<bool> SendEmailSellEnquiryDetails(CustomersSellDetailSaveParameters parameters, HttpFileCollection postedFiles)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent="", productsListContent, receiverEmail="";
+            string templateFilePath, emailTemplateContent = "", productsListContent, receiverEmail = "";
             string senderCompanyLogo;
             string[] proofFileNames, snapsFileNames;
             List<HttpPostedFile> proofFiles, snapFiles;
@@ -290,8 +292,8 @@ namespace OraRegaAV.Helpers
                 templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\NewSellEnquiryReceived.html";
                 emailTemplateContent = File.ReadAllText(templateFilePath);
                 receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SellEnquiryEmail).FirstOrDefault().ConfigValue;
-                customer = await db.tblCustomers.Where(c => c.Id == parameters.CustomerId).FirstOrDefaultAsync() ?? new tblCustomer();
-                defaultAddress = await db.tblPermanentAddresses.Where(addr => addr.Id == parameters.ServiceAddressId).FirstOrDefaultAsync(); //parameters.ServiceAddresses.Where(addr => addr.IsDefault == true).FirstOrDefault();
+                customer = db.tblCustomers.Where(c => c.Id == parameters.CustomerId).FirstOrDefault() ?? new tblCustomer();
+                defaultAddress = db.tblPermanentAddresses.Where(addr => addr.Id == parameters.ServiceAddressId).FirstOrDefault(); //parameters.ServiceAddresses.Where(addr => addr.IsDefault == true).FirstOrDefault();
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
 
@@ -375,10 +377,10 @@ namespace OraRegaAV.Helpers
                         //if (prodModelDetails != null)
                         //{
 
-                        var vProductModelObj = await db.tblProductModels.Where(c => c.Id == prod.ProdModelId).FirstOrDefaultAsync();
-                        var vProductMakeObj = await db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefaultAsync();
-                        var vProductTypeObj = await db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefaultAsync();
-                        var vProductDesc = await db.tblProductDescriptions.Where(p => p.Id == prod.ProdDescId).FirstOrDefaultAsync();
+                        var vProductModelObj = db.tblProductModels.Where(c => c.Id == prod.ProdModelId).FirstOrDefault();
+                        var vProductMakeObj = db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefault();
+                        var vProductTypeObj = db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefault();
+                        var vProductDesc = db.tblProductDescriptions.Where(p => p.Id == prod.ProdDescId).FirstOrDefault();
 
                         //string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
                         string strProductDesc = "";
@@ -508,7 +510,7 @@ namespace OraRegaAV.Helpers
         public async Task<bool> SendEmailExtendWarrantyEnquiryDetails(ExtendedWarrantyParameters parameters, HttpFileCollection postedFiles)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent="", productsListContent, receiverEmail="";
+            string templateFilePath, emailTemplateContent = "", productsListContent, receiverEmail = "";
             string senderCompanyLogo;
             string[] proofFileNames;
             List<HttpPostedFile> proofFiles;
@@ -525,8 +527,8 @@ namespace OraRegaAV.Helpers
                 templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\ExtendWarrantyEnquiryReceived.html";
                 emailTemplateContent = File.ReadAllText(templateFilePath);
                 receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ExtendWarrantyEnquiryEmail).FirstOrDefault().ConfigValue;
-                customer = await db.tblCustomers.Where(c => c.Id == parameters.CustomerId).FirstOrDefaultAsync();
-                defaultAddress = await db.tblPermanentAddresses.Where(addr => addr.Id == parameters.ServiceAddressId).FirstOrDefaultAsync(); //parameters.ServiceAddresses.Where(addr => addr.IsDefault == true).FirstOrDefault();
+                customer = db.tblCustomers.Where(c => c.Id == parameters.CustomerId).FirstOrDefault();
+                defaultAddress = db.tblPermanentAddresses.Where(addr => addr.Id == parameters.ServiceAddressId).FirstOrDefault(); //parameters.ServiceAddresses.Where(addr => addr.IsDefault == true).FirstOrDefault();
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
 
@@ -613,9 +615,9 @@ namespace OraRegaAV.Helpers
                     {
                         prodModelDetails = db.GetProductModelDetails(prod.ProductModelId).FirstOrDefault();
 
-                        var vProductModelObj = await db.tblProductModels.Where(c => c.Id == prod.ProductModelId).FirstOrDefaultAsync();
-                        var vProductMakeObj = await db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefaultAsync();
-                        var vProductTypeObj = await db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefaultAsync();
+                        var vProductModelObj = db.tblProductModels.Where(c => c.Id == prod.ProductModelId).FirstOrDefault();
+                        var vProductMakeObj = db.tblProductMakes.Where(c => c.Id == prod.ProductMakeId).FirstOrDefault();
+                        var vProductTypeObj = db.tblProductTypes.Where(c => c.Id == prod.ProductTypeId).FirstOrDefault();
 
                         //string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : string.Empty;
                         string strProductModel = vProductModelObj != null ? vProductModelObj.ProductModel : "Other";
@@ -1931,7 +1933,7 @@ namespace OraRegaAV.Helpers
             {
                 Module = "Stock In",
                 Subject = "Stock Transfer Out",
-                SendTo = "Transfer out Branch (From) IDM, Transfer In  Branch (To) Logistics Executive & Transfer In Branch (To)IDM",     
+                SendTo = "Transfer out Branch (From) IDM, Transfer In  Branch (To) Logistics Executive & Transfer In Branch (To)IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
                 IsSent = result,
