@@ -85,6 +85,7 @@ namespace OraRegaAV.Controllers
                     claimSettlement.Id = vObjClaimDtl.Id;
                     claimSettlement.EmployeeId = vObjClaimDtl.EmployeeId;
                     claimSettlement.EmployeeName = vObjClaimDtl.EmployeeName;
+                    claimSettlement.BranchName = vObjClaimDtl.BranchName;
                     claimSettlement.ClaimId = vObjClaimDtl.ClaimId;
                     claimSettlement.TotalAdvanceAmt = vObjClaimDtl.TotalAdvanceAmt;
                     claimSettlement.TotalClaimAmount = vObjClaimDtl.TotalClaimAmount;

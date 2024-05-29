@@ -2623,6 +2623,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetEmployeeListForDropDown" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetEmployeesForSelectList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BranchId" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetEmployeesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmpCode" Type="varchar" Mode="In" />
           <Parameter Name="EmpName" Type="varchar" Mode="In" />
@@ -5512,6 +5515,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="tblEmailNotifications" EntityType="dbOraRegaModel.tblEmailNotification" />
+          <FunctionImport Name="GetEmployeesForSelectList" ReturnType="Collection(dbOraRegaModel.GetEmployeesForSelectList_Result)">
+            <Parameter Name="BranchId" Mode="In" Type="String" />
+          </FunctionImport>
             
                </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
@@ -8300,6 +8306,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="ClaimId" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
+		  <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
           <Property Type="Decimal" Name="Amount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="ClaimReason" Nullable="true" MaxLength="50" />
@@ -8313,6 +8320,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
+		  <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ClaimId" Nullable="true" MaxLength="10" />
           <Property Type="Decimal" Name="TotalAdvanceAmt" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="TotalClaimAmount" Nullable="true" Precision="18" Scale="2" />
@@ -8329,6 +8337,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="ExpenseId" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
+		  <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="ExpenseDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="VehicleTypeId" Nullable="true" />
@@ -9614,6 +9623,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <ComplexType Name="GetEmployeesForSelectList_Result">
+          <Property Type="Int32" Name="Value" Nullable="true" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="1" />
+        </ComplexType>
               
   
       </Schema>
@@ -13548,6 +13561,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="ClaimId" ColumnName="ClaimId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+				<ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="ClaimReason" ColumnName="ClaimReason" />
@@ -13565,6 +13579,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+				<ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="ClaimId" ColumnName="ClaimId" />
                 <ScalarProperty Name="TotalAdvanceAmt" ColumnName="TotalAdvanceAmt" />
                 <ScalarProperty Name="TotalClaimAmount" ColumnName="TotalClaimAmount" />
@@ -13585,6 +13600,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+				<ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
                 <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
                 <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
@@ -15061,7 +15077,15 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-                 </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetEmployeesForSelectList" FunctionName="dbOraRegaModel.Store.GetEmployeesForSelectList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetEmployeesForSelectList_Result">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

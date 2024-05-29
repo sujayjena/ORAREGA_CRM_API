@@ -2439,7 +2439,7 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetWorkOrderLogDetailsList(WOEnquiryLogDetailsSearch parameters)
+        public async Task<Response> GetWorkOrderLogDetailsList(WorkOrderLogDetailsSearch parameters)
         {
             try
             {

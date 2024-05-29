@@ -162,45 +162,33 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetEmployeesForSelectList()
+        public async Task<Response> GetEmployeesForSelectList(string BranchId = "")
         {
-            List<SelectListItem> selectList;
-
+            List<GetEmployeesForSelectList_Result> list;
             try
             {
                 var userId = Utilities.GetUserID(ActionContext.Request);
 
-                await Task.Run(() =>
+                list = await Task.Run(() => db.GetEmployeesForSelectList(BranchId).ToList());
+
+                if (userId > 1)
                 {
-                    selectList = (from o in db.tblEmployees
-                                  where o.IsActive == true
-                                  select o)
-                                  .AsEnumerable()
-                                  .Select(o => new SelectListItem()
-                                  {
-                                      Text = $"{o.EmployeeName} ({o.EmailId})",
-                                      Value = o.Id.ToString()
-                                  }).ToList();
-
-                    if (userId > 1)
+                    if (userId > 2)
                     {
-                        if (userId > 2)
-                        {
-                            selectList = selectList.Where(x => x.Value != "1" && x.Value != "2").ToList();
-                        }
-                        else
-                        {
-                            selectList = selectList.Where(x => x.Value != "1").ToList();
-                        }
+                        list = list.Where(x => x.Value > 2).ToList();
                     }
+                    else
+                    {
+                        list = list.Where(x => x.Value > 1).ToList();
+                    }
+                }
 
-                    _response.Data = selectList;
-                });
+                _response.Data = list;
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.Message = "Internal Server Error occurred while retrieving Employees list";
+                _response.Message = ValidationConstant.InternalServerError;
                 LogWriter.WriteLog(ex);
             }
 

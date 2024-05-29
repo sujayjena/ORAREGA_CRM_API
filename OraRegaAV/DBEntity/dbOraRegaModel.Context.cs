@@ -3518,5 +3518,14 @@ namespace OraRegaAV.DBEntity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPaymentList_Result>("GetPaymentList", workOrderNumberParameter, quotationNumberParameter, merchantTransactionIdParameter, transactionIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
+    
+        public virtual ObjectResult<GetEmployeesForSelectList_Result> GetEmployeesForSelectList(string branchId)
+        {
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployeesForSelectList_Result>("GetEmployeesForSelectList", branchIdParameter);
+        }
     }
 }

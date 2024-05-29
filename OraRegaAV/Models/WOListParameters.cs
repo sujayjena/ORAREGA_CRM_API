@@ -292,4 +292,12 @@ namespace OraRegaAV.Models
         [DefaultValue(0)]
         public int ModuleUniqId { get; set; }
     }
+
+    public class WorkOrderLogDetailsSearch
+    {
+        public string Module { get; set; }
+
+        //[DefaultValue(0)]
+        public string ModuleUniqId { get; set; }
+    }
 }

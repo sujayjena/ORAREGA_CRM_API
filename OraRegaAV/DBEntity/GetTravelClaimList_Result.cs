@@ -17,6 +17,7 @@ namespace OraRegaAV.DBEntity
         public string ExpenseId { get; set; }
         public Nullable<int> EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string BranchName { get; set; }
         public Nullable<System.DateTime> ExpenseDate { get; set; }
         public string WorkOrderNumber { get; set; }
         public Nullable<int> VehicleTypeId { get; set; }

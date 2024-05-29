@@ -17,6 +17,7 @@ namespace OraRegaAV.DBEntity
         public string ClaimId { get; set; }
         public Nullable<int> EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string BranchName { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<decimal> Amount { get; set; }
         public string ClaimReason { get; set; }
