@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Mvc;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
@@ -954,6 +955,25 @@ namespace OraRegaAV.Helpers
                 result = false;
                 LogWriter.WriteLog(ex);
             }
+
+            //#region Save Email Log
+
+            //var vEmailNotifyObj = new tblEmailNotification()
+            //{
+            //    Module = "Work Order",
+            //    Subject = "Close Work order",
+            //    SendTo = "Customer",
+            //    Content = emailTemplateContent,
+            //    EmailTo = receiverEmail,
+            //    IsSent = false,
+            //    CreatedBy = 1,
+            //    CreatedOn = DateTime.Now,
+            //};
+
+            //db.tblEmailNotifications.Add(vEmailNotifyObj);
+            //await db.SaveChangesAsync();
+
+            //#endregion
 
             return result;
         }

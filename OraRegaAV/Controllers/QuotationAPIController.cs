@@ -490,7 +490,7 @@ namespace OraRegaAV.Controllers
                             {
                                 // Branch Address
                                 var vTotal = new ObjectParameter("Total", typeof(int));
-                                var objtblBranch = Task.Run(() => db.GetBranchList(0, vBranchObj.Id.ToString(), "", 0, 0, vTotal, 0).ToList().FirstOrDefault());
+                                var objtblBranch = db.GetBranchList(0, vBranchObj.Id.ToString(), "", 0, 0, vTotal, 0).ToList().FirstOrDefault();
 
 
                                 var vGSTMappingObj = db.tblGSTMappings.Where(w => w.CompanyId == vBranchObj.CompanyId && w.StateId == vBranchObj.StateId).FirstOrDefault();
@@ -498,7 +498,7 @@ namespace OraRegaAV.Controllers
                                 {
                                     if (objtblBranch != null)
                                     {
-                                        quotationObj.BranchAddress = objtblBranch.Result.AddressLine1 + ", " + objtblBranch.Result.StateName + ", " + objtblBranch.Result.CityName + ", " + objtblBranch.Result.AreaName + ", " + objtblBranch.Result.Pincode;
+                                        quotationObj.BranchAddress = objtblBranch.AddressLine1 + ", " + objtblBranch.StateName + ", " + objtblBranch.CityName + ", " + objtblBranch.AreaName + ", " + objtblBranch.Pincode;
                                     }
 
                                     quotationObj.BranchGSTNumber = vGSTMappingObj.GST;
@@ -562,7 +562,7 @@ namespace OraRegaAV.Controllers
                                 quotationObj.customerDetails.CustomerMobile = vWorkOrderCustomerObj.Mobile;
                                 quotationObj.customerDetails.CustomerEmail = vWorkOrderCustomerObj.Email;
 
-                                var vUserObj = db.tblUsers.Where(u => u.CustomerId == workOrderObj.CustomerId).FirstOrDefaultAsync();
+                                var vUserObj = db.tblUsers.Where(u => u.CustomerId == workOrderObj.CustomerId).FirstOrDefault();
                                 var vBillToAddresses = db.GetUsersAddresses(vUserObj.Id).ToList().Where(x => x.IsDefault == true).FirstOrDefault();
                                 if (vBillToAddresses != null)
                                 {

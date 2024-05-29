@@ -178,6 +178,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblQuotationPartDetailsLog> tblQuotationPartDetailsLogs { get; set; }
         public virtual DbSet<tblPaymentPartDetail> tblPaymentPartDetails { get; set; }
         public virtual DbSet<tblPayment> tblPayments { get; set; }
+        public virtual DbSet<tblEmailNotification> tblEmailNotifications { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -3379,15 +3380,15 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiryLogDetailsList_Result>("GetWOEnquiryLogDetailsList", moduleParameter, moduleUniqIdParameter);
         }
     
-        public virtual ObjectResult<GetWorkOrderLogDetailsList_Result> GetWorkOrderLogDetailsList(string module, Nullable<int> moduleUniqId)
+        public virtual ObjectResult<GetWorkOrderLogDetailsList_Result> GetWorkOrderLogDetailsList(string module, string moduleUniqId)
         {
             var moduleParameter = module != null ?
                 new ObjectParameter("Module", module) :
                 new ObjectParameter("Module", typeof(string));
     
-            var moduleUniqIdParameter = moduleUniqId.HasValue ?
+            var moduleUniqIdParameter = moduleUniqId != null ?
                 new ObjectParameter("ModuleUniqId", moduleUniqId) :
-                new ObjectParameter("ModuleUniqId", typeof(int));
+                new ObjectParameter("ModuleUniqId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderLogDetailsList_Result>("GetWorkOrderLogDetailsList", moduleParameter, moduleUniqIdParameter);
         }

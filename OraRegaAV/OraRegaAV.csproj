@@ -993,6 +993,9 @@
     <Compile Include="DBEntity\tblDepartment.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblEmailNotification.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblEmpDocument.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>

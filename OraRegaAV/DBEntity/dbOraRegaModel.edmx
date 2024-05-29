@@ -527,6 +527,20 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tblEmailNotification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Module" Type="nvarchar" MaxLength="100" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="100" />
+          <Property Name="SendTo" Type="nvarchar" MaxLength="500" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="EmailTo" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsSent" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblEmpDocument">
           <Key>
             <PropertyRef Name="Id" />
@@ -3329,7 +3343,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
         </Function>
         <Function Name="GetWorkOrderLogDetailsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Module" Type="nvarchar" Mode="In" />
-          <Parameter Name="ModuleUniqId" Type="int" Mode="In" />
+          <Parameter Name="ModuleUniqId" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="GetWorkOrderRescheduleHistoryList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FromDate" Type="datetime" Mode="In" />
@@ -3429,6 +3443,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblCustomersSellDetail" EntityType="Self.tblCustomersSellDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDelayType" EntityType="Self.tblDelayType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDepartment" EntityType="Self.tblDepartment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmailNotification" EntityType="Self.tblEmailNotification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmpDocument" EntityType="Self.tblEmpDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEngineerVisitHistory" EntityType="Self.tblEngineerVisitHistory" Schema="dbo" store:Type="Tables" />
@@ -5449,7 +5464,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <FunctionImport Name="GetWorkOrderLogDetailsList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderLogDetailsList_Result)">
             <Parameter Name="Module" Mode="In" Type="String" />
-            <Parameter Name="ModuleUniqId" Mode="In" Type="Int32" />
+            <Parameter Name="ModuleUniqId" Mode="In" Type="String" />
           </FunctionImport>
             <FunctionImport Name="GetCSOOnSiteDetails" ReturnType="Collection(dbOraRegaModel.GetCSOOnSiteDetails_Result)">
           <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
@@ -5496,7 +5511,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
-           
+          <EntitySet Name="tblEmailNotifications" EntityType="dbOraRegaModel.tblEmailNotification" />
+            
                </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
@@ -9584,7 +9600,21 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="ModifyName" Nullable="true" MaxLength="50" />
         </ComplexType>
-             
+        <EntityType Name="tblEmailNotification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Module" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SendTo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailTo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsSent" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+              
   
       </Schema>
     </edmx:ConceptualModels>
@@ -15016,7 +15046,22 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-                </EntityContainerMapping>
+          <EntitySetMapping Name="tblEmailNotifications">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblEmailNotification">
+              <MappingFragment StoreEntitySet="tblEmailNotification">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="EmailTo" ColumnName="EmailTo" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Module" ColumnName="Module" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+                 </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
