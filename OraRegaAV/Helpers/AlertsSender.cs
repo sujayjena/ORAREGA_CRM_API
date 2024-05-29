@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc;
 using OraRegaAV.DBEntity;
@@ -185,7 +186,7 @@ namespace OraRegaAV.Helpers
         {
             bool result = false;
             string templateFilePath;
-            string emailTemplateContent;
+            string emailTemplateContent="";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -246,13 +247,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Employee Create",
+                Subject = "Initial Credentials",
+                SendTo = "User",
+                Content = emailTemplateContent,
+                EmailTo = user.EmailId,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailSellEnquiryDetails(CustomersSellDetailSaveParameters parameters, HttpFileCollection postedFiles)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent, productsListContent, receiverEmail;
+            string templateFilePath, emailTemplateContent="", productsListContent, receiverEmail="";
             string senderCompanyLogo;
             string[] proofFileNames, snapsFileNames;
             List<HttpPostedFile> proofFiles, snapFiles;
@@ -463,13 +483,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Sales Order Enquiry",
+                Subject = "New Sell Inquiry Received",
+                SendTo = "Support",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailExtendWarrantyEnquiryDetails(ExtendedWarrantyParameters parameters, HttpFileCollection postedFiles)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent, productsListContent, receiverEmail;
+            string templateFilePath, emailTemplateContent="", productsListContent, receiverEmail="";
             string senderCompanyLogo;
             string[] proofFileNames;
             List<HttpPostedFile> proofFiles;
@@ -644,13 +683,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Extend Warranty Enquiry",
+                Subject = "New Extended Warranty Inquiry Received",
+                SendTo = "Support",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailNewCustomerEnquiry(tblContactUsEnquiry parameters, HttpFileCollection postedFiles)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent, receiverEmail;
+            string templateFilePath, emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<string> attachedFileNames;
             List<GetConfigurationsList_Result> configList;
@@ -751,13 +809,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Customer Enquiry",
+                Subject = "New Customer Enquiry Received - Request for Support",
+                SendTo = "Support",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendCustomerSignupEmail(tblCustomer parameters)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent, receiverEmail;
+            string templateFilePath, emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -799,13 +876,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Customer Signup",
+                Subject = "New Customer Signup",
+                SendTo = "Customer",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailCareer(tblCareer parameters, HttpFileCollection postedFiles)
         {
             bool result = false;
-            string templateFilePath, emailTemplateContent, receiverEmail;
+            string templateFilePath, emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<string> attachedFileNames;
             List<GetConfigurationsList_Result> configList;
@@ -906,13 +1002,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Job Application",
+                Subject = "New Job Application",
+                SendTo = "Support",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailCloseWorkOrder(tblWorkOrder parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -956,24 +1071,24 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
-            //#region Save Email Log
+            #region Save Email Log
 
-            //var vEmailNotifyObj = new tblEmailNotification()
-            //{
-            //    Module = "Work Order",
-            //    Subject = "Close Work order",
-            //    SendTo = "Customer",
-            //    Content = emailTemplateContent,
-            //    EmailTo = receiverEmail,
-            //    IsSent = false,
-            //    CreatedBy = 1,
-            //    CreatedOn = DateTime.Now,
-            //};
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Work Order",
+                Subject = "Close Work order",
+                SendTo = "Backend Executive and IDM",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
 
-            //db.tblEmailNotifications.Add(vEmailNotifyObj);
-            //await db.SaveChangesAsync();
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
 
-            //#endregion
+            #endregion
 
             return result;
         }
@@ -981,7 +1096,7 @@ namespace OraRegaAV.Helpers
         public async Task<bool> SendEmailPartRequest(tblWOPartRequest parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1023,13 +1138,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Work Order",
+                Subject = "Request Part",
+                SendTo = "IDM",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailPendingForPart(tblWorkOrder parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1088,13 +1222,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Work Order",
+                Subject = "Pending for Part",
+                SendTo = "IDM",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailLeaveApply(tblLeaveMaster parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1129,13 +1282,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Leave Apply",
+                Subject = "Leave Application",
+                SendTo = "Reporting To",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailAdvanceClaimRequest(RequestForAdvanceViewModel parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1161,7 +1333,7 @@ namespace OraRegaAV.Helpers
 
                 emailTemplateContent = "<html><body><p>Hi Team,</p>Claim Application Request received.</p><p>Claim Id - " + parameters.ClaimId + "<br/>Engineer Name - " + engName + "<br/>Date - " + parameters.Date + "<br/>Total Amount - " + parameters.Amount + "<br/>Claim Reason - " + parameters.ClaimReason + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
-                result = await SendEmail_Other("Advance Claim Application", emailTemplateContent, "sujay930@gmail.com", files: null);
+                result = await SendEmail_Other("Advance Claim Application", emailTemplateContent, receiverEmail, files: null);
             }
             catch (Exception ex)
             {
@@ -1169,17 +1341,36 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Advance Claim Request",
+                Subject = "Advance Claim Application",
+                SendTo = "Support",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailClaimSettlementApply(ClaimSettlementViewModel parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
             string[] claimFileNames;
-            List<HttpFileCollection> claimFiles=new List<HttpFileCollection>();
+            List<HttpFileCollection> claimFiles = new List<HttpFileCollection>();
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
@@ -1240,13 +1431,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Claim Settlement Apply",
+                Subject = "Expense Application",
+                SendTo = "Reporting To",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailTravelClaim(tblTravelClaim parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1280,14 +1490,34 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Travel Claim",
+                Subject = "Travel Claim Application",
+                SendTo = "Reporting To",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailCustomerQuotationAcceptReject(QuotationAcceptNReject parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
+            string subjectName = string.Empty;
             List<GetConfigurationsList_Result> configList;
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
@@ -1321,7 +1551,6 @@ namespace OraRegaAV.Helpers
 
                 receiverEmail = string.Empty;
 
-                string subjectName = string.Empty;
                 string headingMsg = string.Empty;
                 if (parameters.StatusId == 2)
                 {
@@ -1347,13 +1576,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Quotation",
+                Subject = subjectName,
+                SendTo = "Accountant / Backend Executive",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailPaymentReceive(tblPayment parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1396,13 +1644,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Payment",
+                Subject = "Payment Received Confirmation",
+                SendTo = "Backend Executive",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailEngineerPartReturn(StockAllocation_PartsAllocatedToWorkOrderNReturn parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1461,14 +1728,34 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Work Order",
+                Subject = "Return of Assigned Part to Logistics",
+                SendTo = "Logistics Executive",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
         public async Task<bool> SendEmail_LogisticPartReturnAccept_Reject(List<StockAllocation_PartsAllocatedToWorkOrderNReturnApproveNReject> vObjList)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+            string subjectName = string.Empty;
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
@@ -1517,7 +1804,6 @@ namespace OraRegaAV.Helpers
                             </li>";
                 }
 
-                string subjectName = string.Empty;
                 string headingMsg = string.Empty;
                 if (vObjList.FirstOrDefault().StatusId == 2)
                 {
@@ -1540,13 +1826,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Work Order",
+                Subject = subjectName,
+                SendTo = "Logistic-> Reported To (IDM)",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailStockTransferOut(StockTransferRequest parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1620,13 +1925,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Stock In",
+                Subject = "Stock Transfer Out",
+                SendTo = "Transfer out Branch (From) IDM, Transfer In  Branch (To) Logistics Executive & Transfer In Branch (To)IDM",     
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailStockTransferAccept(StockTransferIn_ApproveNRejest parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1703,13 +2027,32 @@ namespace OraRegaAV.Helpers
                 LogWriter.WriteLog(ex);
             }
 
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Stock In",
+                Subject = "Acceptance of Stock Transfer In",
+                SendTo = "Transfer out Branch (From) IDM, Transfer In  Branch (To) Logistics Executive & Transfer In Branch (To)IDM",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
             return result;
         }
 
         public async Task<bool> SendEmailStockTransferReject(StockTransferIn_ApproveNRejest parameters)
         {
             bool result = false;
-            string emailTemplateContent, receiverEmail;
+            string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
 
@@ -1775,6 +2118,25 @@ namespace OraRegaAV.Helpers
                 result = false;
                 LogWriter.WriteLog(ex);
             }
+
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "Stock In",
+                Subject = "Rejection of Stock Transfer In",
+                SendTo = "Transfer Out Branch (From)Logistics Executive / IDM",
+                Content = emailTemplateContent,
+                EmailTo = receiverEmail,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
 
             return result;
         }
