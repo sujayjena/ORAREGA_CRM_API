@@ -205,6 +205,10 @@ namespace OraRegaAV.Models
 
         [DefaultValue("All")]
         public string FilterType { get; set; }
+
+        [DefaultValue("")]
+        public string ListType { get; set; }
+
         public string SearchValue { get; set; }
 
         [DefaultValue(0)]

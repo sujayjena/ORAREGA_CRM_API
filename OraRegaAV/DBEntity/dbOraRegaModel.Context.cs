@@ -1631,7 +1631,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToEngineerList_Result>("GetStockAllocationToEngineerList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, string branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, Nullable<int> productStatusId, string type, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        public virtual ObjectResult<GetStockAllocationToReturnList_Result> GetStockAllocationToReturnList(Nullable<int> companyId, string branchId, Nullable<int> engineerId, string engineerName, string partNumber, string partDesc, Nullable<int> statusId, Nullable<int> productStatusId, string type, string filterType, string listType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
                 new ObjectParameter("CompanyId", companyId) :
@@ -1673,6 +1673,10 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("FilterType", filterType) :
                 new ObjectParameter("FilterType", typeof(string));
     
+            var listTypeParameter = listType != null ?
+                new ObjectParameter("ListType", listType) :
+                new ObjectParameter("ListType", typeof(string));
+    
             var userIdParameter = userId.HasValue ?
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(int));
@@ -1689,7 +1693,7 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", pageNo) :
                 new ObjectParameter("PageNo", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, productStatusIdParameter, typeParameter, filterTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockAllocationToReturnList_Result>("GetStockAllocationToReturnList", companyIdParameter, branchIdParameter, engineerIdParameter, engineerNameParameter, partNumberParameter, partDescParameter, statusIdParameter, productStatusIdParameter, typeParameter, filterTypeParameter, listTypeParameter, userIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
         public virtual ObjectResult<GetStockTransferOutChallanList_Result> GetStockTransferOutChallanList(Nullable<int> companyId, string branchId, string challanNumber, string searchValue, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)

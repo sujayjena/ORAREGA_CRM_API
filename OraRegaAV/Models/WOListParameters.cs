@@ -223,7 +223,7 @@ namespace OraRegaAV.Models
         public int? CaseStatusId { get; set; }
         public string CaseStatusName { get; set; }
         public string SupportType { get; set; }
-        public int WorkOrderEnquiryId { get; set; }
+        public int? WorkOrderEnquiryId { get; set; }
     }
 
     public class UsersAddresses_Result

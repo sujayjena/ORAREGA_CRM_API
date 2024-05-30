@@ -42,6 +42,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<int> CaseStatusId { get; set; }
         public string CaseStatusName { get; set; }
         public string SupportType { get; set; }
-        public int WorkOrderEnquiryId { get; set; }
+        public Nullable<int> WorkOrderEnquiryId { get; set; }
     }
 }
