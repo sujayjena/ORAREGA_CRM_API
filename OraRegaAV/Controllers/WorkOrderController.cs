@@ -1220,6 +1220,7 @@ namespace OraRegaAV.Controllers
                     vItemObj.CaseStatusId = obj.CaseStatusId;
                     vItemObj.CaseStatusName = obj.CaseStatusName;
                     vItemObj.SupportType = obj.SupportType;
+                    vItemObj.WorkOrderEnquiryId = obj.WorkOrderEnquiryId;
 
                     var vtblEngineerVisitHistoryObj = db.tblEngineerVisitHistories.Where(x => x.WorkOrderNumber == obj.WorkOrderNumber && x.EngineerId == obj.EngineerId).OrderByDescending(x => x.VisitDate).FirstOrDefault();
                     if (vtblEngineerVisitHistoryObj != null)

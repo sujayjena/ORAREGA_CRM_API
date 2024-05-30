@@ -9419,6 +9419,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CaseStatusId" Nullable="true" />
           <Property Type="String" Name="CaseStatusName" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="SupportType" Nullable="true" MaxLength="50" />
+		  <Property Type="Int32" Name="WorkOrderEnquiryId" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GetNotificationList_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -14922,6 +14923,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CaseStatusId" ColumnName="CaseStatusId" />
                 <ScalarProperty Name="CaseStatusName" ColumnName="CaseStatusName" />
                 <ScalarProperty Name="SupportType" ColumnName="SupportType" />
+                <ScalarProperty Name="WorkOrderEnquiryId" ColumnName="WorkOrderEnquiryId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
