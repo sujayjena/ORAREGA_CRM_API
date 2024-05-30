@@ -2957,43 +2957,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceList_Result>("GetInvoiceList", companyIdParameter, branchIdParameter, invoiceNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetInvoiceReport_Result> GetInvoiceReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("FromDate", fromDate) :
-                new ObjectParameter("FromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("ToDate", toDate) :
-                new ObjectParameter("ToDate", typeof(System.DateTime));
-    
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var branchIdParameter = branchId != null ?
-                new ObjectParameter("BranchId", branchId) :
-                new ObjectParameter("BranchId", typeof(string));
-    
-            var stateIdParameter = stateId.HasValue ?
-                new ObjectParameter("StateId", stateId) :
-                new ObjectParameter("StateId", typeof(int));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceReport_Result>("GetInvoiceReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
-        }
-    
         public virtual ObjectResult<GetDashboard_WorkOrderAllocated_Result> GetDashboard_WorkOrderAllocated(Nullable<int> companyId, string branchId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> userId, string filterType)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -3526,6 +3489,43 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationReport_Result>("GetQuotationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetInvoiceReport_Result> GetInvoiceReport(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, Nullable<int> companyId, string branchId, Nullable<int> stateId, Nullable<int> userId, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("FromDate", fromDate) :
+                new ObjectParameter("FromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var branchIdParameter = branchId != null ?
+                new ObjectParameter("BranchId", branchId) :
+                new ObjectParameter("BranchId", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("StateId", stateId) :
+                new ObjectParameter("StateId", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceReport_Result>("GetInvoiceReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }

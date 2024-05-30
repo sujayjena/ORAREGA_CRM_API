@@ -1317,7 +1317,7 @@ namespace OraRegaAV.Controllers.API
 
         #endregion
 
-        #region Quotation Report
+        #region Invoice Report
 
         [HttpPost]
         [Route("api/ReportsAPI/GetInvoiceReport")]
@@ -1385,30 +1385,66 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Row(1).Style.Font.Bold = true;
 
                         WorkSheet1.Cells[1, 1].Value = "Sr.No";
-                        WorkSheet1.Cells[1, 2].Value = "Invoice Number";
-                        WorkSheet1.Cells[1, 3].Value = "Invoice Date";
-                        WorkSheet1.Cells[1, 4].Value = "Quotation Number";
-                        WorkSheet1.Cells[1, 5].Value = "Customer Name";
-                        WorkSheet1.Cells[1, 6].Value = "Branch";
-                        WorkSheet1.Cells[1, 7].Value = "Unit Serial Number";
-                        WorkSheet1.Cells[1, 8].Value = "GSTNumber";
-                        WorkSheet1.Cells[1, 9].Value = "Amount";
+                        WorkSheet1.Cells[1, 2].Value = "Invoice Date";
+                        WorkSheet1.Cells[1, 3].Value = "Invoice Number";
+                        WorkSheet1.Cells[1, 4].Value = "Quotation Date";
+                        WorkSheet1.Cells[1, 5].Value = "Quotation Number";
+                        WorkSheet1.Cells[1, 6].Value = "Work Order Number";
+                        WorkSheet1.Cells[1, 7].Value = "Organization Name";
+                        WorkSheet1.Cells[1, 8].Value = "Customer Name";
+                        WorkSheet1.Cells[1, 9].Value = "Customer Mobile Number";
+                        WorkSheet1.Cells[1, 10].Value = "Customer Email id";
+                        WorkSheet1.Cells[1, 11].Value = "Customer GST Number";
+                        WorkSheet1.Cells[1, 12].Value = "Serial Number";
+                        WorkSheet1.Cells[1, 13].Value = "Branch GST Number";
+                        WorkSheet1.Cells[1, 14].Value = "Branch Name";
+                        WorkSheet1.Cells[1, 15].Value = "HSN / SAC";
+                        WorkSheet1.Cells[1, 16].Value = "Part Number";
+                        WorkSheet1.Cells[1, 17].Value = "Description Of Services";
+                        WorkSheet1.Cells[1, 18].Value = "Discount %";
+                        WorkSheet1.Cells[1, 19].Value = "Rate";
+                        WorkSheet1.Cells[1, 20].Value = "Amount";
+                        WorkSheet1.Cells[1, 21].Value = "Amount Before Tax";
+                        WorkSheet1.Cells[1, 22].Value = "Total Discount";
+                        WorkSheet1.Cells[1, 23].Value = "CGST Value";
+                        WorkSheet1.Cells[1, 24].Value = "SGST Value";
+                        WorkSheet1.Cells[1, 25].Value = "IGST Value";
+                        WorkSheet1.Cells[1, 26].Value = "Total Amount with GST";
+                        WorkSheet1.Cells[1, 27].Value = "Amount Paid After (Round off)";
 
                         recordIndex = 2;
                         foreach (DataRow dataRow in dtWOEReport.Rows)
                         {
                             srNo++;
                             WorkSheet1.Cells[recordIndex, 1].Value = srNo;
-
-                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["InvoiceNumber"];
-                            WorkSheet1.Cells[recordIndex, 3].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["InvoiceDate"];
-                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["QuotationNumber"];
-                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["CustomerName"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["BranchName"];
-                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["UnitSerialNumber"];
-                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["BranchGSTNumber"];
-                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["Amount"];
+                            WorkSheet1.Cells[recordIndex, 2].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["InvoiceDate"];
+                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["InvoiceNumber"];
+                            WorkSheet1.Cells[recordIndex, 4].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["QuoteDate"];
+                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["QuotationNumber"];
+                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["WorkOrderNumber"];
+                            WorkSheet1.Cells[recordIndex, 7].Value = dataRow["OrganizationName"];
+                            WorkSheet1.Cells[recordIndex, 8].Value = dataRow["CustomerName"];
+                            WorkSheet1.Cells[recordIndex, 9].Value = dataRow["CustomerMobileNo"];
+                            WorkSheet1.Cells[recordIndex, 10].Value = dataRow["CustomerEmailId"];
+                            WorkSheet1.Cells[recordIndex, 11].Value = dataRow["CustomerGSTNumber"];
+                            WorkSheet1.Cells[recordIndex, 12].Value = dataRow["ProductSerialNumber"];
+                            WorkSheet1.Cells[recordIndex, 13].Value = dataRow["BranchGSTNumber"];
+                            WorkSheet1.Cells[recordIndex, 14].Value = dataRow["BranchName"];
+                            WorkSheet1.Cells[recordIndex, 15].Value = dataRow["HSNCode"];
+                            WorkSheet1.Cells[recordIndex, 16].Value = dataRow["PartNumber"];
+                            WorkSheet1.Cells[recordIndex, 17].Value = dataRow["PartDescription"];
+                            WorkSheet1.Cells[recordIndex, 18].Value = dataRow["DiscPerct"];
+                            WorkSheet1.Cells[recordIndex, 19].Value = dataRow["Rate"];
+                            WorkSheet1.Cells[recordIndex, 20].Value = dataRow["Amount"];
+                            WorkSheet1.Cells[recordIndex, 21].Value = dataRow["AmountBeforeTax"];
+                            WorkSheet1.Cells[recordIndex, 22].Value = dataRow["TotalDiscAmt"];
+                            WorkSheet1.Cells[recordIndex, 23].Value = dataRow["CGSTValue"];
+                            WorkSheet1.Cells[recordIndex, 24].Value = dataRow["SGSTValue"];
+                            WorkSheet1.Cells[recordIndex, 25].Value = dataRow["IGSTValue"];
+                            WorkSheet1.Cells[recordIndex, 26].Value = dataRow["TotalAmountWithGST"];
+                            WorkSheet1.Cells[recordIndex, 27].Value = dataRow["AmountPaidAfter"];
 
                             recordIndex += 1;
                         }
@@ -1422,6 +1458,24 @@ namespace OraRegaAV.Controllers.API
                         WorkSheet1.Column(7).AutoFit();
                         WorkSheet1.Column(8).AutoFit();
                         WorkSheet1.Column(9).AutoFit();
+                        WorkSheet1.Column(10).AutoFit();
+                        WorkSheet1.Column(11).AutoFit();
+                        WorkSheet1.Column(12).AutoFit();
+                        WorkSheet1.Column(13).AutoFit();
+                        WorkSheet1.Column(14).AutoFit();
+                        WorkSheet1.Column(15).AutoFit();
+                        WorkSheet1.Column(16).AutoFit();
+                        WorkSheet1.Column(17).AutoFit();
+                        WorkSheet1.Column(18).AutoFit();
+                        WorkSheet1.Column(19).AutoFit();
+                        WorkSheet1.Column(20).AutoFit();
+                        WorkSheet1.Column(21).AutoFit();
+                        WorkSheet1.Column(22).AutoFit();
+                        WorkSheet1.Column(23).AutoFit();
+                        WorkSheet1.Column(24).AutoFit();
+                        WorkSheet1.Column(25).AutoFit();
+                        WorkSheet1.Column(26).AutoFit();
+                        WorkSheet1.Column(27).AutoFit();
 
                         using (MemoryStream memoryStream = new MemoryStream())
                         {

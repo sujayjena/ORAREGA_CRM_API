@@ -14,13 +14,34 @@ namespace OraRegaAV.DBEntity
     public partial class GetInvoiceReport_Result
     {
         public int Id { get; set; }
-        public string InvoiceNumber { get; set; }
         public System.DateTime InvoiceDate { get; set; }
+        public string InvoiceNumber { get; set; }
+        public Nullable<System.DateTime> QuoteDate { get; set; }
         public string QuotationNumber { get; set; }
+        public string WorkOrderNumber { get; set; }
+        public string OrganizationName { get; set; }
         public string CustomerName { get; set; }
-        public string BranchName { get; set; }
-        public string UnitSerialNumber { get; set; }
+        public string CustomerMobileNo { get; set; }
+        public string CustomerEmailId { get; set; }
+        public string CustomerGSTNumber { get; set; }
+        public string ProductSerialNumber { get; set; }
         public string BranchGSTNumber { get; set; }
+        public Nullable<int> BranchId { get; set; }
+        public string BranchName { get; set; }
+        public Nullable<int> HSNCodeId { get; set; }
+        public string HSNCode { get; set; }
+        public Nullable<int> PartId { get; set; }
+        public string PartNumber { get; set; }
+        public string PartDescription { get; set; }
+        public Nullable<int> DiscPerct { get; set; }
+        public Nullable<decimal> Rate { get; set; }
         public Nullable<decimal> Amount { get; set; }
+        public Nullable<decimal> AmountBeforeTax { get; set; }
+        public Nullable<decimal> TotalDiscAmt { get; set; }
+        public Nullable<decimal> CGSTValue { get; set; }
+        public Nullable<decimal> SGSTValue { get; set; }
+        public Nullable<decimal> IGSTValue { get; set; }
+        public Nullable<decimal> TotalAmountWithGST { get; set; }
+        public Nullable<decimal> AmountPaidAfter { get; set; }
     }
 }
