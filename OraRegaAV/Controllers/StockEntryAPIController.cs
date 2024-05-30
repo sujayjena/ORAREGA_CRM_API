@@ -523,13 +523,12 @@ namespace OraRegaAV.Controllers.API
                             db.tblPartsAllocatedToEngineers.AddOrUpdate(vtblPartsAllocatedToEngineer);
                         }
                     }
-
-                    await db.SaveChangesAsync();
+                    db.SaveChanges();
 
                     #region Save Notification
 
 
-                    var vWorkOrderStatusObj = await db.tblWorkOrders.Where(w => w.Id == parameters.WorkOrderId).FirstOrDefaultAsync();
+                    var vWorkOrderStatusObj = db.tblWorkOrders.Where(w => w.Id == parameters.WorkOrderId).FirstOrDefault();
                     if (vWorkOrderStatusObj != null)
                     {
 
@@ -549,10 +548,9 @@ namespace OraRegaAV.Controllers.API
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
-                        await db.SaveChangesAsync();
-
+                        db.SaveChanges();
                     }
 
                     #endregion
@@ -563,7 +561,7 @@ namespace OraRegaAV.Controllers.API
                         string logDesc = string.Empty;
                         logDesc = "Engg.Inventory Part Map to Wo";
 
-                        await Task.Run(() => db.SaveLogDetails("Work order", parameters.WorkOrderId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        Task.Run(() => db.SaveLogDetails("Work order", parameters.WorkOrderId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
                     #endregion
 
@@ -1081,7 +1079,7 @@ namespace OraRegaAV.Controllers.API
                                     CreatedOn = DateTime.Now,
                                 };
 
-                                db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                db.tblNotifications.Add(vNotifyObj_Employee);
                             }
                         }
 
@@ -1106,7 +1104,7 @@ namespace OraRegaAV.Controllers.API
                                     CreatedOn = DateTime.Now,
                                 };
 
-                                db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                db.tblNotifications.Add(vNotifyObj_Employee);
                             }
                         }
 
@@ -1220,7 +1218,7 @@ namespace OraRegaAV.Controllers.API
                                     CreatedOn = DateTime.Now,
                                 };
 
-                                db.tblNotifications.AddOrUpdate(vNotifyObj);
+                                db.tblNotifications.Add(vNotifyObj);
 
                                 await db.SaveChangesAsync();
                             }
@@ -1254,7 +1252,7 @@ namespace OraRegaAV.Controllers.API
                                     CreatedOn = DateTime.Now,
                                 };
 
-                                db.tblNotifications.AddOrUpdate(vNotifyObj);
+                                db.tblNotifications.Add(vNotifyObj);
 
                                 await db.SaveChangesAsync();
                             }

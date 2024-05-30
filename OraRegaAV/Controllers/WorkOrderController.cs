@@ -577,7 +577,7 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
                         await db.SaveChangesAsync();
                     }
@@ -714,7 +714,7 @@ namespace OraRegaAV.Controllers
                                 CreatedOn = DateTime.Now,
                             };
 
-                            db.tblNotifications.AddOrUpdate(vNotifyObj);
+                            db.tblNotifications.Add(vNotifyObj);
 
                             await db.SaveChangesAsync();
 
@@ -749,7 +749,7 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
                         await db.SaveChangesAsync();
 
@@ -798,6 +798,45 @@ namespace OraRegaAV.Controllers
                         }
                     }
                     #endregion
+
+
+                    // Close Work Order Email and Notification
+                    if (parameters.OrderStatusId == 5)
+                    {
+                        #region Save Notification
+
+                        string NotifyMessage = String.Format(@"Dear Customer,
+                                                               Greetings!
+                                                               We are pleased to inform you that your work order (No. {0}) has been successfully closed. 
+                                                               Thanks for allowing us to serve you. We appreciate your trust in choosing our services.
+                                                               For any queries, please contact:
+                                                               Email: support@quikservindia.com
+                                                               Phone: +91 7030087300", tblWorkOrder.WorkOrderNumber);
+
+                        var vNotifyObj = new tblNotification()
+                        {
+                            Subject = "Close Work order",
+                            SendTo = "Customer",
+                            CustomerId = tblWorkOrder.CustomerId,
+                            CustomerMessage = NotifyMessage,
+                            //EmployeeId = tblWorkOrder.EngineerId,
+                            //EmployeeMessage = NotifyMessage,
+                            CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                            CreatedOn = DateTime.Now,
+                        };
+
+                        db.tblNotifications.Add(vNotifyObj);
+
+                        await db.SaveChangesAsync();
+
+                        #endregion
+
+                        #region Email Sending
+
+                        var isEmailSent = await new AlertsSender().SendEmailCloseWorkOrder(tblWorkOrder);
+
+                        #endregion
+                    }
                 }
             }
             catch (Exception ex)
@@ -1064,7 +1103,7 @@ namespace OraRegaAV.Controllers
                                     CreatedOn = DateTime.Now,
                                 };
 
-                                db.tblNotifications.AddOrUpdate(vNotifyObj_Customer);
+                                db.tblNotifications.Add(vNotifyObj_Customer);
 
                                 // Backend Executive
                                 var vRoleObj = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
@@ -1087,7 +1126,7 @@ namespace OraRegaAV.Controllers
                                             CreatedOn = DateTime.Now,
                                         };
 
-                                        db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                        db.tblNotifications.Add(vNotifyObj_Employee);
                                     }
                                 }
 
@@ -1125,7 +1164,7 @@ namespace OraRegaAV.Controllers
                                             CreatedOn = DateTime.Now,
                                         };
 
-                                        db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                        db.tblNotifications.Add(vNotifyObj_Employee);
                                     }
                                 }
 
@@ -2054,7 +2093,7 @@ namespace OraRegaAV.Controllers
                                 CreatedOn = DateTime.Now,
                             };
 
-                            db.tblNotifications.AddOrUpdate(vNotifyObj);
+                            db.tblNotifications.Add(vNotifyObj);
 
                             await db.SaveChangesAsync();
                         }
@@ -2376,7 +2415,7 @@ namespace OraRegaAV.Controllers
                                 CreatedOn = DateTime.Now,
                             };
 
-                            db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                            db.tblNotifications.Add(vNotifyObj_Employee);
                         }
                     }
 
@@ -2401,7 +2440,7 @@ namespace OraRegaAV.Controllers
                                 CreatedOn = DateTime.Now,
                             };
 
-                            db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                            db.tblNotifications.Add(vNotifyObj_Employee);
                         }
                     }
 

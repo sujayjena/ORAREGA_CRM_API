@@ -1398,18 +1398,21 @@ namespace OraRegaAV.Helpers
                 foreach (var itm in parameters.claimSettlementItem)
                 {
                     var vtblClaimSettlementItemAttachments = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).FirstOrDefault();
+                    var vAttachmentFilePath = vtblClaimSettlementItemAttachments != null ? vtblClaimSettlementItemAttachments.FilePath : "";
+
+                    var vClaimTypesObj = db.tblClaimTypes.Where(x => x.Id == itm.ClaimTypeId).Select(y => y.Type).FirstOrDefault();
 
                     claimSettlementItemListContent = $@"{claimSettlementItemListContent}
                             <li>
                                 <ul>
                                     <li>Engineer name - {engName}</li>
                                     <li>Claim Id - {parameters.ClaimId}</li>
-                                    <li>Claim Type - {db.tblClaimTypes.Where(x => x.Id == itm.ClaimTypeId).Select(y => y.Type).FirstOrDefault()}</li>
+                                    <li>Claim Type - {vClaimTypesObj}</li>
                                     <li>From date - {itm.FromDate}</li>
                                     <li>To Date  - {itm.ToDate}</li>
                                     <li>Amount - {itm.Amount}</li>
-                                    <li>Remark - {itm.Remark}</li>
-                                    <li>Attachment - {vtblClaimSettlementItemAttachments.FilePath}</li>
+                                    <li>Remark - {itm.Remark}</
+                                    <li>Attachment - {vAttachmentFilePath}</li>
                                 </ul>
                                 <br />
                             </li>";

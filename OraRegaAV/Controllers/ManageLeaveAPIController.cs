@@ -183,7 +183,7 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
                         await db.SaveChangesAsync();
                     }
@@ -207,7 +207,7 @@ namespace OraRegaAV.Controllers
                             CreatedOn = DateTime.Now,
                         };
 
-                        db.tblNotifications.AddOrUpdate(vNotifyObj);
+                        db.tblNotifications.Add(vNotifyObj);
 
                         await db.SaveChangesAsync();
                     }

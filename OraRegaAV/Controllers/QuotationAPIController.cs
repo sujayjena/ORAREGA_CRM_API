@@ -774,7 +774,7 @@ namespace OraRegaAV.Controllers
                                         CreatedOn = DateTime.Now,
                                     };
 
-                                    db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                    db.tblNotifications.Add(vNotifyObj_Employee);
                                 }
                             }
 
@@ -799,7 +799,7 @@ namespace OraRegaAV.Controllers
                                         CreatedOn = DateTime.Now,
                                     };
 
-                                    db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                    db.tblNotifications.Add(vNotifyObj_Employee);
                                 }
                             }
 
@@ -834,7 +834,7 @@ namespace OraRegaAV.Controllers
                                         CreatedOn = DateTime.Now,
                                     };
 
-                                    db.tblNotifications.AddOrUpdate(vNotifyObj_Employee);
+                                    db.tblNotifications.Add(vNotifyObj_Employee);
                                 }
                             }
 
