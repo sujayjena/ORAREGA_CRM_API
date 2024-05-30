@@ -391,7 +391,7 @@ namespace OraRegaAV.Controllers
                         }
 
                         // Part List
-                        var vStockTransferOutPartDetailList = db.tblStockTransferPartDetails.Where(x => x.StockTransferOutId == vStockTransferOutObj.Id).ToList();
+                        var vStockTransferOutPartDetailList = db.tblStockOut_Defective_PartDetails.Where(x => x.StockOut_DefectiveId == vStockTransferOutObj.Id).ToList();
 
                         foreach (var item in vStockTransferOutPartDetailList)
                         {
