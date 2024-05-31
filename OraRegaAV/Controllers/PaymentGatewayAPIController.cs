@@ -505,6 +505,8 @@ namespace OraRegaAV.Controllers.API
                                                 //CustomerMessage = NotifyMessage_Customer,
                                                 EmployeeId = itemEmployee.Id,
                                                 EmployeeMessage = NotifyMessage,
+                                                RefValue1 = vQuotationNotifyObj.QuotationNumber,
+                                                RefValue2 = tblPaymentsObj.MerchantTransactionId,
                                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                                 CreatedOn = DateTime.Now,
                                             };
@@ -533,6 +535,8 @@ namespace OraRegaAV.Controllers.API
                                         SendTo = "Customer",
                                         CustomerId = vWorkOrderObj.CustomerId,
                                         CustomerMessage = NotifyMessage_Customer,
+                                        RefValue1 = vQuotationNotifyObj.QuotationNumber,
+                                        RefValue2 = tblPaymentsObj.MerchantTransactionId,
                                         //EmployeeId = null,
                                         //EmployeeMessage = NotifyMessage,
                                         CreatedBy = Utilities.GetUserID(ActionContext.Request),

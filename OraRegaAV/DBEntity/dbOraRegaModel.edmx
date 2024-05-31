@@ -537,6 +537,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="SendTo" Type="nvarchar" MaxLength="500" />
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="EmailTo" Type="nvarchar" MaxLength="500" />
+          <Property Name="RefValue1" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefValue2" Type="nvarchar" MaxLength="100" />
           <Property Name="IsSent" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
@@ -878,6 +880,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CustomerMessage" Type="nvarchar(max)" />
           <Property Name="EmployeeId" Type="bigint" />
           <Property Name="EmployeeMessage" Type="nvarchar(max)" />
+          <Property Name="RefValue1" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefValue2" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="ReadUnread" Type="bit" Nullable="false" />
@@ -9288,6 +9292,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReadUnread" Type="Boolean" Nullable="false" />
+          <Property Name="RefValue1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblLogDetail">
           <Key>
@@ -9607,6 +9613,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IsSent" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RefValue1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="GetEmployeesForSelectList_Result">
           <Property Type="Int32" Name="Value" Nullable="true" />
@@ -14760,6 +14768,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblNotifications">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblNotification">
               <MappingFragment StoreEntitySet="tblNotification">
+                <ScalarProperty Name="RefValue2" ColumnName="RefValue2" />
+                <ScalarProperty Name="RefValue1" ColumnName="RefValue1" />
                 <ScalarProperty Name="ReadUnread" ColumnName="ReadUnread" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -15119,6 +15129,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblEmailNotifications">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblEmailNotification">
               <MappingFragment StoreEntitySet="tblEmailNotification">
+                <ScalarProperty Name="RefValue2" ColumnName="RefValue2" />
+                <ScalarProperty Name="RefValue1" ColumnName="RefValue1" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="IsSent" ColumnName="IsSent" />

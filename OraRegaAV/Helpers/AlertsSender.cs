@@ -258,6 +258,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "User",
                 Content = emailTemplateContent,
                 EmailTo = user.EmailId,
+                RefValue1 = emp.EmployeeCode,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -280,7 +281,7 @@ namespace OraRegaAV.Helpers
             List<HttpPostedFile> proofFiles, snapFiles;
             int purchaseProf_ProductIndex;
             int snap_ProductIndex;
-            tblCustomer customer;
+            tblCustomer customer = new tblCustomer();
             //ServiceAddressParameters defaultAddress;
             tblPermanentAddress defaultAddress;
             GetProductModelDetails_Result prodModelDetails;
@@ -494,6 +495,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Support",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = "Customer: " + customer.FirstName + " " + customer.LastName,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -515,7 +517,7 @@ namespace OraRegaAV.Helpers
             string[] proofFileNames;
             List<HttpPostedFile> proofFiles;
             int productIndex;
-            tblCustomer customer;
+            tblCustomer customer = new tblCustomer();
             //ServiceAddressParameters defaultAddress;
             tblPermanentAddress defaultAddress;
             GetProductModelDetails_Result prodModelDetails;
@@ -694,6 +696,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Support",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = "Customer: " + customer.FirstName + " " + customer.LastName,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -820,6 +823,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Support",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = "Customer: " + parameters.FirstName + " " + parameters.LastName,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -887,6 +891,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Customer",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = "Customer: " + parameters.FirstName + " " + parameters.LastName,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1013,6 +1018,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Support",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = "Customer: " + parameters.FirstName + " " + parameters.LastName,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1082,6 +1088,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Backend Executive and IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.WorkOrderNumber,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1101,6 +1108,7 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+            string sWorkOrderNumber = "";
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
@@ -1116,6 +1124,7 @@ namespace OraRegaAV.Helpers
 
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
 
+                sWorkOrderNumber = vWorkOrder.WorkOrderNumber;
                 //var roleId = "24"; //Logistics Executive
                 //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
@@ -1149,6 +1158,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = sWorkOrderNumber,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1233,6 +1243,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.WorkOrderNumber,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1293,6 +1304,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Reporting To",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = Convert.ToString(parameters.LeaveId),
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1352,6 +1364,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Support",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.ClaimId,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1445,6 +1458,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Reporting To",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.ClaimId,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1504,6 +1518,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Reporting To",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.ExpenseId,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1590,6 +1605,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Accountant / Backend Executive",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.QuotationNumber,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1658,6 +1674,8 @@ namespace OraRegaAV.Helpers
                 SendTo = "Backend Executive",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.QuotationNumber,
+                RefValue2 = parameters.MerchantTransactionId,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1677,6 +1695,7 @@ namespace OraRegaAV.Helpers
             string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
+            string sWorkOrderNumber = "";
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
@@ -1691,6 +1710,8 @@ namespace OraRegaAV.Helpers
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
+
+                sWorkOrderNumber = vWorkOrder.WorkOrderNumber;
 
                 //var roleId = "24"; //Logistics Executive
                 //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
@@ -1742,6 +1763,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Logistics Executive",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = sWorkOrderNumber,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1754,6 +1776,7 @@ namespace OraRegaAV.Helpers
 
             return result;
         }
+
         public async Task<bool> SendEmail_LogisticPartReturnAccept_Reject(List<StockAllocation_PartsAllocatedToWorkOrderNReturnApproveNReject> vObjList)
         {
             bool result = false;
@@ -1761,6 +1784,10 @@ namespace OraRegaAV.Helpers
             string senderCompanyLogo;
             List<GetConfigurationsList_Result> configList;
             string subjectName = string.Empty;
+
+            string sWorkOrderNumber = "";
+            string sWorkOrderEngId = "";
+            string sWorkOrderReturnId = "";
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
@@ -1778,6 +1805,9 @@ namespace OraRegaAV.Helpers
                 var vReturnPartObj = db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == objjj.EngineerId && x.PartId == objjj.PartId).FirstOrDefault();
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vReturnPartObj.WorkOrderId).FirstOrDefault();
 
+                sWorkOrderNumber = vWorkOrder.WorkOrderNumber;
+                sWorkOrderEngId = Convert.ToString(objjj.EngineerId);
+                sWorkOrderReturnId = Convert.ToString(vReturnPartObj.Id);
                 //var roleId = "24";//Logistics Executive
                 //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).FirstOrDefault();
 
@@ -1840,6 +1870,8 @@ namespace OraRegaAV.Helpers
                 SendTo = "Logistic-> Reported To (IDM)",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = sWorkOrderNumber,
+                RefValue2 = "Eng: " + sWorkOrderEngId + " , ReutrnId: " + sWorkOrderReturnId,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -1939,6 +1971,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Transfer out Branch (From) IDM, Transfer In  Branch (To) Logistics Executive & Transfer In Branch (To)IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = "Company: " + parameters.ComapnyId + " , From Branch: " + parameters.BranchFromId + " , To Branch: " + parameters.BranchToId,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -2041,6 +2074,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Transfer out Branch (From) IDM, Transfer In  Branch (To) Logistics Executive & Transfer In Branch (To)IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.ChallanNo,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,
@@ -2133,6 +2167,7 @@ namespace OraRegaAV.Helpers
                 SendTo = "Transfer Out Branch (From)Logistics Executive / IDM",
                 Content = emailTemplateContent,
                 EmailTo = receiverEmail,
+                RefValue1 = parameters.ChallanNo,
                 IsSent = result,
                 CreatedBy = 1,
                 CreatedOn = DateTime.Now,

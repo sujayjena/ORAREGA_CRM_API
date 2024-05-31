@@ -23,5 +23,7 @@ namespace OraRegaAV.DBEntity
         public bool IsSent { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public string RefValue1 { get; set; }
+        public string RefValue2 { get; set; }
     }
 }

@@ -770,6 +770,7 @@ namespace OraRegaAV.Controllers
                                         //CustomerMessage = NotifyMessage_Customer,
                                         EmployeeId = itemEmployee.Id,
                                         EmployeeMessage = NotifyMessage,
+                                        RefValue1 = parameters.QuotationNumber,
                                         CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                         CreatedOn = DateTime.Now,
                                     };
@@ -795,6 +796,7 @@ namespace OraRegaAV.Controllers
                                         //CustomerMessage = NotifyMessage_Customer,
                                         EmployeeId = itemEmployee.Id,
                                         EmployeeMessage = NotifyMessage,
+                                        RefValue1 = parameters.QuotationNumber,
                                         CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                         CreatedOn = DateTime.Now,
                                     };
@@ -830,6 +832,7 @@ namespace OraRegaAV.Controllers
                                         //CustomerMessage = NotifyMessage_Customer,
                                         EmployeeId = itemEmployee.Id,
                                         EmployeeMessage = NotifyMessage,
+                                        RefValue1 = parameters.QuotationNumber,
                                         CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                         CreatedOn = DateTime.Now,
                                     };

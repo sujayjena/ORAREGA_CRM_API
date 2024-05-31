@@ -571,6 +571,7 @@ namespace OraRegaAV.Controllers
                             SendTo = "Customer",
                             CustomerId = vWorkOrderObj.CustomerId,
                             CustomerMessage = NotifyMessage,
+                            RefValue1 = vWorkOrderObj.WorkOrderNumber,
                             //EmployeeId = null,
                             //EmployeeMessage = null,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
@@ -710,6 +711,7 @@ namespace OraRegaAV.Controllers
                                 //CustomerMessage = NotifyMessage,
                                 EmployeeId = parameters.EngineerId,
                                 EmployeeMessage = NotifyMessage,
+                                RefValue1 = parameters.WorkOrderNumber,
                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                 CreatedOn = DateTime.Now,
                             };
@@ -745,6 +747,7 @@ namespace OraRegaAV.Controllers
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = parameters.EngineerId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1 = parameters.WorkOrderNumber,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -819,6 +822,7 @@ namespace OraRegaAV.Controllers
                             SendTo = "Customer",
                             CustomerId = tblWorkOrder.CustomerId,
                             CustomerMessage = NotifyMessage,
+                            RefValue1 = tblWorkOrder.WorkOrderNumber,
                             //EmployeeId = tblWorkOrder.EngineerId,
                             //EmployeeMessage = NotifyMessage,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
@@ -905,6 +909,7 @@ namespace OraRegaAV.Controllers
                                     //CustomerMessage = NotifyMessage,
                                     EmployeeId = tblWorkOrder.EngineerId,
                                     EmployeeMessage = NotifyMessage,
+                                    RefValue1 = tblWorkOrder.WorkOrderNumber,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -940,6 +945,7 @@ namespace OraRegaAV.Controllers
                                 //CustomerMessage = NotifyMessage,
                                 EmployeeId = tblWorkOrder.EngineerId,
                                 EmployeeMessage = NotifyMessage,
+                                RefValue1 = tblWorkOrder.WorkOrderNumber,
                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                 CreatedOn = DateTime.Now,
                             };
@@ -1099,6 +1105,7 @@ namespace OraRegaAV.Controllers
                                     CustomerMessage = NotifyMessage_Customer,
                                     //EmployeeId = null,
                                     //EmployeeMessage = NotifyMessage_BackendExecutive,
+                                    RefValue1 = vWorkOrderStatusObj.WorkOrderNumber,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -1122,6 +1129,7 @@ namespace OraRegaAV.Controllers
                                             //CustomerMessage = NotifyMessage_Customer,
                                             EmployeeId = itemEmployee.Id,
                                             EmployeeMessage = NotifyMessage_BackendExecutive,
+                                            RefValue1 = vWorkOrderStatusObj.WorkOrderNumber,
                                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                             CreatedOn = DateTime.Now,
                                         };
@@ -1160,6 +1168,7 @@ namespace OraRegaAV.Controllers
                                             //CustomerMessage = NotifyMessage_Customer,
                                             EmployeeId = itemEmployee.Id,
                                             EmployeeMessage = NotifyMessage_BackendExecutive,
+                                            RefValue1 = vWorkOrderStatusObj.WorkOrderNumber,
                                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                             CreatedOn = DateTime.Now,
                                         };
@@ -2089,6 +2098,7 @@ namespace OraRegaAV.Controllers
                                 CustomerMessage = NotifyMessage,
                                 //EmployeeId = null,
                                 //EmployeeMessage = null,
+                                RefValue1 = parameters.WorkOrderNumber,
                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                 CreatedOn = DateTime.Now,
                             };
@@ -2411,6 +2421,7 @@ namespace OraRegaAV.Controllers
                                 //CustomerMessage = NotifyMessage_Customer,
                                 EmployeeId = itemEmployee.Id,
                                 EmployeeMessage = NotifyMessage,
+                                RefValue1 = tbl.WorkOrderNumber,
                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                 CreatedOn = DateTime.Now,
                             };
@@ -2436,6 +2447,7 @@ namespace OraRegaAV.Controllers
                                 //CustomerMessage = NotifyMessage_Customer,
                                 EmployeeId = itemEmployee.Id,
                                 EmployeeMessage = NotifyMessage,
+                                RefValue1 = tbl.WorkOrderNumber,
                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                 CreatedOn = DateTime.Now,
                             };

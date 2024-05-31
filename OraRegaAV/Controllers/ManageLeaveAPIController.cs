@@ -104,7 +104,7 @@ namespace OraRegaAV.Controllers
                 var loggedInUserId = Utilities.GetUserID(ActionContext.Request);
 
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                lstLeaves = await Task.Run(() => db.GetLeaves(parameters.CompanyId, parameters.BranchId, parameters.EmployeeName, parameters.LeaveType, 
+                lstLeaves = await Task.Run(() => db.GetLeaves(parameters.CompanyId, parameters.BranchId, parameters.EmployeeName, parameters.LeaveType,
                     parameters.LeaveReason, parameters.LeaveStatusId, parameters.IsActive, parameters.EmployeeId, parameters.FilterType, loggedInUserId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
@@ -179,6 +179,7 @@ namespace OraRegaAV.Controllers
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = tbl.EmployeeId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1 = "Emp: " + tbl.EmployeeId + " , LeaveId: " + tbl.LeaveId,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -203,6 +204,7 @@ namespace OraRegaAV.Controllers
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = tbl.EmployeeId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1 = "Emp: " + tbl.EmployeeId + " , LeaveId: " + tbl.LeaveId,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -217,7 +219,7 @@ namespace OraRegaAV.Controllers
                 else
                 {
                     _response.IsSuccess = false;
-                }             
+                }
             }
             catch (Exception ex)
             {

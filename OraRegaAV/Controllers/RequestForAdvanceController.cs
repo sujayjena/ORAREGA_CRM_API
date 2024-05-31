@@ -138,6 +138,7 @@ namespace OraRegaAV.Controllers.API
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = tblRequestForAdvance.EmployeeId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1= tblRequestForAdvance.ClaimId,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -162,6 +163,7 @@ namespace OraRegaAV.Controllers.API
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = tblRequestForAdvance.EmployeeId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1 = tblRequestForAdvance.ClaimId,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };

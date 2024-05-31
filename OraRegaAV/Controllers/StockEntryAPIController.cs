@@ -544,6 +544,7 @@ namespace OraRegaAV.Controllers.API
                             //CustomerMessage = NotifyMessage_Customer,
                             EmployeeId = vWorkOrderStatusObj.EngineerId,
                             EmployeeMessage = NotifyMessag,
+                            RefValue1 = vWorkOrderStatusObj.WorkOrderNumber,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -1075,6 +1076,7 @@ namespace OraRegaAV.Controllers.API
                                     //CustomerMessage = NotifyMessage_Customer,
                                     EmployeeId = itemEmployee.Id,
                                     EmployeeMessage = NotifyMessage,
+                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -1100,6 +1102,7 @@ namespace OraRegaAV.Controllers.API
                                     //CustomerMessage = NotifyMessage_Customer,
                                     EmployeeId = itemEmployee.Id,
                                     EmployeeMessage = NotifyMessage,
+                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -1214,6 +1217,7 @@ namespace OraRegaAV.Controllers.API
                                     //CustomerMessage = NotifyMessage_Customer,
                                     EmployeeId = vReturnPartObj.EngineerId,
                                     EmployeeMessage = NotifyMessag,
+                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -1248,6 +1252,7 @@ namespace OraRegaAV.Controllers.API
                                     //CustomerMessage = NotifyMessage_Customer,
                                     EmployeeId = vReturnPartObj.EngineerId,
                                     EmployeeMessage = NotifyMessag,
+                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };

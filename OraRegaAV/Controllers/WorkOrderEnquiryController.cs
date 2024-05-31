@@ -738,6 +738,7 @@ namespace OraRegaAV.Controllers
                         CustomerMessage = NotifyMessage,
                         //EmployeeId = null,
                         //EmployeeMessage = null,
+                        RefValue1 = workOrder.WorkOrderNumber,
                         CreatedBy = Utilities.GetUserID(ActionContext.Request),
                         CreatedOn = DateTime.Now,
                     };

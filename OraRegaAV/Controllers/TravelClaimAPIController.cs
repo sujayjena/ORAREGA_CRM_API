@@ -240,6 +240,7 @@ namespace OraRegaAV.Controllers
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = tbl.EmployeeId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1 = tbl.ExpenseId,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -264,6 +265,7 @@ namespace OraRegaAV.Controllers
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = tbl.EmployeeId,
                             EmployeeMessage = NotifyMessage,
+                            RefValue1 = tbl.ExpenseId,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
