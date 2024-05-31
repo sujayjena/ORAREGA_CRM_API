@@ -40,5 +40,8 @@ namespace OraRegaAV.DBEntity
         public string CustomerComments { get; set; }
         public Nullable<int> OverAllsServiceExprreance { get; set; }
         public string DigitUEFIFailureID { get; set; }
+        public Nullable<int> WarrantyTypeId { get; set; }
+        public string WarrantyType { get; set; }
+        public string OrganizationName { get; set; }
     }
 }

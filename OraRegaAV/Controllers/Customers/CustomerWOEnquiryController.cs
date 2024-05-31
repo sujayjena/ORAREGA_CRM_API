@@ -434,6 +434,14 @@ namespace OraRegaAV.Controllers.Customers
                     db.tblWOEnquiryCustomerFeedbacks.Add(feedback);
                     await db.SaveChangesAsync();
 
+                    //updated work order (WOEnqCustFeedbackId)
+                    var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == feedback.WorkOrderId).FirstOrDefault();
+                    if (vWorkOrder != null)
+                    {
+                        vWorkOrder.WOEnqCustFeedbackId = feedback.Id;
+                        await db.SaveChangesAsync();
+                    }
+
                     _response.Message = "Feedback submitted successfully";
                 }
                 else

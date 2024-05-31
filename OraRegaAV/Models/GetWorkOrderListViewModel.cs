@@ -200,6 +200,10 @@ namespace OraRegaAV.Models
         public string CustomerComments { get; set; }
         public Nullable<int> OverAllsServiceExprreance { get; set; }
         public string FailureID { get; set; }
+        public int? WarrantyTypeId { get; set; }
+        public string WarrantyType { get; set; }
+        public string OrganizationName { get; set; }
+
 
         public List<PartsUsed_ReturnedDetails> partsUsed_ReturnedDetails { get; set; }
     }

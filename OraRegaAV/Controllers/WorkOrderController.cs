@@ -2545,7 +2545,9 @@ namespace OraRegaAV.Controllers
                     cSOObj.CustomerComments = workOrderObj.CustomerComments;
                     cSOObj.OverAllsServiceExprreance = workOrderObj.OverAllsServiceExprreance;
                     cSOObj.FailureID = workOrderObj.DigitUEFIFailureID;
-
+                    cSOObj.WarrantyTypeId = workOrderObj.WarrantyTypeId;
+                    cSOObj.WarrantyType = workOrderObj.WarrantyType;
+                    cSOObj.OrganizationName = workOrderObj.OrganizationName;
 
                     var vWOPartsList = db.tblPartsAllocatedToWorkOrders.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
                     foreach (var item in vWOPartsList)
@@ -2580,7 +2582,7 @@ namespace OraRegaAV.Controllers
                             var vPartReturnObj = db.tblPartsAllocatedToReturns.Where(x => x.WorkOrderId == workOrderObj.Id && x.PartId == item.PartId && (x.ReturnStatusId == 2 || x.ReturnStatusId == 3)).FirstOrDefault();
                             if (vPartReturnObj != null)
                             {
-                                sRemovedPartCT = vPartObj.CTSerialNo;
+                                sRemovedPartCT = vPartReturnObj.CtSerialNumber;
                             }
                         }
 
@@ -2591,6 +2593,8 @@ namespace OraRegaAV.Controllers
                             PartNumber = sPartNumber,
                             UniqueNumber = sUniqueNumber,
                             PartDescription = sPartDescription,
+                            RemovedPartCT = sRemovedPartCT,
+                            InstalledPartCT = sInstalledPartCT,
                             PartStatusId = item.PartStatusId,
                             PartStatus = sPartStatus,
                         });
@@ -2690,7 +2694,7 @@ namespace OraRegaAV.Controllers
                             var vPartReturnObj = db.tblPartsAllocatedToReturns.Where(x => x.WorkOrderId == workOrderObj.Id && x.PartId == item.PartId && (x.ReturnStatusId == 2 || x.ReturnStatusId == 3)).FirstOrDefault();
                             if (vPartReturnObj != null)
                             {
-                                sRemovedPartCT = vPartObj.CTSerialNo;
+                                sRemovedPartCT = vPartReturnObj.CtSerialNumber;
                             }
                         }
 
@@ -2701,6 +2705,8 @@ namespace OraRegaAV.Controllers
                             PartNumber = sPartNumber,
                             UniqueNumber = sUniqueNumber,
                             PartDescription = sPartDescription,
+                            RemovedPartCT = sRemovedPartCT,
+                            InstalledPartCT = sInstalledPartCT,
                             PartStatusId = item.PartStatusId,
                             PartStatus = sPartStatus,
                         });

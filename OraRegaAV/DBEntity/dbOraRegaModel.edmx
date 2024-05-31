@@ -9362,6 +9362,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="CustomerComments" Nullable="true" MaxLength="1000" />
           <Property Type="Int32" Name="OverAllsServiceExprreance" Nullable="true" />
           <Property Type="String" Name="DigitUEFIFailureID" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="WarrantyTypeId" Nullable="true" />
+          <Property Type="String" Name="WarrantyType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="OrganizationName" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="GetCSOOffSiteDetails_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -14866,6 +14869,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CustomerComments" ColumnName="CustomerComments" />
                 <ScalarProperty Name="OverAllsServiceExprreance" ColumnName="OverAllsServiceExprreance" />
                 <ScalarProperty Name="DigitUEFIFailureID" ColumnName="DigitUEFIFailureID" />
+                <ScalarProperty Name="WarrantyTypeId" ColumnName="WarrantyTypeId" />
+                <ScalarProperty Name="WarrantyType" ColumnName="WarrantyType" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
