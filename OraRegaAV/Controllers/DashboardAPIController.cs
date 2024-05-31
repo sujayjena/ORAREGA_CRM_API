@@ -87,7 +87,7 @@ namespace OraRegaAV.Controllers
                         {
                             vNotificationObj.ReadUnread = item.Viewed;
 
-                            db.tblNotifications.Add(vNotificationObj);
+                            db.tblNotifications.AddOrUpdate(vNotificationObj);
                         }
                     }
                     await db.SaveChangesAsync();
