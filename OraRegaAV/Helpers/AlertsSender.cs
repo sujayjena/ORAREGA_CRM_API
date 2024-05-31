@@ -9,6 +9,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -1477,7 +1478,7 @@ namespace OraRegaAV.Helpers
             bool result = false;
             string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
-            List<GetConfigurationsList_Result> configList;
+            List<GetConfigurationsList_Result> configList=new List<GetConfigurationsList_Result>();
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 
@@ -1501,7 +1502,7 @@ namespace OraRegaAV.Helpers
 
                 emailTemplateContent = "<html><body><p>Hi Team,</p>Travel Claim has been Submitted.</p><p>Expense No - " + parameters.ExpenseId + "<br/>Expense Date - " + parameters.ExpenseDate + "<br/>Work order No - " + parameters.WorkOrderNumber + "<br/>Total Kms run - " + parameters.Distance + "<br/>Amount - " + parameters.TotalAmount + "</p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
-                result = await SendEmail_Other("Travel Claim Application", emailTemplateContent, receiverEmail, files: null);
+                result = await SendEmail_Other("Travel", emailTemplateContent, receiverEmail, files: null);
             }
             catch (Exception ex)
             {
@@ -1525,7 +1526,7 @@ namespace OraRegaAV.Helpers
             };
 
             db.tblEmailNotifications.Add(vEmailNotifyObj);
-            await db.SaveChangesAsync();
+            db.SaveChangesAsync();
 
             #endregion
 
@@ -1842,12 +1843,12 @@ namespace OraRegaAV.Helpers
                 string headingMsg = string.Empty;
                 if (vObjList.FirstOrDefault().StatusId == 2)
                 {
-                    subjectName = "Return Part Request Accepted";
+                    subjectName = "Logistics Accept Retun Part Request";
                     headingMsg = "The Return spare request has been Accepted by logistics.";
                 }
                 else if (vObjList.FirstOrDefault().StatusId == 3)
                 {
-                    subjectName = "Rejection of Return Part Request";
+                    subjectName = "Logistics Reject Retun Part Request";
                     headingMsg = "Return spare request has been rejected by logistics.";
                 }
 
@@ -1865,7 +1866,7 @@ namespace OraRegaAV.Helpers
 
             var vEmailNotifyObj = new tblEmailNotification()
             {
-                Module = "Work Order",
+                Module = "Return Part Request",
                 Subject = subjectName,
                 SendTo = "Logistic-> Reported To (IDM)",
                 Content = emailTemplateContent,
@@ -2179,6 +2180,18 @@ namespace OraRegaAV.Helpers
             #endregion
 
             return result;
+        }
+
+        public void EmailNotificationsUpdate(long Id = 0, bool bResult = false)
+        {
+            var vtblEmailNotificationsObj = db.tblEmailNotifications.Where(w => w.Id == Id).FirstOrDefault();
+            if (vtblEmailNotificationsObj != null)
+            {
+                vtblEmailNotificationsObj.IsSent = bResult;
+
+                db.tblEmailNotifications.AddOrUpdate(vtblEmailNotificationsObj);
+                db.SaveChanges();
+            }
         }
     }
 }

@@ -527,32 +527,30 @@ namespace OraRegaAV.Controllers.API
 
                     #region Save Notification
 
+                    var vtblEmployeesObj = db.tblEmployees.Where(w => w.Id == parameters.EngineerId).FirstOrDefault();
 
-                    var vWorkOrderStatusObj = db.tblWorkOrders.Where(w => w.Id == parameters.WorkOrderId).FirstOrDefault();
-                    if (vWorkOrderStatusObj != null)
+
+                    string NotifyMessag = String.Format(@" Hi Team,
+                                                               Greeting...
+                                                               Part has been Allocate to you
+                                                               Engineer Name - {0}", vtblEmployeesObj != null ? vtblEmployeesObj.EmployeeName : "");
+
+                    var vNotifyObj = new tblNotification()
                     {
+                        Subject = "Part Allocated to Engineer",
+                        SendTo = "Allocated to",
+                        //CustomerId = vWorkOrderStatusObj.CustomerId,
+                        //CustomerMessage = NotifyMessage_Customer,
+                        EmployeeId = parameters.EngineerId,
+                        EmployeeMessage = NotifyMessag,
+                        RefValue1 = "Eng: " + parameters.EngineerId + " , EngName: " + vtblEmployeesObj != null ? vtblEmployeesObj.EmployeeName : "",
+                        CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                        CreatedOn = DateTime.Now,
+                    };
 
-                        string NotifyMessag = String.Format(@"Hi Team,                                                   
-                                                            Greeting...                                 
-                                                            Part  has been Allocate to you, Please check the work order {0}", vWorkOrderStatusObj.WorkOrderNumber);
+                    db.tblNotifications.Add(vNotifyObj);
 
-                        var vNotifyObj = new tblNotification()
-                        {
-                            Subject = "Part Allocated to Engineer",
-                            SendTo = "Allocated to",
-                            //CustomerId = vWorkOrderStatusObj.CustomerId,
-                            //CustomerMessage = NotifyMessage_Customer,
-                            EmployeeId = vWorkOrderStatusObj.EngineerId,
-                            EmployeeMessage = NotifyMessag,
-                            RefValue1 = vWorkOrderStatusObj.WorkOrderNumber,
-                            CreatedBy = Utilities.GetUserID(ActionContext.Request),
-                            CreatedOn = DateTime.Now,
-                        };
-
-                        db.tblNotifications.Add(vNotifyObj);
-
-                        db.SaveChanges();
-                    }
+                    db.SaveChanges();
 
                     #endregion
 
@@ -1157,9 +1155,9 @@ namespace OraRegaAV.Controllers.API
                         var vReturnPartObj = await Task.Run(() => db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == item.EngineerId && x.PartId == item.PartId && x.ReturnStatusId == 1).FirstOrDefaultAsync());
                         if (vReturnPartObj != null)
                         {
-                            var vWorkOrderObj = await db.tblWorkOrders.Where(w => w.Id == vReturnPartObj.WorkOrderId).FirstOrDefaultAsync();
-                            var vEmployeesObj = await db.tblEmployees.Where(w => w.Id == vReturnPartObj.EngineerId).FirstOrDefaultAsync();
-                            var vPartDetailsObj = await db.tblPartDetails.Where(w => w.Id == item.PartId).FirstOrDefaultAsync();
+                            var vWorkOrderObj = db.tblWorkOrders.Where(w => w.Id == vReturnPartObj.WorkOrderId).FirstOrDefault();
+                            var vEmployeesObj = db.tblEmployees.Where(w => w.Id == vReturnPartObj.EngineerId).FirstOrDefault();
+                            var vPartDetailsObj = db.tblPartDetails.Where(w => w.Id == item.PartId).FirstOrDefault();
 
                             if (item.StatusId != 3)
                             {
@@ -1187,7 +1185,7 @@ namespace OraRegaAV.Controllers.API
 
                             // Return Status Update
                             vReturnPartObj.ReturnStatusId = item.StatusId;
-                            await db.SaveChangesAsync();
+                            db.SaveChanges();
 
                             // Send Accept/Reject Notification
                             #region Save Notification
@@ -1224,7 +1222,7 @@ namespace OraRegaAV.Controllers.API
 
                                 db.tblNotifications.Add(vNotifyObj);
 
-                                await db.SaveChangesAsync();
+                                db.SaveChanges();
                             }
                             else if (item.StatusId == 3) // Reject
                             {
@@ -1259,7 +1257,7 @@ namespace OraRegaAV.Controllers.API
 
                                 db.tblNotifications.Add(vNotifyObj);
 
-                                await db.SaveChangesAsync();
+                                db.SaveChanges();
                             }
                             #endregion
                         }

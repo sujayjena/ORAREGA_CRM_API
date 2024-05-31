@@ -175,7 +175,9 @@ namespace OraRegaAV.Controllers
                      db.SaveChanges();
 
                     #region Email Sending
-                     new AlertsSender().SendEmailTravelClaim(tbl);
+
+                    await new AlertsSender().SendEmailTravelClaim(tbl);
+
                     #endregion
 
                     _response.IsSuccess = true;
