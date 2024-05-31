@@ -30,6 +30,7 @@ namespace OraRegaAV.DBEntity
         public string FileNameUrl { get; set; }
         public Nullable<int> ExpenseStatusId { get; set; }
         public string StatusName { get; set; }
+        public Nullable<bool> IsApprovedDisabled { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }

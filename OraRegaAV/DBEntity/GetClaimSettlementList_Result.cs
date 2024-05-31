@@ -23,6 +23,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> GrandTotal { get; set; }
         public Nullable<int> SettlementStatusId { get; set; }
         public string StatusName { get; set; }
+        public Nullable<bool> IsApprovedDisabled { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }

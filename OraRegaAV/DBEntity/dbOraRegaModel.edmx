@@ -8322,6 +8322,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="ClaimReason" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="AdvanceStatusId" Nullable="true" />
           <Property Type="String" Name="AdvanceStatus" Nullable="true" MaxLength="25" />
+		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
@@ -8337,6 +8338,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Decimal" Name="GrandTotal" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="SettlementStatusId" Nullable="true" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
+		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
@@ -8360,6 +8362,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="String" Name="FileNameUrl" Nullable="false" MaxLength="1" />
           <Property Type="Int32" Name="ExpenseStatusId" Nullable="true" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
+		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
@@ -13665,6 +13668,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="ClaimReason" ColumnName="ClaimReason" />
                 <ScalarProperty Name="AdvanceStatusId" ColumnName="AdvanceStatusId" />
                 <ScalarProperty Name="AdvanceStatus" ColumnName="AdvanceStatus" />
+                <ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -13684,6 +13688,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
                 <ScalarProperty Name="SettlementStatusId" ColumnName="SettlementStatusId" />
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+				<ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
@@ -13711,6 +13716,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="FileNameUrl" ColumnName="FileNameUrl" />
                 <ScalarProperty Name="ExpenseStatusId" ColumnName="ExpenseStatusId" />
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />

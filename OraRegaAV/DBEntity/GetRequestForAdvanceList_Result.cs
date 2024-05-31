@@ -23,6 +23,7 @@ namespace OraRegaAV.DBEntity
         public string ClaimReason { get; set; }
         public Nullable<int> AdvanceStatusId { get; set; }
         public string AdvanceStatus { get; set; }
+        public Nullable<bool> IsApprovedDisabled { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
