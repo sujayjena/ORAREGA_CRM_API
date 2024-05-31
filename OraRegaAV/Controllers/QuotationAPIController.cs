@@ -161,6 +161,7 @@ namespace OraRegaAV.Controllers
                     quotationObj.serviceChargeDetails.Description = "Service Charge";
                     quotationObj.serviceChargeDetails.DiscPerct = 0;
                     quotationObj.serviceChargeDetails.DiscValue = 0;
+                    quotationObj.serviceChargeDetails.GSTType = "";
                     quotationObj.serviceChargeDetails.CGSTPerct = 0;
                     quotationObj.serviceChargeDetails.CGSTValue = 0;
                     quotationObj.serviceChargeDetails.SGSTPerct = 0;
@@ -233,6 +234,7 @@ namespace OraRegaAV.Controllers
                             Description = request.serviceChargeDetails.Description,
                             DiscPerct = request.serviceChargeDetails.DiscPerct,
                             DiscValue = request.serviceChargeDetails.DiscValue,
+                            GSTType = request.serviceChargeDetails.GSTType,
                             CGSTPerct = request.serviceChargeDetails.CGSTPerct,
                             CGSTValue = request.serviceChargeDetails.CGSTValue,
                             SGSTPerct = request.serviceChargeDetails.SGSTPerct,
@@ -257,6 +259,7 @@ namespace OraRegaAV.Controllers
                             Price = item.Price,
                             DiscPerct = item.DiscPerct,
                             DiscValue = item.DiscValue,
+                            GSTType = item.GSTType,
                             CGSTPerct = item.CGSTPerct,
                             CGSTValue = item.CGSTValue,
                             SGSTPerct = item.SGSTPerct,
@@ -334,6 +337,7 @@ namespace OraRegaAV.Controllers
                             Description = request.serviceChargeDetails.Description,
                             DiscPerct = request.serviceChargeDetails.DiscPerct,
                             DiscValue = request.serviceChargeDetails.DiscValue,
+                            GSTType = request.serviceChargeDetails.GSTType,
                             CGSTPerct = request.serviceChargeDetails.CGSTPerct,
                             CGSTValue = request.serviceChargeDetails.CGSTValue,
                             SGSTPerct = request.serviceChargeDetails.SGSTPerct,
@@ -366,6 +370,7 @@ namespace OraRegaAV.Controllers
                             Price = item.Price,
                             DiscPerct = item.DiscPerct,
                             DiscValue = item.DiscValue,
+                            GSTType = item.GSTType,
                             CGSTPerct = item.CGSTPerct,
                             CGSTValue = item.CGSTValue,
                             SGSTPerct = item.SGSTPerct,
@@ -621,6 +626,7 @@ namespace OraRegaAV.Controllers
                                 quotationObj.serviceChargeDetails.Description = serviceChargeObj.Description;
                                 quotationObj.serviceChargeDetails.DiscPerct = serviceChargeObj.DiscPerct;
                                 quotationObj.serviceChargeDetails.DiscValue = serviceChargeObj.DiscValue;
+                                quotationObj.serviceChargeDetails.GSTType = serviceChargeObj.GSTType;
                                 quotationObj.serviceChargeDetails.CGSTPerct = serviceChargeObj.CGSTPerct;
                                 quotationObj.serviceChargeDetails.CGSTValue = serviceChargeObj.CGSTValue;
                                 quotationObj.serviceChargeDetails.SGSTPerct = serviceChargeObj.SGSTPerct;
@@ -655,6 +661,7 @@ namespace OraRegaAV.Controllers
                                         Price = itemWOPart.Price,
                                         DiscPerct = itemWOPart.DiscPerct,
                                         DiscValue = itemWOPart.DiscValue,
+                                        GSTType = itemWOPart.GSTType,
                                         CGSTPerct = itemWOPart.CGSTPerct,
                                         CGSTValue = itemWOPart.CGSTValue,
                                         SGSTPerct = itemWOPart.SGSTPerct,
@@ -690,6 +697,7 @@ namespace OraRegaAV.Controllers
                                             Price = itemWOPart.Price,
                                             DiscPerct = itemWOPart.DiscPerct,
                                             DiscValue = itemWOPart.DiscValue,
+                                            GSTType = itemWOPart.GSTType,
                                             CGSTPerct = itemWOPart.CGSTPerct,
                                             CGSTValue = itemWOPart.CGSTValue,
                                             SGSTPerct = itemWOPart.SGSTPerct,
@@ -975,6 +983,7 @@ namespace OraRegaAV.Controllers
                                 Description = vServiceChargeDetails.Description,
                                 DiscPerct = vServiceChargeDetails.DiscPerct,
                                 DiscValue = vServiceChargeDetails.DiscValue,
+                                GSTType = vServiceChargeDetails.GSTType,
                                 CGSTPerct = vServiceChargeDetails.CGSTPerct,
                                 CGSTValue = vServiceChargeDetails.CGSTValue,
                                 SGSTPerct = vServiceChargeDetails.SGSTPerct,
@@ -1001,6 +1010,7 @@ namespace OraRegaAV.Controllers
                                 Price = item.Price,
                                 DiscPerct = item.DiscPerct,
                                 DiscValue = item.DiscValue,
+                                GSTType = item.GSTType,
                                 CGSTPerct = item.CGSTPerct,
                                 CGSTValue = item.CGSTValue,
                                 SGSTPerct = item.SGSTPerct,
@@ -1130,7 +1140,7 @@ namespace OraRegaAV.Controllers
                                 vquotationNewObj.productDetails.ProductNumber = workOrderObj.ProductNumber;
 
                                 // Service Charge
-                                var serviceChargeObj = db.tblQuotationServiceChargeDetails.Where(x => x.QuotationId == item.Id).FirstOrDefault();
+                                var serviceChargeObj = db.tblQuotationServiceChargeDetailsLogs.Where(x => x.QuotationLogId == item.Id).FirstOrDefault();
                                 if (serviceChargeObj != null)
                                 {
                                     vquotationNewObj.serviceChargeDetails.ProductTypeId = serviceChargeObj.ProductTypeId;
@@ -1143,6 +1153,7 @@ namespace OraRegaAV.Controllers
                                     vquotationNewObj.serviceChargeDetails.Description = serviceChargeObj.Description;
                                     vquotationNewObj.serviceChargeDetails.DiscPerct = serviceChargeObj.DiscPerct;
                                     vquotationNewObj.serviceChargeDetails.DiscValue = serviceChargeObj.DiscValue;
+                                    vquotationNewObj.serviceChargeDetails.GSTType = serviceChargeObj.GSTType;
                                     vquotationNewObj.serviceChargeDetails.CGSTPerct = serviceChargeObj.CGSTPerct;
                                     vquotationNewObj.serviceChargeDetails.CGSTValue = serviceChargeObj.CGSTValue;
                                     vquotationNewObj.serviceChargeDetails.SGSTPerct = serviceChargeObj.SGSTPerct;
@@ -1153,7 +1164,7 @@ namespace OraRegaAV.Controllers
                                 }
 
                                 // Part Details
-                                var quotationPartObj = db.tblQuotationPartDetails.Where(x => x.QuotationId == item.Id).ToList();
+                                var quotationPartObj = db.tblQuotationPartDetailsLogs.Where(x => x.QuotationLogId == item.Id).ToList();
                                 foreach (var itemWOPart in quotationPartObj)
                                 {
                                     string sPartNumber = "";
@@ -1177,6 +1188,7 @@ namespace OraRegaAV.Controllers
                                             Price = itemWOPart.Price,
                                             DiscPerct = itemWOPart.DiscPerct,
                                             DiscValue = itemWOPart.DiscValue,
+                                            GSTType = itemWOPart.GSTType,
                                             CGSTPerct = itemWOPart.CGSTPerct,
                                             CGSTValue = itemWOPart.CGSTValue,
                                             SGSTPerct = itemWOPart.SGSTPerct,
@@ -1212,6 +1224,7 @@ namespace OraRegaAV.Controllers
                                                 Price = itemWOPart.Price,
                                                 DiscPerct = itemWOPart.DiscPerct,
                                                 DiscValue = itemWOPart.DiscValue,
+                                                GSTType = itemWOPart.GSTType,
                                                 CGSTPerct = itemWOPart.CGSTPerct,
                                                 CGSTValue = itemWOPart.CGSTValue,
                                                 SGSTPerct = itemWOPart.SGSTPerct,

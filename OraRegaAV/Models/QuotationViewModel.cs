@@ -130,6 +130,7 @@ namespace OraRegaAV.Models
 
         public Nullable<int> DiscPerct { get; set; }
         public Nullable<decimal> DiscValue { get; set; }
+        public string GSTType { get; set; }
         public Nullable<int> CGSTPerct { get; set; }
         public Nullable<decimal> CGSTValue { get; set; }
         public Nullable<int> SGSTPerct { get; set; }
@@ -150,6 +151,7 @@ namespace OraRegaAV.Models
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> DiscPerct { get; set; }
         public Nullable<decimal> DiscValue { get; set; }
+        public string GSTType { get; set; }
         public Nullable<int> CGSTPerct { get; set; }
         public Nullable<decimal> CGSTValue { get; set; }
         public Nullable<int> SGSTPerct { get; set; }

@@ -30,5 +30,6 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> PriceAfterDisc { get; set; }
         public string PartNumber { get; set; }
         public string PartDescription { get; set; }
+        public string GSTType { get; set; }
     }
 }

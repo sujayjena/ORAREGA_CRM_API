@@ -537,8 +537,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="SendTo" Type="nvarchar" MaxLength="500" />
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="EmailTo" Type="nvarchar" MaxLength="500" />
-          <Property Name="RefValue1" Type="nvarchar" MaxLength="100" />
-          <Property Name="RefValue2" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefValue1" Type="nvarchar" MaxLength="200" />
+          <Property Name="RefValue2" Type="nvarchar" MaxLength="200" />
           <Property Name="IsSent" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
@@ -880,8 +880,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CustomerMessage" Type="nvarchar(max)" />
           <Property Name="EmployeeId" Type="bigint" />
           <Property Name="EmployeeMessage" Type="nvarchar(max)" />
-          <Property Name="RefValue1" Type="nvarchar" MaxLength="100" />
-          <Property Name="RefValue2" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefValue1" Type="nvarchar" MaxLength="200" />
+          <Property Name="RefValue2" Type="nvarchar" MaxLength="200" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="ReadUnread" Type="bit" Nullable="false" />
@@ -1416,6 +1416,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PartNumber" Type="nvarchar" MaxLength="70" />
           <Property Name="PartDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="GSTType" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="tblQuotationPartDetailsLog">
           <Key>
@@ -1437,6 +1438,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PartNumber" Type="nvarchar" MaxLength="70" />
           <Property Name="PartDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="GSTType" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="tblQuotationServiceChargeDetails">
           <Key>
@@ -1459,6 +1461,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GSTType" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="tblQuotationServiceChargeDetailsLog">
           <Key>
@@ -1481,6 +1484,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="IGSTPerct" Type="int" />
           <Property Name="IGSTValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GSTType" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="tblRatePerKM">
           <Key>
@@ -8733,6 +8737,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IGSTPerct" Type="Int32" />
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GSTType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblInvoiceServiceChargeDetail">
           <Key>
@@ -8821,6 +8826,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IGSTPerct" Type="Int32" />
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GSTType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblBranchMapping">
           <Key>
@@ -9292,8 +9298,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReadUnread" Type="Boolean" Nullable="false" />
-          <Property Name="RefValue1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RefValue2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblLogDetail">
           <Key>
@@ -9481,6 +9487,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PartNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="PartDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GSTType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblQuotationPartDetailsLog">
           <Key>
@@ -9502,6 +9509,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PartNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="PartDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GSTType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblPaymentPartDetail">
           <Key>
@@ -9613,8 +9621,8 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IsSent" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RefValue1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RefValue2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RefValue2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="GetEmployeesForSelectList_Result">
           <Property Type="Int32" Name="Value" Nullable="true" />
@@ -14132,6 +14140,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotationServiceChargeDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetail">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetails">
+                <ScalarProperty Name="GSTType" ColumnName="GSTType" />
                 <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
                 <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
                 <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
@@ -14223,6 +14232,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
            <EntitySetMapping Name="tblQuotationServiceChargeDetailsLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetailsLog">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetailsLog">
+                <ScalarProperty Name="GSTType" ColumnName="GSTType" />
                 <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
                 <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
                 <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
@@ -14979,6 +14989,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotationPartDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationPartDetail">
               <MappingFragment StoreEntitySet="tblQuotationPartDetails">
+                <ScalarProperty Name="GSTType" ColumnName="GSTType" />
                 <ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
                 <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
                 <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
@@ -15001,6 +15012,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblQuotationPartDetailsLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationPartDetailsLog">
               <MappingFragment StoreEntitySet="tblQuotationPartDetailsLog">
+                <ScalarProperty Name="GSTType" ColumnName="GSTType" />
                 <ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
                 <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
                 <ScalarProperty Name="PriceAfterDisc" ColumnName="PriceAfterDisc" />
