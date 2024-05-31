@@ -720,6 +720,32 @@ namespace OraRegaAV.Controllers
 
                     await db.SaveChangesAsync();
 
+                    //copy the tblProductIssuesPhotos file to work order folder
+                    string vProductIssuesPhotos_WOEPath = HttpContext.Current.Server.MapPath("~/Uploads/WOEnquiries/IssueSnaps/" + workOrderEnquiry.Id);
+                    if (vProductIssuesPhotos_WOEPath != "")
+                    {
+                        string fileName = db.tblProductIssuesPhotos.Where(x => x.WOEnquiryId == workOrderEnquiry.Id).Select(x => x.PhotoPath).FirstOrDefault();
+                        string vProductIssuesPhotos_WOPath = HttpContext.Current.Server.MapPath("~/Uploads/WorkOrder/ProductIssue/" + workOrderId);
+                        if (!Directory.Exists(vProductIssuesPhotos_WOPath))
+                        {
+                            Directory.CreateDirectory(vProductIssuesPhotos_WOPath);
+                        }
+                        File.Copy(Path.Combine(vProductIssuesPhotos_WOEPath, fileName), vProductIssuesPhotos_WOPath + "/" + fileName, true);
+                    }
+
+                    //copy the tblPurchaseProofPhotos file to work order folder
+                    string vPurchaseProofPhotos_WOEPath = HttpContext.Current.Server.MapPath("~/Uploads/WOEnquiries/ProductProofs/" + workOrderEnquiry.Id); 
+                    if (vPurchaseProofPhotos_WOEPath != "")
+                    {
+                        string fileName = db.tblPurchaseProofPhotos.Where(x => x.WOEnquiryId == workOrderEnquiry.Id).Select(x => x.PhotoPath).FirstOrDefault();
+                        string vPurchaseProofPhotos_WOPath = HttpContext.Current.Server.MapPath("~/Uploads/WorkOrder/PurchaseProofPhotos/" + workOrderId);
+                        if (!Directory.Exists(vPurchaseProofPhotos_WOPath))
+                        {
+                            Directory.CreateDirectory(vPurchaseProofPhotos_WOPath);
+                        }
+                        File.Copy(Path.Combine(vPurchaseProofPhotos_WOEPath, fileName), vPurchaseProofPhotos_WOPath + "/" + fileName, true);
+                    }
+
                     #region Save Notification
 
                     string NotifyMessage = String.Format(@"Dear Customer,
