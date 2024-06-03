@@ -1,12 +1,14 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Models;
 using OraRegaAV.Models.Constants;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -163,6 +165,79 @@ namespace OraRegaAV.Helpers
             }
             return result;
         }
+
+        public async Task<bool> SendEmail_WithMultipleAttachment(string emailSubject, string emailContent, string receiverEmail, List<Attachment> files = null)
+        {
+            bool result = false;
+
+            try
+            {
+                List<GetConfigurationsList_Result> configList;
+
+                configList = db.GetConfigurationsList(
+                    $"{ConfigConstants.EnableEmailAlerts},{ConfigConstants.ContactUsEmail},{ConfigConstants.SMTPAddress},{ConfigConstants.SMTPPort}," +
+                    $"{ConfigConstants.SMTPPassword},{ConfigConstants.SMTPEnableSSL}").ToList();
+
+                bool enableEmailAlerts = configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "true" ? true : false;
+                string emailFromEmail = configList.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue.SanitizeValue();
+                string smtpAddress = configList.Where(c => c.ConfigKey == ConfigConstants.SMTPAddress).FirstOrDefault().ConfigValue.SanitizeValue();
+                int portNumber = Convert.ToInt32(configList.Where(c => c.ConfigKey == ConfigConstants.SMTPPort).FirstOrDefault().ConfigValue.SanitizeValue());
+                string password = configList.Where(c => c.ConfigKey == ConfigConstants.SMTPPassword).FirstOrDefault().ConfigValue.SanitizeValue();
+                bool enableSSL = configList.Where(c => c.ConfigKey == ConfigConstants.SMTPEnableSSL).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "true" ? true : false;
+
+                if (!enableEmailAlerts)
+                    return false;
+
+                password = EncryptDecryptHelper.DecryptString(password);
+
+                await Task.Run(() =>
+                {
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        if (!string.IsNullOrWhiteSpace(receiverEmail))
+                        {
+                            mail.From = new MailAddress(emailFromEmail);
+                            mail.To.Add(receiverEmail);
+                            mail.Subject = emailSubject;
+                            mail.Body = emailContent;
+                            mail.IsBodyHtml = true;
+
+                            if (files != null)
+                            {
+                                for (int f = 0; f < files.Count; f++)
+                                {
+                                    mail.Attachments.Add(new Attachment(files[f].ContentStream, files[f].Name));
+                                }
+                            }
+
+                            using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
+                            {
+                                smtp.Credentials = new NetworkCredential(emailFromEmail, password);
+                                smtp.EnableSsl = enableSSL;
+
+                                //smtp.SendAsync(mail, "EmailAlert");
+                                try
+                                {
+                                    smtp.Send(mail);
+
+                                    result = true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    result = false;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return result;
+        }
+
 
         private static string ImageToBase64(string imgPath)
         {
@@ -1408,12 +1483,12 @@ namespace OraRegaAV.Helpers
                 var engName = db.tblEmployees.Where(x => x.Id == parameters.EmployeeId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
 
+                List<Attachment> attFile = new List<Attachment>();
                 string claimSettlementItemListContent = string.Empty;
                 foreach (var itm in parameters.claimSettlementItem)
                 {
-                    var vtblClaimSettlementItemAttachments = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).FirstOrDefault();
-                    var vAttachmentFilePath = vtblClaimSettlementItemAttachments != null ? vtblClaimSettlementItemAttachments.FilePath : "";
-
+                    var vtblClaimSettlementItemAttachmentsObj = db.tblClaimSettlementItemAttachments.Where(x => x.ClaimSettlementItemId == itm.Id).ToList();
+                    var vAttachmentFilePathCommaSeparated = vtblClaimSettlementItemAttachmentsObj != null ? String.Join(",", vtblClaimSettlementItemAttachmentsObj.Select(m => m.FilePath)) : "";
                     var vClaimTypesObj = db.tblClaimTypes.Where(x => x.Id == itm.ClaimTypeId).Select(y => y.Type).FirstOrDefault();
 
                     claimSettlementItemListContent = $@"{claimSettlementItemListContent}
@@ -1426,23 +1501,29 @@ namespace OraRegaAV.Helpers
                                     <li>To Date  - {itm.ToDate}</li>
                                     <li>Amount - {itm.Amount}</li>
                                     <li>Remark - {itm.Remark}</
-                                    <li>Attachment - {vAttachmentFilePath}</li>
+                                    <li>Attachment - {vAttachmentFilePathCommaSeparated}</li>
                                 </ul>
                                 <br />
                             </li>";
 
-                    //HttpFileCollection httpFileCollection= new HttpFileCollection()
-                    //{
-                    //    Keys=
-                    //}
+                    foreach (var itemAttachments in vtblClaimSettlementItemAttachmentsObj)
+                    {
+                        var vAttachmentFilePath = itemAttachments.FilePath;
+                        var vAttachmentOriginalName = itemAttachments.FilesOriginalName;
 
-                    //claimFiles.Add(claimFiles)
+                        if (!string.IsNullOrWhiteSpace(vAttachmentOriginalName))
+                        {
+                            string folderPath = $"{HttpContext.Current.Server.MapPath("~")}\\Uploads\\ClaimSattlement\\" + vAttachmentOriginalName;
+                            byte[] byteDataArray = File.ReadAllBytes(folderPath);
+
+                            attFile.Add(new Attachment(new MemoryStream(byteDataArray), vAttachmentOriginalName));
+                        };
+                    }
                 }
-
 
                 emailTemplateContent = "<html><body><p>Hi Team,</p>Expense Application Request Received.</p><p><ol>" + claimSettlementItemListContent + "</ol></p><p><br/>Thanks  & Regards,<br />" + senderName + "<br /><img src='" + baseLogoUrl + "' alt='Company Logo' style='height: 5 %; width: 10 %;' /></p></body></html>";
 
-                result = await SendEmail_Other("Expense Application", emailTemplateContent, receiverEmail, files: null);
+                result = await SendEmail_WithMultipleAttachment("Expense Application", emailTemplateContent, receiverEmail, files: attFile);
             }
             catch (Exception ex)
             {
@@ -1478,7 +1559,7 @@ namespace OraRegaAV.Helpers
             bool result = false;
             string emailTemplateContent = "", receiverEmail = "";
             string senderCompanyLogo;
-            List<GetConfigurationsList_Result> configList=new List<GetConfigurationsList_Result>();
+            List<GetConfigurationsList_Result> configList = new List<GetConfigurationsList_Result>();
 
             string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
 

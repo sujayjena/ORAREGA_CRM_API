@@ -182,7 +182,6 @@ namespace OraRegaAV.Controllers
 
                     db.tblClaimSettlements.Add(tbl);
                     _response.Message = "Claim Settlement saved successfully";
-
                 }
                 else
                 {
@@ -277,6 +276,7 @@ namespace OraRegaAV.Controllers
                         await db.SaveChangesAsync();
 
                         vClaimSettlementItem_Id = vItem.Id;
+                        item.Id= vItem.Id;
                     }
                     else
                     {
@@ -329,6 +329,8 @@ namespace OraRegaAV.Controllers
                 #region Email Sending
                 if (objModel.Id == 0)
                 {
+                    objModel.Id = tbl.Id;
+
                     await new AlertsSender().SendEmailClaimSettlementApply(objModel);
                 }
                 #endregion
