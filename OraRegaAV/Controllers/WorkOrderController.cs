@@ -2044,10 +2044,31 @@ namespace OraRegaAV.Controllers
                         var vtblEngineerVisitHistoryLog = db.tblEngineerVisitHistories.Where(x => x.Id == tbl.Id).FirstOrDefault();
                         if (vtblEngineerVisitHistoryLog != null)
                         {
-                            vtblEngineerVisitHistoryLog.VisitStatus = "Stop";
-                        }
+                            vtblEngineerVisitHistoryLog.VisitStatus = "Stop"; 
+                            
+                            await db.SaveChangesAsync();
 
-                        await db.SaveChangesAsync();
+                            #region Email Sending
+
+                            var tblTravelClaimsObj = db.tblTravelClaims.Where(c => c.EngineerVisitHistoryId == tbl.Id).FirstOrDefault();
+                            if (tblTravelClaimsObj != null)
+                            {
+                                var vtblTravelClaim = new tblTravelClaim()
+                                {
+                                    Id = tblTravelClaimsObj.Id,
+                                    ExpenseId = tblTravelClaimsObj.ExpenseId,
+                                    EmployeeId = tblTravelClaimsObj.EmployeeId,
+                                    ExpenseDate = tblTravelClaimsObj.ExpenseDate,
+                                    WorkOrderNumber = tblTravelClaimsObj.WorkOrderNumber,
+                                    Distance = tblTravelClaimsObj.Distance,
+                                    TotalAmount = tblTravelClaimsObj.TotalAmount
+                                };
+
+                                await new AlertsSender().SendEmailTravelClaim(vtblTravelClaim);
+                            }
+
+                            #endregion
+                        }
                     }
 
                     #endregion
@@ -2146,6 +2167,27 @@ namespace OraRegaAV.Controllers
                     tbl.ModifiedDate = DateTime.Now;
 
                     await db.SaveChangesAsync();
+
+                    #region Email Sending
+
+                    var tblTravelClaimsObj = db.tblTravelClaims.Where(c => c.EngineerVisitHistoryId == tbl.Id).FirstOrDefault();
+                    if (tblTravelClaimsObj != null)
+                    {
+                        var vtblTravelClaim = new tblTravelClaim()
+                        {
+                            Id = tblTravelClaimsObj.Id,
+                            ExpenseId = tblTravelClaimsObj.ExpenseId,
+                            EmployeeId = tblTravelClaimsObj.EmployeeId,
+                            ExpenseDate = tblTravelClaimsObj.ExpenseDate,
+                            WorkOrderNumber = tblTravelClaimsObj.WorkOrderNumber,
+                            Distance = tblTravelClaimsObj.Distance,
+                            TotalAmount = tblTravelClaimsObj.TotalAmount
+                        };
+
+                        await new AlertsSender().SendEmailTravelClaim(vtblTravelClaim);
+                    }
+
+                    #endregion
 
                     _response.Message = "Visit updated successfully";
                 }

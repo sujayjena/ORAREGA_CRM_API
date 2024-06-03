@@ -1893,23 +1893,34 @@ namespace OraRegaAV.Helpers
 
                 var objjj = vObjList.FirstOrDefault();
                 var vReturnPartObj = db.tblPartsAllocatedToReturns.Where(x => x.EngineerId == objjj.EngineerId && x.PartId == objjj.PartId).FirstOrDefault();
-                var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == vReturnPartObj.WorkOrderId).FirstOrDefault();
 
-                sWorkOrderNumber = vWorkOrder.WorkOrderNumber;
+                var vEmployeeObj = db.tblEmployees.Where(x => x.Id == objjj.EngineerId).FirstOrDefault();
+
+                var vWorkOrderObj = db.tblWorkOrders.Where(x => x.Id == vReturnPartObj.WorkOrderId).FirstOrDefault();
+                sWorkOrderNumber = vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : "";
+
                 sWorkOrderEngId = Convert.ToString(objjj.EngineerId);
                 sWorkOrderReturnId = Convert.ToString(vReturnPartObj.Id);
                 //var roleId = "24";//Logistics Executive
                 //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).FirstOrDefault();
 
                 //Logistics Executive
+                //var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
+                //var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).FirstOrDefault();
+                //receiverEmail = db.tblEmployees.Where(x => x.Id == empList.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+
                 var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
-                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
-                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).FirstOrDefault();
-                receiverEmail = db.tblEmployees.Where(x => x.Id == empList.ReportingTo).Select(x => x.EmailId).FirstOrDefault();
+                var vBranchWiseList_EmployeeWise = db.tblBranchMappings.Where(x => x.EmployeeId == objjj.EngineerId).Select(x => x.BranchId).ToList();
+                var vEmployeeIds_BranchWise = db.tblBranchMappings.Where(x => vBranchWiseList_EmployeeWise.Contains(x.BranchId)).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vEmployeeObj.CompanyId && vEmployeeIds_BranchWise.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
+
+                receiverEmail = string.Join(",", new List<string>(empList).ToArray());
+
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
 
-                var engName = db.tblEmployees.Where(x => x.Id == vWorkOrder.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
+                var engName = db.tblEmployees.Where(x => x.Id == objjj.EngineerId).Select(x => x.EmployeeName).FirstOrDefault();
                 var senderName = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.EmailSenderName).FirstOrDefault().ConfigValue;
 
                 string partDetailsListContent = string.Empty;
@@ -1918,7 +1929,7 @@ namespace OraRegaAV.Helpers
                     partDetailsListContent = $@"{partDetailsListContent}
                             <li>
                                 <ul>
-                                    <li>Work order no - {vWorkOrder.WorkOrderNumber}</li>
+                                    <li>Work order no - {sWorkOrderNumber}</li>
                                     <li>Engineer name - {engName}</li>
                                     <li>STN - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.UniqueCode).FirstOrDefault()}</li>
                                     <li>Part No - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartNumber).FirstOrDefault()}</li>
