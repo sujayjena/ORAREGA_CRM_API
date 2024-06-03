@@ -1789,19 +1789,27 @@ namespace OraRegaAV.Helpers
                 if (configList.Where(c => c.ConfigKey == ConfigConstants.EnableEmailAlerts).FirstOrDefault().ConfigValue.SanitizeValue().ToLower() == "false")
                     return result;
 
+                var vEmployeeObj = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).FirstOrDefault();
+
                 //receiverEmail = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.ContactUsEmail).FirstOrDefault().ConfigValue;
 
                 var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
-
-                sWorkOrderNumber = vWorkOrder.WorkOrderNumber;
+                sWorkOrderNumber = vWorkOrder != null ? vWorkOrder.WorkOrderNumber : "";
 
                 //var roleId = "24"; //Logistics Executive
                 //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && x.BranchId == vWorkOrder.BranchId && roleId.Contains(x.RoleId.ToString())).Select(x => x.EmailId).ToList();
 
                 //Logistics Executive
+                //var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
+                //var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
+                //var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
+
                 var vRoleObj = db.tblRoles.Where(x => x.RoleName == "Logistics Executive").Select(x => x.Id).ToList();
-                var vBranchWiseEmpList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrder.BranchId).Select(x => x.EmployeeId).ToList();
-                var empList = db.tblEmployees.Where(x => x.CompanyId == vWorkOrder.CompanyId && vBranchWiseEmpList.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
+                var vBranchWiseList_EmployeeWise = db.tblBranchMappings.Where(x => x.EmployeeId == parameters.EngineerId).Select(x => x.BranchId).ToList();
+                var vEmployeeIds_BranchWise = db.tblBranchMappings.Where(x => vBranchWiseList_EmployeeWise.Contains(x.BranchId)).Select(x => x.EmployeeId).ToList();
+                var empList = db.tblEmployees.Where(x => x.CompanyId == vEmployeeObj.CompanyId && vEmployeeIds_BranchWise.Contains(x.Id) && vRoleObj.Contains(x.RoleId ?? 0)).Select(x => x.EmailId).ToList();
+
+
                 receiverEmail = string.Join(",", new List<string>(empList).ToArray());
 
                 senderCompanyLogo = db.tblConfigurationMasters.Where(c => c.ConfigKey == ConfigConstants.SenderCompanyLogo).FirstOrDefault().ConfigValue.SanitizeValue();
@@ -1815,7 +1823,7 @@ namespace OraRegaAV.Helpers
                     partDetailsListContent = $@"{partDetailsListContent}
                             <li>
                                 <ul>
-                                    <li>Work order no - {vWorkOrder.WorkOrderNumber}</li>
+                                    <li>Work order no - {sWorkOrderNumber}</li>
                                     <li>Engineer name - {engName}</li>
                                     <li>STN - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.UniqueCode).FirstOrDefault()}</li>
                                     <li>Part No - {db.tblPartDetails.Where(x => x.Id == itm.PartId).Select(y => y.PartNumber).FirstOrDefault()}</li>
