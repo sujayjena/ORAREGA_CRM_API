@@ -1050,67 +1050,89 @@ namespace OraRegaAV.Controllers.API
 
                     #region Save Notification
 
-                    var vWorkOrderObj = await db.tblWorkOrders.Where(w => w.Id == parameters.WorkOrderId).FirstOrDefaultAsync();
-                    if (vWorkOrderObj != null)
+                    string NotifyMessage = "";
+                    string sWorkOrderNumber = "";
+                    var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == parameters.WorkOrderId).FirstOrDefault();
+                    var vEmployeeObj = db.tblEmployees.Where(x => x.Id == parameters.EngineerId).FirstOrDefault();
+                    sWorkOrderNumber = vWorkOrder != null ? vWorkOrder.WorkOrderNumber : "";
+
+                    foreach (var item in parameters.PartsDetail.ToList())
                     {
-                        string NotifyMessage = String.Format(@"Hi Team,
-                                                               Greeting...                                                    
-                                                               Enginner Part return request has been raised, Work order no ", vWorkOrderObj.WorkOrderNumber);
+                        var vPartsDetailObj = db.tblPartDetails.Where(x => x.Id == item.PartId).FirstOrDefault();
 
-                        // Logistics Executive
-                        var vRoleObj_Logistics = await db.tblRoles.Where(w => w.RoleName == "Logistics Executive").FirstOrDefaultAsync();
-                        if (vRoleObj_Logistics != null)
-                        {
-                            var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                            var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
-
-                            foreach (var itemEmployee in vEmployeeList)
-                            {
-                                var vNotifyObj_Employee = new tblNotification()
-                                {
-                                    Subject = "Engineer  return assigned Part to Logistics",
-                                    SendTo = "Logistics Executive & Backend Executive",
-                                    //CustomerId = vWorkOrderStatusObj.CustomerId,
-                                    //CustomerMessage = NotifyMessage_Customer,
-                                    EmployeeId = itemEmployee.Id,
-                                    EmployeeMessage = NotifyMessage,
-                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
-                                    CreatedBy = Utilities.GetUserID(ActionContext.Request),
-                                    CreatedOn = DateTime.Now,
-                                };
-
-                                db.tblNotifications.Add(vNotifyObj_Employee);
-                            }
-                        }
-
-                        // Backend Executive
-                        var vRoleObj_Backend = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
-                        if (vRoleObj_Backend != null)
-                        {
-                            var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                            var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
-
-                            foreach (var itemEmployee in vEmployeeList)
-                            {
-                                var vNotifyObj_Employee = new tblNotification()
-                                {
-                                    Subject = "Engineer  return assigned Part to Logistics",
-                                    SendTo = "Logistics Executive & Backend Executive",
-                                    //CustomerId = vWorkOrderStatusObj.CustomerId,
-                                    //CustomerMessage = NotifyMessage_Customer,
-                                    EmployeeId = itemEmployee.Id,
-                                    EmployeeMessage = NotifyMessage,
-                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
-                                    CreatedBy = Utilities.GetUserID(ActionContext.Request),
-                                    CreatedOn = DateTime.Now,
-                                };
-
-                                db.tblNotifications.Add(vNotifyObj_Employee);
-                            }
-                        }
-
-                        await db.SaveChangesAsync();
+                        NotifyMessage = String.Format(@"Hi Team,
+                                                        Greeting...
+                                                        Enginner Part return request has been raised
+                                                        Work order no-{0}
+                                                        Engineer Name-{1}
+                                                        STN-{2}
+                                                        Part No-{3} 
+                                                        Part Discription-{4}", sWorkOrderNumber, vEmployeeObj.EmployeeName, vPartsDetailObj.UniqueCode, vPartsDetailObj.PartNumber, vPartsDetailObj.PartName);
                     }
+
+                    // Logistics Executive
+                    var vRoleObj_Logistics = await db.tblRoles.Where(w => w.RoleName == "Logistics Executive").FirstOrDefaultAsync();
+                    if (vRoleObj_Logistics != null)
+                    {
+                        var vBranchWiseList_EmployeeWise = db.tblBranchMappings.Where(x => x.EmployeeId == parameters.EngineerId).Select(x => x.BranchId).ToList();
+                        var vEmployeeIds_BranchWise = db.tblBranchMappings.Where(x => vBranchWiseList_EmployeeWise.Contains(x.BranchId)).Select(x => x.EmployeeId).ToList();
+                        var vEmployeeList = db.tblEmployees.Where(x => x.CompanyId == vEmployeeObj.CompanyId && vEmployeeIds_BranchWise.Contains(x.Id) && x.RoleId == vRoleObj_Logistics.Id).ToList();
+
+                        //var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                        //var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
+                        foreach (var itemEmployee in vEmployeeList)
+                        {
+                            var vNotifyObj_Employee = new tblNotification()
+                            {
+                                Subject = "Engineer  return assigned Part to Logistics",
+                                SendTo = "Logistics Executive & Backend Executive",
+                                //CustomerId = vWorkOrderStatusObj.CustomerId,
+                                //CustomerMessage = NotifyMessage_Customer,
+                                EmployeeId = itemEmployee.Id,
+                                EmployeeMessage = NotifyMessage,
+                                RefValue1 = "Wo-" + sWorkOrderNumber,
+                                RefValue2 = "Eng-" + parameters.EngineerId,
+                                CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                CreatedOn = DateTime.Now,
+                            };
+
+                            db.tblNotifications.Add(vNotifyObj_Employee);
+                        }
+                    }
+
+                    // Backend Executive
+                    var vRoleObj_Backend = await db.tblRoles.Where(w => w.RoleName == "Backend Executive").FirstOrDefaultAsync();
+                    if (vRoleObj_Backend != null)
+                    {
+                        var vBranchWiseList_EmployeeWise = db.tblBranchMappings.Where(x => x.EmployeeId == parameters.EngineerId).Select(x => x.BranchId).ToList();
+                        var vEmployeeIds_BranchWise = db.tblBranchMappings.Where(x => vBranchWiseList_EmployeeWise.Contains(x.BranchId)).Select(x => x.EmployeeId).ToList();
+                        var vEmployeeList = db.tblEmployees.Where(x => x.CompanyId == vEmployeeObj.CompanyId && vEmployeeIds_BranchWise.Contains(x.Id) && x.RoleId == vRoleObj_Logistics.Id).ToList();
+
+                        //var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
+                        //var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+
+                        foreach (var itemEmployee in vEmployeeList)
+                        {
+                            var vNotifyObj_Employee = new tblNotification()
+                            {
+                                Subject = "Engineer  return assigned Part to Logistics",
+                                SendTo = "Logistics Executive & Backend Executive",
+                                //CustomerId = vWorkOrderStatusObj.CustomerId,
+                                //CustomerMessage = NotifyMessage_Customer,
+                                EmployeeId = itemEmployee.Id,
+                                EmployeeMessage = NotifyMessage,
+                                RefValue1 = "Wo-" + sWorkOrderNumber,
+                                RefValue2 = "Eng-" + parameters.EngineerId,
+                                CreatedBy = Utilities.GetUserID(ActionContext.Request),
+                                CreatedOn = DateTime.Now,
+                            };
+
+                            db.tblNotifications.Add(vNotifyObj_Employee);
+                        }
+                    }
+
+                    await db.SaveChangesAsync();
 
                     #endregion
 
@@ -1215,7 +1237,8 @@ namespace OraRegaAV.Controllers.API
                                     //CustomerMessage = NotifyMessage_Customer,
                                     EmployeeId = vReturnPartObj.EngineerId,
                                     EmployeeMessage = NotifyMessag,
-                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
+                                    RefValue1 = "Wo-" + vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : string.Empty,
+                                    RefValue2 = "Eng-" + vReturnPartObj.EngineerId,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -1250,7 +1273,8 @@ namespace OraRegaAV.Controllers.API
                                     //CustomerMessage = NotifyMessage_Customer,
                                     EmployeeId = vReturnPartObj.EngineerId,
                                     EmployeeMessage = NotifyMessag,
-                                    RefValue1 = vWorkOrderObj.WorkOrderNumber,
+                                    RefValue1 = "Wo-" + vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : string.Empty,
+                                    RefValue2 = "Eng-" + vReturnPartObj.EngineerId,
                                     CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                     CreatedOn = DateTime.Now,
                                 };
@@ -1270,13 +1294,13 @@ namespace OraRegaAV.Controllers.API
                     }
                     #endregion
 
-                    if(vObjList.FirstOrDefault().StatusId == 2)
+                    if (vObjList.FirstOrDefault().StatusId == 2)
                     {
                         _response.Message = "Part approved successfully.";
                     }
                     else if (vObjList.FirstOrDefault().StatusId == 3)
                     {
-                        _response.Message = "Part Rejected Successfully."; 
+                        _response.Message = "Part Rejected Successfully.";
                     }
                 }
                 else
