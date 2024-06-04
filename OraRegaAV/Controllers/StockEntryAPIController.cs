@@ -1270,17 +1270,24 @@ namespace OraRegaAV.Controllers.API
                     }
                     #endregion
 
-                    _response.Message = "Part approved successfully";
+                    if(vObjList.FirstOrDefault().StatusId == 2)
+                    {
+                        _response.Message = "Part approved successfully.";
+                    }
+                    else if (vObjList.FirstOrDefault().StatusId == 3)
+                    {
+                        _response.Message = "Part Rejected Successfully."; 
+                    }
                 }
                 else
                 {
-                    _response.Message = "Part not approved successfully";
+                    _response.Message = "Part not approved or rejected successfully";
                 }
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.Message = "Part not approved successfully";
+                _response.Message = "Part not approved or rejected successfully";
                 LogWriter.WriteLog(ex);
             }
 
