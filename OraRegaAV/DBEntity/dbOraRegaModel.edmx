@@ -1982,6 +1982,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="Reason" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsReverse" Type="bit" />
         </EntityType>
         <EntityType Name="tblStockTransferStatus">
           <Key>
@@ -7574,6 +7575,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsReverse" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblVehicleType">
           <Key>
@@ -12756,6 +12758,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySetMapping Name="tblStockTransferPartDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblStockTransferPartDetail">
               <MappingFragment StoreEntitySet="tblStockTransferPartDetails">
+                <ScalarProperty Name="IsReverse" ColumnName="IsReverse" />
                 <ScalarProperty Name="Reason" ColumnName="Reason" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />

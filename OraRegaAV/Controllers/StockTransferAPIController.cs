@@ -458,11 +458,12 @@ namespace OraRegaAV.Controllers
                 if (!string.IsNullOrWhiteSpace(parameters.ChallanNo))
                 {
                     var stockTransferOutObj = await Task.Run(() => db.tblStockTransferOuts.Where(x => x.ChallanNo == parameters.ChallanNo).FirstOrDefault());
-
                     if (stockTransferOutObj != null)
                     {
                         foreach (var item in parameters.Parts)
                         {
+                            bool isReversePart = false;
+
                             var stockTransferOutPartObj = await Task.Run(() => db.tblStockTransferPartDetails.Where(x => x.StockTransferOutId == stockTransferOutObj.Id && x.PartId == item.PartId).FirstOrDefault());
                             if (stockTransferOutPartObj != null)
                             {
@@ -472,7 +473,6 @@ namespace OraRegaAV.Controllers
                                 stockTransferOutPartObj.ModifiedDate = DateTime.Now;
 
                                 db.tblStockTransferPartDetails.AddOrUpdate(stockTransferOutPartObj);
-
                                 await db.SaveChangesAsync();
 
                                 // Transfer Part Detail to Respective Branch
@@ -485,9 +485,44 @@ namespace OraRegaAV.Controllers
                                     vPartDetailObj.ModifiedDate = DateTime.Now;
 
                                     db.tblPartDetails.AddOrUpdate(vPartDetailObj);
-
                                     await db.SaveChangesAsync();
                                 }
+
+                                #region Check the part is forword or reverse transfer : and Check all the transfer out of respective branch
+
+                                var vstockTransferOutRespectiveBranchObjList = await Task.Run(() => db.tblStockTransferOuts.Where(x => x.BranchFromId == stockTransferOutObj.BranchToId && x.BranchToId == stockTransferOutObj.BranchFromId).ToList().OrderByDescending(c => c.CreatedDate).ToList());
+                                foreach (var itemTransferOutRespectiveBranch in vstockTransferOutRespectiveBranchObjList)
+                                {
+                                    var vstockTransferOutPartOfRespectiveBranchObj = await Task.Run(() => db.tblStockTransferPartDetails.Where(x => x.StockTransferOutId == itemTransferOutRespectiveBranch.Id && x.PartId == item.PartId && (x.IsReverse == null || x.IsReverse == false)).FirstOrDefault());
+                                    if (vstockTransferOutPartOfRespectiveBranchObj != null)
+                                    {
+                                        isReversePart = true;
+
+                                        vstockTransferOutPartOfRespectiveBranchObj.IsReverse = true;
+                                        stockTransferOutPartObj.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                                        stockTransferOutPartObj.ModifiedDate = DateTime.Now;
+
+                                        db.tblStockTransferPartDetails.AddOrUpdate(vstockTransferOutPartOfRespectiveBranchObj);
+                                        await db.SaveChangesAsync();
+                                    }
+                                }
+
+                                // Reverse the main challan part
+                                if (isReversePart)
+                                {
+                                    var stockTransferOutPartReversePartObj = await Task.Run(() => db.tblStockTransferPartDetails.Where(x => x.StockTransferOutId == stockTransferOutObj.Id && x.PartId == item.PartId).FirstOrDefault());
+                                    if (stockTransferOutPartReversePartObj != null)
+                                    {
+                                        stockTransferOutPartObj.IsReverse = true;
+                                        stockTransferOutPartObj.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+                                        stockTransferOutPartObj.ModifiedDate = DateTime.Now;
+
+                                        db.tblStockTransferPartDetails.AddOrUpdate(stockTransferOutPartReversePartObj);
+                                        await db.SaveChangesAsync();
+                                    }
+                                }
+
+                                #endregion
                             }
                         }
 
