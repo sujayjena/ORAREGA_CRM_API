@@ -1504,31 +1504,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartDetailTransferHistoryLogList_Result>("GetPartDetailTransferHistoryLogList", companyIdParameter, branchIdParameter, partIdParameter);
         }
     
-        public virtual ObjectResult<GetStockTransferInList_Result> GetStockTransferInList(string challanNo, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
-        {
-            var challanNoParameter = challanNo != null ?
-                new ObjectParameter("ChallanNo", challanNo) :
-                new ObjectParameter("ChallanNo", typeof(string));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
-        }
-    
         public virtual ObjectResult<GetStockAllocationToWorkOrderList_Result> GetStockAllocationToWorkOrderList(Nullable<int> companyId, string branchId, string workOrderNo, string partNumber, string partDesc, Nullable<int> allocatedBy, string filterType, Nullable<int> userId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var companyIdParameter = companyId.HasValue ?
@@ -3530,6 +3505,31 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceReport_Result>("GetInvoiceReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetStockTransferInList_Result> GetStockTransferInList(string challanNo, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var challanNoParameter = challanNo != null ?
+                new ObjectParameter("ChallanNo", challanNo) :
+                new ObjectParameter("ChallanNo", typeof(string));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStockTransferInList_Result>("GetStockTransferInList", challanNoParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     }
 }

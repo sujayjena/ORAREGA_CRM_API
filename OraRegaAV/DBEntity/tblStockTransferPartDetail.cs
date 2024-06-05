@@ -25,5 +25,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Reason { get; set; }
         public Nullable<bool> IsReverse { get; set; }
+        public Nullable<bool> IsDefective { get; set; }
+        public string Remark { get; set; }
     }
 }

@@ -2038,6 +2038,7 @@ namespace OraRegaAV.Helpers
                 foreach (var itm in parameters.PartsDetail)
                 {
                     var vPartDetails = db.tblPartDetails.Where(y => y.Id == itm.PartId).FirstOrDefault();
+                    var vItemStatus = itm.IsDefective == true ? "Defective" : "Good";
 
                     partDetailsListContent = $@"{partDetailsListContent}
                             <li>
@@ -2048,6 +2049,8 @@ namespace OraRegaAV.Helpers
                                     <li>Part Description - {vPartDetails.PartDescription}</li>
                                     <li>HSN Code - {db.tblHSNCodeGSTMappings.Where(x => x.Id == vPartDetails.HSNCodeId).Select(y => y.HSNCode).FirstOrDefault()}</li>
                                     <li>Oty - {vPartDetails.Quantity}</li>
+                                    <li>Status - {vItemStatus}</li>
+                                    <li>Remark - {itm.Remark}</li>
                                 </ul>
                                 <br />
                             </li>";

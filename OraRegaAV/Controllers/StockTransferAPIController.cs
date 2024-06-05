@@ -300,7 +300,10 @@ namespace OraRegaAV.Controllers
                                 StockPartStatus = vPartObj.StockPartStatus,
                                 PurchasePrice = vPartObj.PurchasePrice,
                                 VendorName = vPartObj.VendorName,
-                                TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
+                                TotalPrice = vPartObj.Quantity * vPartObj.SalePrice,
+
+                                IsDefective = Convert.ToBoolean(item.IsDefective),
+                                Remark = item.Remark
                             };
 
                             stockTransferResponse.PartsDetail.Add(vItemObj);
@@ -357,6 +360,9 @@ namespace OraRegaAV.Controllers
                             StockTransferStatusId = 1,
                             CreatedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0),
                             CreatedDate = DateTime.Now,
+
+                            IsDefective = item.IsDefective,
+                            Remark = item.Remark
                         };
 
                         db.tblStockTransferPartDetails.AddOrUpdate(vtblStockTransferPartDetails);

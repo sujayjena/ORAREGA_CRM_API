@@ -24,6 +24,9 @@ namespace OraRegaAV.Models
     {
         public string DocketNo { get; set; }
         public int PartId { get; set; }
+        [DefaultValue(false)]
+        public bool IsDefective { get; set; }
+        public string Remark { get; set; }
     }
 
     public class StockTransferOutSearchParameters
@@ -144,6 +147,10 @@ namespace OraRegaAV.Models
         public Nullable<decimal> PurchasePrice { get; set; }
         public string VendorName { get; set; }
         public Nullable<decimal> TotalPrice { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsDefective { get; set; }
+        public string Remark { get; set; }  
     }
 
     public class StockTransferIn_ApproveNRejest

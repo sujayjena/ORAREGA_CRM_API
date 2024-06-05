@@ -40,6 +40,8 @@ namespace OraRegaAV.DBEntity
         public string DocketNo { get; set; }
         public int Quantity { get; set; }
         public Nullable<int> StockTransferStatusId { get; set; }
+        public Nullable<bool> IsDefective { get; set; }
+        public string Remark { get; set; }
         public string StatusName { get; set; }
     }
 }
