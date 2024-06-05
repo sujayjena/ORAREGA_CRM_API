@@ -208,7 +208,8 @@ namespace OraRegaAV.Controllers
                                 ReceiveDate = vPartObj.ReceiveDate,
                                 DocketNo = vPartObj.DocketNo,
                                 Quantity = vPartObj.Quantity,
-                                StockPartStatus = vPartObj.StockPartStatus,
+                                //StockPartStatus = vPartObj.StockPartStatus,
+                                StockPartStatus = "DOA",
                                 PurchasePrice = vPartObj.PurchasePrice,
                                 VendorName = vPartObj.VendorName,
                                 TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
@@ -413,7 +414,8 @@ namespace OraRegaAV.Controllers
                                 ReceiveDate = vPartObj.ReceiveDate,
                                 DocketNo = vPartObj.DocketNo,
                                 Quantity = vPartObj.Quantity,
-                                StockPartStatus = vPartObj.StockPartStatus,
+                                //StockPartStatus = vPartObj.StockPartStatus,
+                                StockPartStatus = "Defective",
                                 PurchasePrice = vPartObj.PurchasePrice,
                                 VendorName = vPartObj.VendorName,
                                 TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
