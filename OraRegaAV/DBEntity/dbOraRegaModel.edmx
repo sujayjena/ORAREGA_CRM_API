@@ -8594,6 +8594,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <Property Type="Int32" Name="StatusId" Nullable="false" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
+		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="CreatedBy" Nullable="false" />
           <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
@@ -13998,6 +13999,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+				<ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />

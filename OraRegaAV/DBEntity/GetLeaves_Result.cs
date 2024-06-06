@@ -25,6 +25,7 @@ namespace OraRegaAV.DBEntity
         public bool IsActive { get; set; }
         public int StatusId { get; set; }
         public string StatusName { get; set; }
+        public Nullable<bool> IsApprovedDisabled { get; set; }
         public string CreatorName { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
