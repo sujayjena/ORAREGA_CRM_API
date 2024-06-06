@@ -862,7 +862,7 @@ namespace OraRegaAV.Controllers
                             {
                                 logDesc = "Quotation Status Accepted";
                             }
-                            else if (parameters.StatusId > 3)
+                            else if (parameters.StatusId == 3)
                             {
                                 logDesc = "Quotation Status Rejected";
                             }

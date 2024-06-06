@@ -213,6 +213,7 @@ namespace OraRegaAV.Models
         public GetCSOOffSiteDetails()
         {
             partsUsed_ReturnedDetails = new List<PartsUsed_ReturnedDetails>();
+            WOAccessoryList = new List<WOAccessory>();
         }
 
         public int Id { get; set; }
@@ -259,6 +260,7 @@ namespace OraRegaAV.Models
         public string CustomerSignature { get; set; }
 
         public List<PartsUsed_ReturnedDetails> partsUsed_ReturnedDetails { get; set; }
+        public List<WOAccessory> WOAccessoryList { get; set; }
     }
 
     public class PartsUsed_ReturnedDetails

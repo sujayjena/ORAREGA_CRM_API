@@ -2044,8 +2044,8 @@ namespace OraRegaAV.Controllers
                         var vtblEngineerVisitHistoryLog = db.tblEngineerVisitHistories.Where(x => x.Id == tbl.Id).FirstOrDefault();
                         if (vtblEngineerVisitHistoryLog != null)
                         {
-                            vtblEngineerVisitHistoryLog.VisitStatus = "Stop"; 
-                            
+                            vtblEngineerVisitHistoryLog.VisitStatus = "Stop";
+
                             await db.SaveChangesAsync();
 
                             #region Email Sending
@@ -2751,6 +2751,19 @@ namespace OraRegaAV.Controllers
                             InstalledPartCT = sInstalledPartCT,
                             PartStatusId = item.PartStatusId,
                             PartStatus = sPartStatus,
+                        });
+                    }
+
+                    //work order accessories
+                    var vWOAccessoriesList = db.tblWOAccessories.Where(x => x.WorkOrderId == workOrderObj.Id).ToList();
+                    foreach (var item in vWOAccessoriesList)
+                    {
+                        cSOObj.WOAccessoryList.Add(new WOAccessory
+                        {
+                            Id = item.Id,
+                            AccessoriesId = item.AccessoriesId,
+                            AccessoriesName = db.tblAccessories.Where(x=>x.Id==item.AccessoriesId).Select(x=>x.AccessoriesName).FirstOrDefault(),
+                            Remarks = item.Remarks
                         });
                     }
 
