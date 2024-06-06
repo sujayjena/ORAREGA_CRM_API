@@ -425,6 +425,19 @@ namespace OraRegaAV.Controllers.API
                         db.tblPaymentPartDetails.Add(vtblPaymentPartDetail);
                         db.SaveChanges();
                     }
+
+                    #region Log Details
+
+                    var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
+                    if (vQuotationObj != null)
+                    {
+                        string logDesc = string.Empty;
+                        logDesc = "Payment Status >> " + tbl.PaymentStatus;
+
+                        await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    }
+
+                    #endregion
                 }
                 else
                 {
@@ -467,7 +480,6 @@ namespace OraRegaAV.Controllers.API
                         }
 
                         #endregion
-
 
                         if (tbl.PaymentStatus == "PAYMENT_SUCCESS")
                         {
@@ -566,7 +578,7 @@ namespace OraRegaAV.Controllers.API
                             #region Log Details
 
                             string logDesc = string.Empty;
-                            logDesc = "Payment Status";
+                            logDesc = "Payment Status >> " + tbl.PaymentStatus;
 
                             await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                             #endregion
