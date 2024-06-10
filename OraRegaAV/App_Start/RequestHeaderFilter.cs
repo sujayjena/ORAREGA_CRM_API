@@ -1358,6 +1358,15 @@ namespace OraRegaAV.App_Start
 
                 operation.parameters.Add(new Parameter()
                 {
+                    name = "OrganizationName",
+                    @in = "formData",
+                    type = "string",
+                    @default = "",
+                    required = false,
+                });
+
+                operation.parameters.Add(new Parameter()
+                {
                     name = "ProductIssuePhotos",
                     @in = "formData",
                     type = "file",

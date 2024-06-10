@@ -148,6 +148,7 @@ namespace OraRegaAV.Controllers
                 parameters.ProdModelIfOther = postedForm["ProdModelIfOther"];
                 parameters.ProdDescriptionIfOther = postedForm["ProdDescriptionIfOther"];
                 parameters.CustomerSecondaryName = postedForm["CustomerSecondaryName"];
+                parameters.OrganizationName = postedForm["OrganizationName"];
 
                 jsonRemarks = HttpContext.Current.Request.Form["Remarks"];
                 jsonAccessories = HttpContext.Current.Request.Form["Accesiories"];
@@ -389,6 +390,7 @@ namespace OraRegaAV.Controllers
                     tblWorkOrder.ProdModelIfOther = parameters.ProdModelIfOther;
                     tblWorkOrder.ProdDescriptionIfOther = parameters.ProdDescriptionIfOther;
                     tblWorkOrder.CustomerSecondaryName = parameters.CustomerSecondaryName;
+                    tblWorkOrder.OrganizationName = parameters.OrganizationName;
 
                     db.tblWorkOrders.Add(tblWorkOrder);
 
@@ -460,6 +462,7 @@ namespace OraRegaAV.Controllers
                     tblWorkOrder.ProdModelIfOther = parameters.ProdModelIfOther;
                     tblWorkOrder.ProdDescriptionIfOther = parameters.ProdDescriptionIfOther;
                     tblWorkOrder.CustomerSecondaryName = parameters.CustomerSecondaryName;
+                    tblWorkOrder.OrganizationName = parameters.OrganizationName;
 
                     _response.Message = $"Work Order details updated successfully";
                 }
