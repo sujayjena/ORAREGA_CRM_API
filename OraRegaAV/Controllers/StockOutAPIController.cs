@@ -193,29 +193,32 @@ namespace OraRegaAV.Controllers
                             var vTotal = new ObjectParameter("Total", typeof(int));
                             var vPartObj = db.GetPartDetailList(item.PartId, 0, "", "", 0, 0, 0, vTotal).ToList().FirstOrDefault();
 
-                            var vItemObj = new StockOutPartDetailResponse()
+                            if (vPartObj != null)
                             {
-                                Id = vPartObj.Id,
-                                UniqueCode = vPartObj.UniqueCode,
-                                PartNumber = vPartObj.PartNumber,
-                                PartName = vPartObj.PartName,
-                                PartDescription = vPartObj.PartDescription,
-                                HSNCode = vPartObj.HSNCode,
-                                CTSerialNo = vPartObj.CTSerialNo,
-                                //PartStatus = vPartObj.PartStatus,
-                                PartStatus = "DOA",
-                                SalePrice = vPartObj.SalePrice,
-                                ReceiveFrom = vPartObj.ReceiveFrom,
-                                ReceiveDate = vPartObj.ReceiveDate,
-                                DocketNo = vPartObj.DocketNo,
-                                Quantity = vPartObj.Quantity,
-                                StockPartStatus = vPartObj.StockPartStatus,
-                                PurchasePrice = vPartObj.PurchasePrice,
-                                VendorName = vPartObj.VendorName,
-                                TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
-                            };
+                                var vItemObj = new StockOutPartDetailResponse()
+                                {
+                                    Id = vPartObj.Id,
+                                    UniqueCode = vPartObj.UniqueCode,
+                                    PartNumber = vPartObj.PartNumber,
+                                    PartName = vPartObj.PartName,
+                                    PartDescription = vPartObj.PartDescription,
+                                    HSNCode = vPartObj.HSNCode,
+                                    CTSerialNo = vPartObj.CTSerialNo,
+                                    //PartStatus = vPartObj.PartStatus,
+                                    PartStatus = "DOA",
+                                    SalePrice = vPartObj.SalePrice,
+                                    ReceiveFrom = vPartObj.ReceiveFrom,
+                                    ReceiveDate = vPartObj.ReceiveDate,
+                                    DocketNo = vPartObj.DocketNo,
+                                    Quantity = vPartObj.Quantity,
+                                    StockPartStatus = vPartObj.StockPartStatus,
+                                    PurchasePrice = vPartObj.PurchasePrice,
+                                    VendorName = vPartObj.VendorName,
+                                    TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
+                                };
 
-                            stockTransferResponse.PartDetail.Add(vItemObj);
+                                stockTransferResponse.PartDetail.Add(vItemObj);
+                            }
                         }
                     }
                 }
@@ -398,30 +401,32 @@ namespace OraRegaAV.Controllers
                         {
                             var vTotal = new ObjectParameter("Total", typeof(int));
                             var vPartObj = db.GetPartDetailList(item.PartId, 0, "", "", 0, 0, 0, vTotal).ToList().FirstOrDefault();
-
-                            var vItemObj = new StockOutPartDetailResponse()
+                            if (vPartObj != null)
                             {
-                                Id = vPartObj.Id,
-                                UniqueCode = vPartObj.UniqueCode,
-                                PartNumber = vPartObj.PartNumber,
-                                PartName = vPartObj.PartName,
-                                PartDescription = vPartObj.PartDescription,
-                                HSNCode = vPartObj.HSNCode,
-                                CTSerialNo = vPartObj.CTSerialNo,
-                                //PartStatus = vPartObj.PartStatus,
-                                PartStatus = "Defective",
-                                SalePrice = vPartObj.SalePrice,
-                                ReceiveFrom = vPartObj.ReceiveFrom,
-                                ReceiveDate = vPartObj.ReceiveDate,
-                                DocketNo = vPartObj.DocketNo,
-                                Quantity = vPartObj.Quantity,
-                                StockPartStatus = vPartObj.StockPartStatus,
-                                PurchasePrice = vPartObj.PurchasePrice,
-                                VendorName = vPartObj.VendorName,
-                                TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
-                            };
+                                var vItemObj = new StockOutPartDetailResponse()
+                                {
+                                    Id = vPartObj.Id,
+                                    UniqueCode = vPartObj.UniqueCode,
+                                    PartNumber = vPartObj.PartNumber,
+                                    PartName = vPartObj.PartName,
+                                    PartDescription = vPartObj.PartDescription,
+                                    HSNCode = vPartObj.HSNCode,
+                                    CTSerialNo = vPartObj.CTSerialNo,
+                                    //PartStatus = vPartObj.PartStatus,
+                                    PartStatus = "Defective",
+                                    SalePrice = vPartObj.SalePrice,
+                                    ReceiveFrom = vPartObj.ReceiveFrom,
+                                    ReceiveDate = vPartObj.ReceiveDate,
+                                    DocketNo = vPartObj.DocketNo,
+                                    Quantity = vPartObj.Quantity,
+                                    StockPartStatus = vPartObj.StockPartStatus,
+                                    PurchasePrice = vPartObj.PurchasePrice,
+                                    VendorName = vPartObj.VendorName,
+                                    TotalPrice = vPartObj.Quantity * vPartObj.SalePrice
+                                };
 
-                            stockTransferResponse.PartDetail.Add(vItemObj);
+                                stockTransferResponse.PartDetail.Add(vItemObj);
+                            }
                         }
                     }
                 }
