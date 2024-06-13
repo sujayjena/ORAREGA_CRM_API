@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -1491,14 +1492,17 @@ namespace OraRegaAV.Helpers
                     var vAttachmentFilePathCommaSeparated = vtblClaimSettlementItemAttachmentsObj != null ? String.Join(",", vtblClaimSettlementItemAttachmentsObj.Select(m => m.FilePath)) : "";
                     var vClaimTypesObj = db.tblClaimTypes.Where(x => x.Id == itm.ClaimTypeId).Select(y => y.Type).FirstOrDefault();
 
+                    string vFromDate = itm.FromDate != null ? Convert.ToDateTime(itm.FromDate).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) : "";
+                    string vToDate = itm.ToDate != null ? Convert.ToDateTime(itm.ToDate).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) : "";
+
                     claimSettlementItemListContent = $@"{claimSettlementItemListContent}
                             <li>
                                 <ul>
                                     <li>Engineer name - {engName}</li>
                                     <li>Claim Id - {parameters.ClaimId}</li>
                                     <li>Claim Type - {vClaimTypesObj}</li>
-                                    <li>From date - {itm.FromDate}</li>
-                                    <li>To Date  - {itm.ToDate}</li>
+                                    <li>From date - {vFromDate}</li>
+                                    <li>To Date  - {vToDate}</li>
                                     <li>Amount - {itm.Amount}</li>
                                     <li>Remark - {itm.Remark}</
                                     <li>Attachment - {vAttachmentFilePathCommaSeparated}</li>
