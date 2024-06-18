@@ -567,13 +567,17 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLeaveDetailsById_Result>("GetLeaveDetailsById", idParameter);
         }
     
-        public virtual ObjectResult<GetBranchListByCompany_Result> GetBranchListByCompany(Nullable<int> id)
+        public virtual ObjectResult<GetBranchListByCompany_Result> GetBranchListByCompany(Nullable<int> id, Nullable<int> userId)
         {
             var idParameter = id.HasValue ?
                 new ObjectParameter("Id", id) :
                 new ObjectParameter("Id", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBranchListByCompany_Result>("GetBranchListByCompany", idParameter);
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBranchListByCompany_Result>("GetBranchListByCompany", idParameter, userIdParameter);
         }
     
         public virtual ObjectResult<GetBranchListByState_Result> GetBranchListByState(Nullable<int> id)

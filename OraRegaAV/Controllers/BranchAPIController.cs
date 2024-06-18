@@ -187,7 +187,9 @@ namespace OraRegaAV.Controllers.API
             List<GetBranchListByCompany_Result> branchList;
             try
             {
-                branchList = await Task.Run(() => db.GetBranchListByCompany(companyId).ToList());
+                var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+                branchList = await Task.Run(() => db.GetBranchListByCompany(companyId, userId).ToList());
 
                 _response.Data = branchList;
             }
