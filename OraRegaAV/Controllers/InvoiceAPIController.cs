@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Office2016.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using OraRegaAV.Controllers.API;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
@@ -350,6 +351,28 @@ namespace OraRegaAV.Controllers
 
                 foreach (var item in vQuotationObjList)
                 {
+                    string sAddressBranchOffice = "";
+                    string sBillToAddress = "";
+
+                    var vTotalFrom = new ObjectParameter("Total", typeof(int));
+                    var vBranchOfficeAddressDetail = db.GetBranchList(0, item.BranchId.ToString(), "", 0, 0, vTotalFrom, 0).ToList().FirstOrDefault();
+                    if (vBranchOfficeAddressDetail != null)
+                    {
+                        sAddressBranchOffice = vBranchOfficeAddressDetail.AddressLine1 + ", " + vBranchOfficeAddressDetail.StateName + ", " + vBranchOfficeAddressDetail.CityName + ", " + vBranchOfficeAddressDetail.AreaName + ", " + vBranchOfficeAddressDetail.Pincode;
+                    }
+
+                    var vtblPermanentAddressObj = db.tblPermanentAddresses.Where(w => w.Id == item.ServiceAddressId).FirstOrDefault();
+                    if (vtblPermanentAddressObj != null)
+                    {
+                        var sState = db.tblStates.Where(s => s.Id == vtblPermanentAddressObj.StateId).Select(a => a.StateName).FirstOrDefault();
+                        var sCity = db.tblCities.Where(s => s.Id == vtblPermanentAddressObj.CityId).Select(a => a.CityName).FirstOrDefault();
+                        var sArea = db.tblAreas.Where(s => s.Id == vtblPermanentAddressObj.AreaId).Select(a => a.AreaName).FirstOrDefault();
+                        var sPin = db.tblPincodes.Where(s => s.Id == vtblPermanentAddressObj.PinCodeId).Select(a => a.Pincode).FirstOrDefault();
+
+                        sBillToAddress = vtblPermanentAddressObj.Address + ", " + sState + ", " + sCity + ", " + sArea + ", " + sPin;
+                    }
+
+
                     var vItemObj = new GetInvoiceList_Response()
                     {
                         Id = item.Id,
@@ -362,12 +385,14 @@ namespace OraRegaAV.Controllers
                         ProductSerialNumber = item.ProductSerialNumber,
                         BranchId = item.BranchId,
                         BranchName = item.BranchName,
-                        BranchOfficeAddress = item.BranchOfficeAddress,
+
+                        BranchOfficeAddress = sAddressBranchOffice,
                         BranchGSTNumber = item.BranchGSTNumber,
                         StateCode = item.StateCode,
                         CustomerGstNumber = item.CustomerGstNumber,
                         ServiceAddressId = item.ServiceAddressId,
-                        BillToAddress = item.BillToAddress,
+
+                        BillToAddress = sBillToAddress,
                         CustomerName = item.CustomerName,
                         ContactPerson = item.ContactPerson,
                         CustomerEmail = item.CustomerEmail,

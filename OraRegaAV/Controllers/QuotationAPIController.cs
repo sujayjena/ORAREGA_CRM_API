@@ -440,7 +440,7 @@ namespace OraRegaAV.Controllers
 
         [HttpPost]
         [Route("api/QuotationAPI/QuotationList")]
-        public Response QuotationList(QuotationSearchParameters parameters)
+        public async Task<Response> QuotationList(QuotationSearchParameters parameters)
         {
             List<GetQuotationList_Result> quotationList_Result = new List<GetQuotationList_Result>();
 
@@ -449,7 +449,7 @@ namespace OraRegaAV.Controllers
                 var vTotal = new ObjectParameter("Total", typeof(int));
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
-                quotationList_Result = db.GetQuotationList(parameters.CompanyId, parameters.BranchId, parameters.QuotationNumber, parameters.WorkOrderNumber, parameters.StatusId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+                quotationList_Result = await Task.Run(() => db.GetQuotationList(parameters.CompanyId, parameters.BranchId, parameters.QuotationNumber, parameters.WorkOrderNumber, parameters.StatusId, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList());
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = quotationList_Result;
