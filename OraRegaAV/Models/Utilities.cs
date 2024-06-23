@@ -232,7 +232,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var WorkOrderNumber = obj.WorkOrderNumber;
-                    WorkOrderNo = "WO-" + (Convert.ToInt32(WorkOrderNumber.Substring(7, WorkOrderNumber.Length - 7)) + 1).ToString("D7");
+                    WorkOrderNo = "WO-" + (Convert.ToInt32(WorkOrderNumber.Substring(3, WorkOrderNumber.Length - 3)) + 1).ToString("D7");
                 }
             }
             return WorkOrderNo;
@@ -252,7 +252,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var SalesOrderNumber = obj.SalesOrderNumber;
-                    SalesOrderNo = "SO-" + (Convert.ToInt32(SalesOrderNumber.Substring(7, SalesOrderNumber.Length - 7)) + 1).ToString("D7");
+                    SalesOrderNo = "SO-" + (Convert.ToInt32(SalesOrderNumber.Substring(3, SalesOrderNumber.Length - 3)) + 1).ToString("D7");
                 }
             }
             return SalesOrderNo;
@@ -272,7 +272,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var prevUniqueCode = obj.UniqueCode;
-                    uniqueCode = "STN" + (Convert.ToInt32(prevUniqueCode.Substring(7, prevUniqueCode.Length - 7)) + 1).ToString("D7");
+                    uniqueCode = "STN" + (Convert.ToInt32(prevUniqueCode.Substring(3, prevUniqueCode.Length - 3)) + 1).ToString("D7");
                 }
             }
             return uniqueCode;
@@ -304,7 +304,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var vClaimIds = obj.ClaimId;
-                    vClaimId = "CLM" + (Convert.ToInt32(vClaimIds.Substring(7, vClaimIds.Length - 7)) + 1).ToString("D7");
+                    vClaimId = "CLM" + (Convert.ToInt32(vClaimIds.Substring(3, vClaimIds.Length - 3)) + 1).ToString("D7");
                 }
             }
             return vClaimId;
@@ -340,7 +340,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var vClaimIds = obj.ChallanNo;
-                    vClaimId = "CHN" + (Convert.ToInt32(vClaimIds.Substring(7, vClaimIds.Length - 7)) + 1).ToString("D7");
+                    vClaimId = "CHN" + (Convert.ToInt32(vClaimIds.Substring(3, vClaimIds.Length - 3)) + 1).ToString("D7");
                 }
             }
             return vClaimId;
@@ -359,7 +359,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var QuotationNumber = obj.QuotationNumber;
-                    quotationNo = "QPI" + (Convert.ToInt32(QuotationNumber.Substring(7, QuotationNumber.Length - 7)) + 1).ToString("D7");
+                    quotationNo = "QPI" + (Convert.ToInt32(QuotationNumber.Substring(3, QuotationNumber.Length - 3)) + 1).ToString("D7");
                 }
             }
             return quotationNo;
@@ -399,13 +399,8 @@ namespace OraRegaAV.Models
                 var obj = db.tblInvoices.Where(x=> x.InvoiceNumber.Contains(stateShortCode)).OrderByDescending(x => x.Id).FirstOrDefault();
                 if (obj != null)
                 {
-                    var InvoiceNumber = obj.InvoiceNumber;
-                    invoiceNo = stateShortCode + "I" + fYear + "-" + (Convert.ToInt32(InvoiceNumber.Substring(7, InvoiceNumber.Length - 7)) + 1).ToString("D7");
-                }
-                else
-                {
-                    var InvoiceNumber = invoiceNo;
-                    invoiceNo = stateShortCode + "I" + fYear + "-" + (Convert.ToInt32(InvoiceNumber.Substring(7, InvoiceNumber.Length - 7)) + 1).ToString("D7");
+                    var InvoiceNumber = obj.InvoiceNumber.Split('-')[1];
+                    invoiceNo = stateShortCode + "I" + fYear + "-" + (Convert.ToInt32(InvoiceNumber) + 1).ToString("D7");
                 }
             }
             return invoiceNo;
@@ -434,7 +429,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var vClaimIds = obj.ExpenseId;
-                    vClaimId = "EXP" + (Convert.ToInt32(vClaimIds.Substring(7, vClaimIds.Length - 7)) + 1).ToString("D7");
+                    vClaimId = "EXP" + (Convert.ToInt32(vClaimIds.Substring(3, vClaimIds.Length - 3)) + 1).ToString("D7");
                 }
             }
             return vClaimId;
@@ -454,7 +449,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var vClaimIds = obj.ChallanNo;
-                    vClaimId = "DOA" + (Convert.ToInt32(vClaimIds.Substring(7, vClaimIds.Length - 7)) + 1).ToString("D7");
+                    vClaimId = "DOA" + (Convert.ToInt32(vClaimIds.Substring(3, vClaimIds.Length - 3)) + 1).ToString("D7");
                 }
             }
             return vClaimId;
@@ -470,7 +465,7 @@ namespace OraRegaAV.Models
                 if (obj != null)
                 {
                     var vClaimIds = obj.ChallanNo;
-                    vClaimId = "DFC" + (Convert.ToInt32(vClaimIds.Substring(7, vClaimIds.Length - 7)) + 1).ToString("D7");
+                    vClaimId = "DFC" + (Convert.ToInt32(vClaimIds.Substring(3, vClaimIds.Length - 3)) + 1).ToString("D7");
                 }
             }
             return vClaimId;
