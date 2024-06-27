@@ -33,16 +33,17 @@ namespace OraRegaAV.DBEntity
         public string ContactPerson { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerMobile { get; set; }
-        public Nullable<decimal> AmountBeforeTax { get; set; }
-        public Nullable<int> CGSTPerct { get; set; }
-        public Nullable<decimal> CGSTValue { get; set; }
-        public Nullable<int> SGSTPerct { get; set; }
-        public Nullable<decimal> SGSTValue { get; set; }
-        public Nullable<int> IGSTPerct { get; set; }
-        public Nullable<decimal> IGSTValue { get; set; }
-        public Nullable<decimal> TotalDiscAmt { get; set; }
-        public Nullable<decimal> GrossAmountIncludeTax { get; set; }
-        public Nullable<decimal> AmountPaidAfter { get; set; }
+        public decimal AmountBeforeTax { get; set; }
+        public int CGSTPerct { get; set; }
+        public decimal CGSTValue { get; set; }
+        public int SGSTPerct { get; set; }
+        public decimal SGSTValue { get; set; }
+        public int IGSTPerct { get; set; }
+        public decimal IGSTValue { get; set; }
+        public decimal TotalDiscAmt { get; set; }
+        public decimal GrossAmountIncludeTax { get; set; }
+        public decimal AmountPaidAfter { get; set; }
+        public string IsInvoiceGenerated { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatorName { get; set; }
     }

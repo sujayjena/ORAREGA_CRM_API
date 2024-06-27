@@ -315,6 +315,7 @@ namespace OraRegaAV.Controllers
         public Response InvoiceList(InvoiceSearchParameters parameters)
         {
             List<GetInvoiceList_Result> invoiceList_Result = new List<GetInvoiceList_Result>();
+            FileManager fileManager = new FileManager();
 
             try
             {
@@ -322,6 +323,11 @@ namespace OraRegaAV.Controllers
                 var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
 
                 invoiceList_Result = db.GetInvoiceList(parameters.CompanyId, parameters.BranchId, parameters.InvoiceNumber, parameters.WorkOrderNumber, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal, userId).ToList();
+
+                foreach (var item in invoiceList_Result)
+                {
+                    item.IsInvoiceGenerated = Convert.ToString(fileManager.CheckInvoice(item.InvoiceNumber, HttpContext.Current));
+                }
 
                 _response.TotalCount = Convert.ToInt32(vTotal.Value);
                 _response.Data = invoiceList_Result;

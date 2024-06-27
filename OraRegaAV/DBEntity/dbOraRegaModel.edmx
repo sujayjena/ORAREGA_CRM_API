@@ -4540,7 +4540,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="GetBranchListByCompany" ReturnType="Collection(dbOraRegaModel.GetBranchListByCompany_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetBranchListByState" ReturnType="Collection(dbOraRegaModel.GetBranchListByState_Result)">
@@ -5325,17 +5325,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           </FunctionImport>
           <EntitySet Name="tblOTPs" EntityType="dbOraRegaModel.tblOTP" />
           <EntitySet Name="tblSMSLogHistories" EntityType="dbOraRegaModel.tblSMSLogHistory" />
-           <FunctionImport Name="GetInvoiceList" ReturnType="Collection(dbOraRegaModel.GetInvoiceList_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="BranchId" Mode="In" Type="String" />
-            <Parameter Name="InvoiceNumber" Mode="In" Type="String" />
-            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
-            <Parameter Name="SearchValue" Mode="In" Type="String" />
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-            <Parameter Name="PageNo" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
           <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
             <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" />
@@ -5534,7 +5523,18 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-               </EntityContainer>
+          <FunctionImport Name="GetInvoiceList" ReturnType="Collection(dbOraRegaModel.GetInvoiceList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="String" />
+            <Parameter Name="InvoiceNumber" Mode="In" Type="String" />
+            <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+                </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Text" Nullable="true" MaxLength="154" />
@@ -8664,40 +8664,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
-         <ComplexType Name="GetInvoiceList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="DateTime" Name="InvoiceDate" Nullable="false" Precision="23" />
-          <Property Type="String" Name="InvoiceNumber" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="QuotationId" Nullable="true" />
-          <Property Type="String" Name="QuotationNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
-          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="BranchId" Nullable="true" />
-          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="BranchOfficeAddress" Nullable="true" />
-          <Property Type="String" Name="BranchGSTNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="StateCode" Nullable="true" />
-          <Property Type="String" Name="CustomerGstNumber" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
-          <Property Type="String" Name="BillToAddress" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ContactPerson" Nullable="true" MaxLength="101" />
-          <Property Type="String" Name="CustomerEmail" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="CustomerMobile" Nullable="true" MaxLength="20" />
-          <Property Type="Decimal" Name="AmountBeforeTax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="CGSTPerct" Nullable="true" />
-          <Property Type="Decimal" Name="CGSTValue" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="SGSTPerct" Nullable="true" />
-          <Property Type="Decimal" Name="SGSTValue" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="IGSTPerct" Nullable="true" />
-          <Property Type="Decimal" Name="IGSTValue" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="TotalDiscAmt" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="GrossAmountIncludeTax" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Decimal" Name="AmountPaidAfter" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <EntityType Name="tblQuotationServiceChargeDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -9740,6 +9706,41 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Boolean" Name="IsDefective" Nullable="true" />
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="GetInvoiceList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="DateTime" Name="InvoiceDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="InvoiceNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="QuotationId" Nullable="true" />
+          <Property Type="String" Name="QuotationNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="WorkOrderId" Nullable="false" />
+          <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="BranchId" Nullable="true" />
+          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BranchOfficeAddress" Nullable="true" />
+          <Property Type="String" Name="BranchGSTNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="StateCode" Nullable="true" />
+          <Property Type="String" Name="CustomerGstNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ServiceAddressId" Nullable="false" />
+          <Property Type="String" Name="BillToAddress" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="ContactPerson" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="CustomerEmail" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CustomerMobile" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="AmountBeforeTax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="CGSTPerct" Nullable="false" />
+          <Property Type="Decimal" Name="CGSTValue" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="SGSTPerct" Nullable="false" />
+          <Property Type="Decimal" Name="SGSTValue" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="IGSTPerct" Nullable="false" />
+          <Property Type="Decimal" Name="IGSTValue" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalDiscAmt" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="GrossAmountIncludeTax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AmountPaidAfter" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="IsInvoiceGenerated" Nullable="false" MaxLength="5" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -14089,45 +14090,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           <FunctionImportMapping FunctionImportName="GetInvoiceList" FunctionName="dbOraRegaModel.Store.GetInvoiceList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetInvoiceList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
-                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
-                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
-                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
-                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
-                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
-                <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
-                <ScalarProperty Name="BranchOfficeAddress" ColumnName="BranchOfficeAddress" />
-                <ScalarProperty Name="BranchGSTNumber" ColumnName="BranchGSTNumber" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="CustomerGstNumber" ColumnName="CustomerGstNumber" />
-                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
-                <ScalarProperty Name="BillToAddress" ColumnName="BillToAddress" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
-                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
-                <ScalarProperty Name="CustomerMobile" ColumnName="CustomerMobile" />
-                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
-                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
-                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
-                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
-                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
-                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
-                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
-                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
-                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
-                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="tblQuotationServiceChargeDetails">
+           <EntitySetMapping Name="tblQuotationServiceChargeDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetail">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetails">
                 <ScalarProperty Name="GSTType" ColumnName="GSTType" />
@@ -15296,7 +15259,46 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetInvoiceList" FunctionName="dbOraRegaModel.Store.GetInvoiceList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetInvoiceList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="QuotationId" ColumnName="QuotationId" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="WorkOrderId" ColumnName="WorkOrderId" />
+                <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
+                <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="BranchOfficeAddress" ColumnName="BranchOfficeAddress" />
+                <ScalarProperty Name="BranchGSTNumber" ColumnName="BranchGSTNumber" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="CustomerGstNumber" ColumnName="CustomerGstNumber" />
+                <ScalarProperty Name="ServiceAddressId" ColumnName="ServiceAddressId" />
+                <ScalarProperty Name="BillToAddress" ColumnName="BillToAddress" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+                <ScalarProperty Name="CustomerMobile" ColumnName="CustomerMobile" />
+                <ScalarProperty Name="AmountBeforeTax" ColumnName="AmountBeforeTax" />
+                <ScalarProperty Name="CGSTPerct" ColumnName="CGSTPerct" />
+                <ScalarProperty Name="CGSTValue" ColumnName="CGSTValue" />
+                <ScalarProperty Name="SGSTPerct" ColumnName="SGSTPerct" />
+                <ScalarProperty Name="SGSTValue" ColumnName="SGSTValue" />
+                <ScalarProperty Name="IGSTPerct" ColumnName="IGSTPerct" />
+                <ScalarProperty Name="IGSTValue" ColumnName="IGSTValue" />
+                <ScalarProperty Name="TotalDiscAmt" ColumnName="TotalDiscAmt" />
+                <ScalarProperty Name="GrossAmountIncludeTax" ColumnName="GrossAmountIncludeTax" />
+                <ScalarProperty Name="AmountPaidAfter" ColumnName="AmountPaidAfter" />
+                <ScalarProperty Name="IsInvoiceGenerated" ColumnName="IsInvoiceGenerated" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

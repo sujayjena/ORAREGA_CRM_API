@@ -360,6 +360,24 @@ namespace OraRegaAV.Helpers
             }
         }
 
+        public bool CheckInvoice(string InvoiceNumber, HttpContext context)
+        {
+            try
+            {
+                string folderPath = $"{context.Server.MapPath("~")}\\Uploads\\Invoice\\" + InvoiceNumber + ".pdf";
+
+                if (File.Exists(folderPath))
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return false;
+        }
+
         public string GetPartDetailTemplate(HttpContext context)
         {
             string base64String = "";
