@@ -455,34 +455,34 @@ namespace OraRegaAV.Controllers.API
 
                         db.SaveChanges();
 
-                        #region Quotation Table Amount Update
-
-                        var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
-                        if (vQuotationObj != null)
-                        {
-                            if (parameters.paymentRequest.PaymentIsAdvance == true)
-                            {
-                                vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
-                                vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
-
-                                vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - tblPaymentsObj.Amount);
-
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
-
-                                vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - vQuotationObj.AmountPaidAfter);
-
-                                db.SaveChanges();
-                            }
-                        }
-
-                        #endregion
-
                         if (tbl.PaymentStatus == "PAYMENT_SUCCESS")
                         {
+                            #region Quotation Table Amount Update
+
+                            var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
+                            if (vQuotationObj != null)
+                            {
+                                if (parameters.paymentRequest.PaymentIsAdvance == true)
+                                {
+                                    vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
+                                    vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
+
+                                    vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - tblPaymentsObj.Amount);
+
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
+
+                                    vQuotationObj.OutstandingAmount = (vQuotationObj.GrossAmountIncludeTax - vQuotationObj.AmountPaidAfter);
+
+                                    db.SaveChanges();
+                                }
+                            }
+
+                            #endregion
+
                             #region Save Notification
 
                             var vQuotationNotifyObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
