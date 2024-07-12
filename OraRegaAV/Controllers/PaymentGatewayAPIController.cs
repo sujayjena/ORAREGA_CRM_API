@@ -40,6 +40,8 @@ namespace OraRegaAV.Controllers.API
 
         private string PhonePe_Environment { get; set; }
         private string PhonePe_EnvironmentEndPoint { get; set; }
+        private string PhonePe_PaymentStatusEnvironmentEndPoint { get; set; }
+
         private string PhonePe_RedirectUrl { get; set; }
         private string PhonePe_CallbackUrl { get; set; }
 
@@ -58,6 +60,7 @@ namespace OraRegaAV.Controllers.API
 
             this.PhonePe_Environment = ConfigurationManager.AppSettings["PhonePe_Environment"];
             this.PhonePe_EnvironmentEndPoint = ConfigurationManager.AppSettings["PhonePe_EnvironmentEndPoint"];
+            this.PhonePe_PaymentStatusEnvironmentEndPoint = ConfigurationManager.AppSettings["PhonePe_PaymentStatusEnvironmentEndPoint"];
 
             this.PhonePe_RedirectUrl = ConfigurationManager.AppSettings["PhonePe_RedirectUrl"];
             this.PhonePe_CallbackUrl = ConfigurationManager.AppSettings["PhonePe_CallbackUrl"];
@@ -103,7 +106,7 @@ namespace OraRegaAV.Controllers.API
                     merchantUserId = PhonePe_MerchantUserId,
                     amount = paymentRequest.Amount,
                     redirectUrl = PhonePe_RedirectUrl,
-                    redirectMode = "POST",
+                    redirectMode = "REDIRECT",
                     callbackUrl = PhonePe_CallbackUrl,
                     mobileNumber = paymentRequest.MobileNumber,
                 };
@@ -214,10 +217,20 @@ namespace OraRegaAV.Controllers.API
                 //ServicePointManager.Expect100Continue = true;
                 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+                #region Environment
+
+                //var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+                var PhonePeGatewayURL = PhonePe_Environment;
 
                 var httpClient = new HttpClient();
-                var uri = new Uri($"{PhonePeGatewayURL}/pg/v1/status/{phonePePayment.MERCHANTID}/{phonePePayment.TransactionId}");
+                var uri = new Uri($"{PhonePeGatewayURL + PhonePe_PaymentStatusEnvironmentEndPoint + "/" + phonePePayment.MERCHANTID + "/" + phonePePayment.TransactionId}");
+
+                #endregion
+
+                //var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+                //var httpClient = new HttpClient();
+                //var uri = new Uri($"{PhonePeGatewayURL}/pg/v1/status/{phonePePayment.MERCHANTID}/{phonePePayment.TransactionId}");
+
 
                 // Add headers
                 httpClient.DefaultRequestHeaders.Add("accept", "application/json");
@@ -228,7 +241,10 @@ namespace OraRegaAV.Controllers.API
 
                 // Send POST request
                 var response = await httpClient.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
+                if (response.StatusCode != HttpStatusCode.BadRequest)
+                {
+                    response.EnsureSuccessStatusCode();
+                }
 
                 // Read and deserialize the response content
                 var responseContent = await response.Content.ReadAsStringAsync();
@@ -442,7 +458,7 @@ namespace OraRegaAV.Controllers.API
                 else
                 {
                     // Update Payment
-                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == parameters.paymentRequest.QuotationNumber && c.MerchantTransactionId == parameters.paymentRequest.MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == parameters.paymentRequest.QuotationNumber && c.MerchantTransactionId == parameters.paymentRequest.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                     if (tblPaymentsObj != null)
                     {
                         tbl.IsSuccess = parameters.paymentResponse.IsSuccess;
