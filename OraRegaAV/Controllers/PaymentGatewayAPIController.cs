@@ -515,7 +515,7 @@ namespace OraRegaAV.Controllers.API
                                                            Payment has been received
                                                            Work order No - {0}
                                                            Quotation No - {1}
-                                                           Transaction id - {2}", vWorkOrderObj.WorkOrderNumber, vQuotationNotifyObj.QuotationNumber, parameters.paymentRequest.MerchantTransactionId);
+                                                           Transaction id - {2}", vWorkOrderObj.WorkOrderNumber, vQuotationNotifyObj.QuotationNumber, tblPaymentsObj.TransactionId);
 
                                     var vRoleObj_Logistics = db.tblRoles.Where(w => w.RoleName == "Accountant").FirstOrDefault();
                                     if (vRoleObj_Logistics != null)
@@ -534,7 +534,7 @@ namespace OraRegaAV.Controllers.API
                                                 EmployeeId = itemEmployee.Id,
                                                 EmployeeMessage = NotifyMessage,
                                                 RefValue1 = vQuotationNotifyObj.QuotationNumber,
-                                                RefValue2 = tblPaymentsObj.MerchantTransactionId,
+                                                RefValue2 = tblPaymentsObj.TransactionId,
                                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                                 CreatedOn = DateTime.Now,
                                             };
