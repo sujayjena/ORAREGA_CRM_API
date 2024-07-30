@@ -35,52 +35,6 @@
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="IsPermanentdDeactive" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="OLD_tblWorkOrderEnquiry">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CustomerName" Type="nvarchar" MaxLength="50" />
-          <Property Name="MobileNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmailAdderss" Type="nvarchar" MaxLength="50" />
-          <Property Name="AlternateNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="GSTNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="PanNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProductTypeId" Type="int" />
-          <Property Name="ProductId" Type="int" />
-          <Property Name="ProductNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProductDescriptionId" Type="int" />
-          <Property Name="ProductSerialNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="WarrantyTypeId" Type="int" />
-          <Property Name="WarrantyNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="CountryId" Type="int" />
-          <Property Name="OperatingSystemId" Type="int" />
-          <Property Name="Address" Type="nvarchar(max)" />
-          <Property Name="StateId" Type="int" />
-          <Property Name="CityId" Type="int" />
-          <Property Name="PincodeId" Type="int" />
-          <Property Name="IssueDescriptionId" Type="int" />
-          <Property Name="IssueReported" Type="nvarchar(max)" />
-          <Property Name="SourceChannelId" Type="int" />
-          <Property Name="EnquiryStatus" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreatedBy" Type="int" />
-          <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="int" />
-          <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="ProductModelId" Type="int" />
-          <Property Name="EnquiryIssueDescription" Type="varchar" MaxLength="300" />
-          <Property Name="AreaId" Type="int" />
-          <Property Name="VisitingAddress" Type="varchar" MaxLength="500" />
-          <Property Name="VisitStateId" Type="int" />
-          <Property Name="VisitCityId" Type="int" />
-          <Property Name="VisitAreaId" Type="int" />
-          <Property Name="VisitPincodeId" Type="int" />
-          <Property Name="CompanyId" Type="int" />
-          <Property Name="BranchId" Type="int" />
-          <Property Name="OrganizationName" Type="varchar" MaxLength="100" />
-        </EntityType>
         <EntityType Name="RoleMaster_Employee_Permission">
           <Key>
             <PropertyRef Name="EmployeePermissionId" />
@@ -140,6 +94,19 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblAMCReminderEmail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="AMCYear" Type="nvarchar" MaxLength="50" />
+          <Property Name="AMCStartDate_EndDate_LastEmailDate" Type="nvarchar" MaxLength="200" />
+          <Property Name="AMCRemainingDays" Type="int" />
+          <Property Name="AMCReminderCount" Type="int" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblArea">
           <Key>
@@ -368,6 +335,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="GSTNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="PANNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="BranchAdd" Type="int" Nullable="false" />
+          <Property Name="AmcMonth" Type="int" />
+          <Property Name="AmcStartDate" Type="datetime" />
+          <Property Name="AmcEndDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tblCompanyType">
           <Key>
@@ -902,21 +872,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="tblOnlineCustomer">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Fullname" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmailId" Type="nvarchar" MaxLength="50" />
-          <Property Name="AddressLine1" Type="nvarchar(max)" />
-          <Property Name="AddressLine2" Type="nvarchar(max)" />
-          <Property Name="Pincode" Type="nvarchar" MaxLength="10" />
-          <Property Name="GPSLocation" Type="nvarchar" MaxLength="50" />
-          <Property Name="MobileNo" Type="nvarchar" MaxLength="20" />
-          <Property Name="AadharNo" Type="nvarchar" MaxLength="50" />
-          <Property Name="AltMobileNo" Type="nvarchar" MaxLength="20" />
-        </EntityType>
         <EntityType Name="tblOperatingSystem">
           <Key>
             <PropertyRef Name="Id" />
@@ -1010,6 +965,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PartNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PartName" Type="varchar" MaxLength="50" />
           <Property Name="PartDescription" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HSNCodeId" Type="int" Nullable="false" />
           <Property Name="CTSerialNo" Type="varchar" MaxLength="50" />
           <Property Name="PartStatusId" Type="int" Nullable="false" />
           <Property Name="SalePrice" Type="money" />
@@ -1027,7 +983,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VendorId" Type="int" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="HSNCodeId" Type="int" />
         </EntityType>
         <EntityType Name="tblPartsAllocatedToEngineer">
           <Key>
@@ -1845,7 +1800,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.OLD_tblWorkOrderEnquiry' d
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblStockEntryBulkData">
           <Key>
             <PropertyRef Name="FileId" />
@@ -2396,7 +2351,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <Association Name="FK__tblMenuRo__MenuI__1D7B6025">
+        <Association Name="FK__tblMenuRo__MenuI__6501FCD8">
           <End Role="tblMenuMaster" Type="Self.tblMenuMaster" Multiplicity="0..1" />
           <End Role="tblMenuRoleMapping" Type="Self.tblMenuRoleMapping" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3242,6 +3197,10 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="Total" Type="int" Mode="InOut" />
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetUserDetailsWithAMCChecking" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Token" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="GetUsersAddresses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
@@ -3395,6 +3354,19 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Parameter Name="StockEntryData" Type="xml" Mode="In" />
           <Parameter Name="LoggedInUserId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="SaveAMCReminderEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="AMCYear" Type="nvarchar" Mode="In" />
+          <Parameter Name="AMCStartDate_EndDate_LastEmailDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="AMCRemainingDays" Type="int" Mode="In" />
+          <Parameter Name="AMCReminderCount" Type="int" Mode="In" />
+          <Parameter Name="AMCPreorPostExpire" Type="bit" Mode="In" />
+          <Parameter Name="AmcEndDate" Type="datetime" Mode="In" />
+          <Parameter Name="AmcLastEmailDate" Type="datetime" Mode="In" />
+          <Parameter Name="IntResult" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="SaveEmployeeRolePermission" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RoleId" Type="int" Mode="In" />
           <Parameter Name="EmployeeId" Type="int" Mode="In" />
@@ -3432,6 +3404,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="RoleMaster_Permission" EntityType="Self.RoleMaster_Permission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAccessories" EntityType="Self.tblAccessories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAddressTypesMaster" EntityType="Self.tblAddressTypesMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblAMCReminderEmail" EntityType="Self.tblAMCReminderEmail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblArea" EntityType="Self.tblArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBanner" EntityType="Self.tblBanner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBranch" EntityType="Self.tblBranch" Schema="dbo" store:Type="Tables" />
@@ -3481,7 +3454,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblMenuRoleMapping" EntityType="Self.tblMenuRoleMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblNotification" EntityType="Self.tblNotification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOfferAds" EntityType="Self.tblOfferAds" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblOnlineCustomer" EntityType="Self.tblOnlineCustomer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOperatingSystem" EntityType="Self.tblOperatingSystem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderStatusMaster" EntityType="Self.tblOrderStatusMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderTypeMaster" EntityType="Self.tblOrderTypeMaster" Schema="dbo" store:Type="Tables" />
@@ -3576,49 +3548,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblWorkOrderEnquiry" EntityType="Self.tblWorkOrderEnquiry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWorkOrderRescheduleHistory" EntityType="Self.tblWorkOrderRescheduleHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblWOSnaps" EntityType="Self.tblWOSnaps" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="Self.OLD_tblWorkOrderEnquiry" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [OLD_tblWorkOrderEnquiry].[Id] AS [Id], 
-    [OLD_tblWorkOrderEnquiry].[CustomerName] AS [CustomerName], 
-    [OLD_tblWorkOrderEnquiry].[MobileNumber] AS [MobileNumber], 
-    [OLD_tblWorkOrderEnquiry].[EmailAdderss] AS [EmailAdderss], 
-    [OLD_tblWorkOrderEnquiry].[AlternateNumber] AS [AlternateNumber], 
-    [OLD_tblWorkOrderEnquiry].[GSTNumber] AS [GSTNumber], 
-    [OLD_tblWorkOrderEnquiry].[PanNumber] AS [PanNumber], 
-    [OLD_tblWorkOrderEnquiry].[ProductTypeId] AS [ProductTypeId], 
-    [OLD_tblWorkOrderEnquiry].[ProductId] AS [ProductId], 
-    [OLD_tblWorkOrderEnquiry].[ProductNumber] AS [ProductNumber], 
-    [OLD_tblWorkOrderEnquiry].[ProductDescriptionId] AS [ProductDescriptionId], 
-    [OLD_tblWorkOrderEnquiry].[ProductSerialNumber] AS [ProductSerialNumber], 
-    [OLD_tblWorkOrderEnquiry].[WarrantyTypeId] AS [WarrantyTypeId], 
-    [OLD_tblWorkOrderEnquiry].[WarrantyNumber] AS [WarrantyNumber], 
-    [OLD_tblWorkOrderEnquiry].[CountryId] AS [CountryId], 
-    [OLD_tblWorkOrderEnquiry].[OperatingSystemId] AS [OperatingSystemId], 
-    [OLD_tblWorkOrderEnquiry].[Address] AS [Address], 
-    [OLD_tblWorkOrderEnquiry].[StateId] AS [StateId], 
-    [OLD_tblWorkOrderEnquiry].[CityId] AS [CityId], 
-    [OLD_tblWorkOrderEnquiry].[PincodeId] AS [PincodeId], 
-    [OLD_tblWorkOrderEnquiry].[IssueDescriptionId] AS [IssueDescriptionId], 
-    [OLD_tblWorkOrderEnquiry].[IssueReported] AS [IssueReported], 
-    [OLD_tblWorkOrderEnquiry].[SourceChannelId] AS [SourceChannelId], 
-    [OLD_tblWorkOrderEnquiry].[EnquiryStatus] AS [EnquiryStatus], 
-    [OLD_tblWorkOrderEnquiry].[CreatedBy] AS [CreatedBy], 
-    [OLD_tblWorkOrderEnquiry].[CreatedDate] AS [CreatedDate], 
-    [OLD_tblWorkOrderEnquiry].[ModifiedBy] AS [ModifiedBy], 
-    [OLD_tblWorkOrderEnquiry].[ModifiedDate] AS [ModifiedDate], 
-    [OLD_tblWorkOrderEnquiry].[ProductModelId] AS [ProductModelId], 
-    [OLD_tblWorkOrderEnquiry].[EnquiryIssueDescription] AS [EnquiryIssueDescription], 
-    [OLD_tblWorkOrderEnquiry].[AreaId] AS [AreaId], 
-    [OLD_tblWorkOrderEnquiry].[VisitingAddress] AS [VisitingAddress], 
-    [OLD_tblWorkOrderEnquiry].[VisitStateId] AS [VisitStateId], 
-    [OLD_tblWorkOrderEnquiry].[VisitCityId] AS [VisitCityId], 
-    [OLD_tblWorkOrderEnquiry].[VisitAreaId] AS [VisitAreaId], 
-    [OLD_tblWorkOrderEnquiry].[VisitPincodeId] AS [VisitPincodeId], 
-    [OLD_tblWorkOrderEnquiry].[CompanyId] AS [CompanyId], 
-    [OLD_tblWorkOrderEnquiry].[BranchId] AS [BranchId], 
-    [OLD_tblWorkOrderEnquiry].[OrganizationName] AS [OrganizationName]
-    FROM [dbo].[OLD_tblWorkOrderEnquiry] AS [OLD_tblWorkOrderEnquiry]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="tblStockEntryBulkData" EntityType="Self.tblStockEntryBulkData" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tblStockEntryBulkData].[FileId] AS [FileId], 
@@ -3639,7 +3568,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
     [tblStockEntryBulkData].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[tblStockEntryBulkData] AS [tblStockEntryBulkData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__tblMenuRo__MenuI__1D7B6025" Association="Self.FK__tblMenuRo__MenuI__1D7B6025">
+          <AssociationSet Name="FK__tblMenuRo__MenuI__6501FCD8" Association="Self.FK__tblMenuRo__MenuI__6501FCD8">
             <End Role="tblMenuMaster" EntitySet="tblMenuMaster" />
             <End Role="tblMenuRoleMapping" EntitySet="tblMenuRoleMapping" />
           </AssociationSet>
@@ -3857,21 +3786,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tblMenuMaster" Relationship="Self.FK__tblMenuRo__MenuI__69C6B1F5" FromRole="tblMenuRoleMapping" ToRole="tblMenuMaster" />
           <NavigationProperty Name="tblRole" Relationship="Self.FK__tblMenuRo__RoleI__6ABAD62E" FromRole="tblMenuRoleMapping" ToRole="tblRole" />
-        </EntityType>
-        <EntityType Name="tblOnlineCustomer">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Fullname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="GPSLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AadharNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AltMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblOperatingSystem">
           <Key>
@@ -4347,7 +4261,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblLeaveTypes" EntityType="Self.tblLeaveType" />
           <EntitySet Name="tblMenuMasters" EntityType="Self.tblMenuMaster" />
           <EntitySet Name="tblMenuRoleMappings" EntityType="Self.tblMenuRoleMapping" />
-          <EntitySet Name="tblOnlineCustomers" EntityType="Self.tblOnlineCustomer" />
           <EntitySet Name="tblOperatingSystems" EntityType="Self.tblOperatingSystem" />
           <EntitySet Name="tblOrderTypeMasters" EntityType="Self.tblOrderTypeMaster" />
           <EntitySet Name="tblPartDescriptions" EntityType="Self.tblPartDescription" />
@@ -4795,15 +4708,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetCompanyList" ReturnType="Collection(dbOraRegaModel.GetCompanyList_Result)">
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="SearchValue" Mode="In" Type="String" />
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-            <Parameter Name="PageNo" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <EntitySet Name="tblEmployees" EntityType="dbOraRegaModel.tblEmployee" />
+           <EntitySet Name="tblEmployees" EntityType="dbOraRegaModel.tblEmployee" />
 
           <EntitySet Name="tblClaimSettlementItemAttachments" EntityType="dbOraRegaModel.tblClaimSettlementItemAttachment" />
           <EntitySet Name="tblClaimSettlements" EntityType="dbOraRegaModel.tblClaimSettlement" />
@@ -5327,7 +5232,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <EntitySet Name="tblSMSLogHistories" EntityType="dbOraRegaModel.tblSMSLogHistory" />
           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
           <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
-            <EntitySet Name="OLD_tblWorkOrderEnquiry" EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" />
            <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
           <EntitySet Name="tblBranchMappings" EntityType="dbOraRegaModel.tblBranchMapping" />
           
@@ -5533,6 +5437,32 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCompanyList" ReturnType="Collection(dbOraRegaModel.GetCompanyList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+           <EntitySet Name="tblAMCReminderEmails" EntityType="dbOraRegaModel.tblAMCReminderEmail" />
+          <FunctionImport Name="SaveAMCReminderEmail">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="AMCYear" Mode="In" Type="String" />
+            <Parameter Name="AMCStartDate_EndDate_LastEmailDate" Mode="In" Type="String" />
+            <Parameter Name="AMCRemainingDays" Mode="In" Type="Int32" />
+            <Parameter Name="AMCReminderCount" Mode="In" Type="Int32" />
+            <Parameter Name="AMCPreorPostExpire" Mode="In" Type="Boolean" />
+            <Parameter Name="AmcEndDate" Mode="In" Type="DateTime" />
+            <Parameter Name="AmcLastEmailDate" Mode="In" Type="DateTime" />
+            <Parameter Name="IntResult" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="GetUserDetailsWithAMCChecking" ReturnType="Collection(dbOraRegaModel.GetUserDetailsWithAMCChecking_Result)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Token" Mode="In" Type="String" />
           </FunctionImport>
                 </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
@@ -6843,7 +6773,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PartName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PartDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HSNCodeId" Type="Int32" />
+          <Property Name="HSNCodeId" Type="Int32" Nullable="false" />
           <Property Name="CTSerialNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PartStatusId" Type="Int32" Nullable="false" />
           <Property Name="SalePrice" Type="Decimal" Precision="19" Scale="4" />
@@ -7046,25 +6976,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-        <ComplexType Name="GetCompanyList_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="CompanyTypeId" Nullable="true" />
-          <Property Type="String" Name="CompanyType" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="RegistrationNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ContactNumber" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Website" Nullable="true" MaxLength="50" />
-          <Property Type="Boolean" Name="IsActive" Nullable="true" />
-          <Property Type="Int32" Name="StateId" Nullable="true" />
-          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="CityId" Nullable="true" />
-          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="PincodeId" Nullable="true" />
-          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
-		  <Property Type="Int32" Name="BranchAdd" Nullable="true" />
-        </ComplexType>
-        <EntityType Name="tblEmployee">
+         <EntityType Name="tblEmployee">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -8709,50 +8621,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-          <EntityType Name="OLD_tblWorkOrderEnquiry">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAdderss" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GSTNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductTypeId" Type="Int32" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="ProductNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDescriptionId" Type="Int32" />
-          <Property Name="ProductSerialNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WarrantyTypeId" Type="Int32" />
-          <Property Name="WarrantyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CountryId" Type="Int32" />
-          <Property Name="OperatingSystemId" Type="Int32" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="StateId" Type="Int32" />
-          <Property Name="CityId" Type="Int32" />
-          <Property Name="PincodeId" Type="Int32" />
-          <Property Name="IssueDescriptionId" Type="Int32" />
-          <Property Name="IssueReported" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SourceChannelId" Type="Int32" />
-          <Property Name="EnquiryStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ProductModelId" Type="Int32" />
-          <Property Name="EnquiryIssueDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="AreaId" Type="Int32" />
-          <Property Name="VisitingAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="VisitStateId" Type="Int32" />
-          <Property Name="VisitCityId" Type="Int32" />
-          <Property Name="VisitAreaId" Type="Int32" />
-          <Property Name="VisitPincodeId" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="BranchId" Type="Int32" />
-          <Property Name="OrganizationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
          <EntityType Name="tblQuotationServiceChargeDetailsLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -9203,6 +9071,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Name="GSTNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BranchAdd" Type="Int32" Nullable="false" />
+          <Property Name="AmcMonth" Type="Int32" />
+          <Property Name="AmcStartDate" Type="DateTime" Precision="3" />
+          <Property Name="AmcEndDate" Type="DateTime" Precision="3" />
         </EntityType>
          <EntityType Name="tblWOPartRequest">
           <Key>
@@ -9742,6 +9613,53 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="ComplexType1" />
+        <ComplexType Name="GetCompanyList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CompanyTypeId" Nullable="true" />
+          <Property Type="String" Name="CompanyType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="RegistrationNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ContactNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Website" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="StateId" Nullable="true" />
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CityId" Nullable="true" />
+          <Property Type="String" Name="CityName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="PincodeId" Nullable="true" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="BranchAdd" Nullable="false" />
+          <Property Type="Int32" Name="AmcMonth" Nullable="true" />
+          <Property Type="DateTime" Name="AmcStartDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="AmcEndDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="AmcLastEmailDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="TotalAmcDays" Nullable="true" />
+          <Property Type="Int32" Name="TotalAmcRemainingDays" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tblAMCReminderEmail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="AMCYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AMCStartDate_EndDate_LastEmailDate" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AMCRemainingDays" Type="Int32" />
+          <Property Name="AMCReminderCount" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="GetUserDetailsWithAMCChecking_Result">
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="EmployeeId" Nullable="true" />
+          <Property Type="String" Name="EmailId" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MobileNo" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="RoleId" Nullable="true" />
+          <Property Type="String" Name="RoleName" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9968,22 +9886,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblOnlineCustomers">
-            <EntityTypeMapping TypeName="dbOraRegaModel.tblOnlineCustomer">
-              <MappingFragment StoreEntitySet="tblOnlineCustomer">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
-                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-                <ScalarProperty Name="GPSLocation" ColumnName="GPSLocation" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-                <ScalarProperty Name="AadharNo" ColumnName="AadharNo" />
-                <ScalarProperty Name="AltMobileNo" ColumnName="AltMobileNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -12212,29 +12114,7 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetCompanyList" FunctionName="dbOraRegaModel.Store.GetCompanyList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetCompanyList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
-                <ScalarProperty Name="CompanyType" ColumnName="CompanyType" />
-                <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
-                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
-                <ScalarProperty Name="StateName" ColumnName="StateName" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-                <ScalarProperty Name="PincodeId" ColumnName="PincodeId" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-				<ScalarProperty Name="BranchAdd" ColumnName="BranchAdd" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="tblEmployees">
+           <EntitySetMapping Name="tblEmployees">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblEmployee">
               <MappingFragment StoreEntitySet="tblEmployee">
                 <ScalarProperty Name="AadharCardOriginalFileName" ColumnName="AadharCardOriginalFileName" />
@@ -14137,51 +14017,6 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-            <EntitySetMapping Name="OLD_tblWorkOrderEnquiry">
-            <EntityTypeMapping TypeName="dbOraRegaModel.OLD_tblWorkOrderEnquiry">
-              <MappingFragment StoreEntitySet="OLD_tblWorkOrderEnquiry">
-                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="VisitPincodeId" ColumnName="VisitPincodeId" />
-                <ScalarProperty Name="VisitAreaId" ColumnName="VisitAreaId" />
-                <ScalarProperty Name="VisitCityId" ColumnName="VisitCityId" />
-                <ScalarProperty Name="VisitStateId" ColumnName="VisitStateId" />
-                <ScalarProperty Name="VisitingAddress" ColumnName="VisitingAddress" />
-                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
-                <ScalarProperty Name="EnquiryIssueDescription" ColumnName="EnquiryIssueDescription" />
-                <ScalarProperty Name="ProductModelId" ColumnName="ProductModelId" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="EnquiryStatus" ColumnName="EnquiryStatus" />
-                <ScalarProperty Name="SourceChannelId" ColumnName="SourceChannelId" />
-                <ScalarProperty Name="IssueReported" ColumnName="IssueReported" />
-                <ScalarProperty Name="IssueDescriptionId" ColumnName="IssueDescriptionId" />
-                <ScalarProperty Name="PincodeId" ColumnName="PincodeId" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="OperatingSystemId" ColumnName="OperatingSystemId" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
-                <ScalarProperty Name="WarrantyNumber" ColumnName="WarrantyNumber" />
-                <ScalarProperty Name="WarrantyTypeId" ColumnName="WarrantyTypeId" />
-                <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
-                <ScalarProperty Name="ProductDescriptionId" ColumnName="ProductDescriptionId" />
-                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
-                <ScalarProperty Name="PanNumber" ColumnName="PanNumber" />
-                <ScalarProperty Name="GSTNumber" ColumnName="GSTNumber" />
-                <ScalarProperty Name="AlternateNumber" ColumnName="AlternateNumber" />
-                <ScalarProperty Name="EmailAdderss" ColumnName="EmailAdderss" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
            <EntitySetMapping Name="tblQuotationServiceChargeDetailsLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetailsLog">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetailsLog">
@@ -14664,6 +14499,9 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
             <EntitySetMapping Name="tblCompanies">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblCompany">
               <MappingFragment StoreEntitySet="tblCompany">
+                <ScalarProperty Name="AmcEndDate" ColumnName="AmcEndDate" />
+                <ScalarProperty Name="AmcStartDate" ColumnName="AmcStartDate" />
+                <ScalarProperty Name="AmcMonth" ColumnName="AmcMonth" />
                 <ScalarProperty Name="BranchAdd" ColumnName="BranchAdd" />
                 <ScalarProperty Name="PANNumber" ColumnName="PANNumber" />
                 <ScalarProperty Name="GSTNumber" ColumnName="GSTNumber" />
@@ -15295,6 +15133,62 @@ warning 6002: The table/view 'db_a749f3_dborarega.dbo.tblStockEntryBulkData' doe
                 <ScalarProperty Name="IsInvoiceGenerated" ColumnName="IsInvoiceGenerated" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCompanyList" FunctionName="dbOraRegaModel.Store.GetCompanyList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetCompanyList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
+                <ScalarProperty Name="CompanyType" ColumnName="CompanyType" />
+                <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="PincodeId" ColumnName="PincodeId" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="BranchAdd" ColumnName="BranchAdd" />
+                <ScalarProperty Name="AmcMonth" ColumnName="AmcMonth" />
+                <ScalarProperty Name="AmcStartDate" ColumnName="AmcStartDate" />
+                <ScalarProperty Name="AmcEndDate" ColumnName="AmcEndDate" />
+                <ScalarProperty Name="AmcLastEmailDate" ColumnName="AmcLastEmailDate" />
+                <ScalarProperty Name="TotalAmcDays" ColumnName="TotalAmcDays" />
+                <ScalarProperty Name="TotalAmcRemainingDays" ColumnName="TotalAmcRemainingDays" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+           <EntitySetMapping Name="tblAMCReminderEmails">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblAMCReminderEmail">
+              <MappingFragment StoreEntitySet="tblAMCReminderEmail">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AMCReminderCount" ColumnName="AMCReminderCount" />
+                <ScalarProperty Name="AMCRemainingDays" ColumnName="AMCRemainingDays" />
+                <ScalarProperty Name="AMCStartDate_EndDate_LastEmailDate" ColumnName="AMCStartDate_EndDate_LastEmailDate" />
+                <ScalarProperty Name="AMCYear" ColumnName="AMCYear" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SaveAMCReminderEmail" FunctionName="dbOraRegaModel.Store.SaveAMCReminderEmail" />
+          <FunctionImportMapping FunctionImportName="GetUserDetailsWithAMCChecking" FunctionName="dbOraRegaModel.Store.GetUserDetailsWithAMCChecking">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetUserDetailsWithAMCChecking_Result">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

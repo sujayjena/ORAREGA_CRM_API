@@ -38,5 +38,8 @@ namespace OraRegaAV.DBEntity
         public string GSTNumber { get; set; }
         public string PANNumber { get; set; }
         public int BranchAdd { get; set; }
+        public Nullable<int> AmcMonth { get; set; }
+        public Nullable<System.DateTime> AmcStartDate { get; set; }
+        public Nullable<System.DateTime> AmcEndDate { get; set; }
     }
 }

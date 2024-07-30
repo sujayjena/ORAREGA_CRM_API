@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Office2016.Excel;
+﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
@@ -282,118 +283,127 @@ namespace OraRegaAV.Controllers.API
                     // Exipre User's Previous Token
                     ExpirePreviousToken(objLogin.Id);
 
-                    var vEmployeeObj = db.tblEmployees.Where(x => x.Id == objLogin.EmployeeId).FirstOrDefault();
-                    if (objLogin.IsActive == true)
+                    var vCompanyAMCCheckingObj = db.GetUserDetailsWithAMCChecking(username: objLogin.MobileNo, token: string.Empty).FirstOrDefault();
+                    if (vCompanyAMCCheckingObj == null)
                     {
-                        //check isWebUser
-                        if (vEmployeeObj != null)
-                        {
-                            if (vEmployeeObj.IsWebUser == false)
-                            {
-                                _response.IsSuccess = false;
-                                _response.Message = ValidationConstant.InactiveProfileError;
-
-                                return _response;
-                            }
-                        }
-
-                        //RoleList
-                        var vRoleList = db.GetRoleMaster_EmployeePermissionList(objLogin.EmployeeId).ToList();
-
-                        objLogin.UId = Guid.NewGuid().ToString();
-                        //Code to Generate token
-                        var encryptedString = EncryptDecryptHelper.EncryptString(JsonSerializer.Serialize(objLogin));
-
-                        var tblLoggedInUser = new tblLoggedInUser();
-                        tblLoggedInUser.UserId = objLogin.Id;
-                        tblLoggedInUser.LoggedInOn = System.DateTime.Now;
-                        tblLoggedInUser.IsLoggedIn = true;
-                        tblLoggedInUser.UserToken = encryptedString;
-                        tblLoggedInUser.LastAccessOn = System.DateTime.Now;
-                        tblLoggedInUser.TokenExpireOn = System.DateTime.Now.AddMinutes(30);
-                        tblLoggedInUser.IsAutoLogout = false;
-                        tblLoggedInUser.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
-                        tblLoggedInUser.DeviceName = HttpContext.Current.Request.Browser.Browser;
-                        tblLoggedInUser.RememberMe = objLoginDetail.Remember;
-                        db.tblLoggedInUsers.Add(tblLoggedInUser);
-                        db.SaveChanges();
-
-                        var resp = new HttpResponseMessage();
-                        var nv = new NameValueCollection();
-                        nv["uid"] = tblLoggedInUser.UserId.ToString();
-                        nv["token"] = encryptedString;
-                        var cookie = new CookieHeaderValue("session", nv);
-
-                        resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
-
-                        loggedInUser = db.GetLoggedInUserDetailsByToken(encryptedString).FirstOrDefault();
-                        objLoginModelResponse = new LoginModelResponse();
-                        objLoginModelResponse.UserId = objLogin.Id;
-                        objLoginModelResponse.EmployeeId = objLogin.EmployeeId != null ? Convert.ToInt32(objLogin.EmployeeId) : 0;
-                        objLoginModelResponse.Name = loggedInUser.EmployeeName ?? $"{loggedInUser.CustFirstName} {loggedInUser.CustLastName}";
-                        objLoginModelResponse.Email = loggedInUser.EmpEmail ?? loggedInUser.CustEmail;
-                        objLoginModelResponse.Mobile = loggedInUser.EmpMobile ?? loggedInUser.Mobile;
-                        objLoginModelResponse.Token = encryptedString;
-                        objLoginModelResponse.userPermissionList = vRoleList;
-
-                        objLoginModelResponse.CustomerId = objLogin.CustomerId != null ? Convert.ToInt32(objLogin.CustomerId) : 0;
-                        var vCustObj = db.tblCustomers.Where(x => x.Id == objLoginModelResponse.CustomerId).FirstOrDefault();
-                        if (vCustObj != null)
-                        {
-                            objLoginModelResponse.CustomerName = vCustObj.FirstName + " " + vCustObj.LastName;
-                        }
-
-                        //var vEmployeeObj = db.tblEmployees.Where(x => x.Id == objLogin.EmployeeId).FirstOrDefault();
-                        if (vEmployeeObj != null)
-                        {
-                            var vRoleObj = db.tblRoles.Where(x => x.Id == vEmployeeObj.RoleId).FirstOrDefault();
-                            if (vRoleObj != null)
-                            {
-                                objLoginModelResponse.RoleId = Convert.ToInt32(vEmployeeObj.RoleId);
-                                objLoginModelResponse.RoleName = vRoleObj.RoleName;
-                            }
-
-                            var vCompanyObj = db.tblCompanies.Where(x => x.Id == vEmployeeObj.CompanyId).FirstOrDefault();
-                            if (vCompanyObj != null)
-                            {
-                                objLoginModelResponse.CompanyId = vCompanyObj.Id;
-                                objLoginModelResponse.CompanyName = vCompanyObj.CompanyName;
-                            }
-
-                            //var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
-                            //if (vBranchObj != null)
-                            //{
-                            //    objLoginModelResponse.BranchId = vBranchObj.Id;
-                            //    objLoginModelResponse.BranchName = vBranchObj.BranchName;
-                            //}
-
-                            var vBranchObj = db.tblBranchMappings.Where(x => x.EmployeeId == vEmployeeObj.Id).ToList();
-                            if (vBranchObj.Count > 0)
-                            {
-                                objLoginModelResponse.BranchId = string.Join(",", vBranchObj.Select(x => x.BranchId));
-                            }
-
-                            var vDepartmentObj = db.tblDepartments.Where(x => x.Id == vEmployeeObj.DepartmentId).FirstOrDefault();
-                            if (vDepartmentObj != null)
-                            {
-                                objLoginModelResponse.DepartmentId = vEmployeeObj.DepartmentId;
-                                objLoginModelResponse.DepartmentName = vDepartmentObj.DepartmentName;
-                            }
-                        }
-
-                        // Notification List
-                        var vTotal = new ObjectParameter("Total", typeof(int));
-                        var NotificationList = db.GetNotificationList(objLogin.Id, DateTime.Now, 0, 0, vTotal).ToList();
-                        objLoginModelResponse.NotificationList = NotificationList;
-
-                        _response.IsSuccess = true;
-                        _response.Message = "Logged-in successfully";
-                        _response.Data = objLoginModelResponse;
+                        _response.IsSuccess = false;
+                        _response.Message = "Invalid credential, please try again with correct credential";
                     }
                     else
                     {
-                        _response.IsSuccess = false;
-                        _response.Message = ValidationConstant.InactiveProfileError;
+                        var vEmployeeObj = db.tblEmployees.Where(x => x.Id == objLogin.EmployeeId).FirstOrDefault();
+                        if (objLogin.IsActive == true)
+                        {
+                            //check isWebUser
+                            if (vEmployeeObj != null)
+                            {
+                                if (vEmployeeObj.IsWebUser == false)
+                                {
+                                    _response.IsSuccess = false;
+                                    _response.Message = ValidationConstant.InactiveProfileError;
+
+                                    return _response;
+                                }
+                            }
+
+                            //RoleList
+                            var vRoleList = db.GetRoleMaster_EmployeePermissionList(objLogin.EmployeeId).ToList();
+
+                            objLogin.UId = Guid.NewGuid().ToString();
+                            //Code to Generate token
+                            var encryptedString = EncryptDecryptHelper.EncryptString(JsonSerializer.Serialize(objLogin));
+
+                            var tblLoggedInUser = new tblLoggedInUser();
+                            tblLoggedInUser.UserId = objLogin.Id;
+                            tblLoggedInUser.LoggedInOn = System.DateTime.Now;
+                            tblLoggedInUser.IsLoggedIn = true;
+                            tblLoggedInUser.UserToken = encryptedString;
+                            tblLoggedInUser.LastAccessOn = System.DateTime.Now;
+                            tblLoggedInUser.TokenExpireOn = System.DateTime.Now.AddMinutes(30);
+                            tblLoggedInUser.IsAutoLogout = false;
+                            tblLoggedInUser.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                            tblLoggedInUser.DeviceName = HttpContext.Current.Request.Browser.Browser;
+                            tblLoggedInUser.RememberMe = objLoginDetail.Remember;
+                            db.tblLoggedInUsers.Add(tblLoggedInUser);
+                            db.SaveChanges();
+
+                            var resp = new HttpResponseMessage();
+                            var nv = new NameValueCollection();
+                            nv["uid"] = tblLoggedInUser.UserId.ToString();
+                            nv["token"] = encryptedString;
+                            var cookie = new CookieHeaderValue("session", nv);
+
+                            resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+
+                            loggedInUser = db.GetLoggedInUserDetailsByToken(encryptedString).FirstOrDefault();
+                            objLoginModelResponse = new LoginModelResponse();
+                            objLoginModelResponse.UserId = objLogin.Id;
+                            objLoginModelResponse.EmployeeId = objLogin.EmployeeId != null ? Convert.ToInt32(objLogin.EmployeeId) : 0;
+                            objLoginModelResponse.Name = loggedInUser.EmployeeName ?? $"{loggedInUser.CustFirstName} {loggedInUser.CustLastName}";
+                            objLoginModelResponse.Email = loggedInUser.EmpEmail ?? loggedInUser.CustEmail;
+                            objLoginModelResponse.Mobile = loggedInUser.EmpMobile ?? loggedInUser.Mobile;
+                            objLoginModelResponse.Token = encryptedString;
+                            objLoginModelResponse.userPermissionList = vRoleList;
+
+                            objLoginModelResponse.CustomerId = objLogin.CustomerId != null ? Convert.ToInt32(objLogin.CustomerId) : 0;
+                            var vCustObj = db.tblCustomers.Where(x => x.Id == objLoginModelResponse.CustomerId).FirstOrDefault();
+                            if (vCustObj != null)
+                            {
+                                objLoginModelResponse.CustomerName = vCustObj.FirstName + " " + vCustObj.LastName;
+                            }
+
+                            //var vEmployeeObj = db.tblEmployees.Where(x => x.Id == objLogin.EmployeeId).FirstOrDefault();
+                            if (vEmployeeObj != null)
+                            {
+                                var vRoleObj = db.tblRoles.Where(x => x.Id == vEmployeeObj.RoleId).FirstOrDefault();
+                                if (vRoleObj != null)
+                                {
+                                    objLoginModelResponse.RoleId = Convert.ToInt32(vEmployeeObj.RoleId);
+                                    objLoginModelResponse.RoleName = vRoleObj.RoleName;
+                                }
+
+                                var vCompanyObj = db.tblCompanies.Where(x => x.Id == vEmployeeObj.CompanyId).FirstOrDefault();
+                                if (vCompanyObj != null)
+                                {
+                                    objLoginModelResponse.CompanyId = vCompanyObj.Id;
+                                    objLoginModelResponse.CompanyName = vCompanyObj.CompanyName;
+                                }
+
+                                //var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
+                                //if (vBranchObj != null)
+                                //{
+                                //    objLoginModelResponse.BranchId = vBranchObj.Id;
+                                //    objLoginModelResponse.BranchName = vBranchObj.BranchName;
+                                //}
+
+                                var vBranchObj = db.tblBranchMappings.Where(x => x.EmployeeId == vEmployeeObj.Id).ToList();
+                                if (vBranchObj.Count > 0)
+                                {
+                                    objLoginModelResponse.BranchId = string.Join(",", vBranchObj.Select(x => x.BranchId));
+                                }
+
+                                var vDepartmentObj = db.tblDepartments.Where(x => x.Id == vEmployeeObj.DepartmentId).FirstOrDefault();
+                                if (vDepartmentObj != null)
+                                {
+                                    objLoginModelResponse.DepartmentId = vEmployeeObj.DepartmentId;
+                                    objLoginModelResponse.DepartmentName = vDepartmentObj.DepartmentName;
+                                }
+                            }
+
+                            // Notification List
+                            var vTotal = new ObjectParameter("Total", typeof(int));
+                            var NotificationList = db.GetNotificationList(objLogin.Id, DateTime.Now, 0, 0, vTotal).ToList();
+                            objLoginModelResponse.NotificationList = NotificationList;
+
+                            _response.IsSuccess = true;
+                            _response.Message = "Logged-in successfully";
+                            _response.Data = objLoginModelResponse;
+                        }
+                        else
+                        {
+                            _response.IsSuccess = false;
+                            _response.Message = ValidationConstant.InactiveProfileError;
+                        }
                     }
                 }
                 else
@@ -593,126 +603,134 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                user = await db.tblUsers.Where(u => u.MobileNo == model.MobileNo).FirstOrDefaultAsync();
-
-                if (user != null)
+                var vCompanyAMCCheckingObj = db.GetUserDetailsWithAMCChecking(username: model.MobileNo, token: string.Empty).FirstOrDefault();
+                if (vCompanyAMCCheckingObj == null)
                 {
-                    // Exipre User's Previous Token
-                    ExpirePreviousToken(user.Id);
-
-                    var vEmployeeObj = db.tblEmployees.Where(x => x.Id == user.EmployeeId).FirstOrDefault();
-                    if (user.IsActive == true)
+                    _response.IsSuccess = false;
+                    _response.Message = "Invalid credential, please try again with correct credential";
+                }
+                else
+                {
+                    user = await db.tblUsers.Where(u => u.MobileNo == model.MobileNo).FirstOrDefaultAsync();
+                    if (user != null)
                     {
-                        //check IsMobileUser
-                        if (vEmployeeObj != null)
+                        // Exipre User's Previous Token
+                        ExpirePreviousToken(user.Id);
+
+                        var vEmployeeObj = db.tblEmployees.Where(x => x.Id == user.EmployeeId).FirstOrDefault();
+                        if (user.IsActive == true)
                         {
-                            if (vEmployeeObj.IsMobileUser == false)
+                            //check IsMobileUser
+                            if (vEmployeeObj != null)
                             {
-                                _response.IsSuccess = false;
-                                _response.Message = ValidationConstant.InactiveProfileError;
+                                if (vEmployeeObj.IsMobileUser == false)
+                                {
+                                    _response.IsSuccess = false;
+                                    _response.Message = ValidationConstant.InactiveProfileError;
 
-                                return _response;
+                                    return _response;
+                                }
                             }
+
+                            //RoleList
+                            var vRoleList = db.GetRoleMaster_EmployeePermissionList(user.EmployeeId).ToList();
+
+                            user.UId = Guid.NewGuid().ToString();
+
+                            //Code to Generate token
+                            encryptedString = EncryptDecryptHelper.EncryptString(JsonSerializer.Serialize(user));
+
+                            tblLoggedInUser = new tblLoggedInUser();
+                            tblLoggedInUser.UserId = user.Id;
+                            tblLoggedInUser.LoggedInOn = DateTime.Now;
+                            tblLoggedInUser.IsLoggedIn = true;
+                            tblLoggedInUser.UserToken = encryptedString;
+                            tblLoggedInUser.LastAccessOn = DateTime.Now;
+                            tblLoggedInUser.TokenExpireOn = DateTime.Now.AddDays(365);
+                            tblLoggedInUser.IsAutoLogout = false;
+                            tblLoggedInUser.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                            tblLoggedInUser.DeviceName = HttpContext.Current.Request.Browser.Browser;
+                            tblLoggedInUser.RememberMe = true;
+
+                            db.tblLoggedInUsers.Add(tblLoggedInUser);
+                            db.SaveChanges();
+
+                            loggedInUser = db.GetLoggedInUserDetailsByToken(encryptedString).FirstOrDefault();
+
+                            objLoginModelResponse = new LoginModelResponse();
+                            objLoginModelResponse.UserId = user.Id;
+                            objLoginModelResponse.EmployeeId = user.EmployeeId != null ? Convert.ToInt32(user.EmployeeId) : 0;
+                            objLoginModelResponse.Name = loggedInUser.EmployeeName ?? $"{loggedInUser.CustFirstName} {loggedInUser.CustLastName}";
+                            objLoginModelResponse.Email = loggedInUser.EmpEmail ?? loggedInUser.CustEmail;
+                            objLoginModelResponse.Mobile = loggedInUser.EmpMobile ?? loggedInUser.Mobile;
+                            objLoginModelResponse.Token = encryptedString;
+                            objLoginModelResponse.userPermissionList = vRoleList;
+
+                            objLoginModelResponse.CustomerId = user.CustomerId != null ? Convert.ToInt32(user.CustomerId) : 0;
+                            var vCustObj = db.tblCustomers.Where(x => x.Id == objLoginModelResponse.CustomerId).FirstOrDefault();
+                            if (vCustObj != null)
+                            {
+                                objLoginModelResponse.CustomerName = vCustObj.FirstName + " " + vCustObj.LastName;
+                            }
+
+                            //var vEmployeeObj = db.tblEmployees.Where(x => x.Id == user.EmployeeId).FirstOrDefault();
+                            if (vEmployeeObj != null)
+                            {
+                                var vRoleObj = db.tblRoles.Where(x => x.Id == vEmployeeObj.RoleId).FirstOrDefault();
+                                if (vRoleObj != null)
+                                {
+                                    objLoginModelResponse.RoleId = Convert.ToInt32(vEmployeeObj.RoleId);
+                                    objLoginModelResponse.RoleName = vRoleObj.RoleName;
+                                }
+
+                                var vCompanyObj = db.tblCompanies.Where(x => x.Id == vEmployeeObj.CompanyId).FirstOrDefault();
+                                if (vCompanyObj != null)
+                                {
+                                    objLoginModelResponse.CompanyId = vEmployeeObj.CompanyId;
+                                    objLoginModelResponse.CompanyName = vCompanyObj.CompanyName;
+                                }
+
+                                //var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
+                                //if (vBranchObj != null)
+                                //{
+                                //    objLoginModelResponse.BranchId = vEmployeeObj.BranchId;
+                                //    objLoginModelResponse.BranchName = vBranchObj.BranchName;
+                                //}
+
+                                var vBranchObj = db.tblBranchMappings.Where(x => x.EmployeeId == vEmployeeObj.Id).ToList();
+                                if (vBranchObj.Count > 0)
+                                {
+                                    objLoginModelResponse.BranchId = string.Join(",", vBranchObj.Select(x => x.BranchId));
+                                }
+
+                                var vDepartmentObj = db.tblDepartments.Where(x => x.Id == vEmployeeObj.DepartmentId).FirstOrDefault();
+                                if (vDepartmentObj != null)
+                                {
+                                    objLoginModelResponse.DepartmentId = vEmployeeObj.DepartmentId;
+                                    objLoginModelResponse.DepartmentName = vDepartmentObj.DepartmentName;
+                                }
+                            }
+
+                            // Notification List
+                            var vTotal = new ObjectParameter("Total", typeof(int));
+                            var NotificationList = await Task.Run(() => db.GetNotificationList(user.Id, DateTime.Now, 0, 0, vTotal).ToList());
+                            objLoginModelResponse.NotificationList = NotificationList;
+
+                            _response.IsSuccess = true;
+                            _response.Message = "Logged-in successfully";
+                            _response.Data = objLoginModelResponse;
                         }
-
-                        //RoleList
-                        var vRoleList = db.GetRoleMaster_EmployeePermissionList(user.EmployeeId).ToList();
-
-                        user.UId = Guid.NewGuid().ToString();
-
-                        //Code to Generate token
-                        encryptedString = EncryptDecryptHelper.EncryptString(JsonSerializer.Serialize(user));
-
-                        tblLoggedInUser = new tblLoggedInUser();
-                        tblLoggedInUser.UserId = user.Id;
-                        tblLoggedInUser.LoggedInOn = DateTime.Now;
-                        tblLoggedInUser.IsLoggedIn = true;
-                        tblLoggedInUser.UserToken = encryptedString;
-                        tblLoggedInUser.LastAccessOn = DateTime.Now;
-                        tblLoggedInUser.TokenExpireOn = DateTime.Now.AddDays(365);
-                        tblLoggedInUser.IsAutoLogout = false;
-                        tblLoggedInUser.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
-                        tblLoggedInUser.DeviceName = HttpContext.Current.Request.Browser.Browser;
-                        tblLoggedInUser.RememberMe = true;
-
-                        db.tblLoggedInUsers.Add(tblLoggedInUser);
-                        db.SaveChanges();
-
-                        loggedInUser = db.GetLoggedInUserDetailsByToken(encryptedString).FirstOrDefault();
-
-                        objLoginModelResponse = new LoginModelResponse();
-                        objLoginModelResponse.UserId = user.Id;
-                        objLoginModelResponse.EmployeeId = user.EmployeeId != null ? Convert.ToInt32(user.EmployeeId) : 0;
-                        objLoginModelResponse.Name = loggedInUser.EmployeeName ?? $"{loggedInUser.CustFirstName} {loggedInUser.CustLastName}";
-                        objLoginModelResponse.Email = loggedInUser.EmpEmail ?? loggedInUser.CustEmail;
-                        objLoginModelResponse.Mobile = loggedInUser.EmpMobile ?? loggedInUser.Mobile;
-                        objLoginModelResponse.Token = encryptedString;
-                        objLoginModelResponse.userPermissionList = vRoleList;
-
-                        objLoginModelResponse.CustomerId = user.CustomerId != null ? Convert.ToInt32(user.CustomerId) : 0;
-                        var vCustObj = db.tblCustomers.Where(x => x.Id == objLoginModelResponse.CustomerId).FirstOrDefault();
-                        if (vCustObj != null)
+                        else
                         {
-                            objLoginModelResponse.CustomerName = vCustObj.FirstName + " " + vCustObj.LastName;
+                            _response.IsSuccess = false;
+                            _response.Message = ValidationConstant.InactiveProfileError;
                         }
-
-                        //var vEmployeeObj = db.tblEmployees.Where(x => x.Id == user.EmployeeId).FirstOrDefault();
-                        if (vEmployeeObj != null)
-                        {
-                            var vRoleObj = db.tblRoles.Where(x => x.Id == vEmployeeObj.RoleId).FirstOrDefault();
-                            if (vRoleObj != null)
-                            {
-                                objLoginModelResponse.RoleId = Convert.ToInt32(vEmployeeObj.RoleId);
-                                objLoginModelResponse.RoleName = vRoleObj.RoleName;
-                            }
-
-                            var vCompanyObj = db.tblCompanies.Where(x => x.Id == vEmployeeObj.CompanyId).FirstOrDefault();
-                            if (vCompanyObj != null)
-                            {
-                                objLoginModelResponse.CompanyId = vEmployeeObj.CompanyId;
-                                objLoginModelResponse.CompanyName = vCompanyObj.CompanyName;
-                            }
-
-                            //var vBranchObj = db.tblBranches.Where(x => x.Id == vEmployeeObj.BranchId).FirstOrDefault();
-                            //if (vBranchObj != null)
-                            //{
-                            //    objLoginModelResponse.BranchId = vEmployeeObj.BranchId;
-                            //    objLoginModelResponse.BranchName = vBranchObj.BranchName;
-                            //}
-
-                            var vBranchObj = db.tblBranchMappings.Where(x => x.EmployeeId == vEmployeeObj.Id).ToList();
-                            if (vBranchObj.Count > 0)
-                            {
-                                objLoginModelResponse.BranchId = string.Join(",", vBranchObj.Select(x => x.BranchId));
-                            }
-
-                            var vDepartmentObj = db.tblDepartments.Where(x => x.Id == vEmployeeObj.DepartmentId).FirstOrDefault();
-                            if (vDepartmentObj != null)
-                            {
-                                objLoginModelResponse.DepartmentId = vEmployeeObj.DepartmentId;
-                                objLoginModelResponse.DepartmentName = vDepartmentObj.DepartmentName;
-                            }
-                        }
-
-                        // Notification List
-                        var vTotal = new ObjectParameter("Total", typeof(int));
-                        var NotificationList = await Task.Run(() => db.GetNotificationList(user.Id, DateTime.Now, 0, 0, vTotal).ToList());
-                        objLoginModelResponse.NotificationList = NotificationList;
-
-                        _response.IsSuccess = true;
-                        _response.Message = "Logged-in successfully";
-                        _response.Data = objLoginModelResponse;
                     }
                     else
                     {
                         _response.IsSuccess = false;
-                        _response.Message = ValidationConstant.InactiveProfileError;
+                        _response.Message = "Invalid OTP provided, please try again with correct OTP";
                     }
-                }
-                else
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "Invalid OTP provided, please try again with correct OTP";
                 }
             }
             catch (Exception ex)

@@ -10,19 +10,15 @@
 namespace OraRegaAV.DBEntity
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class tblOnlineCustomer
+    public partial class GetUserDetailsWithAMCChecking_Result
     {
-        public int Id { get; set; }
-        public string Fullname { get; set; }
+        public int UserId { get; set; }
+        public Nullable<int> EmployeeId { get; set; }
         public string EmailId { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string Pincode { get; set; }
-        public string GPSLocation { get; set; }
         public string MobileNo { get; set; }
-        public string AadharNo { get; set; }
-        public string AltMobileNo { get; set; }
+        public Nullable<int> RoleId { get; set; }
+        public string RoleName { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     }
 }

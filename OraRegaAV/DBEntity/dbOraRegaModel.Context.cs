@@ -43,7 +43,6 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblLeaveType> tblLeaveTypes { get; set; }
         public virtual DbSet<tblMenuMaster> tblMenuMasters { get; set; }
         public virtual DbSet<tblMenuRoleMapping> tblMenuRoleMappings { get; set; }
-        public virtual DbSet<tblOnlineCustomer> tblOnlineCustomers { get; set; }
         public virtual DbSet<tblOperatingSystem> tblOperatingSystems { get; set; }
         public virtual DbSet<tblOrderTypeMaster> tblOrderTypeMasters { get; set; }
         public virtual DbSet<tblPartDescription> tblPartDescriptions { get; set; }
@@ -163,7 +162,6 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblSMSLogHistory> tblSMSLogHistories { get; set; }
         public virtual DbSet<tblQuotationServiceChargeDetail> tblQuotationServiceChargeDetails { get; set; }
         public virtual DbSet<tblInvoiceServiceChargeDetail> tblInvoiceServiceChargeDetails { get; set; }
-        public virtual DbSet<OLD_tblWorkOrderEnquiry> OLD_tblWorkOrderEnquiry { get; set; }
         public virtual DbSet<tblQuotationServiceChargeDetailsLog> tblQuotationServiceChargeDetailsLogs { get; set; }
         public virtual DbSet<tblBranchMapping> tblBranchMappings { get; set; }
         public virtual DbSet<tblInvoice> tblInvoices { get; set; }
@@ -179,6 +177,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblPaymentPartDetail> tblPaymentPartDetails { get; set; }
         public virtual DbSet<tblPayment> tblPayments { get; set; }
         public virtual DbSet<tblEmailNotification> tblEmailNotifications { get; set; }
+        public virtual DbSet<tblAMCReminderEmail> tblAMCReminderEmails { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -1294,31 +1293,6 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBranchList_Result>("GetBranchList", companyIdParameter, branchIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
-        }
-    
-        public virtual ObjectResult<GetCompanyList_Result> GetCompanyList(Nullable<int> companyId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
-        {
-            var companyIdParameter = companyId.HasValue ?
-                new ObjectParameter("CompanyId", companyId) :
-                new ObjectParameter("CompanyId", typeof(int));
-    
-            var searchValueParameter = searchValue != null ?
-                new ObjectParameter("SearchValue", searchValue) :
-                new ObjectParameter("SearchValue", typeof(string));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCompanyList_Result>("GetCompanyList", companyIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
         public virtual ObjectResult<GetClaimSettlementItemAttachmentById_Result> GetClaimSettlementItemAttachmentById(Nullable<int> claimSettlementItemId)
@@ -3534,6 +3508,89 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceList_Result>("GetInvoiceList", companyIdParameter, branchIdParameter, invoiceNumberParameter, workOrderNumberParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetCompanyList_Result> GetCompanyList(Nullable<int> companyId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCompanyList_Result>("GetCompanyList", companyIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
+    
+        public virtual int SaveAMCReminderEmail(Nullable<int> id, Nullable<int> companyId, string aMCYear, string aMCStartDate_EndDate_LastEmailDate, Nullable<int> aMCRemainingDays, Nullable<int> aMCReminderCount, Nullable<bool> aMCPreorPostExpire, Nullable<System.DateTime> amcEndDate, Nullable<System.DateTime> amcLastEmailDate, ObjectParameter intResult, Nullable<long> userId)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var aMCYearParameter = aMCYear != null ?
+                new ObjectParameter("AMCYear", aMCYear) :
+                new ObjectParameter("AMCYear", typeof(string));
+    
+            var aMCStartDate_EndDate_LastEmailDateParameter = aMCStartDate_EndDate_LastEmailDate != null ?
+                new ObjectParameter("AMCStartDate_EndDate_LastEmailDate", aMCStartDate_EndDate_LastEmailDate) :
+                new ObjectParameter("AMCStartDate_EndDate_LastEmailDate", typeof(string));
+    
+            var aMCRemainingDaysParameter = aMCRemainingDays.HasValue ?
+                new ObjectParameter("AMCRemainingDays", aMCRemainingDays) :
+                new ObjectParameter("AMCRemainingDays", typeof(int));
+    
+            var aMCReminderCountParameter = aMCReminderCount.HasValue ?
+                new ObjectParameter("AMCReminderCount", aMCReminderCount) :
+                new ObjectParameter("AMCReminderCount", typeof(int));
+    
+            var aMCPreorPostExpireParameter = aMCPreorPostExpire.HasValue ?
+                new ObjectParameter("AMCPreorPostExpire", aMCPreorPostExpire) :
+                new ObjectParameter("AMCPreorPostExpire", typeof(bool));
+    
+            var amcEndDateParameter = amcEndDate.HasValue ?
+                new ObjectParameter("AmcEndDate", amcEndDate) :
+                new ObjectParameter("AmcEndDate", typeof(System.DateTime));
+    
+            var amcLastEmailDateParameter = amcLastEmailDate.HasValue ?
+                new ObjectParameter("AmcLastEmailDate", amcLastEmailDate) :
+                new ObjectParameter("AmcLastEmailDate", typeof(System.DateTime));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SaveAMCReminderEmail", idParameter, companyIdParameter, aMCYearParameter, aMCStartDate_EndDate_LastEmailDateParameter, aMCRemainingDaysParameter, aMCReminderCountParameter, aMCPreorPostExpireParameter, amcEndDateParameter, amcLastEmailDateParameter, intResult, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetUserDetailsWithAMCChecking_Result> GetUserDetailsWithAMCChecking(string username, string token)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var tokenParameter = token != null ?
+                new ObjectParameter("Token", token) :
+                new ObjectParameter("Token", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUserDetailsWithAMCChecking_Result>("GetUserDetailsWithAMCChecking", usernameParameter, tokenParameter);
         }
     }
 }

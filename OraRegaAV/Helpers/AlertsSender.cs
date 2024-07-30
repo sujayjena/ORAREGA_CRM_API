@@ -239,6 +239,131 @@ namespace OraRegaAV.Helpers
             return result;
         }
 
+        public async Task<bool> SendAMCEmailToCustomer(int companyAMCRminderEmailId = 0, int amcRemainingDays = 0, DateTime? amcEndDate = null)
+        {
+            bool result = false;
+            string templateFilePath = "", emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+            var vConfigRefObj = db.GetConfigurationsList($"{ConfigConstants.AMCReminderEmailToCustomer}").FirstOrDefault();
+            
+            try
+            {
+                if (vConfigRefObj != null)
+                {
+                    templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\AMC_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                    if (vConfigRefObj.Notes.IndexOf("[X]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        sSubjectDynamicContent = vConfigRefObj.Notes.Replace("[X]", Convert.ToString(Convert.ToInt32(amcRemainingDays)));
+                    }
+
+                    if (emailTemplateContent.IndexOf("[ExpirationDate]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[ExpirationDate]", Convert.ToDateTime(amcEndDate).ToString("dd/MM/yyyy"));
+                    }
+
+                    if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
+                    }
+
+                    remarks = "AMC ReminderId- " + companyAMCRminderEmailId;
+
+                    result = await SendEmail(sSubjectDynamicContent, emailTemplateContent, vConfigRefObj.ConfigValue);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "AMCReminderEmailToCustomer",
+                Subject = sSubjectDynamicContent,
+                SendTo = "Customer",
+                Content = emailTemplateContent,
+                EmailTo = vConfigRefObj.ConfigValue,
+                RefValue1 = remarks,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
+            return result;
+        }
+        public async Task<bool> SendAMCEmailToVendor(int companyAMCRminderEmailId = 0, int amcRemainingDays = 0, DateTime? amcEndDate = null)
+        {
+            bool result = false;
+            string templateFilePath = "", emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+            var vConfigRefObj = db.GetConfigurationsList($"{ConfigConstants.AMCReminderEmailToVendor}").FirstOrDefault();
+            
+            try
+            {
+                if (vConfigRefObj != null)
+                {
+                    templateFilePath = $"{HttpContext.Current.Server.MapPath("~")}\\EmailTemplates\\AMC_Template.html";
+                    emailTemplateContent = System.IO.File.ReadAllText(templateFilePath);
+
+                    if (vConfigRefObj.Notes.IndexOf("[X]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        sSubjectDynamicContent = vConfigRefObj.Notes.Replace("[X]", Convert.ToString(Convert.ToInt32(amcRemainingDays)));
+                    }
+
+                    if (emailTemplateContent.IndexOf("[ExpirationDate]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[ExpirationDate]", Convert.ToDateTime(amcEndDate).ToString("dd/MM/yyyy"));
+                    }
+
+                    if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[SenderCompanyLogo]", baseLogoUrl);
+                    }
+
+                    remarks = "AMC ReminderId- " + companyAMCRminderEmailId;
+
+                    result = await SendEmail(sSubjectDynamicContent, emailTemplateContent, vConfigRefObj.ConfigValue);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                LogWriter.WriteLog(ex);
+            }
+
+            #region Save Email Log
+
+            var vEmailNotifyObj = new tblEmailNotification()
+            {
+                Module = "AMCReminderEmailToVendor",
+                Subject = sSubjectDynamicContent,
+                SendTo = "Vendor",
+                Content = emailTemplateContent,
+                EmailTo = vConfigRefObj.ConfigValue,
+                RefValue1 = remarks,
+                IsSent = result,
+                CreatedBy = 1,
+                CreatedOn = DateTime.Now,
+            };
+
+            db.tblEmailNotifications.Add(vEmailNotifyObj);
+            await db.SaveChangesAsync();
+
+            #endregion
+
+            return result;
+        }
+
 
         private static string ImageToBase64(string imgPath)
         {

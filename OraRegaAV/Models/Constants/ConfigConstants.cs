@@ -21,6 +21,9 @@
         public const string ExtendWarrantyEnquiryEmail = "ExtendWarrantyEnquiryEmail";
         public const string ContactUsEmail = "ContactUsEmail";
 
+        public const string AMCReminderEmailToCustomer = "AMCReminderEmailToCustomer";
+        public const string AMCReminderEmailToVendor = "AMCReminderEmailToVendor";
+
         // SMS Setting
         public const string SMS_AuthKey = "SMS_AuthKey";
         public const string SMS_SenderId = "SMS_SenderId";

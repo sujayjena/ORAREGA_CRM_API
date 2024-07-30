@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a68eff7d134d472a8469c2e10b42962d" Name="Diagram1" ZoomLevel="84">
+      <Diagram DiagramId="a68eff7d134d472a8469c2e10b42962d" Name="Diagram1" ZoomLevel="79">
         <EntityTypeShape EntityType="dbOraRegaModel.tblAccessory" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblArea" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblBranch" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
@@ -23,7 +23,6 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblLeaveType" Width="1.5" PointX="11.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblMenuMaster" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblMenuRoleMapping" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbOraRegaModel.tblOnlineCustomer" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblOperatingSystem" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblOrderTypeMaster" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblPartDescription" Width="1.5" PointX="28.375" PointY="3.75" IsExpanded="true" />
@@ -152,7 +151,6 @@
          <EntityTypeShape EntityType="dbOraRegaModel.tblInvoicePartDetail" Width="1.5" PointX="36.375" PointY="0.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" Width="1.5" PointX="0.75" PointY="36.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" Width="1.5" PointX="17.375" PointY="36.75" />
-        <EntityTypeShape EntityType="dbOraRegaModel.OLD_tblWorkOrderEnquiry" Width="1.5" PointX="35.375" PointY="27.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationLog" Width="1.5" PointX="25.375" PointY="36.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" Width="1.5" PointX="31.375" PointY="36.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" Width="1.5" PointX="37.375" PointY="5.75" />
@@ -164,6 +162,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblNotification" Width="1.5" PointX="37.375" PointY="23.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblLogDetail" Width="1.5" PointX="37.375" PointY="27.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblEmailNotification" Width="1.5" PointX="37.375" PointY="31.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblAMCReminderEmail" Width="1.5" PointX="33.375" PointY="37.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,4 +1,5 @@
-﻿using OraRegaAV.DBEntity;
+﻿using DocumentFormat.OpenXml.EMMA;
+using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
 using OraRegaAV.Models.Constants;
 using System;
@@ -40,7 +41,7 @@ namespace OraRegaAV.CustomFilter
             GetLoggedInUserDetailsByToken_Result userDetail;
 
             string token = actionContext.Request.Headers.Where(x => x.Key == "token").FirstOrDefault().Value?.FirstOrDefault();
-            
+
             if (string.IsNullOrEmpty(token))
             {
                 _response.IsSuccess = false;
@@ -55,7 +56,6 @@ namespace OraRegaAV.CustomFilter
                 validData = JsonSerializer.Deserialize<tblUser>(decryptedString);
 
                 userDetail = db.GetLoggedInUserDetailsByToken(token).FirstOrDefault();
-
                 if (userDetail == null)
                 {
                     _response.IsSuccess = false;
@@ -64,36 +64,46 @@ namespace OraRegaAV.CustomFilter
                 }
                 else
                 {
-                    actionContext.Request.Properties.Add("UserId", userDetail.UserId);
-
-                    tblLoggedInUser = db.tblLoggedInUsers.Where
-                        (
-                            lu => lu.UserToken == token 
-                            && lu.UserId == validData.Id 
-                            && lu.IsLoggedIn == true 
-                            && lu.LoggedOutOn == null
-                        ).FirstOrDefault();
-                    
-                    if (userDetail.RememberMe == true)
-                        tblLoggedInUser.TokenExpireOn = DateTime.Now.AddDays(365);
-
-                    if ((userDetail.RememberMe == null || userDetail.RememberMe == false) && userDetail.SessionIdleTimeInMin > 30)
+                    var vCompanyAMCCheckingObj = db.GetUserDetailsWithAMCChecking(username: userDetail.EmpMobile, token: string.Empty).FirstOrDefault();
+                    if (vCompanyAMCCheckingObj == null)
                     {
-                        tblLoggedInUser.IsLoggedIn = false;
-                        tblLoggedInUser.LoggedOutOn = DateTime.Now;
-                        tblLoggedInUser.IsAutoLogout = true;
-                        db.SaveChanges();
-
                         _response.IsSuccess = false;
-                        _response.Message = ValidationConstant.ExpiredSessionError;
-
+                        _response.Message = "Invalid credential!";
                         actionContext.Response = actionContext.Request.CreateResponse(_response);
                     }
                     else
                     {
-                        tblLoggedInUser.LastAccessOn = DateTime.Now;
-                        //db.tblLoggedInUsers.AddOrUpdate(tblLoggedInUser);
-                        db.SaveChanges();
+                        actionContext.Request.Properties.Add("UserId", userDetail.UserId);
+
+                        tblLoggedInUser = db.tblLoggedInUsers.Where
+                            (
+                                lu => lu.UserToken == token
+                                && lu.UserId == validData.Id
+                                && lu.IsLoggedIn == true
+                                && lu.LoggedOutOn == null
+                            ).FirstOrDefault();
+
+                        if (userDetail.RememberMe == true)
+                            tblLoggedInUser.TokenExpireOn = DateTime.Now.AddDays(365);
+
+                        if ((userDetail.RememberMe == null || userDetail.RememberMe == false) && userDetail.SessionIdleTimeInMin > 30)
+                        {
+                            tblLoggedInUser.IsLoggedIn = false;
+                            tblLoggedInUser.LoggedOutOn = DateTime.Now;
+                            tblLoggedInUser.IsAutoLogout = true;
+                            db.SaveChanges();
+
+                            _response.IsSuccess = false;
+                            _response.Message = ValidationConstant.ExpiredSessionError;
+
+                            actionContext.Response = actionContext.Request.CreateResponse(_response);
+                        }
+                        else
+                        {
+                            tblLoggedInUser.LastAccessOn = DateTime.Now;
+                            //db.tblLoggedInUsers.AddOrUpdate(tblLoggedInUser);
+                            db.SaveChanges();
+                        }
                     }
                 }
             }

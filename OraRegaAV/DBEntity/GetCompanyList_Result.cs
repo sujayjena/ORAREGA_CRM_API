@@ -28,6 +28,12 @@ namespace OraRegaAV.DBEntity
         public string CityName { get; set; }
         public Nullable<int> PincodeId { get; set; }
         public string Pincode { get; set; }
-        public Nullable<int> BranchAdd { get; set; }
+        public int BranchAdd { get; set; }
+        public Nullable<int> AmcMonth { get; set; }
+        public Nullable<System.DateTime> AmcStartDate { get; set; }
+        public Nullable<System.DateTime> AmcEndDate { get; set; }
+        public Nullable<System.DateTime> AmcLastEmailDate { get; set; }
+        public Nullable<int> TotalAmcDays { get; set; }
+        public Nullable<int> TotalAmcRemainingDays { get; set; }
     }
 }

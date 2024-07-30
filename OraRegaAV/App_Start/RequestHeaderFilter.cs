@@ -1709,7 +1709,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"CompanyName\": \"string\", \"CompanyTypeId\": 0, \"RegistrationNumber\": \"string\", \"ContactNumber\": \"string\", \"Email\": \"string\", \"Website\": \"string\", \"TaxNumber\": \"string\", \"AddressLine1\": \"string\", \"AddressLine2\": \"string\", \"StateId\": 0, \"CityId\": 0, \"AreaId\": 0, \"PincodeId\": 0, \"GSTNumber\": \"string\", \"PANNumber\": \"string\", \"IsActive\": true }}"
+                    description = $"{{ \"Id\": 0, \"CompanyName\": \"string\", \"CompanyTypeId\": 0, \"RegistrationNumber\": \"string\", \"ContactNumber\": \"string\", \"Email\": \"string\", \"Website\": \"string\", \"TaxNumber\": \"string\", \"AddressLine1\": \"string\", \"AddressLine2\": \"string\", \"StateId\": 0, \"CityId\": 0, \"AreaId\": 0, \"PincodeId\": 0, \"GSTNumber\": \"string\", \"PANNumber\": \"string\", \"BranchAdd\": 0, \"AmcMonth\": 0,\"AmcStartDate\": \"\",\"AmcEndDate\": \"\",\"IsActive\": true }}"
                 });
 
                 operation.parameters.Add(new Parameter()
@@ -1732,7 +1732,7 @@ namespace OraRegaAV.App_Start
                     type = "string",
                     required = true,
                     pattern = "JSON Object",
-                    description = $"{{ \"Id\": 0, \"CompanyName\": \"string\", \"CompanyTypeId\": 0, \"RegistrationNumber\": \"string\", \"ContactNumber\": \"string\", \"Email\": \"string\", \"Website\": \"string\", \"TaxNumber\": \"string\", \"AddressLine1\": \"string\", \"AddressLine2\": \"string\", \"StateId\": 0, \"CityId\": 0, \"AreaId\": 0, \"PincodeId\": 0, \"GSTNumber\": \"string\", \"PANNumber\": \"string\", \"BranchAdd\": 0,\"IsActive\": true }}"
+                    description = $"{{ \"Id\": 0, \"CompanyName\": \"string\", \"CompanyTypeId\": 0, \"RegistrationNumber\": \"string\", \"ContactNumber\": \"string\", \"Email\": \"string\", \"Website\": \"string\", \"TaxNumber\": \"string\", \"AddressLine1\": \"string\", \"AddressLine2\": \"string\", \"StateId\": 0, \"CityId\": 0, \"AreaId\": 0, \"PincodeId\": 0, \"GSTNumber\": \"string\", \"PANNumber\": \"string\", \"BranchAdd\": 0, \"AmcMonth\": 0,\"AmcStartDate\": \"\",\"AmcEndDate\": \"\",\"IsActive\": true }}"
                 });
 
                 operation.parameters.Add(new Parameter()

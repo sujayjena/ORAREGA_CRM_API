@@ -53,7 +53,7 @@ namespace OraRegaAV.Controllers.API
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
                     tbl.CreatedDate = DateTime.Now;
                     db.tblCompanyTypes.Add(tbl);
-                    
+
                     _response.Message = "Company Type details saved successfully";
                 }
                 else
@@ -65,11 +65,11 @@ namespace OraRegaAV.Controllers.API
 
                     _response.Message = "Company Type details updated successfully";
                 }
-                
+
                 await db.SaveChangesAsync();
                 _response.IsSuccess = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message = ValidationConstant.InternalServerError;
@@ -78,7 +78,7 @@ namespace OraRegaAV.Controllers.API
 
             return _response;
         }
-        
+
         [HttpPost]
         [Route("api/CompanyTypeAPI/GetById")]
         public Response GetById([FromBody] int Id)
@@ -194,6 +194,9 @@ namespace OraRegaAV.Controllers.API
                     tbl.GSTNumber = parameters.GSTNumber;
                     tbl.PANNumber = parameters.PANNumber;
                     tbl.BranchAdd = parameters.BranchAdd;
+                    tbl.AmcMonth = parameters.AmcMonth;
+                    tbl.AmcStartDate = parameters.AmcStartDate;
+                    tbl.AmcEndDate = parameters.AmcEndDate;
                     tbl.IsActive = parameters.IsActive;
                     tbl.CompanyLogo = parameters.CompanyLogo;
                     tbl.CreatedBy = Utilities.GetUserID(ActionContext.Request);
@@ -264,7 +267,7 @@ namespace OraRegaAV.Controllers.API
                 }
 
                 parameters = JsonConvert.DeserializeObject<tblCompany>(jsonParameter);
-                
+
                 if (postedFiles.Count > 0)
                 {
                     parameters.CompanyLogo = postedFiles["CompanyLogo"].FileName;
@@ -293,7 +296,7 @@ namespace OraRegaAV.Controllers.API
                     {
                         tbl.CompanyName = parameters.CompanyName;
                     }
-                   
+
                     tbl.CompanyTypeId = parameters.CompanyTypeId;
                     tbl.RegistrationNumber = parameters.RegistrationNumber;
                     tbl.ContactNumber = parameters.ContactNumber;
@@ -309,6 +312,9 @@ namespace OraRegaAV.Controllers.API
                     tbl.GSTNumber = parameters.GSTNumber;
                     tbl.PANNumber = parameters.PANNumber;
                     tbl.BranchAdd = parameters.BranchAdd;
+                    tbl.AmcMonth = parameters.AmcMonth;
+                    tbl.AmcStartDate = parameters.AmcStartDate;
+                    tbl.AmcEndDate = parameters.AmcEndDate;
                     tbl.IsActive = parameters.IsActive;
                     tbl.CompanyLogo = parameters.CompanyLogo;
                     tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
@@ -372,7 +378,7 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/CompanyTypeAPI/GetCompanyDetailsById")]
-        public async Task<Response> GetCompanyDetailsById([FromBody]int Id)
+        public async Task<Response> GetCompanyDetailsById([FromBody] int Id)
         {
             tblCompany tblCompany;
             var host = Url.Content("~/");
@@ -407,6 +413,66 @@ namespace OraRegaAV.Controllers.API
 
             return _response;
         }
+        #endregion
+
+        #region Company AMC
+
+        [HttpPost]
+        [Route("api/CompanyTypeAPI/CheckCompanyAMC")]
+        public async Task<Response> CheckCompanyAMC(CompanyAMCModel parameters)
+        {
+            var vCompanySearch_Request = new CompanyModel()
+            {
+                CompanyId = parameters.CompanyId,
+            };
+
+            var userId = Utilities.GetUserID(ActionContext.Request);
+            var vTotal = new ObjectParameter("Total", typeof(int));
+            var lstCompanys = db.GetCompanyList(parameters.CompanyId, string.Empty, 0, 0, vTotal, userId).ToList();
+
+            foreach (var companyItem in lstCompanys.ToList())
+            {
+                string sCompanyName = companyItem.CompanyName;
+                int iCompanyId = companyItem.Id;
+                string sAMCStartDate_EndDate_LastEmailDate = (companyItem.AmcStartDate.HasValue ? companyItem.AmcStartDate.Value.Date.ToString() : "") + " - " + (companyItem.AmcEndDate.HasValue ? companyItem.AmcEndDate.Value.Date.ToString() : "") + " - " + (companyItem.AmcLastEmailDate.HasValue ? companyItem.AmcLastEmailDate.Value.Date.ToString() : "");
+                int iTotalAmcRemainingDays = Convert.ToInt32(companyItem.TotalAmcRemainingDays);
+
+                var vCompanyAMCRminderEmail_RequestObj = new CompanyAMCRminderEmail_Request()
+                {
+                    Id = 0,
+                    CompanyId = iCompanyId,
+                    AMCYear = (companyItem.AmcStartDate.HasValue ? companyItem.AmcStartDate.Value.Date.Year.ToString() : "") + "-" + (companyItem.AmcEndDate.HasValue ? companyItem.AmcEndDate.Value.Date.Year.ToString() : ""),
+                    AMCStartDate_EndDate_LastEmailDate = sAMCStartDate_EndDate_LastEmailDate,
+                    AMCRemainingDays = iTotalAmcRemainingDays,
+                    AMCReminderCount = 1,
+
+                    AMCPreorPostExpire = iTotalAmcRemainingDays == 0 ? true : false, // False = Pre Expire , True - Post Expire
+                    AmcEndDate = companyItem.AmcEndDate,
+                    AmcLastEmailDate = companyItem.AmcLastEmailDate,
+                };
+
+                //Save AMC Reminder
+                var vIntResult = new ObjectParameter("IntResult", typeof(int));
+                await Task.Run(() => db.SaveAMCReminderEmail(0, vCompanyAMCRminderEmail_RequestObj.CompanyId, vCompanyAMCRminderEmail_RequestObj.AMCYear,
+                   vCompanyAMCRminderEmail_RequestObj.AMCStartDate_EndDate_LastEmailDate, vCompanyAMCRminderEmail_RequestObj.AMCRemainingDays, vCompanyAMCRminderEmail_RequestObj.AMCReminderCount, vCompanyAMCRminderEmail_RequestObj.AMCPreorPostExpire,
+                    vCompanyAMCRminderEmail_RequestObj.AmcEndDate, vCompanyAMCRminderEmail_RequestObj.AmcLastEmailDate, vIntResult, userId));
+
+                if (Convert.ToInt32(vIntResult.Value) > 0)
+                {
+                    bool isEmailSentToCustomer = await new AlertsSender().SendAMCEmailToCustomer(Convert.ToInt32(vIntResult.Value), iTotalAmcRemainingDays, companyItem.AmcEndDate);
+                    bool isEmailSentToVendor = await new AlertsSender().SendAMCEmailToVendor(Convert.ToInt32(vIntResult.Value), iTotalAmcRemainingDays, companyItem.AmcEndDate);
+
+                    _response.Message = "AMC reminder sent sucessfully";
+                }
+                else
+                {
+                    _response.Message = "AMC reminder already sent!";
+                }
+            }
+
+            return _response;
+        }
+
         #endregion
     }
 }

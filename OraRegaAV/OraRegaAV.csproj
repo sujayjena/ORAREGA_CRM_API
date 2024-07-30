@@ -433,6 +433,9 @@
     <Compile Include="DBEntity\AttendanceHistory.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\ComplexType1.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\dbOraRegaModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -816,6 +819,9 @@
     <Compile Include="DBEntity\GetTravelRangeList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\GetUserDetailsWithAMCChecking_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\GetUsersAddresses_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -900,9 +906,6 @@
     <Compile Include="DBEntity\ModuleMaster.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBEntity\OLD_tblWorkOrderEnquiry.cs">
-      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DBEntity\RoleMaster_Employee_Permission.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -913,6 +916,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblAddressTypesMaster.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\tblAMCReminderEmail.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblArea.cs">
@@ -1060,9 +1066,6 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblOfferAd.cs">
-      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBEntity\tblOnlineCustomer.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\tblOperatingSystem.cs">
