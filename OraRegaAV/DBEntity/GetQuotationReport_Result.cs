@@ -34,6 +34,8 @@ namespace OraRegaAV.DBEntity
         public string BranchGSTNumber { get; set; }
         public Nullable<int> BranchId { get; set; }
         public string BranchName { get; set; }
+        public Nullable<int> StateId { get; set; }
+        public string StateName { get; set; }
         public Nullable<int> ProductTypeId { get; set; }
         public string ServiceProductType { get; set; }
         public Nullable<int> ServiceHSNCodeId { get; set; }
@@ -75,5 +77,7 @@ namespace OraRegaAV.DBEntity
         public Nullable<decimal> AmountPaidAfter { get; set; }
         public Nullable<decimal> OutstandingAmount { get; set; }
         public string PaymentStatus { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> CompanyId { get; set; }
     }
 }
