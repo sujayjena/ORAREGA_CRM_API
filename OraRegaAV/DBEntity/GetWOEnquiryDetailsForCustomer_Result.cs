@@ -61,8 +61,8 @@ namespace OraRegaAV.DBEntity
         public string CountryName { get; set; }
         public Nullable<int> OSId { get; set; }
         public string OperatingSystemName { get; set; }
-        public Nullable<int> SourceChannelId { get; set; }
-        public Nullable<int> EnquiryStatusId { get; set; }
+        public int SourceChannelId { get; set; }
+        public int EnquiryStatusId { get; set; }
         public string EnquiryStatusName { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
@@ -75,5 +75,6 @@ namespace OraRegaAV.DBEntity
         public string OrganizationName { get; set; }
         public string FilesOriginalName { get; set; }
         public string AttributeImagePath { get; set; }
+        public Nullable<int> WorkOrderEnquiryId { get; set; }
     }
 }

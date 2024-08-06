@@ -2207,19 +2207,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkOrderEnquiriesList_Result>("GetWorkOrderEnquiriesList", companyIdParameter, branchIdParameter, enquiryStatusIdParameter, loggedInUserIdParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetWOEnquiryDetailsForCustomer_Result> GetWOEnquiryDetailsForCustomer(Nullable<int> customerId, Nullable<int> wOEnquiryId)
-        {
-            var customerIdParameter = customerId.HasValue ?
-                new ObjectParameter("CustomerId", customerId) :
-                new ObjectParameter("CustomerId", typeof(int));
-    
-            var wOEnquiryIdParameter = wOEnquiryId.HasValue ?
-                new ObjectParameter("WOEnquiryId", wOEnquiryId) :
-                new ObjectParameter("WOEnquiryId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiryDetailsForCustomer_Result>("GetWOEnquiryDetailsForCustomer", customerIdParameter, wOEnquiryIdParameter);
-        }
-    
         public virtual ObjectResult<GetWOCustomerFeedbackList_Result> GetWOCustomerFeedbackList(string workOrderNo, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
         {
             var workOrderNoParameter = workOrderNo != null ?
@@ -3591,6 +3578,23 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("PageNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationReport_Result>("GetQuotationReport", fromDateParameter, toDateParameter, companyIdParameter, branchIdParameter, stateIdParameter, userIdParameter, pageSizeParameter, pageNoParameter, total);
+        }
+    
+        public virtual ObjectResult<GetWOEnquiryDetailsForCustomer_Result> GetWOEnquiryDetailsForCustomer(Nullable<int> customerId, Nullable<int> wOEnquiryId, string workOrderNo)
+        {
+            var customerIdParameter = customerId.HasValue ?
+                new ObjectParameter("CustomerId", customerId) :
+                new ObjectParameter("CustomerId", typeof(int));
+    
+            var wOEnquiryIdParameter = wOEnquiryId.HasValue ?
+                new ObjectParameter("WOEnquiryId", wOEnquiryId) :
+                new ObjectParameter("WOEnquiryId", typeof(int));
+    
+            var workOrderNoParameter = workOrderNo != null ?
+                new ObjectParameter("WorkOrderNo", workOrderNo) :
+                new ObjectParameter("WorkOrderNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiryDetailsForCustomer_Result>("GetWOEnquiryDetailsForCustomer", customerIdParameter, wOEnquiryIdParameter, workOrderNoParameter);
         }
     }
 }
