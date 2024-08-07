@@ -313,7 +313,8 @@ namespace OraRegaAV.Controllers.Customers
                         (
                             customerId,
                             parameters.EnquiryStatusId.SanitizeValue(),
-                            parameters.SearchText.SanitizeValue()
+                            parameters.SearchText.SanitizeValue(),
+                            parameters.IsWOEnquiry
                         ).ToList();
 
                         _response.Data = lstWOEnquiries;

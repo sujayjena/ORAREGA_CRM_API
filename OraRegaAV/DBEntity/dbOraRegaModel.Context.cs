@@ -2960,7 +2960,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_InvoiceSummary_Result>("GetDashboard_InvoiceSummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue)
+        public virtual ObjectResult<GetWOEnquiriesListForCustomer_Result> GetWOEnquiriesListForCustomer(Nullable<int> loggedInUserId, Nullable<int> enquiryStatusId, string searchValue, Nullable<bool> isWOEnquiry)
         {
             var loggedInUserIdParameter = loggedInUserId.HasValue ?
                 new ObjectParameter("LoggedInUserId", loggedInUserId) :
@@ -2974,7 +2974,11 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("SearchValue", searchValue) :
                 new ObjectParameter("SearchValue", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter);
+            var isWOEnquiryParameter = isWOEnquiry.HasValue ?
+                new ObjectParameter("IsWOEnquiry", isWOEnquiry) :
+                new ObjectParameter("IsWOEnquiry", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiriesListForCustomer_Result>("GetWOEnquiriesListForCustomer", loggedInUserIdParameter, enquiryStatusIdParameter, searchValueParameter, isWOEnquiryParameter);
         }
     
         public virtual ObjectResult<GetQuotationList_Result> GetQuotationList(Nullable<int> companyId, string branchId, string quotationNumber, string workOrderNumber, Nullable<int> statusId, string searchValue, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)

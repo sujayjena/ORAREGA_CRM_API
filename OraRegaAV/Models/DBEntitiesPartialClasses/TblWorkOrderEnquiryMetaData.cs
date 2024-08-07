@@ -162,6 +162,9 @@ namespace OraRegaAV.DBEntity
     {
         public int? EnquiryStatusId { get; set; }
         public string SearchText { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsWOEnquiry { get; set; }
     }
 
     public class SearchWOEnquiryFeedback

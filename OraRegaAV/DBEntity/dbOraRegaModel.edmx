@@ -3237,6 +3237,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
           <Parameter Name="EnquiryStatusId" Type="int" Mode="In" />
           <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="IsWOEnquiry" Type="bit" Mode="In" />
         </Function>
         <Function Name="GetWOEnquiryDetailsForCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CustomerId" Type="int" Mode="In" />
@@ -5263,6 +5264,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
             <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="IsWOEnquiry" Mode="In" Type="Boolean" />
           </FunctionImport>
           <EntitySet Name="tblInvoices" EntityType="dbOraRegaModel.tblInvoice" />
           <EntitySet Name="tblQuotations" EntityType="dbOraRegaModel.tblQuotation" />
