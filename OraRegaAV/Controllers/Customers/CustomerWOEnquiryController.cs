@@ -337,7 +337,7 @@ namespace OraRegaAV.Controllers.Customers
         }
 
         [HttpPost]
-        public async Task<Response> WOEnquiryDetails([FromBody] string WorkOrderNumber)
+        public async Task<Response> WOEnquiryDetails(int WOEnquiryId = 0, string WorkOrderNumber = "")
         {
             GetWOEnquiryDetailsForCustomer_Result result;
             List<tblProductIssuesPhoto> lstWOEnquiryIssueSnaps;
@@ -351,44 +351,36 @@ namespace OraRegaAV.Controllers.Customers
 
             try
             {
-                if (string.IsNullOrWhiteSpace(WorkOrderNumber))
+                if (WOEnquiryId > 0)
                 {
-                    _response.IsSuccess = false;
-                    _response.Message = "Work Order Number is required";
-                }
-                else
-                {
-                    result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), 0, WorkOrderNumber).FirstOrDefault();
+                    result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), WOEnquiryId, "").FirstOrDefault();
 
-                    if (result != null)
+                    lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == WOEnquiryId && ip.IsDeleted == false).ToListAsync();
+                    lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == WOEnquiryId && ip.IsDeleted == false).ToListAsync();
+
+                    foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
                     {
-                        lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
-                        lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
+                        //lstIssueSnaps.Add(fileManager.GetWOEnqIssueSnaps(WOEnquiryId, ip.PhotoPath, HttpContext.Current));
+                        var path = host + fileManager.GetWOEnqIssueSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
+                        //lstIssueSnaps.Add(path);
 
-                        foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
+                        lstIssueSnaps.Add(new ProductIssuesPhotoList
                         {
-                            //lstIssueSnaps.Add(fileManager.GetWOEnqIssueSnaps(WOEnquiryId, ip.PhotoPath, HttpContext.Current));
-                            var path = host + fileManager.GetWOEnqIssueSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
-                            //lstIssueSnaps.Add(path);
+                            FilesOriginalName = ip.FilesOriginalName,
+                            PhotoPathUrl = path
+                        });
+                    }
 
-                            lstIssueSnaps.Add(new ProductIssuesPhotoList
-                            {
-                                FilesOriginalName = ip.FilesOriginalName,
-                                PhotoPathUrl = path
-                            });
-                        }
+                    foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
+                    {
+                        var path = host + fileManager.GetWOProductProofSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
+                        //lstPurchaseProofPhoto.Add(path);
 
-                        foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
+                        lstPurchaseProofPhoto.Add(new PurchaseProofPhotoList
                         {
-                            var path = host + fileManager.GetWOProductProofSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
-                            //lstPurchaseProofPhoto.Add(path);
-
-                            lstPurchaseProofPhoto.Add(new PurchaseProofPhotoList
-                            {
-                                FilesOriginalName = ip.FilesOriginalName,
-                                PhotoPathUrl = path
-                            });
-                        }
+                            FilesOriginalName = ip.FilesOriginalName,
+                            PhotoPathUrl = path
+                        });
                     }
 
                     _response.Data = new
@@ -397,6 +389,56 @@ namespace OraRegaAV.Controllers.Customers
                         IssueSnaps = lstIssueSnaps,
                         PurchaseProof = lstPurchaseProofPhoto
                     };
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(WorkOrderNumber))
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Work Order Number is required";
+                    }
+                    else
+                    {
+                        result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), 0, WorkOrderNumber).FirstOrDefault();
+
+                        if (result != null)
+                        {
+                            lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
+                            lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
+
+                            foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
+                            {
+                                //lstIssueSnaps.Add(fileManager.GetWOEnqIssueSnaps(WOEnquiryId, ip.PhotoPath, HttpContext.Current));
+                                var path = host + fileManager.GetWOEnqIssueSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
+                                //lstIssueSnaps.Add(path);
+
+                                lstIssueSnaps.Add(new ProductIssuesPhotoList
+                                {
+                                    FilesOriginalName = ip.FilesOriginalName,
+                                    PhotoPathUrl = path
+                                });
+                            }
+
+                            foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
+                            {
+                                var path = host + fileManager.GetWOProductProofSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
+                                //lstPurchaseProofPhoto.Add(path);
+
+                                lstPurchaseProofPhoto.Add(new PurchaseProofPhotoList
+                                {
+                                    FilesOriginalName = ip.FilesOriginalName,
+                                    PhotoPathUrl = path
+                                });
+                            }
+                        }
+
+                        _response.Data = new
+                        {
+                            WOEnquiryDetails = result,
+                            IssueSnaps = lstIssueSnaps,
+                            PurchaseProof = lstPurchaseProofPhoto
+                        };
+                    }
                 }
             }
             catch (Exception ex)
