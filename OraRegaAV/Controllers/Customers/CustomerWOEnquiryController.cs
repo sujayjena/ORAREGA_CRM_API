@@ -337,7 +337,7 @@ namespace OraRegaAV.Controllers.Customers
         }
 
         [HttpPost]
-        public async Task<Response> WOEnquiryDetails(int WOEnquiryId = 0, string WorkOrderNumber = "")
+        public async Task<Response> WOEnquiryDetails(WOEnquiry_request request)
         {
             GetWOEnquiryDetailsForCustomer_Result result;
             List<tblProductIssuesPhoto> lstWOEnquiryIssueSnaps;
@@ -351,12 +351,12 @@ namespace OraRegaAV.Controllers.Customers
 
             try
             {
-                if (WOEnquiryId > 0)
-                {
-                    result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), WOEnquiryId, "").FirstOrDefault();
+                result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), request.WOEnquiryId, request.WorkOrderNumber).FirstOrDefault();
 
-                    lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == WOEnquiryId && ip.IsDeleted == false).ToListAsync();
-                    lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == WOEnquiryId && ip.IsDeleted == false).ToListAsync();
+                if (result != null)
+                {
+                    lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
+                    lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
 
                     foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
                     {
@@ -382,293 +382,243 @@ namespace OraRegaAV.Controllers.Customers
                             PhotoPathUrl = path
                         });
                     }
+                }
 
-                    _response.Data = new
+                _response.Data = new
+                {
+                    WOEnquiryDetails = result,
+                    IssueSnaps = lstIssueSnaps,
+                    PurchaseProof = lstPurchaseProofPhoto
+                };
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ValidationConstant.InternalServerError;
+                LogWriter.WriteLog(ex);
+            }
+
+            return _response;
+        }
+
+[HttpPost]
+public async Task<Response> SubmitWOEnquiryFeedback(tblWOEnquiryCustomerFeedback parameters)
+{
+    tblWOEnquiryCustomerFeedback feedback;
+    int customerId = 0;
+
+    try
+    {
+        if (ActionContext.Request.Properties.ContainsKey("UserId"))
+        {
+            customerId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+        }
+
+        feedback = await db.tblWOEnquiryCustomerFeedbacks.Where(x => x.WorkOrderId == parameters.WorkOrderId).FirstOrDefaultAsync();
+
+        if (feedback == null)
+        {
+            feedback = new tblWOEnquiryCustomerFeedback();
+            feedback.WorkOrderId = parameters.WorkOrderId;
+            feedback.Rating = parameters.Rating;
+            feedback.OverallExperience = parameters.OverallExperience;
+            feedback.HelpUsToImproveMore = parameters.HelpUsToImproveMore;
+            feedback.Comment = parameters.Comment;
+            feedback.CreatedBy = Utilities.GetUserID(ActionContext.Request);
+            feedback.CreatedDate = DateTime.Now;
+
+            db.tblWOEnquiryCustomerFeedbacks.Add(feedback);
+            await db.SaveChangesAsync();
+
+            //updated work order (WOEnqCustFeedbackId)
+            var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == feedback.WorkOrderId).FirstOrDefault();
+            if (vWorkOrder != null)
+            {
+                vWorkOrder.WOEnqCustFeedbackId = feedback.Id;
+                await db.SaveChangesAsync();
+            }
+
+            _response.Message = "Feedback submitted successfully";
+        }
+        else
+        {
+            _response.IsSuccess = false;
+            _response.Message = "Feedback has already been submitted for this enquiry";
+        }
+    }
+    catch (Exception ex)
+    {
+        _response.IsSuccess = false;
+        _response.Message = ValidationConstant.InternalServerError;
+        LogWriter.WriteLog(ex);
+    }
+
+    return _response;
+}
+
+[HttpPost]
+public async Task<Response> WOEnquiryFeedbackList(SearchWOEnquiryFeedback parameters)
+{
+    List<GetWOCustomerFeedbackList_Result> advanceList = new List<GetWOCustomerFeedbackList_Result>();
+
+    try
+    {
+        var vTotal = new ObjectParameter("Total", typeof(int));
+        advanceList = await Task.Run(() => db.GetWOCustomerFeedbackList(parameters.WorkOrderNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+
+        _response.TotalCount = Convert.ToInt32(vTotal.Value);
+        _response.Data = advanceList;
+    }
+    catch (Exception ex)
+    {
+        _response.IsSuccess = false;
+        _response.Message = ValidationConstant.InternalServerError;
+        LogWriter.WriteLog(ex);
+    }
+
+    return _response;
+}
+
+[HttpPost]
+public async Task<Response> WOEnquiryFeedbackDetails([FromBody] int WorkOrderId)
+{
+    tblWOEnquiryCustomerFeedback feedback;
+
+    try
+    {
+        feedback = await db.tblWOEnquiryCustomerFeedbacks.Where(f => f.WorkOrderId == WorkOrderId).FirstOrDefaultAsync();
+        if (feedback != null)
+        {
+            var vWorkOrderObj = await db.tblWorkOrders.Where(f => f.Id == WorkOrderId).FirstOrDefaultAsync();
+
+            _response.Data = new
+            {
+                WOEnquiryId = feedback.WorkOrderId,
+                WorkOrderNumber = vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : string.Empty,
+                Rating = feedback.Rating,
+                OverallExperience = feedback.OverallExperience,
+                HelpUsToImproveMor = feedback.HelpUsToImproveMore,
+                Comment = feedback.Comment,
+                CreatedDate = feedback.CreatedDate,
+            };
+        }
+
+        if (feedback == null)
+        {
+            _response.IsSuccess = false;
+            _response.Message = "No feedback details found for this enquiry";
+        }
+    }
+    catch (Exception ex)
+    {
+        _response.IsSuccess = false;
+        _response.Message = ValidationConstant.InternalServerError;
+        LogWriter.WriteLog(ex);
+    }
+
+    return _response;
+}
+
+[HttpPost]
+[Route("api/CustomerWOEnquiry/DownloadFeedbackList")]
+public Response DownloadFeedbackList(SearchWOEnquiryFeedback parameters)
+{
+    string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
+    InvalidFileResponseModel objInvalidFileResponseModel = null;
+    try
+    {
+        //var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
+
+        var vTotal = new ObjectParameter("Total", typeof(int));
+        var listObj = db.GetWOCustomerFeedbackList(parameters.WorkOrderNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
+
+        if (listObj.Count == 0)
+        {
+            _response.IsSuccess = false;
+            _response.Message = "No records found.";
+            return _response;
+        }
+        else
+        {
+            #region Generate Excel file for Department
+
+            DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
+
+            if (export_dt.Rows.Count > 0)
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                ExcelPackage excel = new ExcelPackage();
+                int recordIndex;
+                int srNo = 0;
+                ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Feedback_List");
+                WorkSheet1.TabColor = System.Drawing.Color.Black;
+                WorkSheet1.DefaultRowHeight = 12;
+
+                //Header of table
+                WorkSheet1.Row(1).Height = 20;
+                WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                WorkSheet1.Row(1).Style.Font.Bold = true;
+
+                WorkSheet1.Cells[1, 1].Value = "Sr.No";
+                WorkSheet1.Cells[1, 2].Value = "Customer Name";
+                WorkSheet1.Cells[1, 3].Value = "Work Order Number";
+                WorkSheet1.Cells[1, 4].Value = "Date";
+                WorkSheet1.Cells[1, 5].Value = "How You Want to Rate Us";
+                WorkSheet1.Cells[1, 6].Value = "Comment";
+
+                recordIndex = 2;
+                foreach (DataRow dataRow in export_dt.Rows)
+                {
+                    srNo++;
+                    WorkSheet1.Cells[recordIndex, 1].Value = srNo;
+                    WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    WorkSheet1.Cells[recordIndex, 2].Value = dataRow["CustomerName"];
+                    WorkSheet1.Cells[recordIndex, 3].Value = dataRow["WorkOrderNumber"];
+                    WorkSheet1.Cells[recordIndex, 4].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                    WorkSheet1.Cells[recordIndex, 4].Value = dataRow["CreatedDate"];
+                    WorkSheet1.Cells[recordIndex, 5].Value = dataRow["Rating"];
+                    WorkSheet1.Cells[recordIndex, 6].Value = dataRow["Comment"];
+
+                    recordIndex += 1;
+                }
+
+                WorkSheet1.Column(1).AutoFit();
+                WorkSheet1.Column(2).AutoFit();
+                WorkSheet1.Column(3).AutoFit();
+                WorkSheet1.Column(4).AutoFit();
+                WorkSheet1.Column(5).AutoFit();
+                WorkSheet1.Column(6).AutoFit();
+
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    excel.SaveAs(memoryStream);
+                    memoryStream.Position = 0;
+                    objInvalidFileResponseModel = new InvalidFileResponseModel()
                     {
-                        WOEnquiryDetails = result,
-                        IssueSnaps = lstIssueSnaps,
-                        PurchaseProof = lstPurchaseProofPhoto
+                        FileMemoryStream = memoryStream.ToArray(),
+                        FileName = "Feedback_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
+                        FileUniqueId = uniqueFileId
                     };
                 }
-                else
+
+                return new Response()
                 {
-                    if (string.IsNullOrWhiteSpace(WorkOrderNumber))
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Work Order Number is required";
-                    }
-                    else
-                    {
-                        result = db.GetWOEnquiryDetailsForCustomer(Utilities.GetCustomerID(ActionContext.Request), 0, WorkOrderNumber).FirstOrDefault();
-
-                        if (result != null)
-                        {
-                            lstWOEnquiryIssueSnaps = await db.tblProductIssuesPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
-                            lstWOEnquiryPurchaseProofPhoto = await db.tblPurchaseProofPhotos.Where(ip => ip.WOEnquiryId == (result.WorkOrderEnquiryId > 0 ? result.WorkOrderEnquiryId : result.Id) && ip.IsDeleted == false).ToListAsync();
-
-                            foreach (tblProductIssuesPhoto ip in lstWOEnquiryIssueSnaps)
-                            {
-                                //lstIssueSnaps.Add(fileManager.GetWOEnqIssueSnaps(WOEnquiryId, ip.PhotoPath, HttpContext.Current));
-                                var path = host + fileManager.GetWOEnqIssueSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
-                                //lstIssueSnaps.Add(path);
-
-                                lstIssueSnaps.Add(new ProductIssuesPhotoList
-                                {
-                                    FilesOriginalName = ip.FilesOriginalName,
-                                    PhotoPathUrl = path
-                                });
-                            }
-
-                            foreach (tblPurchaseProofPhoto ip in lstWOEnquiryPurchaseProofPhoto)
-                            {
-                                var path = host + fileManager.GetWOProductProofSnapsFile(ip.WOEnquiryId, ip.PhotoPath);
-                                //lstPurchaseProofPhoto.Add(path);
-
-                                lstPurchaseProofPhoto.Add(new PurchaseProofPhotoList
-                                {
-                                    FilesOriginalName = ip.FilesOriginalName,
-                                    PhotoPathUrl = path
-                                });
-                            }
-                        }
-
-                        _response.Data = new
-                        {
-                            WOEnquiryDetails = result,
-                            IssueSnaps = lstIssueSnaps,
-                            PurchaseProof = lstPurchaseProofPhoto
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ValidationConstant.InternalServerError;
-                LogWriter.WriteLog(ex);
+                    IsSuccess = true,
+                    Message = "Feedback list Generated Successfully.",
+                    Data = objInvalidFileResponseModel
+                };
             }
 
-            return _response;
+            #endregion
         }
-
-        [HttpPost]
-        public async Task<Response> SubmitWOEnquiryFeedback(tblWOEnquiryCustomerFeedback parameters)
-        {
-            tblWOEnquiryCustomerFeedback feedback;
-            int customerId = 0;
-
-            try
-            {
-                if (ActionContext.Request.Properties.ContainsKey("UserId"))
-                {
-                    customerId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
-                }
-
-                feedback = await db.tblWOEnquiryCustomerFeedbacks.Where(x => x.WorkOrderId == parameters.WorkOrderId).FirstOrDefaultAsync();
-
-                if (feedback == null)
-                {
-                    feedback = new tblWOEnquiryCustomerFeedback();
-                    feedback.WorkOrderId = parameters.WorkOrderId;
-                    feedback.Rating = parameters.Rating;
-                    feedback.OverallExperience = parameters.OverallExperience;
-                    feedback.HelpUsToImproveMore = parameters.HelpUsToImproveMore;
-                    feedback.Comment = parameters.Comment;
-                    feedback.CreatedBy = Utilities.GetUserID(ActionContext.Request);
-                    feedback.CreatedDate = DateTime.Now;
-
-                    db.tblWOEnquiryCustomerFeedbacks.Add(feedback);
-                    await db.SaveChangesAsync();
-
-                    //updated work order (WOEnqCustFeedbackId)
-                    var vWorkOrder = db.tblWorkOrders.Where(x => x.Id == feedback.WorkOrderId).FirstOrDefault();
-                    if (vWorkOrder != null)
-                    {
-                        vWorkOrder.WOEnqCustFeedbackId = feedback.Id;
-                        await db.SaveChangesAsync();
-                    }
-
-                    _response.Message = "Feedback submitted successfully";
-                }
-                else
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "Feedback has already been submitted for this enquiry";
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ValidationConstant.InternalServerError;
-                LogWriter.WriteLog(ex);
-            }
-
-            return _response;
-        }
-
-        [HttpPost]
-        public async Task<Response> WOEnquiryFeedbackList(SearchWOEnquiryFeedback parameters)
-        {
-            List<GetWOCustomerFeedbackList_Result> advanceList = new List<GetWOCustomerFeedbackList_Result>();
-
-            try
-            {
-                var vTotal = new ObjectParameter("Total", typeof(int));
-                advanceList = await Task.Run(() => db.GetWOCustomerFeedbackList(parameters.WorkOrderNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList());
-
-                _response.TotalCount = Convert.ToInt32(vTotal.Value);
-                _response.Data = advanceList;
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ValidationConstant.InternalServerError;
-                LogWriter.WriteLog(ex);
-            }
-
-            return _response;
-        }
-
-        [HttpPost]
-        public async Task<Response> WOEnquiryFeedbackDetails([FromBody] int WorkOrderId)
-        {
-            tblWOEnquiryCustomerFeedback feedback;
-
-            try
-            {
-                feedback = await db.tblWOEnquiryCustomerFeedbacks.Where(f => f.WorkOrderId == WorkOrderId).FirstOrDefaultAsync();
-                if (feedback != null)
-                {
-                    var vWorkOrderObj = await db.tblWorkOrders.Where(f => f.Id == WorkOrderId).FirstOrDefaultAsync();
-
-                    _response.Data = new
-                    {
-                        WOEnquiryId = feedback.WorkOrderId,
-                        WorkOrderNumber = vWorkOrderObj != null ? vWorkOrderObj.WorkOrderNumber : string.Empty,
-                        Rating = feedback.Rating,
-                        OverallExperience = feedback.OverallExperience,
-                        HelpUsToImproveMor = feedback.HelpUsToImproveMore,
-                        Comment = feedback.Comment,
-                        CreatedDate = feedback.CreatedDate,
-                    };
-                }
-
-                if (feedback == null)
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "No feedback details found for this enquiry";
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ValidationConstant.InternalServerError;
-                LogWriter.WriteLog(ex);
-            }
-
-            return _response;
-        }
-
-        [HttpPost]
-        [Route("api/CustomerWOEnquiry/DownloadFeedbackList")]
-        public Response DownloadFeedbackList(SearchWOEnquiryFeedback parameters)
-        {
-            string uniqueFileId = Guid.NewGuid().ToString().Replace("-", "");
-            InvalidFileResponseModel objInvalidFileResponseModel = null;
-            try
-            {
-                //var userId = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
-
-                var vTotal = new ObjectParameter("Total", typeof(int));
-                var listObj = db.GetWOCustomerFeedbackList(parameters.WorkOrderNo, parameters.SearchValue, parameters.PageSize, parameters.PageNo, vTotal).ToList();
-
-                if (listObj.Count == 0)
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "No records found.";
-                    return _response;
-                }
-                else
-                {
-                    #region Generate Excel file for Department
-
-                    DataTable export_dt = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(listObj), (typeof(DataTable)));
-
-                    if (export_dt.Rows.Count > 0)
-                    {
-                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-                        ExcelPackage excel = new ExcelPackage();
-                        int recordIndex;
-                        int srNo = 0;
-                        ExcelWorksheet WorkSheet1 = excel.Workbook.Worksheets.Add("Feedback_List");
-                        WorkSheet1.TabColor = System.Drawing.Color.Black;
-                        WorkSheet1.DefaultRowHeight = 12;
-
-                        //Header of table
-                        WorkSheet1.Row(1).Height = 20;
-                        WorkSheet1.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        WorkSheet1.Row(1).Style.Font.Bold = true;
-
-                        WorkSheet1.Cells[1, 1].Value = "Sr.No";
-                        WorkSheet1.Cells[1, 2].Value = "Customer Name";
-                        WorkSheet1.Cells[1, 3].Value = "Work Order Number";
-                        WorkSheet1.Cells[1, 4].Value = "Date";
-                        WorkSheet1.Cells[1, 5].Value = "How You Want to Rate Us";
-                        WorkSheet1.Cells[1, 6].Value = "Comment";
-
-                        recordIndex = 2;
-                        foreach (DataRow dataRow in export_dt.Rows)
-                        {
-                            srNo++;
-                            WorkSheet1.Cells[recordIndex, 1].Value = srNo;
-                            WorkSheet1.Cells[recordIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                            WorkSheet1.Cells[recordIndex, 2].Value = dataRow["CustomerName"];
-                            WorkSheet1.Cells[recordIndex, 3].Value = dataRow["WorkOrderNumber"];
-                            WorkSheet1.Cells[recordIndex, 4].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-                            WorkSheet1.Cells[recordIndex, 4].Value = dataRow["CreatedDate"];
-                            WorkSheet1.Cells[recordIndex, 5].Value = dataRow["Rating"];
-                            WorkSheet1.Cells[recordIndex, 6].Value = dataRow["Comment"];
-
-                            recordIndex += 1;
-                        }
-
-                        WorkSheet1.Column(1).AutoFit();
-                        WorkSheet1.Column(2).AutoFit();
-                        WorkSheet1.Column(3).AutoFit();
-                        WorkSheet1.Column(4).AutoFit();
-                        WorkSheet1.Column(5).AutoFit();
-                        WorkSheet1.Column(6).AutoFit();
-
-                        using (MemoryStream memoryStream = new MemoryStream())
-                        {
-                            excel.SaveAs(memoryStream);
-                            memoryStream.Position = 0;
-                            objInvalidFileResponseModel = new InvalidFileResponseModel()
-                            {
-                                FileMemoryStream = memoryStream.ToArray(),
-                                FileName = "Feedback_List_" + DateTime.Now.ToString("yyyyMMddHHmmss").Replace(" ", "_") + ".xlsx",
-                                FileUniqueId = uniqueFileId
-                            };
-                        }
-
-                        return new Response()
-                        {
-                            IsSuccess = true,
-                            Message = "Feedback list Generated Successfully.",
-                            Data = objInvalidFileResponseModel
-                        };
-                    }
-
-                    #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
-                throw ex;
-            }
-            return _response;
-        }
+    }
+    catch (Exception ex)
+    {
+        _response.IsSuccess = false;
+        _response.Message = ex.Message;
+        throw ex;
+    }
+    return _response;
+}
     }
 }

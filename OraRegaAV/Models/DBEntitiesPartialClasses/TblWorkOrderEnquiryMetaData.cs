@@ -158,6 +158,14 @@ namespace OraRegaAV.DBEntity
         public HttpPostedFile AttributeImage { get; set; }
     }
 
+    public class WOEnquiry_request
+    {
+        public int? WOEnquiryId { get; set; }
+
+        [DefaultValue("")]
+        public string WorkOrderNumber { get; set; }
+    }
+
     public class SearchCustomerWOEnquiry
     {
         public int? EnquiryStatusId { get; set; }
