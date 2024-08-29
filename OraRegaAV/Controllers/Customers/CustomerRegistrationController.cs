@@ -313,57 +313,57 @@ namespace OraRegaAV.Controllers.Customers
                 #endregion
 
                 #region Customer Record Saving
-                if (isSignup)
+                //if (isSignup)
+                //{
+                // && addr.IsDefault == true).Count() != 1)
+                if (parameters.Addresses.Where(addr => addr.IsActive == true).Count() == 0)
                 {
-                    // && addr.IsDefault == true).Count() != 1)
-                    if (parameters.Addresses.Where(addr => addr.IsActive == true).Count() == 0)
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "At least one Active address is required";
-                        return _response;
-                    }
-                    else if (parameters.Addresses.Where(addr => addr.IsActive == true && addr.IsDefault == true).Count() != 1)
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Either No address or more than one addresses are found marked as default";
-                        return _response;
-                    }
-
-                    tblCustomer = await db.tblCustomers.Where(c => c.Mobile == parameters.Mobile).FirstOrDefaultAsync();
-
-                    if (tblCustomer != null)
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Mobile No. is already registered";
-                        return _response;
-                    }
-
-                    tblCustomer = await db.tblCustomers.Where(c => c.Email == parameters.Email).FirstOrDefaultAsync();
-
-                    if (tblCustomer != null)
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Email Address is already registered";
-                        return _response;
-                    }
-
-                    //checking mobile no validation in user table
-                    var vUserDetailsMobileNo = await db.tblUsers.Where(c => c.MobileNo == parameters.Mobile).FirstOrDefaultAsync();
-                    if (vUserDetailsMobileNo != null)
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Mobile No. is already registered";
-                        return _response;
-                    }
-
-                    var vUserDetailsEmail = await db.tblUsers.Where(c => c.EmailId == parameters.Email).FirstOrDefaultAsync();
-                    if (vUserDetailsEmail != null)
-                    {
-                        _response.IsSuccess = false;
-                        _response.Message = "Email Address is already registered";
-                        return _response;
-                    }
+                    _response.IsSuccess = false;
+                    _response.Message = "At least one Active address is required";
+                    return _response;
                 }
+                else if (parameters.Addresses.Where(addr => addr.IsActive == true && addr.IsDefault == true).Count() != 1)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Either No address or more than one addresses are found marked as default";
+                    return _response;
+                }
+
+                tblCustomer = await db.tblCustomers.Where(c => c.Mobile == parameters.Mobile).FirstOrDefaultAsync();
+
+                if (tblCustomer != null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Mobile No. is already registered";
+                    return _response;
+                }
+
+                tblCustomer = await db.tblCustomers.Where(c => c.Email == parameters.Email).FirstOrDefaultAsync();
+
+                if (tblCustomer != null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Email Address is already registered";
+                    return _response;
+                }
+
+                //checking mobile no validation in user table
+                var vUserDetailsMobileNo = await db.tblUsers.Where(c => c.MobileNo == parameters.Mobile).FirstOrDefaultAsync();
+                if (vUserDetailsMobileNo != null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Mobile No. is already registered";
+                    return _response;
+                }
+
+                var vUserDetailsEmail = await db.tblUsers.Where(c => c.EmailId == parameters.Email).FirstOrDefaultAsync();
+                if (vUserDetailsEmail != null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Email Address is already registered";
+                    return _response;
+                }
+                //}
 
                 tblCustomer = await db.tblCustomers.Where(c => (
                         //////string.Equals(c.Email, parameters.Email, StringComparison.OrdinalIgnoreCase) || 
@@ -431,7 +431,7 @@ namespace OraRegaAV.Controllers.Customers
                     }
                     tblCustomer.IsActive = true;
                     tblCustomer.IsRegistrationPending = false;
-                    tblCustomer.SourceChannel = parameters.SourceChannel;
+                    //tblCustomer.SourceChannel = parameters.SourceChannel;
 
                     tblCustomer.ModifiedBy = Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0);
                     tblCustomer.ModifiedDate = DateTime.Now;
@@ -743,7 +743,7 @@ namespace OraRegaAV.Controllers.Customers
                 };
 
                 dtTable = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(lstCustomerImportRequestModel), typeof(DataTable));
-             
+
                 //Excel Column Mismatch check. If column name has been changed then it's value will be null;
                 foreach (DataRow row in dtTable.Rows)
                 {
@@ -774,12 +774,12 @@ namespace OraRegaAV.Controllers.Customers
                 }
 
                 objImportCustomer_Result = db.ImportCustomer(XmlCustomerData, 0).ToList();
-              
+
                 if (objImportCustomer_Result.Count > 0)
                 {
                     #region Generate Excel file for Invalid Data
                     dtInvalidRecords = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(objImportCustomer_Result), typeof(DataTable));
-                   
+
                     ExcelPackage excel = new ExcelPackage();
 
                     if (dtInvalidRecords.Rows.Count > 0)
