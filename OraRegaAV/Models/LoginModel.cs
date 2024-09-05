@@ -69,6 +69,9 @@ namespace OraRegaAV.Models
         public string CompanyName { get; set; }
         public string BranchId { get; set; }
         public string BranchName { get; set; }
+        public string ProfileImagePath { get; set; }
+        public string ProfileOriginalFileName { get; set; }
+        public string ProfilePicture { get; set; }
         public string Token { get; set; }
         public List<GetRoleMaster_EmployeePermissionList_Result> userPermissionList { get; set; }
         public List<GetNotificationList_Result> NotificationList { get; set; }

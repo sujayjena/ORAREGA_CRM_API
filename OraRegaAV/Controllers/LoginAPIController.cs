@@ -272,6 +272,7 @@ namespace OraRegaAV.Controllers.API
         {
             GetLoggedInUserDetailsByToken_Result loggedInUser;
             LoginModelResponse objLoginModelResponse;
+            var host = Url.Content("~/");
 
             try
             {
@@ -342,6 +343,18 @@ namespace OraRegaAV.Controllers.API
                             objLoginModelResponse.Name = loggedInUser.EmployeeName ?? $"{loggedInUser.CustFirstName} {loggedInUser.CustLastName}";
                             objLoginModelResponse.Email = loggedInUser.EmpEmail ?? loggedInUser.CustEmail;
                             objLoginModelResponse.Mobile = loggedInUser.EmpMobile ?? loggedInUser.Mobile;
+
+                            if (vEmployeeObj != null)
+                            {
+                                if (!string.IsNullOrEmpty(vEmployeeObj.ProfileImagePath))
+                                {
+                                    objLoginModelResponse.ProfileOriginalFileName = vEmployeeObj.ProfileOriginalFileName;
+                                    objLoginModelResponse.ProfileImagePath = vEmployeeObj.ProfileImagePath;
+                                    var path = host + "Uploads/ProfilePicture/" + vEmployeeObj.ProfileImagePath;
+                                    objLoginModelResponse.ProfilePicture = path;
+                                }
+                            }
+
                             objLoginModelResponse.Token = encryptedString;
                             objLoginModelResponse.userPermissionList = vRoleList;
 
