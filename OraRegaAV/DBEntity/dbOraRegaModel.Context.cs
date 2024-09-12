@@ -3179,7 +3179,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDashboard_SalesOrderEnquirySummary_Result>("GetDashboard_SalesOrderEnquirySummary", companyIdParameter, branchIdParameter, fromDateParameter, toDateParameter, userIdParameter, filterTypeParameter);
         }
     
-        public virtual ObjectResult<Nullable<long>> SaveLogDetails(string module, Nullable<int> moduleUniqId, string logDesc, string remarks, Nullable<long> userId)
+        public virtual ObjectResult<Nullable<long>> SaveLogDetails(string module, Nullable<int> moduleUniqId, string logDesc, string remarks, string jsonData, Nullable<long> userId)
         {
             var moduleParameter = module != null ?
                 new ObjectParameter("Module", module) :
@@ -3197,11 +3197,15 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("Remarks", remarks) :
                 new ObjectParameter("Remarks", typeof(string));
     
+            var jsonDataParameter = jsonData != null ?
+                new ObjectParameter("JsonData", jsonData) :
+                new ObjectParameter("JsonData", typeof(string));
+    
             var userIdParameter = userId.HasValue ?
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("SaveLogDetails", moduleParameter, moduleUniqIdParameter, logDescParameter, remarksParameter, userIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("SaveLogDetails", moduleParameter, moduleUniqIdParameter, logDescParameter, remarksParameter, jsonDataParameter, userIdParameter);
         }
     
         public virtual ObjectResult<GetWOEnquiryLogDetailsList_Result> GetWOEnquiryLogDetailsList(string module, Nullable<int> moduleUniqId)

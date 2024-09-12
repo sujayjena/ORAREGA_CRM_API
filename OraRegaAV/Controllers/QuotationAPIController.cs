@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using DocumentFormat.OpenXml.Spreadsheet;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
+using Newtonsoft.Json;
 using OraRegaAV.Controllers.API;
 using OraRegaAV.DBEntity;
 using OraRegaAV.Helpers;
@@ -472,6 +473,8 @@ namespace OraRegaAV.Controllers
                 #region Log Details
                 if (tbl != null)
                 {
+                    var jsonData = JsonConvert.SerializeObject(tbl);
+
                     string logDesc = string.Empty;
                     if (request.QuotationId == 0)
                     {
@@ -482,7 +485,7 @@ namespace OraRegaAV.Controllers
                         logDesc = "Quotation Edit or Update";
                     }
 
-                    await Task.Run(() => db.SaveLogDetails("Work Order", tbl.WorkOrderId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work Order", tbl.WorkOrderId, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                 }
                 #endregion
             }
@@ -915,6 +918,8 @@ namespace OraRegaAV.Controllers
                         #region Log Details
                         if (parameters.StatusId > 1)
                         {
+                            var jsonData = JsonConvert.SerializeObject(parameters);
+
                             string logDesc = string.Empty;
                             if (parameters.StatusId == 2)
                             {
@@ -925,7 +930,7 @@ namespace OraRegaAV.Controllers
                                 logDesc = "Quotation Status Rejected";
                             }
 
-                            await Task.Run(() => db.SaveLogDetails("Work Order", vWorkOrderStatusObj.WorkOrderId, logDesc, parameters.Reason, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                            await Task.Run(() => db.SaveLogDetails("Work Order", vWorkOrderStatusObj.WorkOrderId, logDesc, parameters.Reason,jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                         }
                         #endregion
 

@@ -789,6 +789,7 @@
           <Property Name="LogDesc" Type="nvarchar" MaxLength="50" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
           <Property Name="UserId" Type="int" />
+          <Property Name="JsonData" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblLoggedInUsers">
           <Key>
@@ -2351,7 +2352,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <Association Name="FK__tblMenuRo__MenuI__6501FCD8">
+        <Association Name="FK__tblMenuRo__MenuI__66EA454A">
           <End Role="tblMenuMaster" Type="Self.tblMenuMaster" Multiplicity="0..1" />
           <End Role="tblMenuRoleMapping" Type="Self.tblMenuRoleMapping" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3379,6 +3380,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Parameter Name="ModuleUniqId" Type="int" Mode="In" />
           <Parameter Name="LogDesc" Type="nvarchar" Mode="In" />
           <Parameter Name="Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="JsonData" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="UserId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="SaveRoleDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -3570,7 +3572,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
     [tblStockEntryBulkData].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[tblStockEntryBulkData] AS [tblStockEntryBulkData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__tblMenuRo__MenuI__6501FCD8" Association="Self.FK__tblMenuRo__MenuI__6501FCD8">
+          <AssociationSet Name="FK__tblMenuRo__MenuI__66EA454A" Association="Self.FK__tblMenuRo__MenuI__66EA454A">
             <End Role="tblMenuMaster" EntitySet="tblMenuMaster" />
             <End Role="tblMenuRoleMapping" EntitySet="tblMenuRoleMapping" />
           </AssociationSet>
@@ -5337,6 +5339,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="ModuleUniqId" Mode="In" Type="Int32" />
             <Parameter Name="LogDesc" Mode="In" Type="String" />
             <Parameter Name="Remarks" Mode="In" Type="String" />
+            <Parameter Name="JsonData" Mode="In" Type="String" />
             <Parameter Name="UserId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="GetWOEnquiryLogDetailsList" ReturnType="Collection(dbOraRegaModel.GetWOEnquiryLogDetailsList_Result)">

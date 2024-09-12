@@ -536,6 +536,8 @@ namespace OraRegaAV.Controllers
                 #region Log Details
                 if (tblWorkOrderEnquiry.Id > 0)
                 {
+                    var jsonData = JsonConvert.SerializeObject(tblWorkOrderEnquiry);
+
                     string logDesc = string.Empty;
                     if (parameters.Id == 0)
                     {
@@ -546,7 +548,7 @@ namespace OraRegaAV.Controllers
                         logDesc = "Case Enquiry EDIT/UPDATE";
                     }
 
-                    await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", tblWorkOrderEnquiry.Id, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", tblWorkOrderEnquiry.Id, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                 }
                 #endregion
             }
@@ -599,6 +601,8 @@ namespace OraRegaAV.Controllers
                     #region Log Details
                     if (EnquiryStatusId > 0)
                     {
+                        var jsonData = JsonConvert.SerializeObject(tbl);
+
                         string logDesc = string.Empty;
                         if (EnquiryStatusId == 2)
                         {
@@ -608,7 +612,7 @@ namespace OraRegaAV.Controllers
                         {
                             logDesc = "Reject Work order Enquiry";
                         }
-                        await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", WOEnquiryId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", WOEnquiryId, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
                     #endregion
                 }
@@ -784,13 +788,15 @@ namespace OraRegaAV.Controllers
                     #region Log Details
                     if (parameters.WOEnquiryId > 0)
                     {
+                        var jsonData = JsonConvert.SerializeObject(parameters);
+
                         string logDesc = string.Empty;
                         if (workOrderId > 0)
                         {
                             logDesc = "Converted Work Order Enquiry";
                         }
 
-                        await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", parameters.WOEnquiryId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", parameters.WOEnquiryId, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
                     #endregion
 

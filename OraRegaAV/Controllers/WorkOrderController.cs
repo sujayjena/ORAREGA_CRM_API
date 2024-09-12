@@ -772,6 +772,8 @@ namespace OraRegaAV.Controllers
                 {
                     #region Log Details
 
+                    var jsonData = JsonConvert.SerializeObject(tblWorkOrder);
+
                     string logDesc = string.Empty;
                     string vremarks = string.Empty;
 
@@ -791,7 +793,7 @@ namespace OraRegaAV.Controllers
                         vremarks = "Engineer Diagnosis = " + tblWorkOrder.EngineerDiagnosis + ", Case Status = " + vCaseStatus + ", Remark = " + vRepairRemark + ", Repire class type = " + vRepairClassType + ", Delay Code = " + vDelayTypes + ",  Resolution Summary = " + tblWorkOrder.ResolutionSummary + ", Customer Name = " + vCustomer.FirstName + " " + vCustomer.LastName + ", Customer Mobile Number = " + vCustomer.Mobile;
                     }
 
-                    await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, logDesc, vremarks, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, logDesc, vremarks, jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
 
                     #endregion
 
@@ -874,10 +876,13 @@ namespace OraRegaAV.Controllers
                     await db.SaveChangesAsync();
 
                     #region Log Details
+
+                    var jsonData = JsonConvert.SerializeObject(tblWorkOrder);
+
                     string logDesc = string.Empty;
                     logDesc = "View Work order";
 
-                    await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     #endregion
 
                     #region Save Engineer Allocated History
@@ -962,7 +967,7 @@ namespace OraRegaAV.Controllers
 
                         #region Log Details
 
-                        await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, "Allocated Work order", "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work order", tblWorkOrder.Id, "Allocated Work order", "", jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
 
                         #endregion
                     }
@@ -1190,6 +1195,8 @@ namespace OraRegaAV.Controllers
                             #region Log Details
                             if (parameters.OrderStatusId > 1)
                             {
+                                var jsonData = JsonConvert.SerializeObject(parameters);
+
                                 string logDesc = string.Empty;
                                 if (parameters.OrderStatusId == 2)
                                 {
@@ -1200,7 +1207,7 @@ namespace OraRegaAV.Controllers
                                     logDesc = "Reject";
                                 }
 
-                                await Task.Run(() => db.SaveLogDetails("Work order", vWorkOrderStatusObj.Id, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                                await Task.Run(() => db.SaveLogDetails("Work order", vWorkOrderStatusObj.Id, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                             }
                             #endregion
                         }
@@ -2136,6 +2143,8 @@ namespace OraRegaAV.Controllers
                     #endregion
 
                     #region Log Details
+                    var jsonData = JsonConvert.SerializeObject(tbl);
+
                     string logDesc = string.Empty;
                     if (parameters.IsStartStop == 0)
                     {
@@ -2148,7 +2157,7 @@ namespace OraRegaAV.Controllers
 
                     var vWorkOrder = db.tblWorkOrders.Where(x => x.WorkOrderNumber == parameters.WorkOrderNumber).FirstOrDefault();
 
-                    await Task.Run(() => db.SaveLogDetails("Work order", vWorkOrder.Id, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work order", vWorkOrder.Id, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
 
                     #endregion
 
@@ -2368,12 +2377,14 @@ namespace OraRegaAV.Controllers
 
                     #region Log Details
 
+                    var jsonData = JsonConvert.SerializeObject(vRescheduleObj);
+
                     string logDesc = string.Empty;
                     logDesc = "Reschedule";
 
                     var vReason = db.tblRescheduleReasons.Where(x => x.Id == parameter.RescheduleReasonId).Select(x => x.RescheduleReason).FirstOrDefault();
 
-                    await Task.Run(() => db.SaveLogDetails("Work Order", tbl.Id, logDesc, vReason, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work Order", tbl.Id, logDesc, vReason,jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
 
                     #endregion
 
@@ -2507,10 +2518,12 @@ namespace OraRegaAV.Controllers
 
                     #region Log Details
 
+                    var jsonData = JsonConvert.SerializeObject(vWOPartRequest);
+
                     string logDesc = string.Empty;
                     logDesc = "Part Request";
 
-                    await Task.Run(() => db.SaveLogDetails("Work order", tbl.Id, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work order", tbl.Id, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
 
                     #endregion
 

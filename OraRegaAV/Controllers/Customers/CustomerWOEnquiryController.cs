@@ -248,6 +248,8 @@ namespace OraRegaAV.Controllers.Customers
                 #region Log Details
                 if (tblWorkOrderEnquiry.Id > 0)
                 {
+                    var jsonData = JsonConvert.SerializeObject(tblWorkOrderEnquiry);
+
                     string logDesc = string.Empty;
                     if (parameters.Id == 0)
                     {
@@ -258,7 +260,7 @@ namespace OraRegaAV.Controllers.Customers
                         logDesc = "Case Enquiry EDIT/UPDATE";
                     }
 
-                    await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", tblWorkOrderEnquiry.Id, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                    await Task.Run(() => db.SaveLogDetails("Work Order Enquiry", tblWorkOrderEnquiry.Id, logDesc, "", jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                 }
                 #endregion
 

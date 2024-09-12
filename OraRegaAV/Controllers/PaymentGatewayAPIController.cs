@@ -447,10 +447,12 @@ namespace OraRegaAV.Controllers.API
                     var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == parameters.paymentRequest.QuotationNumber).FirstOrDefault();
                     if (vQuotationObj != null)
                     {
+                        var jsonData = JsonConvert.SerializeObject(vQuotationObj);
+
                         string logDesc = string.Empty;
                         logDesc = "Payment Status >> " + tbl.PaymentStatus;
 
-                        await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage,jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
 
                     #endregion
@@ -593,10 +595,12 @@ namespace OraRegaAV.Controllers.API
 
                             #region Log Details
 
+                            var jsonData = JsonConvert.SerializeObject(tbl);
+
                             string logDesc = string.Empty;
                             logDesc = "Payment Status >> " + tbl.PaymentStatus;
 
-                            await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                            await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage,jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                             #endregion
 
                             #region Email Sending

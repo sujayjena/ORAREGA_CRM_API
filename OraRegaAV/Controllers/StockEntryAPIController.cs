@@ -436,10 +436,12 @@ namespace OraRegaAV.Controllers.API
                     #region Log Details
                     if (parameters.PartsDetail.Count > 0)
                     {
+                        var jsonData = JsonConvert.SerializeObject(parameters);
+
                         string logDesc = string.Empty;
                         logDesc = "Part Map to WO";
 
-                        await Task.Run(() => db.SaveLogDetails("Work order", parameters.WorkOrderId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work order", parameters.WorkOrderId, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
                     #endregion
 
@@ -557,10 +559,12 @@ namespace OraRegaAV.Controllers.API
                     #region Log Details
                     if (parameters.PartsDetail.Count > 0)
                     {
+                        var jsonData = JsonConvert.SerializeObject(parameters);
+
                         string logDesc = string.Empty;
                         logDesc = "Engg.Inventory Part Map to Wo";
 
-                        Task.Run(() => db.SaveLogDetails("Work order", parameters.WorkOrderId, logDesc, "", Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work order", parameters.WorkOrderId, logDesc, "",jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
                     #endregion
 
