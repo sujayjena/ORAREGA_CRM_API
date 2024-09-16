@@ -76,6 +76,88 @@ namespace OraRegaAV.Controllers.API
             this.Phonepe_SALTKEYINDEX = ConfigurationManager.AppSettings["PhonePe_SALTKEYINDEX"];
         }
 
+        //[HttpPost]
+        //[Route("api/PaymentGatewayAPI/GeneratePaymentLink_Test")]
+        //public async Task<Response> GeneratePaymentLink_Test(PaymentRequest paymentRequest)
+        //{
+        //    try
+        //    {
+        //        // ON LIVE URL YOU MAY GET CORS ISSUE, ADD Below LINE TO RESOLVE
+        //        //ServicePointManager.Expect100Continue = true;
+        //        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+        //        #region Environment
+
+        //        //var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+        //        var PhonePeGatewayURL = PhonePe_Environment;
+
+        //        var httpClient = new HttpClient();
+        //        //var uri = new Uri($"{PhonePeGatewayURL+}/pg/v1/pay");
+        //        var uri = new Uri($"{PhonePeGatewayURL + PhonePe_EnvironmentEndPoint}");
+
+        //        #endregion
+
+        //        #region Prepare Request Payload
+
+        //        var vRequestPayload = new RequestPayload()
+        //        {
+        //            merchantId = Phonepe_MerchantID,
+        //            merchantTransactionId = paymentRequest.MerchantTransactionId,
+        //            merchantUserId = PhonePe_MerchantUserId,
+        //            amount = paymentRequest.Amount,
+        //            redirectUrl = PhonePe_RedirectUrl,
+        //            redirectMode = "REDIRECT",
+        //            callbackUrl = PhonePe_CallbackUrl,
+        //            mobileNumber = paymentRequest.MobileNumber,
+        //        };
+
+        //        vRequestPayload.paymentInstrument.type = "PAY_PAGE";
+        //        // paymentRequest.MerchantTransactionId = "QPI00000341725447072024";
+
+        //        #endregion
+
+        //        #region Base64 Encoded & Create Checksum 
+
+        //        // Convert the JSON Payload to Base64 Encoded Payload
+        //        var vBase64Encode = StringToBase64(new JavaScriptSerializer().Serialize(vRequestPayload));
+
+        //        //var vvfgvf = ("/pg/v1/status/" + Phonepe_MerchantID + "/" + vRequestPayload.merchantTransactionId + Phonepe_SALTKEY);
+        //        var vSHA256EncodeObj = ComputeSha256Hash("/pg/v1/status/" + Phonepe_MerchantID + "/" + vRequestPayload.merchantTransactionId + Phonepe_SALTKEY);
+        //        var vCheckOutModelObj = new VerifyRequestModel()
+        //        {
+        //            //SHA256(“/pg/v1/status/{merchantId}/{merchantTransactionId}” + saltKey) + “###” + saltIndex
+        //            QuotationNumber = paymentRequest.QuotationNumber,
+        //            PaymentIsAdvance = paymentRequest.PaymentIsAdvance,
+        //            X_VERIFY = (vSHA256EncodeObj + "###" + Phonepe_SALTKEYINDEX),
+        //            base64 = vBase64Encode,
+        //            TransactionId = vRequestPayload.merchantTransactionId,
+        //            MERCHANTID = Phonepe_MerchantID,
+        //        };
+
+        //        var vPhonePeResponseResult = "[" + new JavaScriptSerializer().Serialize(vCheckOutModelObj) + "]";
+
+        //        #endregion
+
+
+        //        // Return a response
+        //        _response.Message = "Verification successful";
+        //        _response.IsSuccess = true;
+        //        _response.Data = JsonConvert.DeserializeObject<dynamic>(vPhonePeResponseResult);
+
+        //        // return Json(new { Success = true, Message = "Verification successful", phonepeResponse = vresult });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _response.Message = "Verification failed";
+        //        _response.IsSuccess = false;
+        //        _response.Data = ex.Message;
+
+        //        // Handle errors and return an error response
+        //        //return Json(new { Success = false, Message = "Verification failed", Error = ex.Message });
+        //    }
+        //    return _response;
+        //}
+
         [HttpPost]
         [Route("api/PaymentGatewayAPI/GeneratePaymentLink")]
         public async Task<Response> GeneratePaymentLink(PaymentRequest paymentRequest)
