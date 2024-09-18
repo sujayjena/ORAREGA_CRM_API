@@ -76,88 +76,6 @@ namespace OraRegaAV.Controllers.API
             this.Phonepe_SALTKEYINDEX = ConfigurationManager.AppSettings["PhonePe_SALTKEYINDEX"];
         }
 
-        //[HttpPost]
-        //[Route("api/PaymentGatewayAPI/GeneratePaymentLink_Test")]
-        //public async Task<Response> GeneratePaymentLink_Test(PaymentRequest paymentRequest)
-        //{
-        //    try
-        //    {
-        //        // ON LIVE URL YOU MAY GET CORS ISSUE, ADD Below LINE TO RESOLVE
-        //        //ServicePointManager.Expect100Continue = true;
-        //        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-        //        #region Environment
-
-        //        //var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
-        //        var PhonePeGatewayURL = PhonePe_Environment;
-
-        //        var httpClient = new HttpClient();
-        //        //var uri = new Uri($"{PhonePeGatewayURL+}/pg/v1/pay");
-        //        var uri = new Uri($"{PhonePeGatewayURL + PhonePe_EnvironmentEndPoint}");
-
-        //        #endregion
-
-        //        #region Prepare Request Payload
-
-        //        var vRequestPayload = new RequestPayload()
-        //        {
-        //            merchantId = Phonepe_MerchantID,
-        //            merchantTransactionId = paymentRequest.MerchantTransactionId,
-        //            merchantUserId = PhonePe_MerchantUserId,
-        //            amount = paymentRequest.Amount,
-        //            redirectUrl = PhonePe_RedirectUrl,
-        //            redirectMode = "REDIRECT",
-        //            callbackUrl = PhonePe_CallbackUrl,
-        //            mobileNumber = paymentRequest.MobileNumber,
-        //        };
-
-        //        vRequestPayload.paymentInstrument.type = "PAY_PAGE";
-        //        // paymentRequest.MerchantTransactionId = "QPI00000341725447072024";
-
-        //        #endregion
-
-        //        #region Base64 Encoded & Create Checksum 
-
-        //        // Convert the JSON Payload to Base64 Encoded Payload
-        //        var vBase64Encode = StringToBase64(new JavaScriptSerializer().Serialize(vRequestPayload));
-
-        //        //var vvfgvf = ("/pg/v1/status/" + Phonepe_MerchantID + "/" + vRequestPayload.merchantTransactionId + Phonepe_SALTKEY);
-        //        var vSHA256EncodeObj = ComputeSha256Hash("/pg/v1/status/" + Phonepe_MerchantID + "/" + vRequestPayload.merchantTransactionId + Phonepe_SALTKEY);
-        //        var vCheckOutModelObj = new VerifyRequestModel()
-        //        {
-        //            //SHA256(“/pg/v1/status/{merchantId}/{merchantTransactionId}” + saltKey) + “###” + saltIndex
-        //            QuotationNumber = paymentRequest.QuotationNumber,
-        //            PaymentIsAdvance = paymentRequest.PaymentIsAdvance,
-        //            X_VERIFY = (vSHA256EncodeObj + "###" + Phonepe_SALTKEYINDEX),
-        //            base64 = vBase64Encode,
-        //            TransactionId = vRequestPayload.merchantTransactionId,
-        //            MERCHANTID = Phonepe_MerchantID,
-        //        };
-
-        //        var vPhonePeResponseResult = "[" + new JavaScriptSerializer().Serialize(vCheckOutModelObj) + "]";
-
-        //        #endregion
-
-
-        //        // Return a response
-        //        _response.Message = "Verification successful";
-        //        _response.IsSuccess = true;
-        //        _response.Data = JsonConvert.DeserializeObject<dynamic>(vPhonePeResponseResult);
-
-        //        // return Json(new { Success = true, Message = "Verification successful", phonepeResponse = vresult });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.Message = "Verification failed";
-        //        _response.IsSuccess = false;
-        //        _response.Data = ex.Message;
-
-        //        // Handle errors and return an error response
-        //        //return Json(new { Success = false, Message = "Verification failed", Error = ex.Message });
-        //    }
-        //    return _response;
-        //}
-
         [HttpPost]
         [Route("api/PaymentGatewayAPI/GeneratePaymentLink")]
         public async Task<Response> GeneratePaymentLink(PaymentRequest paymentRequest)
@@ -391,84 +309,116 @@ namespace OraRegaAV.Controllers.API
             return _response;
         }
 
+        [HttpPost]
+        [Route("api/PaymentGatewayAPI/CheckPaymentStatusByMerchantTransactionId")]
+        [AllowAnonymous]
+        public async Task<Response> CheckPaymentStatusByMerchantTransactionId(string MerchantTransactionId)
+        {
+            if (string.IsNullOrWhiteSpace(MerchantTransactionId))
+            {
+                _response.Message = "MerchantTransactionId is required!";
 
-        //[HttpPost]
-        //[Route("api/PaymentGatewayAPI/SavePaymentDetails")]
-        //public async Task<Response> SavePaymentDetails(PaymentRequest RequestParameters, PaymentResponse ResponseParameters, string RequestJson = "", string ResponseJson = "")
-        //{
-        //    tblPayment tbl;
-        //    try
-        //    {
-        //        tbl = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-        //        if (tbl == null)
-        //        {
-        //            tbl = new tblPayment()
-        //            {
-        //                QuotationNumber = RequestParameters.QuotationNumber,
-        //                MerchantTransactionId = RequestParameters.MerchantTransactionId,
-        //                MobileNumber = RequestParameters.MobileNumber,
-        //                Amount = Convert.ToDecimal(RequestParameters.Amount),
-        //                IsSuccess = false,
-        //                PaymentStatus = "PAYMENT_INITIATED",
-        //                PaymentMessage = "Payment Iniiated",
-        //                RequestJson = RequestJson,
-        //                ResponseJson = ResponseJson,
-        //                CreatedDate = DateTime.Now,
-        //                CreatedBy = Utilities.GetUserID(ActionContext.Request)
-        //            };
+                return _response;
+            }
 
-        //            db.tblPayments.Add(tbl);
-        //            db.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == RequestParameters.QuotationNumber && c.MerchantTransactionId == RequestParameters.MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
-        //            if (tblPaymentsObj != null)
-        //            {
-        //                tbl.IsSuccess = ResponseParameters.IsSuccess;
-        //                tbl.PaymentStatus = ResponseParameters.Code;
-        //                tbl.PaymentMessage = ResponseParameters.Message;
-        //                tbl.ResponseJson = ResponseJson;
-        //                tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
-        //                tbl.ModifiedDate = DateTime.Now;
+            try
+            {
+                var tblPaymentsObj = db.tblPayments.Where(c => c.MerchantTransactionId == MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                if (tblPaymentsObj != null)
+                {
+                    #region Environment
 
-        //                db.SaveChanges();
+                    //var PhonePeGatewayURL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+                    var PhonePeGatewayURL = PhonePe_Environment;
 
-        //                #region Quotation Table Amount Update
+                    var httpClient = new HttpClient();
+                    var uri = new Uri($"{PhonePeGatewayURL + PhonePe_PaymentStatusEnvironmentEndPoint + "/" + Phonepe_MerchantID + "/" + MerchantTransactionId}");
 
-        //                var vQuotationObj = db.tblQuotations.Where(x => x.QuotationNumber == RequestParameters.QuotationNumber).FirstOrDefault();
-        //                if (vQuotationObj != null)
-        //                {
-        //                    if (RequestParameters.PaymentIsAdvance == true)
-        //                    {
-        //                        vQuotationObj.AdvanceReceived = tblPaymentsObj.Amount;
-        //                        vQuotationObj.AmountPaidAfter = tblPaymentsObj.Amount;
+                    #endregion
 
-        //                        db.SaveChanges();
-        //                    }
-        //                    else
-        //                    {
-        //                        vQuotationObj.AmountPaidAfter = (vQuotationObj.AmountPaidAfter + tblPaymentsObj.Amount);
+                    var vSHA256EncodeObj = ComputeSha256Hash("/pg/v1/status/" + Phonepe_MerchantID + "/" + MerchantTransactionId + Phonepe_SALTKEY);
+                    var vCheckOutModelObj = new VerifyRequestModel()
+                    {
+                        //SHA256(“/pg/v1/status/{merchantId}/{merchantTransactionId}” + saltKey) + “###” + saltIndex
+                        X_VERIFY = (vSHA256EncodeObj + "###" + Phonepe_SALTKEYINDEX),
+                        TransactionId = MerchantTransactionId,
+                        MERCHANTID = Phonepe_MerchantID,
+                    };
 
-        //                        db.SaveChanges();
-        //                    }
-        //                }
+                    // Add headers
+                    httpClient.DefaultRequestHeaders.Add("accept", "application/json");
+                    httpClient.DefaultRequestHeaders.Add("X-VERIFY", vCheckOutModelObj.X_VERIFY);
+                    httpClient.DefaultRequestHeaders.Add("X-MERCHANT-ID", vCheckOutModelObj.MERCHANTID);
 
-        //                #endregion
-        //            }
-        //        }
+                    // Send POST request
+                    var response = await httpClient.GetAsync(uri);
+                    if (response.StatusCode != HttpStatusCode.BadRequest)
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
 
-        //        _response.IsSuccess = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.Message = ValidationConstant.InternalServerError;
-        //        LogWriter.WriteLog(ex);
-        //    }
+                    // Read and deserialize the response content
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var vresult = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
-        //    return _response;
-        //}
+                    #region Save Payment Detail
+
+                    var vPaymentRequest = new PaymentRequest();
+                    var vPaymentResponse = new PaymentResponse();
+                    if (vresult != null)
+                    {
+                        // vPaymentRequest
+                        vPaymentRequest.QuotationNumber = tblPaymentsObj.QuotationNumber;
+                        vPaymentRequest.MerchantTransactionId = tblPaymentsObj.MerchantTransactionId;
+                        vPaymentRequest.PaymentIsAdvance = Convert.ToBoolean(tblPaymentsObj.IsAdvance);
+
+                        // vPaymentResponse
+                        vPaymentResponse.IsSuccess = vresult.success;
+                        vPaymentResponse.Code = vresult.code;
+                        vPaymentResponse.Message = vresult.message;
+
+                        // Pick the Original TransactionId
+                        if (vresult.ContainsKey("data"))
+                        {
+                            if (vresult.data.ContainsKey("transactionId"))
+                            {
+                                vPaymentResponse.TransactionId = vresult.data.transactionId;
+                            }
+                        }
+                    }
+
+                    var vPaymentRequest_SaveParamObj = new PaymentRequest_SaveParam()
+                    {
+                        paymentRequest = vPaymentRequest,
+                        paymentResponse = vPaymentResponse,
+                        RequestJson = string.Empty,
+                        ResponseJson = responseContent,
+                    };
+
+                    SavePaymentDetails(vPaymentRequest_SaveParamObj);
+
+                    #endregion
+
+                    // Return a response
+                    _response.Message = "Verification successful";
+                    _response.IsSuccess = true;
+                    _response.Data = vresult;
+                }
+                else
+                {
+                    // Return a response
+                    _response.Message = "Already verified";
+                    _response.IsSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Message = "Verification failed";
+                _response.IsSuccess = false;
+                _response.Data = ex.Message;
+            }
+            return _response;
+        }
 
         [HttpPost]
         [Route("api/PaymentGatewayAPI/SavePaymentDetails")]
@@ -534,7 +484,7 @@ namespace OraRegaAV.Controllers.API
                         string logDesc = string.Empty;
                         logDesc = "Payment Status >> " + tbl.PaymentStatus;
 
-                        await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage,jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                        await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage, jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                     }
 
                     #endregion
@@ -550,7 +500,7 @@ namespace OraRegaAV.Controllers.API
                         tbl.PaymentStatus = parameters.paymentResponse.Code;
                         tbl.PaymentMessage = parameters.paymentResponse.Message;
                         tbl.ResponseJson = parameters.ResponseJson;
-                        tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request);
+                        tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request) == 0 ? 1 : Utilities.GetUserID(ActionContext.Request); // 1 means manual verification
                         tbl.ModifiedDate = DateTime.Now;
 
                         db.SaveChanges();
@@ -682,7 +632,7 @@ namespace OraRegaAV.Controllers.API
                             string logDesc = string.Empty;
                             logDesc = "Payment Status >> " + tbl.PaymentStatus;
 
-                            await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage,jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
+                            await Task.Run(() => db.SaveLogDetails("Work Order", vQuotationObj.WorkOrderId, logDesc, tbl.PaymentMessage, jsonData, Convert.ToInt32(ActionContext.Request.Properties["UserId"] ?? 0)).ToList());
                             #endregion
 
                             #region Email Sending
