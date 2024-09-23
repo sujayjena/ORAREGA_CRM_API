@@ -503,6 +503,18 @@ namespace OraRegaAV.Controllers.API
                         tbl.ModifiedBy = Utilities.GetUserID(ActionContext.Request) == 0 ? 1 : Utilities.GetUserID(ActionContext.Request); // 1 means manual verification
                         tbl.ModifiedDate = DateTime.Now;
 
+                        if (parameters.paymentResponse.Code == "BAD_REQUEST"
+                            || parameters.paymentResponse.Code == "AUTHORIZATION_FAILED"
+                            || parameters.paymentResponse.Code == "INTERNAL_SERVER_ERROR"
+                            || parameters.paymentResponse.Code == "TRANSACTION_NOT_FOUND"
+                            || parameters.paymentResponse.Code == "PAYMENT_ERROR"
+                            || parameters.paymentResponse.Code == "PAYMENT_DECLINED"
+                            || parameters.paymentResponse.Code == "TIMED_OUT")
+                        {
+                            tbl.PaymentMessage = "Payment Failed";
+                            tbl.Refund_Error = parameters.paymentResponse.Message;
+                        }
+
                         db.SaveChanges();
 
                         if (tbl.PaymentStatus == "PAYMENT_SUCCESS")
