@@ -178,6 +178,7 @@ namespace OraRegaAV.DBEntity
         public virtual DbSet<tblPayment> tblPayments { get; set; }
         public virtual DbSet<tblEmailNotification> tblEmailNotifications { get; set; }
         public virtual DbSet<tblAMCReminderEmail> tblAMCReminderEmails { get; set; }
+        public virtual DbSet<tblBroadCast> tblBroadCasts { get; set; }
     
         public virtual ObjectResult<GetEmployeeListForDropDown_Result> GetEmployeeListForDropDown()
         {
@@ -1125,7 +1126,7 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRolesList_Result>("GetRolesList", isActiveParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     
-        public virtual ObjectResult<GetReportingToEmployeeForSelectList_Result> GetReportingToEmployeeForSelectList(Nullable<long> roleId, Nullable<long> regionId)
+        public virtual ObjectResult<GetReportingToEmployeeForSelectList_Result> GetReportingToEmployeeForSelectList(Nullable<long> roleId, Nullable<long> regionId, Nullable<bool> isActive)
         {
             var roleIdParameter = roleId.HasValue ?
                 new ObjectParameter("RoleId", roleId) :
@@ -1135,7 +1136,11 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("RegionId", regionId) :
                 new ObjectParameter("RegionId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetReportingToEmployeeForSelectList_Result>("GetReportingToEmployeeForSelectList", roleIdParameter, regionIdParameter);
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetReportingToEmployeeForSelectList_Result>("GetReportingToEmployeeForSelectList", roleIdParameter, regionIdParameter, isActiveParameter);
         }
     
         public virtual ObjectResult<GetGST_N_StateCode_ByCompanyNState_Result> GetGST_N_StateCode_ByCompanyNState(Nullable<int> companyId, Nullable<int> stateId)
@@ -3603,6 +3608,31 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("WorkOrderNo", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOEnquiryDetailsForCustomer_Result>("GetWOEnquiryDetailsForCustomer", customerIdParameter, wOEnquiryIdParameter, workOrderNoParameter);
+        }
+    
+        public virtual ObjectResult<GetBroadCastList_Result> GetBroadCastList(string searchValue, Nullable<bool> isActive, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total, Nullable<int> userId)
+        {
+            var searchValueParameter = searchValue != null ?
+                new ObjectParameter("SearchValue", searchValue) :
+                new ObjectParameter("SearchValue", typeof(string));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBroadCastList_Result>("GetBroadCastList", searchValueParameter, isActiveParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
         }
     }
 }

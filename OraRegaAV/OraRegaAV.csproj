@@ -16,7 +16,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44345</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -368,6 +369,7 @@
     <Compile Include="Controllers\ApiCustomBaseController.cs" />
     <Compile Include="Controllers\AttendanceAPIController.cs" />
     <Compile Include="Controllers\BranchAPIController.cs" />
+    <Compile Include="Controllers\BroadCastAPIController.cs" />
     <Compile Include="Controllers\BusinessTypeAPIController.cs" />
     <Compile Include="Controllers\CaseStatusAPIController.cs" />
     <Compile Include="Controllers\ClaimSettlementController.cs" />
@@ -475,6 +477,9 @@
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetBranchList_Result.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBEntity\GetBroadCastList_Result.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBEntity\GetBusinessType_Result.cs">
@@ -936,6 +941,9 @@
     <Compile Include="DBEntity\tblBranchQueue.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBEntity\tblBroadCast.cs">
+      <DependentUpon>dbOraRegaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBEntity\tblBusinessType.cs">
       <DependentUpon>dbOraRegaModel.tt</DependentUpon>
     </Compile>
@@ -1365,6 +1373,7 @@
     <Compile Include="Helpers\ValueSanitizerHelper.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\AdminCommonViewModel.cs" />
+    <Compile Include="Models\BroadCastModel.cs" />
     <Compile Include="Models\CareerPostViewModel.cs" />
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\DepartmentModels.cs" />

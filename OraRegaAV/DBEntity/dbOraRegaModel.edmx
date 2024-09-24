@@ -176,6 +176,19 @@
           <Property Name="BranchId" Type="int" />
           <Property Name="QueueId" Type="int" />
         </EntityType>
+        <EntityType Name="tblBroadCast">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageName" Type="nvarchar" MaxLength="250" />
+          <Property Name="SequenceNo" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="bigint" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tblBusinessType">
           <Key>
             <PropertyRef Name="Id" />
@@ -2416,6 +2429,14 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
         <Function Name="GetBranchListByState" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetBroadCastList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchValue" Type="varchar" Mode="In" />
+          <Parameter Name="IsActive" Type="bit" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="PageNo" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetBusinessType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetCareerPostList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IsActive" Type="bit" Mode="In" />
@@ -2916,6 +2937,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
         <Function Name="GetReportingToEmployeeForSelectList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RoleId" Type="bigint" Mode="In" />
           <Parameter Name="RegionId" Type="bigint" Mode="In" />
+          <Parameter Name="IsActive" Type="bit" Mode="In" />
         </Function>
         <Function Name="GetRequestForAdvanceList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="int" Mode="In" />
@@ -3414,6 +3436,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <EntitySet Name="tblBranch" EntityType="Self.tblBranch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBranchMapping" EntityType="Self.tblBranchMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBranchQueue" EntityType="Self.tblBranchQueue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblBroadCast" EntityType="Self.tblBroadCast" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBusinessType" EntityType="Self.tblBusinessType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCareer" EntityType="Self.tblCareer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCareerPost" EntityType="Self.tblCareerPost" Schema="dbo" store:Type="Tables" />
@@ -4651,6 +4674,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <FunctionImport Name="GetReportingToEmployeeForSelectList" ReturnType="Collection(dbOraRegaModel.GetReportingToEmployeeForSelectList_Result)">
             <Parameter Name="RoleId" Mode="In" Type="Int64" />
             <Parameter Name="RegionId" Mode="In" Type="Int64" />
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GetGST_N_StateCode_ByCompanyNState" ReturnType="Collection(dbOraRegaModel.GetGST_N_StateCode_ByCompanyNState_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -5470,6 +5494,15 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="CustomerId" Mode="In" Type="Int32" />
             <Parameter Name="WOEnquiryId" Mode="In" Type="Int32" />
             <Parameter Name="WorkOrderNo" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="tblBroadCasts" EntityType="dbOraRegaModel.tblBroadCast" />
+          <FunctionImport Name="GetBroadCastList" ReturnType="Collection(dbOraRegaModel.GetBroadCastList_Result)">
+            <Parameter Name="SearchValue" Mode="In" Type="String" />
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
                   </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
@@ -9671,6 +9704,28 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="FilesOriginalName" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="AttributeImagePath" Nullable="false" MaxLength="1" />
           <Property Type="Int32" Name="WorkOrderEnquiryId" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tblBroadCast">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SequenceNo" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="GetBroadCastList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="MessageName" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="SequenceNo" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -15206,6 +15261,33 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="FilesOriginalName" ColumnName="FilesOriginalName" />
                 <ScalarProperty Name="AttributeImagePath" ColumnName="AttributeImagePath" />
                 <ScalarProperty Name="WorkOrderEnquiryId" ColumnName="WorkOrderEnquiryId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tblBroadCasts">
+            <EntityTypeMapping TypeName="dbOraRegaModel.tblBroadCast">
+              <MappingFragment StoreEntitySet="tblBroadCast">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SequenceNo" ColumnName="SequenceNo" />
+                <ScalarProperty Name="MessageName" ColumnName="MessageName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetBroadCastList" FunctionName="dbOraRegaModel.Store.GetBroadCastList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetBroadCastList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MessageName" ColumnName="MessageName" />
+                <ScalarProperty Name="SequenceNo" ColumnName="SequenceNo" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

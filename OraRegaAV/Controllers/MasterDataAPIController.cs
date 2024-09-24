@@ -260,12 +260,12 @@ namespace OraRegaAV.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> GetReportingToForSelectRole([FromBody] int RoleId)
+        public async Task<Response> GetReportingToForSelectRole([FromBody] int RoleId, bool IsActive)
         {
             List<GetReportingToEmployeeForSelectList_Result> reportingList;
             try
             {
-                reportingList = await Task.Run(() => db.GetReportingToEmployeeForSelectList(RoleId, 0).ToList());
+                reportingList = await Task.Run(() => db.GetReportingToEmployeeForSelectList(RoleId, 0, IsActive).ToList());
 
                 _response.Data = reportingList;
             }

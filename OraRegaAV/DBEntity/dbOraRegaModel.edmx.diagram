@@ -163,6 +163,7 @@
         <EntityTypeShape EntityType="dbOraRegaModel.tblLogDetail" Width="1.5" PointX="37.375" PointY="27.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblEmailNotification" Width="1.5" PointX="37.375" PointY="31.75" />
         <EntityTypeShape EntityType="dbOraRegaModel.tblAMCReminderEmail" Width="1.5" PointX="33.375" PointY="37.75" />
+        <EntityTypeShape EntityType="dbOraRegaModel.tblBroadCast" Width="1.5" PointX="35.375" PointY="35.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
