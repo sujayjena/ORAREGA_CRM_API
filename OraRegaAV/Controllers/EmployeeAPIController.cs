@@ -774,7 +774,7 @@ namespace OraRegaAV.Controllers.API
                 else
                 {
                     tbl.UserTypeId = parameters.UserTypeId;
-                    //tbl.EmployeeCode = parameters.EmployeeCode.SanitizeValue();
+                    tbl.EmployeeCode = parameters.EmployeeCode.SanitizeValue();
                     tbl.EmployeeName = parameters.EmployeeName.SanitizeValue();
                     tbl.EmailId = parameters.EmailId.SanitizeValue();
                     tbl.PersonalNumber = parameters.PersonalNumber.SanitizeValue();
