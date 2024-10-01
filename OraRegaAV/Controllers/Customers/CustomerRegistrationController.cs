@@ -329,7 +329,7 @@ namespace OraRegaAV.Controllers.Customers
                     return _response;
                 }
 
-                tblCustomer = await db.tblCustomers.Where(c => c.Mobile == parameters.Mobile).FirstOrDefaultAsync();
+                tblCustomer = await db.tblCustomers.Where(c => c.Mobile == parameters.Mobile && c.Id != parameters.Id).FirstOrDefaultAsync();
 
                 if (tblCustomer != null)
                 {
@@ -338,7 +338,7 @@ namespace OraRegaAV.Controllers.Customers
                     return _response;
                 }
 
-                tblCustomer = await db.tblCustomers.Where(c => c.Email == parameters.Email).FirstOrDefaultAsync();
+                tblCustomer = await db.tblCustomers.Where(c => c.Email == parameters.Email && c.Id != parameters.Id).FirstOrDefaultAsync();
 
                 if (tblCustomer != null)
                 {
@@ -348,21 +348,44 @@ namespace OraRegaAV.Controllers.Customers
                 }
 
                 //checking mobile no validation in user table
-                var vUserDetailsMobileNo = await db.tblUsers.Where(c => c.MobileNo == parameters.Mobile).FirstOrDefaultAsync();
-                if (vUserDetailsMobileNo != null)
+                var vUser = await db.tblUsers.Where(c => c.CustomerId == parameters.Id).FirstOrDefaultAsync();
+                if (vUser != null)
                 {
-                    _response.IsSuccess = false;
-                    _response.Message = "Mobile No. is already registered";
-                    return _response;
+                    var vUserDetailsMobileNo = await db.tblUsers.Where(c => c.MobileNo == parameters.Mobile && c.Id != vUser.Id).FirstOrDefaultAsync();
+                    if (vUserDetailsMobileNo != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Mobile No. is already registered";
+                        return _response;
+                    }
+
+                    var vUserDetailsEmail = await db.tblUsers.Where(c => c.EmailId == parameters.Email && c.Id != vUser.Id).FirstOrDefaultAsync();
+                    if (vUserDetailsEmail != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Email Address is already registered";
+                        return _response;
+                    }
+                }
+                else
+                {
+                    var vUserDetailsMobileNo = await db.tblUsers.Where(c => c.MobileNo == parameters.Mobile).FirstOrDefaultAsync();
+                    if (vUserDetailsMobileNo != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Mobile No. is already registered";
+                        return _response;
+                    }
+
+                    var vUserDetailsEmail = await db.tblUsers.Where(c => c.EmailId == parameters.Email).FirstOrDefaultAsync();
+                    if (vUserDetailsEmail != null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.Message = "Email Address is already registered";
+                        return _response;
+                    }
                 }
 
-                var vUserDetailsEmail = await db.tblUsers.Where(c => c.EmailId == parameters.Email).FirstOrDefaultAsync();
-                if (vUserDetailsEmail != null)
-                {
-                    _response.IsSuccess = false;
-                    _response.Message = "Email Address is already registered";
-                    return _response;
-                }
                 //}
 
                 tblCustomer = await db.tblCustomers.Where(c => (
