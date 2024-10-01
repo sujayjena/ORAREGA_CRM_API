@@ -2590,6 +2590,7 @@ namespace OraRegaAV.Controllers
                     cSOObj.ProductSerialNumber = workOrderObj.ProductSerialNumber;
                     cSOObj.ProductNumber = workOrderObj.ProductNumber;
                     cSOObj.ProductModel = workOrderObj.ProductModel;
+                    cSOObj.ProdDescriptionIfOther = workOrderObj.ProdDescriptionIfOther;
                     cSOObj.TicketLogDate = workOrderObj.TicketLogDate;
                     cSOObj.WOStartDate = workOrderObj.WOStartDate;
                     cSOObj.WOStopDate = workOrderObj.WOStopDate;
