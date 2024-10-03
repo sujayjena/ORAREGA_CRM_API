@@ -187,7 +187,7 @@ namespace OraRegaAV.Models
         public string ProductSerialNumber { get; set; }
         public string ProductNumber { get; set; }
         public string ProductModel { get; set; }
-        public string ProdDescriptionIfOther { get; set; }
+        public string ProdModelIfOther { get; set; }
         public Nullable<System.DateTime> TicketLogDate { get; set; }
         public Nullable<System.DateTime> WOStartDate { get; set; }
         public Nullable<System.DateTime> WOStopDate { get; set; }
@@ -235,6 +235,7 @@ namespace OraRegaAV.Models
         public string LandlineNumber { get; set; }
         public string FaxNumber { get; set; }
         public string ProductModel { get; set; }
+        public string ProdModelIfOther { get; set; }
         public string ProductNumber { get; set; }
         public string ProductSerialNumber { get; set; }
         public string Passward { get; set; }

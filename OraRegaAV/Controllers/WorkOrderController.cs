@@ -2590,7 +2590,7 @@ namespace OraRegaAV.Controllers
                     cSOObj.ProductSerialNumber = workOrderObj.ProductSerialNumber;
                     cSOObj.ProductNumber = workOrderObj.ProductNumber;
                     cSOObj.ProductModel = workOrderObj.ProductModel;
-                    cSOObj.ProdDescriptionIfOther = workOrderObj.ProdDescriptionIfOther;
+                    cSOObj.ProdModelIfOther = workOrderObj.ProdModelIfOther;
                     cSOObj.TicketLogDate = workOrderObj.TicketLogDate;
                     cSOObj.WOStartDate = workOrderObj.WOStartDate;
                     cSOObj.WOStopDate = workOrderObj.WOStopDate;
@@ -2698,6 +2698,7 @@ namespace OraRegaAV.Controllers
                     cSOObj.LandlineNumber = workOrderObj.LandlineNumber;
                     cSOObj.FaxNumber = workOrderObj.FaxNumber;
                     cSOObj.ProductModel = workOrderObj.ProductModel;
+                    cSOObj.ProdModelIfOther = workOrderObj.ProdModelIfOther;
                     cSOObj.ProductNumber = workOrderObj.ProductNumber;
                     cSOObj.ProductSerialNumber = workOrderObj.ProductSerialNumber;
                     cSOObj.Passward = workOrderObj.Passward;

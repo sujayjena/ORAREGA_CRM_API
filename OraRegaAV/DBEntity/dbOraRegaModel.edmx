@@ -9144,7 +9144,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="ProdDescriptionIfOther" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="500" />
           <Property Type="DateTime" Name="TicketLogDate" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="WOStartDate" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="WOStopDate" Nullable="true" Precision="23" />
@@ -9181,6 +9181,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="LandlineNumber" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="FaxNumber" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ProductModel" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="ProdModelIfOther" Nullable="true" MaxLength="500" />
           <Property Type="String" Name="ProductNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductSerialNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Passward" Nullable="false" MaxLength="1" />
@@ -14644,7 +14645,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
                 <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
                 <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
-                <ScalarProperty Name="ProdDescriptionIfOther" ColumnName="ProdDescriptionIfOther" />
+                <ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
                 <ScalarProperty Name="TicketLogDate" ColumnName="TicketLogDate" />
                 <ScalarProperty Name="WOStartDate" ColumnName="WOStartDate" />
                 <ScalarProperty Name="WOStopDate" ColumnName="WOStopDate" />
@@ -14685,6 +14686,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="LandlineNumber" ColumnName="LandlineNumber" />
                 <ScalarProperty Name="FaxNumber" ColumnName="FaxNumber" />
                 <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
+                <ScalarProperty Name="ProdModelIfOther" ColumnName="ProdModelIfOther" />
                 <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
                 <ScalarProperty Name="ProductSerialNumber" ColumnName="ProductSerialNumber" />
                 <ScalarProperty Name="Passward" ColumnName="Passward" />

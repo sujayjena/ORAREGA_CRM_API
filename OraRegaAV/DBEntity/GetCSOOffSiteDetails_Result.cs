@@ -31,6 +31,7 @@ namespace OraRegaAV.DBEntity
         public string LandlineNumber { get; set; }
         public string FaxNumber { get; set; }
         public string ProductModel { get; set; }
+        public string ProdModelIfOther { get; set; }
         public string ProductNumber { get; set; }
         public string ProductSerialNumber { get; set; }
         public string Passward { get; set; }
