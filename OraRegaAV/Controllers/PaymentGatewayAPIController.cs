@@ -323,7 +323,7 @@ namespace OraRegaAV.Controllers.API
 
             try
             {
-                var tblPaymentsObj = db.tblPayments.Where(c => c.MerchantTransactionId == MerchantTransactionId && c.ModifiedBy == null).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                var tblPaymentsObj = db.tblPayments.Where(c => c.MerchantTransactionId == MerchantTransactionId && c.ModifiedBy == null || c.PaymentStatus == "PAYMENT_PENDING").OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 if (tblPaymentsObj != null)
                 {
                     #region Environment
@@ -513,6 +513,11 @@ namespace OraRegaAV.Controllers.API
                         {
                             tbl.PaymentMessage = "Payment Failed";
                             tbl.Refund_Error = parameters.paymentResponse.Message;
+                        }
+
+                        if (parameters.paymentResponse.Code == "PAYMENT_PENDING")
+                        {
+                            tbl.IsSuccess = false;
                         }
 
                         db.SaveChanges();
