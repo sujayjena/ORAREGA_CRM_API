@@ -2292,7 +2292,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="CustomerSecondaryName" Type="nvarchar" MaxLength="50" />
           <Property Name="RescheduleReasonId" Type="int" />
           <Property Name="RescheduleDate" Type="datetime" />
-          <Property Name="OrganizationName" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrganizationName" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="tblWorkOrderEngineerAllocatedHistory">
           <Key>
@@ -2340,7 +2340,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="ProductTypeId" Type="int" />
           <Property Name="ProductMakeId" Type="int" />
           <Property Name="ProdDescriptionIfOther" Type="nvarchar" MaxLength="100" />
-          <Property Name="OrganizationName" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrganizationName" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="tblWorkOrderRescheduleHistory">
           <Key>
@@ -6752,7 +6752,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="WOSnapsId" Type="Int32" />
           <Property Name="RescheduleReasonId" Type="Int32" />
           <Property Name="RescheduleDate" Type="DateTime" Precision="3" />
-          <Property Name="OrganizationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
 
         <EntityType Name="tblBusinessType">
@@ -7185,7 +7185,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="ProductTypeId" Type="Int32" />
           <Property Name="ProductMakeId" Type="Int32" />
           <Property Name="ProdDescriptionIfOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="OrganizationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
 
         <ComplexType Name="GetSalesOrderProductsList_Result">
