@@ -1125,7 +1125,7 @@ namespace OraRegaAV.Controllers
                                 if (vRoleObj != null)
                                 {
                                     var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderStatusObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id && w.CompanyId == vWorkOrderStatusObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id && w.CompanyId == vWorkOrderStatusObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive == true).ToListAsync();
 
                                     foreach (var itemEmployee in vEmployeeList)
                                     {
@@ -1164,7 +1164,7 @@ namespace OraRegaAV.Controllers
                                 if (vRoleObj != null)
                                 {
                                     var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderStatusObj.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id && w.CompanyId == vWorkOrderStatusObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+                                    var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj.Id && w.CompanyId == vWorkOrderStatusObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive == true).ToListAsync();
 
                                     foreach (var itemEmployee in vEmployeeList)
                                     {
@@ -2465,7 +2465,7 @@ namespace OraRegaAV.Controllers
                     if (vRoleObj_Logistics != null)
                     {
                         var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == tbl.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == tbl.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == tbl.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive == true).ToListAsync();
 
                         foreach (var itemEmployee in vEmployeeList)
                         {
@@ -2491,7 +2491,7 @@ namespace OraRegaAV.Controllers
                     if (vRoleObj_Backend != null)
                     {
                         var vBranchWiseEmployeeList = await db.tblBranchMappings.Where(x => x.BranchId == tbl.BranchId).Select(x => x.EmployeeId).ToListAsync();
-                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id && w.CompanyId == tbl.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToListAsync();
+                        var vEmployeeList = await db.tblEmployees.Where(w => w.RoleId == vRoleObj_Backend.Id && w.CompanyId == tbl.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive == true).ToListAsync();
 
                         foreach (var itemEmployee in vEmployeeList)
                         {

@@ -572,7 +572,7 @@ namespace OraRegaAV.Controllers.API
                                     if (vRoleObj_Logistics != null)
                                     {
                                         var vBranchWiseEmployeeList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToList();
-                                        var vEmployeeList = db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id)).ToList();
+                                        var vEmployeeList = db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive==true).ToList();
 
                                         foreach (var itemEmployee in vEmployeeList)
                                         {
