@@ -165,7 +165,7 @@ namespace OraRegaAV.Controllers.API
                 {
                     DateTime nowTime = DateTime.Now;
                     TimeSpan difference = nowTime.Subtract(Convert.ToDateTime(tbl.CreatedDate));
-                    if (difference.TotalSeconds <= 30)
+                    if (difference.TotalSeconds <= 180)
                     {
                         tbl.IsVerified = true;
 
