@@ -492,7 +492,7 @@ namespace OraRegaAV.Controllers.API
                 else
                 {
                     // Update Payment
-                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == parameters.paymentRequest.QuotationNumber && c.MerchantTransactionId == parameters.paymentRequest.MerchantTransactionId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+                    var tblPaymentsObj = db.tblPayments.Where(c => c.QuotationNumber == parameters.paymentRequest.QuotationNumber && c.MerchantTransactionId == parameters.paymentRequest.MerchantTransactionId && c.IsSuccess == false).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                     if (tblPaymentsObj != null)
                     {
                         tbl.IsSuccess = parameters.paymentResponse.IsSuccess;
@@ -572,7 +572,7 @@ namespace OraRegaAV.Controllers.API
                                     if (vRoleObj_Logistics != null)
                                     {
                                         var vBranchWiseEmployeeList = db.tblBranchMappings.Where(x => x.BranchId == vWorkOrderObj.BranchId).Select(x => x.EmployeeId).ToList();
-                                        var vEmployeeList = db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive==true).ToList();
+                                        var vEmployeeList = db.tblEmployees.Where(w => w.RoleId == vRoleObj_Logistics.Id && w.CompanyId == vWorkOrderObj.CompanyId && vBranchWiseEmployeeList.Contains(w.Id) && w.IsActive == true).ToList();
 
                                         foreach (var itemEmployee in vEmployeeList)
                                         {
