@@ -52,6 +52,7 @@ namespace OraRegaAV.Models
     {
         public long Id { get; set; }
         public Nullable<long> CustomerEmployeeId { get; set; }
+        public string CustomerEmployee { get; set; }
         public string Subject { get; set; }
         public string SendTo { get; set; }
         public string Message { get; set; }
@@ -64,6 +65,9 @@ namespace OraRegaAV.Models
     public class NotificationRequest
     {
         public DateTime? NotifyDate { get; set; }
+
+        [DefaultValue(0)]
+        public Boolean isPopupNotification { get; set; }
 
         [DefaultValue(0)]
         public int PageSize { get; set; }

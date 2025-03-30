@@ -3298,27 +3298,6 @@ namespace OraRegaAV.DBEntity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWOListForEmployees_Result>("GetWOListForEmployees", companyIdParameter, branchIdParameter, orderStatusIdParameter, engineerIdParameter, userIdParameter, filterTypeParameter, searchValueParameter, pageSizeParameter, pageNoParameter, total);
         }
     
-        public virtual ObjectResult<GetNotificationList_Result> GetNotificationList(Nullable<int> loggedInUserId, Nullable<System.DateTime> notifyDate, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
-        {
-            var loggedInUserIdParameter = loggedInUserId.HasValue ?
-                new ObjectParameter("LoggedInUserId", loggedInUserId) :
-                new ObjectParameter("LoggedInUserId", typeof(int));
-    
-            var notifyDateParameter = notifyDate.HasValue ?
-                new ObjectParameter("NotifyDate", notifyDate) :
-                new ObjectParameter("NotifyDate", typeof(System.DateTime));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var pageNoParameter = pageNo.HasValue ?
-                new ObjectParameter("PageNo", pageNo) :
-                new ObjectParameter("PageNo", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetNotificationList_Result>("GetNotificationList", loggedInUserIdParameter, notifyDateParameter, pageSizeParameter, pageNoParameter, total);
-        }
-    
         public virtual ObjectResult<GetPaymentDetails_Result> GetPaymentDetails(string merchantTransactionId, string transactionId)
         {
             var merchantTransactionIdParameter = merchantTransactionId != null ?
@@ -3633,6 +3612,31 @@ namespace OraRegaAV.DBEntity
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBroadCastList_Result>("GetBroadCastList", searchValueParameter, isActiveParameter, pageSizeParameter, pageNoParameter, total, userIdParameter);
+        }
+    
+        public virtual ObjectResult<GetNotificationList_Result> GetNotificationList(Nullable<int> loggedInUserId, Nullable<System.DateTime> notifyDate, Nullable<bool> isPopupNotification, Nullable<int> pageSize, Nullable<int> pageNo, ObjectParameter total)
+        {
+            var loggedInUserIdParameter = loggedInUserId.HasValue ?
+                new ObjectParameter("LoggedInUserId", loggedInUserId) :
+                new ObjectParameter("LoggedInUserId", typeof(int));
+    
+            var notifyDateParameter = notifyDate.HasValue ?
+                new ObjectParameter("NotifyDate", notifyDate) :
+                new ObjectParameter("NotifyDate", typeof(System.DateTime));
+    
+            var isPopupNotificationParameter = isPopupNotification.HasValue ?
+                new ObjectParameter("IsPopupNotification", isPopupNotification) :
+                new ObjectParameter("IsPopupNotification", typeof(bool));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("PageNo", pageNo) :
+                new ObjectParameter("PageNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetNotificationList_Result>("GetNotificationList", loggedInUserIdParameter, notifyDateParameter, isPopupNotificationParameter, pageSizeParameter, pageNoParameter, total);
         }
     }
 }

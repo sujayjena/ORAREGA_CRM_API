@@ -15,6 +15,7 @@ namespace OraRegaAV.DBEntity
     {
         public long Id { get; set; }
         public Nullable<long> CustomerEmployeeId { get; set; }
+        public string CustomerEmployee { get; set; }
         public string Subject { get; set; }
         public string SendTo { get; set; }
         public string Message { get; set; }

@@ -38,7 +38,7 @@ namespace OraRegaAV.Controllers
             {
                 var userId = Utilities.GetUserID(ActionContext.Request);
                 var vTotal = new ObjectParameter("Total", typeof(int));
-                var notificationList = await Task.Run(() => db.GetNotificationList(userId, parameters.NotifyDate, parameters.PageSize, parameters.PageNo, vTotal).ToList());
+                var notificationList = await Task.Run(() => db.GetNotificationList(userId, parameters.NotifyDate, parameters.isPopupNotification, parameters.PageSize, parameters.PageNo, vTotal).ToList());
 
                 if (notificationList.Count > 0)
                     notificationResponse.UnReadCount = notificationList.Where(x => x.ReadUnread == false).ToList().Count();
@@ -49,6 +49,7 @@ namespace OraRegaAV.Controllers
                     {
                         Id = item.Id,
                         CustomerEmployeeId = item.CustomerEmployeeId,
+                        CustomerEmployee = item.CustomerEmployee,
                         Subject = item.Subject,
                         SendTo = item.SendTo,
                         Message = item.Message,

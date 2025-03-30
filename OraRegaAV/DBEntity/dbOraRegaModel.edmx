@@ -2365,7 +2365,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="CreatedBy" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
-        <Association Name="FK__tblMenuRo__MenuI__66EA454A">
+        <Association Name="FK__tblMenuRo__MenuI__68D28DBC">
           <End Role="tblMenuMaster" Type="Self.tblMenuMaster" Multiplicity="0..1" />
           <End Role="tblMenuRoleMapping" Type="Self.tblMenuRoleMapping" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2737,6 +2737,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
         <Function Name="GetNotificationList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LoggedInUserId" Type="int" Mode="In" />
           <Parameter Name="NotifyDate" Type="date" Mode="In" />
+          <Parameter Name="IsPopupNotification" Type="bit" Mode="In" />
           <Parameter Name="PageSize" Type="int" Mode="In" />
           <Parameter Name="PageNo" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
@@ -3595,7 +3596,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
     [tblStockEntryBulkData].[CreatedDate] AS [CreatedDate]
     FROM [dbo].[tblStockEntryBulkData] AS [tblStockEntryBulkData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__tblMenuRo__MenuI__66EA454A" Association="Self.FK__tblMenuRo__MenuI__66EA454A">
+          <AssociationSet Name="FK__tblMenuRo__MenuI__68D28DBC" Association="Self.FK__tblMenuRo__MenuI__68D28DBC">
             <End Role="tblMenuMaster" EntitySet="tblMenuMaster" />
             <End Role="tblMenuRoleMapping" EntitySet="tblMenuRoleMapping" />
           </AssociationSet>
@@ -3685,7 +3686,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-         <EntityType Name="tblCompanyType">
+        <EntityType Name="tblCompanyType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -4278,7 +4279,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <EntitySet Name="tblBranchQueues" EntityType="Self.tblBranchQueue" />
           <EntitySet Name="tblCategories" EntityType="Self.tblCategory" />
           <EntitySet Name="tblCities" EntityType="Self.tblCity" />
-           <EntitySet Name="tblCompanyTypes" EntityType="Self.tblCompanyType" />
+          <EntitySet Name="tblCompanyTypes" EntityType="Self.tblCompanyType" />
           <EntitySet Name="tblCountries" EntityType="Self.tblCountry" />
           <EntitySet Name="tblDepartments" EntityType="Self.tblDepartment" />
           <EntitySet Name="tblEmpDocuments" EntityType="Self.tblEmpDocument" />
@@ -4446,7 +4447,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <FunctionImport Name="GetRoleDetailsById" ReturnType="Collection(dbOraRegaModel.GetRoleDetailsById_Result)">
           <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
-           <FunctionImport Name="GetRoles" ReturnType="Collection(dbOraRegaModel.GetRoles_Result)">
+          <FunctionImport Name="GetRoles" ReturnType="Collection(dbOraRegaModel.GetRoles_Result)">
           <Parameter Name="RoleName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SaveRoleDetails" ReturnType="Collection(Int64)">
@@ -4736,7 +4737,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-           <EntitySet Name="tblEmployees" EntityType="dbOraRegaModel.tblEmployee" />
+          <EntitySet Name="tblEmployees" EntityType="dbOraRegaModel.tblEmployee" />
 
           <EntitySet Name="tblClaimSettlementItemAttachments" EntityType="dbOraRegaModel.tblClaimSettlementItemAttachment" />
           <EntitySet Name="tblClaimSettlements" EntityType="dbOraRegaModel.tblClaimSettlement" />
@@ -4828,7 +4829,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="BranchId" Mode="In" Type="Int32" />
             <Parameter Name="PartId" Mode="In" Type="Int32" />
           </FunctionImport>
- 
+
           <FunctionImport Name="GetStockAllocationToWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetStockAllocationToWorkOrderList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
@@ -5052,8 +5053,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
-           
-           <FunctionImport Name="GetWOCustomerFeedbackList" ReturnType="Collection(dbOraRegaModel.GetWOCustomerFeedbackList_Result)">
+
+          <FunctionImport Name="GetWOCustomerFeedbackList" ReturnType="Collection(dbOraRegaModel.GetWOCustomerFeedbackList_Result)">
             <Parameter Name="WorkOrderNo" Mode="In" Type="String" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -5256,10 +5257,10 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <EntitySet Name="tblSMSLogHistories" EntityType="dbOraRegaModel.tblSMSLogHistory" />
           <EntitySet Name="tblQuotationServiceChargeDetails" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetail" />
           <EntitySet Name="tblInvoiceServiceChargeDetails" EntityType="dbOraRegaModel.tblInvoiceServiceChargeDetail" />
-           <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
+          <EntitySet Name="tblQuotationServiceChargeDetailsLogs" EntityType="dbOraRegaModel.tblQuotationServiceChargeDetailsLog" />
           <EntitySet Name="tblBranchMappings" EntityType="dbOraRegaModel.tblBranchMapping" />
-          
-           <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
+
+          <FunctionImport Name="GetDashboard_WorkOrderAllocated" ReturnType="Collection(dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -5270,7 +5271,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <FunctionImport Name="GetWorkOrderDetails" ReturnType="Collection(dbOraRegaModel.GetWorkOrderDetails_Result)">
           <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
           </FunctionImport>
-           <FunctionImport Name="GetDashboard_QuotationSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_QuotationSummary_Result)">
+          <FunctionImport Name="GetDashboard_QuotationSummary" ReturnType="Collection(dbOraRegaModel.GetDashboard_QuotationSummary_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
@@ -5286,7 +5287,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="FilterType" Mode="In" Type="String" />
           </FunctionImport>
-           <FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
+          <FunctionImport Name="GetWOEnquiriesListForCustomer" ReturnType="Collection(dbOraRegaModel.GetWOEnquiriesListForCustomer_Result)">
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
             <Parameter Name="EnquiryStatusId" Mode="In" Type="Int32" />
             <Parameter Name="SearchValue" Mode="In" Type="String" />
@@ -5307,7 +5308,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="tblQuotationLogs" EntityType="dbOraRegaModel.tblQuotationLog" />
-           <FunctionImport Name="GetWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderList_Result)">
+          <FunctionImport Name="GetWorkOrderList" ReturnType="Collection(dbOraRegaModel.GetWorkOrderList_Result)">
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
             <Parameter Name="BranchId" Mode="In" Type="String" />
             <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
@@ -5342,8 +5343,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="XmlCustomerData" Mode="In" Type="String" />
             <Parameter Name="LoggedInUserId" Mode="In" Type="Int64" />
           </FunctionImport>
-            <EntitySet Name="tblCompanies" EntityType="dbOraRegaModel.tblCompany" />
-           <EntitySet Name="tblWOPartRequests" EntityType="dbOraRegaModel.tblWOPartRequest" />
+          <EntitySet Name="tblCompanies" EntityType="dbOraRegaModel.tblCompany" />
+          <EntitySet Name="tblWOPartRequests" EntityType="dbOraRegaModel.tblWOPartRequest" />
           <FunctionImport Name="GetRoleMaster_PermissionList" ReturnType="Collection(dbOraRegaModel.GetRoleMaster_PermissionList_Result)">
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
             <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
@@ -5374,7 +5375,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="Module" Mode="In" Type="String" />
             <Parameter Name="ModuleUniqId" Mode="In" Type="String" />
           </FunctionImport>
-            <FunctionImport Name="GetCSOOnSiteDetails" ReturnType="Collection(dbOraRegaModel.GetCSOOnSiteDetails_Result)">
+          <FunctionImport Name="GetCSOOnSiteDetails" ReturnType="Collection(dbOraRegaModel.GetCSOOnSiteDetails_Result)">
           <Parameter Name="WorkOrderNumber" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetCSOOffSiteDetails" ReturnType="Collection(dbOraRegaModel.GetCSOOffSiteDetails_Result)">
@@ -5392,19 +5393,12 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="PageNo" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetNotificationList" ReturnType="Collection(dbOraRegaModel.GetNotificationList_Result)">
-            <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
-            <Parameter Name="NotifyDate" Mode="In" Type="DateTime" />
-            <Parameter Name="PageSize" Mode="In" Type="Int32" />
-            <Parameter Name="PageNo" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="tblInvoicePartDetails" EntityType="dbOraRegaModel.tblInvoicePartDetail" />
           <EntitySet Name="tblQuotationPartDetails" EntityType="dbOraRegaModel.tblQuotationPartDetail" />
           <EntitySet Name="tblQuotationPartDetailsLogs" EntityType="dbOraRegaModel.tblQuotationPartDetailsLog" />
           <EntitySet Name="tblPaymentPartDetails" EntityType="dbOraRegaModel.tblPaymentPartDetail" />
-           
-           <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
+
+          <EntitySet Name="tblPayments" EntityType="dbOraRegaModel.tblPayment" />
           <FunctionImport Name="GetPaymentDetails" ReturnType="Collection(dbOraRegaModel.GetPaymentDetails_Result)">
             <Parameter Name="MerchantTransactionId" Mode="In" Type="String" />
             <Parameter Name="TransactionId" Mode="In" Type="String" />
@@ -5423,7 +5417,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <FunctionImport Name="GetEmployeesForSelectList" ReturnType="Collection(dbOraRegaModel.GetEmployeesForSelectList_Result)">
           <Parameter Name="BranchId" Mode="In" Type="String" />
           </FunctionImport>
-           <FunctionImport Name="GetInvoiceReport" ReturnType="Collection(dbOraRegaModel.GetInvoiceReport_Result)">
+          <FunctionImport Name="GetInvoiceReport" ReturnType="Collection(dbOraRegaModel.GetInvoiceReport_Result)">
             <Parameter Name="FromDate" Mode="In" Type="DateTime" />
             <Parameter Name="ToDate" Mode="In" Type="DateTime" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -5461,7 +5455,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-           <EntitySet Name="tblAMCReminderEmails" EntityType="dbOraRegaModel.tblAMCReminderEmail" />
+          <EntitySet Name="tblAMCReminderEmails" EntityType="dbOraRegaModel.tblAMCReminderEmail" />
           <FunctionImport Name="SaveAMCReminderEmail">
             <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
@@ -5504,7 +5498,15 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-                  </EntityContainer>
+          <FunctionImport Name="GetNotificationList" ReturnType="Collection(dbOraRegaModel.GetNotificationList_Result)">
+            <Parameter Name="LoggedInUserId" Mode="In" Type="Int32" />
+            <Parameter Name="NotifyDate" Mode="In" Type="DateTime" />
+            <Parameter Name="IsPopupNotification" Mode="In" Type="Boolean" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="PageNo" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
         <ComplexType Name="GetEmployeeListForDropDown_Result">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Text" Nullable="true" MaxLength="154" />
@@ -6120,7 +6122,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="RoleName" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
         </ComplexType>
-         <ComplexType Name="GetRoles_Result">
+        <ComplexType Name="GetRoles_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="RoleName" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
@@ -6436,7 +6438,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
         <ComplexType Name="GetTravelRangeList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="TravelRange" Nullable="false" MaxLength="100" />
-		  <Property Type="Decimal" Name="Price" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="18" Scale="2" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
@@ -7016,7 +7018,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-         <EntityType Name="tblEmployee">
+        <EntityType Name="tblEmployee">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -7670,7 +7672,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="Reason" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="PartTransferStatus" Nullable="false" MaxLength="20" />
         </ComplexType>
- 
+
 
         <ComplexType Name="GetStockAllocationToWorkOrderList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
@@ -8162,8 +8164,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="AttributeImagePath" Nullable="true" MaxLength="2000" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-     
-         <ComplexType Name="GetWOCustomerFeedbackList_Result">
+
+        <ComplexType Name="GetWOCustomerFeedbackList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="CustomerId" Nullable="true" />
           <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="101" />
@@ -8182,13 +8184,13 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="ClaimId" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
-		  <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
           <Property Type="Decimal" Name="Amount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="ClaimReason" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="AdvanceStatusId" Nullable="true" />
           <Property Type="String" Name="AdvanceStatus" Nullable="true" MaxLength="25" />
-		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
+          <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
@@ -8197,14 +8199,14 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
-		  <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ClaimId" Nullable="true" MaxLength="10" />
           <Property Type="Decimal" Name="TotalAdvanceAmt" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="TotalClaimAmount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="GrandTotal" Nullable="true" Precision="18" Scale="2" />
           <Property Type="Int32" Name="SettlementStatusId" Nullable="true" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
-		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
+          <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
@@ -8215,7 +8217,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="ExpenseId" Nullable="true" MaxLength="10" />
           <Property Type="Int32" Name="EmployeeId" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
-		  <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BranchName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="ExpenseDate" Nullable="true" Precision="23" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="VehicleTypeId" Nullable="true" />
@@ -8228,7 +8230,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="FileNameUrl" Nullable="false" MaxLength="1" />
           <Property Type="Int32" Name="ExpenseStatusId" Nullable="true" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
-		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
+          <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Int32" Name="CreatedBy" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
@@ -8484,7 +8486,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <Property Type="Int32" Name="StatusId" Nullable="false" />
           <Property Type="String" Name="StatusName" Nullable="true" MaxLength="25" />
-		  <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
+          <Property Type="Boolean" Name="IsApprovedDisabled" Nullable="true" />
           <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="CreatedBy" Nullable="false" />
           <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
@@ -8597,7 +8599,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="IGSTValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceAfterDisc" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-         <EntityType Name="tblQuotationServiceChargeDetailsLog">
+        <EntityType Name="tblQuotationServiceChargeDetailsLog">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -8628,8 +8630,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="EmployeeId" Type="Int32" Nullable="false" />
           <Property Name="BranchId" Type="Int32" Nullable="false" />
         </EntityType>
-         
-         <ComplexType Name="GetDashboard_WorkOrderAllocated_Result">
+
+        <ComplexType Name="GetDashboard_WorkOrderAllocated_Result">
           <Property Type="Int32" Name="Allocated" Nullable="false" />
           <Property Type="Int32" Name="UnAllocated" Nullable="false" />
           <Property Type="Int32" Name="Accepted" Nullable="false" />
@@ -8726,7 +8728,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="RescheduleReason" Nullable="true" MaxLength="100" />
           <Property Type="DateTime" Name="RescheduleDate" Nullable="true" Precision="23" />
         </ComplexType>
-         <ComplexType Name="GetDashboard_QuotationSummary_Result">
+        <ComplexType Name="GetDashboard_QuotationSummary_Result">
           <Property Type="Int32" Name="TotalQuotation" Nullable="true" />
           <Property Type="Int32" Name="QuotationGenerate" Nullable="true" />
           <Property Type="Int32" Name="QuotationGiven" Nullable="true" />
@@ -8740,7 +8742,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int32" Name="InvoiceGenerate" Nullable="true" />
           <Property Type="Int32" Name="PendingInvoice" Nullable="true" />
         </ComplexType>
-         <ComplexType Name="GetWOEnquiriesListForCustomer_Result">
+        <ComplexType Name="GetWOEnquiriesListForCustomer_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Mobile" Nullable="false" MaxLength="20" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
@@ -8879,7 +8881,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
         </EntityType>
-         <ComplexType Name="GetWorkOrderList_Result">
+        <ComplexType Name="GetWorkOrderList_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="SupportTypeId" Nullable="true" />
@@ -8980,13 +8982,13 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="AreaName" Nullable="false" MaxLength="1" />
-		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="ImportCity_Result">
           <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
-		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="ImportPincode_Result">
@@ -8994,14 +8996,14 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="CityName" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="AreaName" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="Pincode" Nullable="false" MaxLength="1" />
-		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="ImportState_Result">
-		  <Property Type="Int32" Name="StateCode" Nullable="true" />
-		  <Property Type="String" Name="StateShortCode" Nullable="false" MaxLength="1" />
-		  <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
-		  <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="StateCode" Nullable="true" />
+          <Property Type="String" Name="StateShortCode" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="StateName" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="IsActive" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="ImportCustomer_Result">
@@ -9019,7 +9021,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="String" Name="TermsConditionsAccepted" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="ValidationMessage" Nullable="false" MaxLength="1" />
         </ComplexType>
-          <EntityType Name="tblCompany">
+        <EntityType Name="tblCompany">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -9051,7 +9053,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="AmcStartDate" Type="DateTime" Precision="3" />
           <Property Name="AmcEndDate" Type="DateTime" Precision="3" />
         </EntityType>
-         <EntityType Name="tblWOPartRequest">
+        <EntityType Name="tblWOPartRequest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -9129,7 +9131,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int32" Name="UserId" Nullable="true" />
           <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
         </ComplexType>
-          <ComplexType Name="GetCSOOnSiteDetails_Result">
+        <ComplexType Name="GetCSOOnSiteDetails_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="WorkOrderNumber" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="BranchId" Nullable="true" />
@@ -9233,18 +9235,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int32" Name="CaseStatusId" Nullable="true" />
           <Property Type="String" Name="CaseStatusName" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="SupportType" Nullable="true" MaxLength="50" />
-		  <Property Type="Int32" Name="WorkOrderEnquiryId" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="GetNotificationList_Result">
-          <Property Type="Int64" Name="Id" Nullable="false" />
-          <Property Type="Int64" Name="CustomerEmployeeId" Nullable="true" />
-          <Property Type="String" Name="Subject" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="SendTo" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Message" Nullable="true" />
-          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
-          <Property Type="Int64" Name="CreatedBy" Nullable="false" />
-          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
-          <Property Type="Boolean" Name="ReadUnread" Nullable="false" />
+          <Property Type="Int32" Name="WorkOrderEnquiryId" Nullable="true" />
         </ComplexType>
         <EntityType Name="tblInvoicePartDetail">
           <Key>
@@ -9321,8 +9312,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Name="PartNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="PartDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-        
-         <EntityType Name="tblPayment">
+
+        <EntityType Name="tblPayment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -9428,7 +9419,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int32" Name="Value" Nullable="true" />
           <Property Type="String" Name="Text" Nullable="false" MaxLength="1" />
         </ComplexType>
-         <ComplexType Name="GetInvoiceReport_Result">
+        <ComplexType Name="GetInvoiceReport_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="DateTime" Name="InvoiceDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="InvoiceNumber" Nullable="false" MaxLength="50" />
@@ -9729,7 +9720,19 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
           <Property Type="Int64" Name="CreatedBy" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
-      </Schema>
+        <ComplexType Name="GetNotificationList_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="Int64" Name="CustomerEmployeeId" Nullable="true" />
+          <Property Type="String" Name="CustomerEmployee" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="Subject" Nullable="false" MaxLength="407" />
+          <Property Type="String" Name="SendTo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Message" Nullable="true" />
+          <Property Type="String" Name="CreatorName" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="ReadUnread" Nullable="false" />
+        </ComplexType>
+       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -9822,7 +9825,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           <EntitySetMapping Name="tblCompanyTypes">
+          <EntitySetMapping Name="tblCompanyTypes">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblCompanyType">
               <MappingFragment StoreEntitySet="tblCompanyType">
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -11106,7 +11109,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <FunctionImportMapping FunctionImportName="GetRoles" FunctionName="dbOraRegaModel.Store.GetRoles">
+          <FunctionImportMapping FunctionImportName="GetRoles" FunctionName="dbOraRegaModel.Store.GetRoles">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetRoles_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -12183,7 +12186,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <EntitySetMapping Name="tblEmployees">
+          <EntitySetMapping Name="tblEmployees">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblEmployee">
               <MappingFragment StoreEntitySet="tblEmployee">
                 <ScalarProperty Name="AadharCardOriginalFileName" ColumnName="AadharCardOriginalFileName" />
@@ -12903,7 +12906,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <FunctionImportMapping FunctionImportName="GetStockAllocationToWorkOrderList" FunctionName="dbOraRegaModel.Store.GetStockAllocationToWorkOrderList">
+          <FunctionImportMapping FunctionImportName="GetStockAllocationToWorkOrderList" FunctionName="dbOraRegaModel.Store.GetStockAllocationToWorkOrderList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetStockAllocationToWorkOrderList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -13498,8 +13501,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-      
-           <FunctionImportMapping FunctionImportName="GetWOCustomerFeedbackList" FunctionName="dbOraRegaModel.Store.GetWOCustomerFeedbackList">
+
+          <FunctionImportMapping FunctionImportName="GetWOCustomerFeedbackList" FunctionName="dbOraRegaModel.Store.GetWOCustomerFeedbackList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetWOCustomerFeedbackList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -13524,7 +13527,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="ClaimId" ColumnName="ClaimId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-				<ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="ClaimReason" ColumnName="ClaimReason" />
@@ -13543,14 +13546,14 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-				<ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="ClaimId" ColumnName="ClaimId" />
                 <ScalarProperty Name="TotalAdvanceAmt" ColumnName="TotalAdvanceAmt" />
                 <ScalarProperty Name="TotalClaimAmount" ColumnName="TotalClaimAmount" />
                 <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
                 <ScalarProperty Name="SettlementStatusId" ColumnName="SettlementStatusId" />
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
-				<ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
+                <ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
@@ -13565,7 +13568,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-				<ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
                 <ScalarProperty Name="WorkOrderNumber" ColumnName="WorkOrderNumber" />
                 <ScalarProperty Name="VehicleTypeId" ColumnName="VehicleTypeId" />
@@ -13883,7 +13886,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
-				<ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
+                <ScalarProperty Name="IsApprovedDisabled" ColumnName="IsApprovedDisabled" />
                 <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
@@ -13971,7 +13974,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           <EntitySetMapping Name="tblQuotationServiceChargeDetails">
+          <EntitySetMapping Name="tblQuotationServiceChargeDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetail">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetails">
                 <ScalarProperty Name="GSTType" ColumnName="GSTType" />
@@ -14018,7 +14021,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           <EntitySetMapping Name="tblQuotationServiceChargeDetailsLogs">
+          <EntitySetMapping Name="tblQuotationServiceChargeDetailsLogs">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblQuotationServiceChargeDetailsLog">
               <MappingFragment StoreEntitySet="tblQuotationServiceChargeDetailsLog">
                 <ScalarProperty Name="GSTType" ColumnName="GSTType" />
@@ -14051,8 +14054,8 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           
-           <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderAllocated" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderAllocated">
+
+          <FunctionImportMapping FunctionImportName="GetDashboard_WorkOrderAllocated" FunctionName="dbOraRegaModel.Store.GetDashboard_WorkOrderAllocated">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_WorkOrderAllocated_Result">
                 <ScalarProperty Name="Allocated" ColumnName="Allocated" />
@@ -14157,7 +14160,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <FunctionImportMapping FunctionImportName="GetDashboard_QuotationSummary" FunctionName="dbOraRegaModel.Store.GetDashboard_QuotationSummary">
+          <FunctionImportMapping FunctionImportName="GetDashboard_QuotationSummary" FunctionName="dbOraRegaModel.Store.GetDashboard_QuotationSummary">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetDashboard_QuotationSummary_Result">
                 <ScalarProperty Name="TotalQuotation" ColumnName="TotalQuotation" />
@@ -14179,7 +14182,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <FunctionImportMapping FunctionImportName="GetWOEnquiriesListForCustomer" FunctionName="dbOraRegaModel.Store.GetWOEnquiriesListForCustomer">
+          <FunctionImportMapping FunctionImportName="GetWOEnquiriesListForCustomer" FunctionName="dbOraRegaModel.Store.GetWOEnquiriesListForCustomer">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetWOEnquiriesListForCustomer_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -14329,7 +14332,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           <FunctionImportMapping FunctionImportName="GetWorkOrderList" FunctionName="dbOraRegaModel.Store.GetWorkOrderList">
+          <FunctionImportMapping FunctionImportName="GetWorkOrderList" FunctionName="dbOraRegaModel.Store.GetWorkOrderList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetWorkOrderList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -14497,7 +14500,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-            <EntitySetMapping Name="tblCompanies">
+          <EntitySetMapping Name="tblCompanies">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblCompany">
               <MappingFragment StoreEntitySet="tblCompany">
                 <ScalarProperty Name="AmcEndDate" ColumnName="AmcEndDate" />
@@ -14530,7 +14533,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-           <EntitySetMapping Name="tblWOPartRequests">
+          <EntitySetMapping Name="tblWOPartRequests">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblWOPartRequest">
               <MappingFragment StoreEntitySet="tblWOPartRequest">
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -14628,7 +14631,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-            <FunctionImportMapping FunctionImportName="GetCSOOnSiteDetails" FunctionName="dbOraRegaModel.Store.GetCSOOnSiteDetails">
+          <FunctionImportMapping FunctionImportName="GetCSOOnSiteDetails" FunctionName="dbOraRegaModel.Store.GetCSOOnSiteDetails">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetCSOOnSiteDetails_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -14746,21 +14749,6 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetNotificationList" FunctionName="dbOraRegaModel.Store.GetNotificationList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="dbOraRegaModel.GetNotificationList_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CustomerEmployeeId" ColumnName="CustomerEmployeeId" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="ReadUnread" ColumnName="ReadUnread" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="tblInvoicePartDetails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblInvoicePartDetail">
               <MappingFragment StoreEntitySet="tblInvoicePartDetails">
@@ -14840,7 +14828,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-            <EntitySetMapping Name="tblPayments">
+          <EntitySetMapping Name="tblPayments">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblPayment">
               <MappingFragment StoreEntitySet="tblPayment">
                 <ScalarProperty Name="Refund_ModifiedBy" ColumnName="Refund_ModifiedBy" />
@@ -14960,7 +14948,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <FunctionImportMapping FunctionImportName="GetInvoiceReport" FunctionName="dbOraRegaModel.Store.GetInvoiceReport">
+          <FunctionImportMapping FunctionImportName="GetInvoiceReport" FunctionName="dbOraRegaModel.Store.GetInvoiceReport">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbOraRegaModel.GetInvoiceReport_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -15099,7 +15087,7 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-           <EntitySetMapping Name="tblAMCReminderEmails">
+          <EntitySetMapping Name="tblAMCReminderEmails">
             <EntityTypeMapping TypeName="dbOraRegaModel.tblAMCReminderEmail">
               <MappingFragment StoreEntitySet="tblAMCReminderEmail">
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -15295,7 +15283,23 @@ warning 6002: The table/view 'dbOraRega.dbo.tblStockEntryBulkData' does not have
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-             </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetNotificationList" FunctionName="dbOraRegaModel.Store.GetNotificationList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbOraRegaModel.GetNotificationList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustomerEmployeeId" ColumnName="CustomerEmployeeId" />
+                <ScalarProperty Name="CustomerEmployee" ColumnName="CustomerEmployee" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="CreatorName" ColumnName="CreatorName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ReadUnread" ColumnName="ReadUnread" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

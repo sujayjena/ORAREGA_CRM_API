@@ -405,7 +405,7 @@ namespace OraRegaAV.Controllers.API
 
                             // Notification List
                             var vTotal = new ObjectParameter("Total", typeof(int));
-                            var NotificationList = db.GetNotificationList(objLogin.Id, DateTime.Now, 0, 0, vTotal).ToList();
+                            var NotificationList = db.GetNotificationList(objLogin.Id, DateTime.Now, isPopupNotification: true, 0, 0, vTotal).ToList();
                             objLoginModelResponse.NotificationList = NotificationList;
 
                             _response.IsSuccess = true;
@@ -726,7 +726,7 @@ namespace OraRegaAV.Controllers.API
 
                             // Notification List
                             var vTotal = new ObjectParameter("Total", typeof(int));
-                            var NotificationList = await Task.Run(() => db.GetNotificationList(user.Id, DateTime.Now, 0, 0, vTotal).ToList());
+                            var NotificationList = await Task.Run(() => db.GetNotificationList(user.Id, DateTime.Now, isPopupNotification: true, 0, 0, vTotal).ToList());
                             objLoginModelResponse.NotificationList = NotificationList;
 
                             _response.IsSuccess = true;

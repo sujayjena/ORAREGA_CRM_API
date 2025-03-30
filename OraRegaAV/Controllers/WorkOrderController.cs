@@ -403,7 +403,7 @@ namespace OraRegaAV.Controllers
                     #endregion
 
                     await db.SaveChangesAsync();
-                }
+                 }
                 else
                 {
                     //tblWorkOrder.WorkOrderNumber = parameters.WorkOrderNumber;
@@ -687,6 +687,7 @@ namespace OraRegaAV.Controllers
                 {
                     tblWorkOrderEngineerAllocatedHistory tblWorkOrderEngineerAllocatedHistory = new tblWorkOrderEngineerAllocatedHistory();
 
+
                     var vtblWorkOrderEngineerAllocatedHistories = await db.tblWorkOrderEngineerAllocatedHistories.Where(w => w.WorkOrderId == parameters.Id).OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync();
                     if (vtblWorkOrderEngineerAllocatedHistories != null)
                     {
@@ -704,17 +705,17 @@ namespace OraRegaAV.Controllers
 
                             string NotifyMessage = String.Format(@"Greeting…!
                                                                    Work Order has been  Allocated to you 
-                                                                   {0}", parameters.WorkOrderNumber);
+                                                                   {0}", tblWorkOrder.WorkOrderNumber);
 
                             var vNotifyObj = new tblNotification()
                             {
-                                Subject = "Work Order Allocate to",
-                                SendTo = "Allocated To",
+                                Subject = "Work Order Allocate to Engineer",
+                                SendTo = "Engineer",
                                 //CustomerId = workOrderEnquiry.CustomerId,
                                 //CustomerMessage = NotifyMessage,
                                 EmployeeId = parameters.EngineerId,
                                 EmployeeMessage = NotifyMessage,
-                                RefValue1 = parameters.WorkOrderNumber,
+                                RefValue1 = tblWorkOrder.WorkOrderNumber,
                                 CreatedBy = Utilities.GetUserID(ActionContext.Request),
                                 CreatedOn = DateTime.Now,
                             };
@@ -740,17 +741,17 @@ namespace OraRegaAV.Controllers
 
                         string NotifyMessage = String.Format(@"Greeting…!
                                                                    Work Order has been  Allocated to you 
-                                                                   {0}", parameters.WorkOrderNumber);
+                                                                   {0}", tblWorkOrder.WorkOrderNumber);
 
                         var vNotifyObj = new tblNotification()
                         {
-                            Subject = "Work Order Allocate to",
-                            SendTo = "Allocated To",
+                            Subject = "Work Order Allocate to Engineer",
+                            SendTo = "Engineer",
                             //CustomerId = workOrderEnquiry.CustomerId,
                             //CustomerMessage = NotifyMessage,
                             EmployeeId = parameters.EngineerId,
                             EmployeeMessage = NotifyMessage,
-                            RefValue1 = parameters.WorkOrderNumber,
+                            RefValue1 = tblWorkOrder.WorkOrderNumber,
                             CreatedBy = Utilities.GetUserID(ActionContext.Request),
                             CreatedOn = DateTime.Now,
                         };
@@ -911,8 +912,8 @@ namespace OraRegaAV.Controllers
 
                                 var vNotifyObj = new tblNotification()
                                 {
-                                    Subject = "Work Order Allocate to",
-                                    SendTo = "Allocated To",
+                                    Subject = "Work Order Allocate to Engineer",
+                                    SendTo = "Engineer",
                                     //CustomerId = workOrderEnquiry.CustomerId,
                                     //CustomerMessage = NotifyMessage,
                                     EmployeeId = tblWorkOrder.EngineerId,
@@ -947,8 +948,8 @@ namespace OraRegaAV.Controllers
 
                             var vNotifyObj = new tblNotification()
                             {
-                                Subject = "Work Order Allocate to",
-                                SendTo = "Allocated To",
+                                Subject = "Work Order Allocate to Engineer",
+                                SendTo = "Engineer",
                                 //CustomerId = workOrderEnquiry.CustomerId,
                                 //CustomerMessage = NotifyMessage,
                                 EmployeeId = tblWorkOrder.EngineerId,

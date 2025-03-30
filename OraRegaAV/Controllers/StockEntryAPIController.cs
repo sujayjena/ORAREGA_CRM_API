@@ -540,7 +540,7 @@ namespace OraRegaAV.Controllers.API
                     var vNotifyObj = new tblNotification()
                     {
                         Subject = "Part Allocated to Engineer",
-                        SendTo = "Allocated to",
+                        SendTo = "Allocated to Engineer",
                         //CustomerId = vWorkOrderStatusObj.CustomerId,
                         //CustomerMessage = NotifyMessage_Customer,
                         EmployeeId = parameters.EngineerId,
