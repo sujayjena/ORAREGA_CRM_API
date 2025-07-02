@@ -419,16 +419,12 @@ namespace OraRegaAV.Controllers.API
 
         [HttpPost]
         [Route("api/CompanyTypeAPI/CheckCompanyAMC")]
-        public async Task<Response> CheckCompanyAMC(CompanyAMCModel parameters)
+        [AllowAnonymous]
+        public async Task<Response> CheckCompanyAMC(int CompanyId)
         {
-            var vCompanySearch_Request = new CompanyModel()
-            {
-                CompanyId = parameters.CompanyId,
-            };
-
             var userId = Utilities.GetUserID(ActionContext.Request);
             var vTotal = new ObjectParameter("Total", typeof(int));
-            var lstCompanys = db.GetCompanyList(parameters.CompanyId, string.Empty, 0, 0, vTotal, userId).ToList();
+            var lstCompanys = db.GetCompanyList(CompanyId, string.Empty, 0, 0, vTotal, userId).ToList();
 
             foreach (var companyItem in lstCompanys.ToList())
             {

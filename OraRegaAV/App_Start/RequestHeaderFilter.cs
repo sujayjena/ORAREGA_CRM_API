@@ -45,6 +45,7 @@ namespace OraRegaAV.App_Start
                 || string.Equals(operation.operationId, "WebsiteAPI_GetPrivacyAndPolicyList", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "WebsiteAPI_GetTermsAndConditionList", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(operation.operationId, "PaymentGatewayAPI_CheckPaymentStatusByMerchantTransactionId", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(operation.operationId, "CompanyTypeAPI_CheckCompanyAMC", StringComparison.OrdinalIgnoreCase)
             )
             {
                 isTokenRequired = false;
