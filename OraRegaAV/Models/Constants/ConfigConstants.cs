@@ -23,6 +23,7 @@
 
         public const string AMCReminderEmailToCustomer = "AMCReminderEmailToCustomer";
         public const string AMCReminderEmailToVendor = "AMCReminderEmailToVendor";
+        public const string AVContactNo = "AVContactNo";
 
         // SMS Setting
         public const string SMS_AuthKey = "SMS_AuthKey";

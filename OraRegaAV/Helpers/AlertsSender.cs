@@ -243,8 +243,9 @@ namespace OraRegaAV.Helpers
         {
             bool result = false;
             string templateFilePath = "", emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
-            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/av-logo.png";
             var vConfigRefObj = db.GetConfigurationsList($"{ConfigConstants.AMCReminderEmailToCustomer}").FirstOrDefault();
+            var vConfigRefObj_AV = db.GetConfigurationsList($"{ConfigConstants.AVContactNo}").FirstOrDefault();
 
             try
             {
@@ -261,6 +262,11 @@ namespace OraRegaAV.Helpers
                     if (emailTemplateContent.IndexOf("[ExpirationDate]", StringComparison.OrdinalIgnoreCase) > 0)
                     {
                         emailTemplateContent = emailTemplateContent.Replace("[ExpirationDate]", Convert.ToDateTime(amcEndDate).ToString("dd/MM/yyyy"));
+                    }
+
+                    if (emailTemplateContent.IndexOf("[AVContactNo]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[AVContactNo]", vConfigRefObj_AV.ConfigValue);
                     }
 
                     if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
@@ -305,8 +311,9 @@ namespace OraRegaAV.Helpers
         {
             bool result = false;
             string templateFilePath = "", emailTemplateContent = "", remarks = "", sSubjectDynamicContent = "";
-            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/quikserv-logo.png";
+            string baseLogoUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/img/av-logo.png";
             var vConfigRefObj = db.GetConfigurationsList($"{ConfigConstants.AMCReminderEmailToVendor}").FirstOrDefault();
+            var vConfigRefObj_AV = db.GetConfigurationsList($"{ConfigConstants.AVContactNo}").FirstOrDefault();
 
             try
             {
@@ -323,6 +330,11 @@ namespace OraRegaAV.Helpers
                     if (emailTemplateContent.IndexOf("[ExpirationDate]", StringComparison.OrdinalIgnoreCase) > 0)
                     {
                         emailTemplateContent = emailTemplateContent.Replace("[ExpirationDate]", Convert.ToDateTime(amcEndDate).ToString("dd/MM/yyyy"));
+                    }
+
+                    if (emailTemplateContent.IndexOf("[AVContactNo]", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        emailTemplateContent = emailTemplateContent.Replace("[AVContactNo]", vConfigRefObj_AV.ConfigValue);
                     }
 
                     if (emailTemplateContent.IndexOf("[SenderCompanyLogo]", StringComparison.OrdinalIgnoreCase) > 0)
